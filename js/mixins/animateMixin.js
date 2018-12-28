@@ -8,10 +8,10 @@
  * @this component using AnimateMixin
  */
 
-var AnimateMixin = {
+let AnimateMixin = {
   getInitialState: function() {
     return {
-      animate: false
+      animate: false,
     };
   },
 
@@ -25,8 +25,8 @@ var AnimateMixin = {
 
   startAnimation: function() {
     this.setState({
-      animate: true
+      animate: true,
     });
-  }
+  },
 };
 module.exports = AnimateMixin;

@@ -1,11 +1,15 @@
-var React = require('react'),
-    Utils = require('../utils'),
-    CONSTANTS = require('../../constants/constants'),
-    SelectionContainer = require('./selectionContainer'),
-    ColorSelector = require('../colorSelector');
-var createReactClass = require('create-react-class');
+let React = require('react');
 
-var ColorSelectionTab = createReactClass({
+let Utils = require('../utils');
+
+let CONSTANTS = require('../../constants/constants');
+
+let SelectionContainer = require('./selectionContainer');
+
+let ColorSelector = require('../colorSelector');
+let createReactClass = require('create-react-class');
+
+let ColorSelectionTab = createReactClass({
   getInitialState: function() {
     return {
       selectedTextColor: this.props.closedCaptionOptions.textColor,
@@ -13,7 +17,7 @@ var ColorSelectionTab = createReactClass({
       selectedBackgroundColor: this.props.closedCaptionOptions.backgroundColor,
       textColors: ['White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
       windowColors: ['Transparent', 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
-      backgroundColors: ['Transparent', 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black']
+      backgroundColors: ['Transparent', 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
     };
   },
 
@@ -23,7 +27,7 @@ var ColorSelectionTab = createReactClass({
     }
     this.props.controller.onClosedCaptionChange('textColor', color);
     this.setState({
-      selectedTextColor: color
+      selectedTextColor: color,
     });
   },
 
@@ -33,7 +37,7 @@ var ColorSelectionTab = createReactClass({
     }
     this.props.controller.onClosedCaptionChange('windowColor', color);
     this.setState({
-      selectedWindowColor: color
+      selectedWindowColor: color,
     });
   },
 
@@ -43,39 +47,39 @@ var ColorSelectionTab = createReactClass({
     }
     this.props.controller.onClosedCaptionChange('backgroundColor', color);
     this.setState({
-      selectedBackgroundColor: color
+      selectedBackgroundColor: color,
     });
   },
 
   render: function() {
-    var textColorTitle = Utils.getLocalizedString(
+    let textColorTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_COLOR,
       this.props.localizableStrings
     );
-    var textColorSelection = Utils.getLocalizedString(
+    let textColorSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textColor.toUpperCase()],
       this.props.localizableStrings
     );
 
-    var backgroundColorTitle = Utils.getLocalizedString(
+    let backgroundColorTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.BACKGROUND_COLOR,
       this.props.localizableStrings
     );
-    var backgroundColorSelection = Utils.getLocalizedString(
+    let backgroundColorSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.backgroundColor.toUpperCase()],
       this.props.localizableStrings
     );
 
-    var windowColorTitle = Utils.getLocalizedString(
+    let windowColorTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.WINDOW_COLOR,
       this.props.localizableStrings
     );
-    var windowColorSelection = Utils.getLocalizedString(
+    let windowColorSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.windowColor.toUpperCase()],
       this.props.localizableStrings
@@ -125,7 +129,7 @@ var ColorSelectionTab = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 module.exports = ColorSelectionTab;

@@ -9,15 +9,13 @@ const CONSTANTS = require('../../constants/constants');
  * @public
  * @param {Component} ComposedComponent The React component to extend.
  * The component must support adding handlers the following events: click, keydown, mousedown, mouseup
- * @return {Component} A new component that supports holding the onClick handler
+ * @returns {Component} A new component that supports holding the onClick handler
  */
 const holdOnClick = function(ComposedComponent) {
-
   const CLICK_HOLD_START_DELAY = 500;
   const CLICK_HOLD_FREQUENCY = 100;
 
   class HoldOnClick extends React.Component {
-
     constructor(props) {
       super(props);
       this.startTimer = null;
@@ -105,7 +103,7 @@ const holdOnClick = function(ComposedComponent) {
      */
     releaseClick() {
       clearTimeout(this.startTimer);
-      this.startTimer = null
+      this.startTimer = null;
       clearTimeout(this.repeatTimer);
       this.repeatTimer = null;
     }
@@ -123,11 +121,10 @@ const holdOnClick = function(ComposedComponent) {
         </ComposedComponent>
       );
     }
-
   }
 
   HoldOnClick.propTypes = {
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
   };
 
   return HoldOnClick;

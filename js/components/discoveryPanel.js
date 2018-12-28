@@ -3,19 +3,27 @@
  *
  * @module DiscoveryPanel
  */
-var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ClassNames = require('classnames'),
-    Utils = require('./utils'),
-    CONSTANTS = require('../constants/constants'),
-    CountDownClock = require('./countDownClock'),
-    DiscoverItem = require('./discoverItem'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var DiscoveryPanel = createReactClass({
+let ReactDOM = require('react-dom');
+
+let ClassNames = require('classnames');
+
+let Utils = require('./utils');
+
+let CONSTANTS = require('../constants/constants');
+
+let CountDownClock = require('./countDownClock');
+
+let DiscoverItem = require('./discoverItem');
+
+let ResizeMixin = require('../mixins/resizeMixin');
+
+let Icon = require('../components/icon');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let DiscoveryPanel = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
@@ -24,7 +32,7 @@ var DiscoveryPanel = createReactClass({
         this.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || this.props.forceCountDownTimer,
       currentPage: 1,
       componentHeight: null,
-      shownAssets: -1
+      shownAssets: -1,
     };
   },
 
@@ -34,14 +42,14 @@ var DiscoveryPanel = createReactClass({
 
   handleResize: function(nextProps) {
     // If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
-    var currentViewSize = this.props.responsiveView;
-    var nextViewSize = nextProps.responsiveView;
-    var firstDiscoverIndex =
+    let currentViewSize = this.props.responsiveView;
+    let nextViewSize = nextProps.responsiveView;
+    let firstDiscoverIndex =
       this.state.currentPage * this.props.videosPerPage[currentViewSize] -
       this.props.videosPerPage[currentViewSize];
-    var newCurrentPage = Math.floor(firstDiscoverIndex / nextProps.videosPerPage[nextViewSize]) + 1;
+    let newCurrentPage = Math.floor(firstDiscoverIndex / nextProps.videosPerPage[nextViewSize]) + 1;
     this.setState({
-      currentPage: newCurrentPage
+      currentPage: newCurrentPage,
     });
     this.detectHeight();
   },
@@ -49,14 +57,14 @@ var DiscoveryPanel = createReactClass({
   handleLeftButtonClick: function(event) {
     event.preventDefault();
     this.setState({
-      currentPage: this.state.currentPage - 1
+      currentPage: this.state.currentPage - 1,
     });
   },
 
   handleRightButtonClick: function(event) {
     event.preventDefault();
     this.setState({
-      currentPage: this.state.currentPage + 1
+      currentPage: this.state.currentPage + 1,
     });
   },
 
@@ -67,12 +75,12 @@ var DiscoveryPanel = createReactClass({
     const asset = this.props.discoveryData.relatedVideos[index];
     const customData = {
       source: CONSTANTS.SCREEN.DISCOVERY_SCREEN,
-      autoplay: false
+      autoplay: false,
     };
     const eventData = {
       clickedVideo: asset,
       custom: customData,
-      metadata : Utils.getDiscoveryEventData(assetPosition, videosPerPage, CONSTANTS.UI_TAG.DISCOVERY, asset, customData)
+      metadata: Utils.getDiscoveryEventData(assetPosition, videosPerPage, CONSTANTS.UI_TAG.DISCOVERY, asset, customData),
     };
     // TODO: figure out countdown value
     // eventData.custom.countdown = 0;
@@ -86,21 +94,21 @@ var DiscoveryPanel = createReactClass({
   handleDiscoveryCountDownClick: function(event) {
     event.preventDefault();
     this.setState({
-      showDiscoveryCountDown: false
+      showDiscoveryCountDown: false,
     });
     this.refs.CountDownClock.handleClick(event);
   },
 
   // detect height of component
   detectHeight: function() {
-    var discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
+    let discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel);
     this.setState({
-      componentHeight: discoveryPanel.getBoundingClientRect().height
+      componentHeight: discoveryPanel.getBoundingClientRect().height,
     });
   },
 
   render: function() {
-    var relatedVideos = this.props.discoveryData.relatedVideos;
+    let relatedVideos = this.props.discoveryData.relatedVideos;
 
     // if no discovery data render message
     if (relatedVideos.length < 1) {
@@ -108,47 +116,47 @@ var DiscoveryPanel = createReactClass({
     }
 
     // pagination
-    var currentViewSize = this.props.responsiveView;
-    var videosPerPage = this.props.videosPerPage[currentViewSize];
-    var startAt = videosPerPage * (this.state.currentPage - 1);
-    var endAt = videosPerPage * this.state.currentPage;
-    var relatedVideoPage = relatedVideos.slice(startAt, endAt);
-    var position = 1;
+    let currentViewSize = this.props.responsiveView;
+    let videosPerPage = this.props.videosPerPage[currentViewSize];
+    let startAt = videosPerPage * (this.state.currentPage - 1);
+    let endAt = videosPerPage * this.state.currentPage;
+    let relatedVideoPage = relatedVideos.slice(startAt, endAt);
+    let position = 1;
     // Send impression events for each discovery asset shown
-    for (var i = startAt; i < endAt; i++){
-      if (i > this.state.shownAssets && i < relatedVideos.length){
+    for (var i = startAt; i < endAt; i++) {
+      if (i > this.state.shownAssets && i < relatedVideos.length) {
         this.props.controller.sendDiscoveryDisplayEvent(position, videosPerPage, CONSTANTS.UI_TAG.DISCOVERY, relatedVideos[i], {});
         this.state.shownAssets++;
         position++;
       }
     }
     // discovery content
-    var discoveryContentName = ClassNames({
+    let discoveryContentName = ClassNames({
       'oo-discovery-content-name': true,
-      'oo-hidden': !this.props.skinConfig.discoveryScreen.contentTitle.show
+      'oo-hidden': !this.props.skinConfig.discoveryScreen.contentTitle.show,
     });
-    var discoveryCountDownWrapperStyle = ClassNames({
+    let discoveryCountDownWrapperStyle = ClassNames({
       'oo-discovery-count-down-wrapper-style': true,
-      'oo-hidden': !this.state.showDiscoveryCountDown
+      'oo-hidden': !this.state.showDiscoveryCountDown,
     });
-    var discoveryToaster = ClassNames({
+    let discoveryToaster = ClassNames({
       'oo-discovery-toaster-container-style': true,
       'oo-flexcontainer': true,
       'oo-scale-size':
         (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id &&
           (this.props.componentWidth <= 420 || this.state.componentHeight <= 175)) ||
         (this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.sm.id &&
-          (this.props.componentWidth <= 420 || this.state.componentHeight <= 320))
+          (this.props.componentWidth <= 420 || this.state.componentHeight <= 320)),
     });
-    var leftButtonClass = ClassNames({
+    let leftButtonClass = ClassNames({
       'oo-left-button': true,
-      'oo-hidden': this.state.currentPage <= 1
+      'oo-hidden': this.state.currentPage <= 1,
     });
-    var rightButtonClass = ClassNames({
+    let rightButtonClass = ClassNames({
       'oo-right-button': true,
-      'oo-hidden': endAt >= relatedVideos.length
+      'oo-hidden': endAt >= relatedVideos.length,
     });
-    var countDownClock = this.shouldShowCountdownTimer() ? (
+    let countDownClock = this.shouldShowCountdownTimer() ? (
       <div className={discoveryCountDownWrapperStyle}>
         <a className="oo-discovery-count-down-icon-style" onClick={this.handleDiscoveryCountDownClick}>
           <CountDownClock
@@ -162,7 +170,7 @@ var DiscoveryPanel = createReactClass({
     ) : null;
 
     // Build discovery content blocks
-    var discoveryContentBlocks = [];
+    let discoveryContentBlocks = [];
     for (var i = 0; i < relatedVideoPage.length; i++) {
       discoveryContentBlocks.push(
         <DiscoverItem
@@ -195,7 +203,7 @@ var DiscoveryPanel = createReactClass({
         </a>
       </div>
     );
-  }
+  },
 });
 
 DiscoveryPanel.propTypes = {
@@ -205,24 +213,24 @@ DiscoveryPanel.propTypes = {
     relatedVideos: PropTypes.arrayOf(
       PropTypes.shape({
         preview_image_url: PropTypes.string,
-        name: PropTypes.string
+        name: PropTypes.string,
       })
-    )
+    ),
   }),
   skinConfig: PropTypes.shape({
     discoveryScreen: PropTypes.shape({
       showCountDownTimerOnEndScreen: PropTypes.bool,
       countDownTime: PropTypes.number,
       contentTitle: PropTypes.shape({
-        show: PropTypes.bool
-      })
+        show: PropTypes.bool,
+      }),
     }),
-    icons: PropTypes.objectOf(PropTypes.object)
+    icons: PropTypes.objectOf(PropTypes.object),
   }),
   controller: PropTypes.shape({
     sendDiscoveryClickEvent: PropTypes.func,
-    sendDiscoveryDisplayEvent: PropTypes.func
-  })
+    sendDiscoveryDisplayEvent: PropTypes.func,
+  }),
 };
 
 DiscoveryPanel.defaultProps = {
@@ -230,39 +238,39 @@ DiscoveryPanel.defaultProps = {
     xs: 2,
     sm: 4,
     md: 6,
-    lg: 8
+    lg: 8,
   },
   skinConfig: {
     discoveryScreen: {
       showCountDownTimerOnEndScreen: true,
       countDownTime: 10,
       contentTitle: {
-        show: true
-      }
+        show: true,
+      },
     },
     icons: {
       pause: { fontStyleClass: 'oo-icon oo-icon-pause' },
       discovery: { fontStyleClass: 'oo-icon oo-icon-topmenu-discovery' },
       left: { fontStyleClass: 'oo-icon oo-icon-left' },
-      right: { fontStyleClass: 'oo-icon oo-icon-right' }
+      right: { fontStyleClass: 'oo-icon oo-icon-right' },
     },
     responsive: {
       breakpoints: {
         xs: { id: 'xs' },
         sm: { id: 'sm' },
         md: { id: 'md' },
-        lg: { id: 'lg' }
-      }
-    }
+        lg: { id: 'lg' },
+      },
+    },
   },
   discoveryData: {
-    relatedVideos: []
+    relatedVideos: [],
   },
   controller: {
     sendDiscoveryClickEvent: function(a, b) {},
-    sendDiscoveryDisplayEvent: function(a, b, c, d, e) {}
+    sendDiscoveryDisplayEvent: function(a, b, c, d, e) {},
   },
-  responsiveView: 'md'
+  responsiveView: 'md',
 };
 
 module.exports = DiscoveryPanel;

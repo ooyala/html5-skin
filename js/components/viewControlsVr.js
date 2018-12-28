@@ -1,13 +1,13 @@
-var React = require('react');
-var Icon = require('../components/icon');
-var classnames = require('classnames');
-var _ = require('underscore');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
-
 import { DirectionControlVr } from './directionControlVr';
 
-var ViewControlsVr = createReactClass({
+let React = require('react');
+let Icon = require('../components/icon');
+let classnames = require('classnames');
+let _ = require('underscore');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let ViewControlsVr = createReactClass({
   /**
    * @method ViewControlsVr#handleVrViewControlsClick
    * @public
@@ -29,7 +29,7 @@ var ViewControlsVr = createReactClass({
    * @private
    */
   _setupIconSymbol: function() {
-    var desktopContent = this.props.skinConfig.buttons.desktopContent;
+    let desktopContent = this.props.skinConfig.buttons.desktopContent;
     this.icon = _.find(desktopContent, function(el) {
       return el.location === 'mainView';
     });
@@ -81,12 +81,12 @@ var ViewControlsVr = createReactClass({
   },
 
   render: function() {
-    var isShowing = !!(this.icon && this.icon.name);
+    let isShowing = !!(this.icon && this.icon.name);
 
     return !isShowing ? null : (
       <div
         className={classnames('oo-vr-icon-container view-controls', {
-          'oo-vr-icon-container--hidden': !this.props.controlBarVisible
+          'oo-vr-icon-container--hidden': !this.props.controlBarVisible,
         })}
       >
         <Icon {...this.props} icon={this.backgroundIcon} className={classnames('oo-vr-icon--substrate')} />
@@ -118,13 +118,13 @@ var ViewControlsVr = createReactClass({
         />
       </div>
     );
-  }
+  },
 });
 
 ViewControlsVr.propTypes = {
   controller: PropTypes.shape({
-    moveVrToDirection: PropTypes.func
-  })
+    moveVrToDirection: PropTypes.func,
+  }),
 };
 
 module.exports = ViewControlsVr;

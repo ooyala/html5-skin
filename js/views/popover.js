@@ -1,10 +1,10 @@
-var React = require('react');
-var Utils = require('../components/utils');
-var CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let Utils = require('../components/utils');
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var Popover = createReactClass({
+let Popover = createReactClass({
   componentDidMount: function() {
     // We listen to the event on the document instead of the element in order to
     // allow closing the popover with ESC even when it doesn't have focus.
@@ -35,7 +35,7 @@ var Popover = createReactClass({
         // If the focus was outside the popover we shouldn't re-focus the toggle button.
         var targetIsChildElement = this.domElement ? this.domElement.contains(event.target) : false;
         this.props.closeAction({
-          restoreToggleButtonFocus: targetIsChildElement
+          restoreToggleButtonFocus: targetIsChildElement,
         });
         break;
       default:
@@ -54,19 +54,19 @@ var Popover = createReactClass({
         {this.props.children}
       </div>
     );
-  }
+  },
 });
 
 Popover.propTypes = {
   popoverClassName: PropTypes.string.isRequired,
   closeActionEnabled: PropTypes.bool,
-  closeAction: PropTypes.func
+  closeAction: PropTypes.func,
 };
 
 Popover.defaultProps = {
   popoverClassName: 'oo-popover',
   closeActionEnabled: false,
-  closeAction: function() {}
+  closeAction: function() {},
 };
 
 module.exports = Popover;

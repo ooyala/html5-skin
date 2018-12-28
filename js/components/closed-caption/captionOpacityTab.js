@@ -1,12 +1,17 @@
-var React = require('react'),
-    ClassNames = require('classnames'),
-    Utils = require('../utils'),
-    CONSTANTS = require('../../constants/constants'),
-    SelectionContainer = require('./selectionContainer'),
-    Slider = require('../slider');
-var createReactClass = require('create-react-class');
+let React = require('react');
 
-var CaptionOpacityTab = createReactClass({
+let ClassNames = require('classnames');
+
+let Utils = require('../utils');
+
+let CONSTANTS = require('../../constants/constants');
+
+let SelectionContainer = require('./selectionContainer');
+
+let Slider = require('../slider');
+let createReactClass = require('create-react-class');
+
+let CaptionOpacityTab = createReactClass({
   changeTextOpacity: function(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
@@ -34,17 +39,17 @@ var CaptionOpacityTab = createReactClass({
   },
 
   render: function() {
-    var textOpacityTitle = Utils.getLocalizedString(
+    let textOpacityTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_OPACITY,
       this.props.localizableStrings
     );
-    var backgroundOpacityTitle = Utils.getLocalizedString(
+    let backgroundOpacityTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.BACKGROUND_OPACITY,
       this.props.localizableStrings
     );
-    var windowOpacityTitle = Utils.getLocalizedString(
+    let windowOpacityTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.WINDOW_OPACITY,
       this.props.localizableStrings
@@ -113,7 +118,7 @@ var CaptionOpacityTab = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 module.exports = CaptionOpacityTab;

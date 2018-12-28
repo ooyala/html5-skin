@@ -1,12 +1,11 @@
-var React = require('react');
-var Utils = require('./utils');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let Utils = require('./utils');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-
-var Icon = createReactClass({
+let Icon = createReactClass({
   shouldComponentUpdate: function(nextProps) {
-    var updateComponent = false;
+    let updateComponent = false;
     if (this.props && (this.props.icon !== nextProps.icon || this.props.className !== nextProps.className || this.props.style !== nextProps.style)) {
       updateComponent = true;
     }
@@ -14,21 +13,21 @@ var Icon = createReactClass({
   },
 
   render: function() {
-    var fontFamilyName = '';
+    let fontFamilyName = '';
     if (this.props.skinConfig.icons && this.props.skinConfig.icons[this.props.icon]) {
       fontFamilyName = this.props.skinConfig.icons[this.props.icon].fontFamilyName;
     }
-    var iconStyle = Utils.extend(
+    let iconStyle = Utils.extend(
       { fontFamily: fontFamilyName },
       this.props.style
     );
 
-    var fontStyleClass = '';
+    let fontStyleClass = '';
     if (this.props.skinConfig.icons && this.props.skinConfig.icons[this.props.icon]) {
       fontStyleClass = this.props.skinConfig.icons[this.props.icon].fontStyleClass;
     }
 
-    var fontString = '';
+    let fontString = '';
     if (this.props.skinConfig.icons && this.props.skinConfig.icons[this.props.icon]) {
       fontString = this.props.skinConfig.icons[this.props.icon].fontString;
     }
@@ -43,21 +42,21 @@ var Icon = createReactClass({
         {fontString}
       </span>
     );
-  }
+  },
 });
 
 Icon.propTypes = {
   icon: PropTypes.string,
   skinConfig: PropTypes.object,
   className: PropTypes.string,
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 Icon.defaultProps = {
   icon: '',
   skinConfig: {},
   className: '',
-  style: {}
+  style: {},
 };
 
 module.exports = Icon;

@@ -1,33 +1,33 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var deepmerge = require('deepmerge');
-var Utils = require('./utils');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
-var CONSTANTS = require('../constants/constants');
+let React = require('react');
+let ReactDOM = require('react-dom');
+let deepmerge = require('deepmerge');
+let Utils = require('./utils');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+let CONSTANTS = require('../constants/constants');
 
-var verticalOffset = 80;
+let verticalOffset = 80;
 function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
-  var verticalAlignment = verticalOffset * responsivenessMultiplier;
-  var alignmentStyle = {
+  let verticalAlignment = verticalOffset * responsivenessMultiplier;
+  let alignmentStyle = {
     left: {
       left: 0,
       transform: 'translate(0,' + verticalAlignment + '%)',
-      WebkitTransform: 'translate(0,' + verticalAlignment + '%)'
+      WebkitTransform: 'translate(0,' + verticalAlignment + '%)',
     },
     center: {
       left: '50%',
       transform: 'translate(-50%,' + verticalAlignment + '%)',
-      WebkitTransform: 'translate(-50%,' + verticalAlignment + '%)'
+      WebkitTransform: 'translate(-50%,' + verticalAlignment + '%)',
     },
     right: {
       right: 0,
       transform: 'translate(0,' + verticalAlignment + '%)',
-      WebkitTransform: 'translate(0,' + verticalAlignment + '%)'
-    }
+      WebkitTransform: 'translate(0,' + verticalAlignment + '%)',
+    },
   };
 
-  var style = {
+  let style = {
     position: 'absolute',
     color: 'white',
     fontFamily: '"Roboto Condensed", sans-serif',
@@ -35,7 +35,7 @@ function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment)
     fontWeight: 'normal',
     bottom: bottom,
     transition: '1s',
-    visibility: visible ? 'visible' : 'hidden'
+    visibility: visible ? 'visible' : 'hidden',
   };
 
   return deepmerge(alignmentStyle[alignment], style);
@@ -50,14 +50,14 @@ function getBoxStyle(responsivenessMultiplier) {
     paddingTop: 8 * responsivenessMultiplier,
     paddingRight: 20 * responsivenessMultiplier,
     paddingBottom: 8 * responsivenessMultiplier,
-    paddingLeft: 20 * responsivenessMultiplier
+    paddingLeft: 20 * responsivenessMultiplier,
   };
 }
 
-var pointerAlignment = {
+let pointerAlignment = {
   left: '10%',
   center: '45%',
-  right: '85%'
+  right: '85%',
 };
 function getPointerStyle(alignment) {
   return {
@@ -65,11 +65,11 @@ function getPointerStyle(alignment) {
     borderLeft: '5px solid transparent',
     borderRight: '5px solid transparent',
     borderTop: '5px solid black',
-    left: pointerAlignment[alignment]
+    left: pointerAlignment[alignment],
   };
 }
 
-var Tooltip = createReactClass({
+let Tooltip = createReactClass({
   componentDidMount: function() {
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
@@ -94,7 +94,7 @@ var Tooltip = createReactClass({
 
   render: function() {
     if (this.props.enabled) {
-      var alignment = this.getAlignment();
+      let alignment = this.getAlignment();
 
       return (
         <div className="oo-tooltip-container" style={{ position: 'relative' }}>
@@ -132,7 +132,7 @@ var Tooltip = createReactClass({
 
   onMouseLeave: function() {
     this.setState({ visible: false });
-  }
+  },
 });
 
 Tooltip.propTypes = {
@@ -143,7 +143,7 @@ Tooltip.propTypes = {
   localizableStrings: PropTypes.object,
   getAlignment: PropTypes.func,
   responsivenessMultiplier: PropTypes.number.isRequired,
-  bottom: PropTypes.number.isRequired
+  bottom: PropTypes.number.isRequired,
 };
 
 Tooltip.defaultProps = {
@@ -151,7 +151,7 @@ Tooltip.defaultProps = {
   text: '',
   language: 'en',
   responsivenessMultiplier: 1,
-  bottom: 0
+  bottom: 0,
 };
 
 module.exports = Tooltip;

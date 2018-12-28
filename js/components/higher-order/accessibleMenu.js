@@ -1,10 +1,10 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var CONSTANTS = require('../../constants/constants');
-var createReactClass = require('create-react-class');
+let React = require('react');
+let ReactDOM = require('react-dom');
+let CONSTANTS = require('../../constants/constants');
+let createReactClass = require('create-react-class');
 
-var AccessibleMenu = function(ComposedComponent, options) {
-  var _options = options || {};
+let AccessibleMenu = function(ComposedComponent, options) {
+  let _options = options || {};
 
   return createReactClass({
     componentDidMount: function() {
@@ -98,7 +98,7 @@ var AccessibleMenu = function(ComposedComponent, options) {
      * @returns {NodeList} An ordered list of elements that comprise a menu.
      */
     getMenuItemList: function() {
-      var menuItemList = [];
+      let menuItemList = [];
 
       if (this.menuDomElement) {
         menuItemList = this.menuDomElement.querySelectorAll(
@@ -115,14 +115,14 @@ var AccessibleMenu = function(ComposedComponent, options) {
      * @param {Boolean} useNextSibling Chooses the next sibling when true and the previous when false.
      */
     focusOnMenuItemSibling: function(menuItem, useNextSibling) {
-      var menuItemList = this.getMenuItemList();
+      let menuItemList = this.getMenuItemList();
       if (!menuItemList.length) {
         return;
       }
       // Since these elements aren't actually next to each other in the DOM, their position
       // relative to one another is implied from their tab order, which should be the same as
       // the one returned by querySelectorAll as long as tabindex is set to 0 (which should be the case).
-      var siblingIndex = this.getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling);
+      let siblingIndex = this.getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling);
       var menuItem = menuItemList[siblingIndex];
 
       if (menuItem && typeof menuItem.focus === 'function') {
@@ -145,8 +145,8 @@ var AccessibleMenu = function(ComposedComponent, options) {
       if (!menuItemList || !menuItemList.length) {
         return -1;
       }
-      var menuItemIndex = Array.prototype.indexOf.call(menuItemList, menuItem);
-      var siblingIndex = useNextSibling ? menuItemIndex + 1 : menuItemIndex - 1;
+      let menuItemIndex = Array.prototype.indexOf.call(menuItemList, menuItem);
+      let siblingIndex = useNextSibling ? menuItemIndex + 1 : menuItemIndex - 1;
       // Note that the code below will have the intended result even if
       // menuItemIndex is -1
       if (siblingIndex < 0) {
@@ -166,11 +166,11 @@ var AccessibleMenu = function(ComposedComponent, options) {
      * @private
      */
     applyRovingTabIndex: function() {
-      var menuItem;
-      var hasSelectedItems = false;
-      var menuItemList = this.getMenuItemList();
+      let menuItem;
+      let hasSelectedItems = false;
+      let menuItemList = this.getMenuItemList();
 
-      for (var i = 0; i < menuItemList.length; i++) {
+      for (let i = 0; i < menuItemList.length; i++) {
         menuItem = menuItemList[i];
         if (
           menuItem.getAttribute('aria-checked') === 'true' ||
@@ -197,7 +197,7 @@ var AccessibleMenu = function(ComposedComponent, options) {
           {...this.props}
         />
       );
-    }
+    },
   });
 };
 

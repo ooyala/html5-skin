@@ -7,55 +7,66 @@
  * @class ClosedCaptionPanel
  * @constructor
  */
-var React = require('react'),
-    Utils = require('../utils'),
-    CONSTANTS = require('../../constants/constants'),
-    LanguageTab = require('./languageTab'),
-    ColorSelectionTab = require('./colorSelectionTab'),
-    CaptionOpacityTab = require('./captionOpacityTab'),
-    FontTypeTab = require('./fontTypeTab'),
-    FontSizeTab = require('./fontSizeTab'),
-    TextEnhancementsTab = require('./textEnhancementsTab'),
-    CCPreviewPanel = require('./ccPreviewPanel'),
-    Tabs = require('../tabs'),
-    Tab = Tabs.Panel;
-var createReactClass = require('create-react-class');
+let React = require('react');
+
+let Utils = require('../utils');
+
+let CONSTANTS = require('../../constants/constants');
+
+let LanguageTab = require('./languageTab');
+
+let ColorSelectionTab = require('./colorSelectionTab');
+
+let CaptionOpacityTab = require('./captionOpacityTab');
+
+let FontTypeTab = require('./fontTypeTab');
+
+let FontSizeTab = require('./fontSizeTab');
+
+let TextEnhancementsTab = require('./textEnhancementsTab');
+
+let CCPreviewPanel = require('./ccPreviewPanel');
+
+let Tabs = require('../tabs');
+
+let Tab = Tabs.Panel;
+let createReactClass = require('create-react-class');
 
 // The scroll buttons are not needed until the player's width is below a specific amount. This varies by language.
-var tabMenuOverflowMap = {
+let tabMenuOverflowMap = {
   en: 730,
   es: 995,
-  zh: 610
+  zh: 610,
 };
 
-var ClosedCaptionPanel = createReactClass({
+let ClosedCaptionPanel = createReactClass({
   render: function() {
-    var languageTabTitle = Utils.getLocalizedString(
+    let languageTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.LANGUAGE_TAB_TITLE,
       this.props.localizableStrings
     );
-    var colorSelectionTabTitle = Utils.getLocalizedString(
+    let colorSelectionTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.COLOR_SELECTION_TAB_TITLE,
       this.props.localizableStrings
     );
-    var captionOpacityTabTitle = Utils.getLocalizedString(
+    let captionOpacityTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.CAPTION_OPACITY_TAB_TITLE,
       this.props.localizableStrings
     );
-    var fontTypeTabTitle = Utils.getLocalizedString(
+    let fontTypeTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.FONT_TYPE_TAB_TITLE,
       this.props.localizableStrings
     );
-    var fontSizeTabTitle = Utils.getLocalizedString(
+    let fontSizeTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.FONT_SIZE_TAB_TITLE,
       this.props.localizableStrings
     );
-    var textEnhancementsTabTitle = Utils.getLocalizedString(
+    let textEnhancementsTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENTS_TAB_TITLE,
       this.props.localizableStrings
@@ -91,7 +102,7 @@ var ClosedCaptionPanel = createReactClass({
         <CCPreviewPanel {...this.props} />
       </div>
     );
-  }
+  },
 });
 
 module.exports = ClosedCaptionPanel;

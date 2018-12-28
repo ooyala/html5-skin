@@ -1,15 +1,21 @@
-var React = require('react'),
-    CloseButton = require('../components/closeButton'),
-    Utils = require('../components/utils'),
-    CONSTANTS = require('../constants/constants'),
-    Icon = require('../components/icon'),
-    Watermark = require('../components/watermark'),
-    AccessibilityMixin = require('../mixins/accessibilityMixin');
-var classNames = require('classnames');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var ContentScreen = createReactClass({
+let CloseButton = require('../components/closeButton');
+
+let Utils = require('../components/utils');
+
+let CONSTANTS = require('../constants/constants');
+
+let Icon = require('../components/icon');
+
+let Watermark = require('../components/watermark');
+
+let AccessibilityMixin = require('../mixins/accessibilityMixin');
+let classNames = require('classnames');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let ContentScreen = createReactClass({
   mixins: [AccessibilityMixin],
 
   componentDidMount: function() {
@@ -52,12 +58,12 @@ var ContentScreen = createReactClass({
 
   render: function() {
     // overlay only for the closed captions screen. Needs to be different than the other screens because of closed caption preview.
-    var closedCaptionOverlay =
+    let closedCaptionOverlay =
       this.props.screen === CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN ? (
         <div className="oo-closed-caption-overlay" />
       ) : null;
 
-    var titleBarStyle = {};
+    let titleBarStyle = {};
     if (this.props.screen === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       titleBarStyle.fontFamily = Utils.getPropertyValue(
         this.props.skinConfig,
@@ -70,7 +76,7 @@ var ContentScreen = createReactClass({
     }
 
     // localized title bar, show nothing if no title text
-    var titleBar = this.props.titleText ? (
+    let titleBar = this.props.titleText ? (
       <div className="oo-content-screen-title" style={titleBarStyle}>
         {Utils.getLocalizedString(this.props.language, this.props.titleText, this.props.localizableStrings)}
         {this.props.icon &&
@@ -93,7 +99,7 @@ var ContentScreen = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 ContentScreen.propTypes = {
@@ -103,11 +109,11 @@ ContentScreen.propTypes = {
       panelTitle: PropTypes.shape({
         titleFont: PropTypes.shape({
           color: PropTypes.string,
-          fontFamily: PropTypes.string
-        })
-      })
-    })
-  })
+          fontFamily: PropTypes.string,
+        }),
+      }),
+    }),
+  }),
 };
 
 ContentScreen.defaultProps = {
@@ -119,9 +125,9 @@ ContentScreen.defaultProps = {
   controller: {
     toggleScreen: function() {},
     state: {
-      accessibilityControlsEnabled: true
-    }
-  }
+      accessibilityControlsEnabled: true,
+    },
+  },
 };
 
 module.exports = ContentScreen;

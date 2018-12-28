@@ -20,7 +20,6 @@ const CONSTANTS = require('../constants/constants');
  * ContentScreen components.
  */
 class MenuPanel extends React.Component {
-
   constructor(props) {
     super(props);
     this.onMenuItemClick = this.onMenuItemClick.bind(this);
@@ -45,7 +44,7 @@ class MenuPanel extends React.Component {
    * @param {Object} item The object that we want to map
    * @param {String} selectedValue The value of the item that is currently selected within the menu
    * @param {String} accentColor The accent color to use for selected items
-   * @return {Component} A MenuPanelItem component whose properties are mapped to the given menu item object
+   * @returns {Component} A MenuPanelItem component whose properties are mapped to the given menu item object
    */
   renderMenuItem(item = {}, selectedValue, accentColor) {
     const { buttonClassName, skinConfig } = this.props;
@@ -79,7 +78,7 @@ class MenuPanel extends React.Component {
 
     const menuClassName = classNames('oo-menu-panel', className, {
       'oo-menu-popover': isPopover,
-      'oo-content-panel': !isPopover
+      'oo-content-panel': !isPopover,
     });
 
     const accentColor = Utils.getPropertyValue(
@@ -119,7 +118,7 @@ MenuPanel.propTypes = {
   title: PropTypes.string,
   selectedValue: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number
+    PropTypes.number,
   ]).isRequired,
   isPopover: PropTypes.bool,
   onMenuItemClick: PropTypes.func.isRequired,
@@ -128,17 +127,17 @@ MenuPanel.propTypes = {
     PropTypes.shape({
       value: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.number
+        PropTypes.number,
       ]).isRequired,
       label: PropTypes.string.isRequired,
-      ariaLabel: PropTypes.string.isRequired
+      ariaLabel: PropTypes.string.isRequired,
     })
   ).isRequired,
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string
+      accentColor: PropTypes.string,
     }),
-  })
+  }),
 };
 
 module.exports = AccessibleMenu(MenuPanel);

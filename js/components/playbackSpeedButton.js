@@ -31,10 +31,10 @@ PlaybackSpeedButton.propTypes = {
   controller: PropTypes.shape({
     state: PropTypes.shape({
       playbackSpeedOptions: PropTypes.shape({
-        currentSpeed: PropTypes.number.isRequired
-      })
-    })
-  })
+        currentSpeed: PropTypes.number.isRequired,
+      }),
+    }),
+  }),
 };
 
 module.exports = PlaybackSpeedButton;

@@ -1,16 +1,21 @@
-var React = require('react'),
-    ClassNames = require('classnames'),
-    AccessibleButton = require('./accessibleButton'),
-    AccessibleMenu = require('./higher-order/accessibleMenu'),
-    Icon = require('./icon'),
-    CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var DataSelector = createReactClass({
+let ClassNames = require('classnames');
+
+let AccessibleButton = require('./accessibleButton');
+
+let AccessibleMenu = require('./higher-order/accessibleMenu');
+
+let Icon = require('./icon');
+
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let DataSelector = createReactClass({
   getInitialState: function() {
     return {
-      currentPage: 1
+      currentPage: 1,
     };
   },
 
@@ -21,7 +26,7 @@ var DataSelector = createReactClass({
     this.autoFocus = {
       first: false,
       last: false,
-      selected: false
+      selected: false,
     };
   },
 
@@ -43,7 +48,7 @@ var DataSelector = createReactClass({
     this.autoFocus.last = this.checkAndResetBtnAutoFocus(this.leftChevronBtn);
 
     this.setState({
-      currentPage: this.state.currentPage - 1
+      currentPage: this.state.currentPage - 1,
     });
   },
 
@@ -53,7 +58,7 @@ var DataSelector = createReactClass({
     this.autoFocus.first = this.checkAndResetBtnAutoFocus(this.rightChevronBtn);
 
     this.setState({
-      currentPage: this.state.currentPage + 1
+      currentPage: this.state.currentPage + 1,
     });
   },
 
@@ -66,7 +71,7 @@ var DataSelector = createReactClass({
    * @returns {Boolean} True if button state suggests that auto focus is required, false otherwise.
    */
   checkAndResetBtnAutoFocus: function(accessibleButton) {
-    var autoFocus = false;
+    let autoFocus = false;
 
     if (accessibleButton && typeof accessibleButton.wasTriggeredWithKeyboard === 'function') {
       autoFocus = accessibleButton.wasTriggeredWithKeyboard();
@@ -78,14 +83,14 @@ var DataSelector = createReactClass({
   componentWillReceiveProps: function(nextProps) {
     // If we are changing view sizes, adjust the currentPage number to reflect the new number of items per page.
     if (nextProps.viewSize !== this.props.viewSize) {
-      var currentViewSize = this.props.viewSize;
-      var nextViewSize = nextProps.viewSize;
-      var firstDataIndex =
+      let currentViewSize = this.props.viewSize;
+      let nextViewSize = nextProps.viewSize;
+      let firstDataIndex =
         this.state.currentPage * this.props.dataItemsPerPage[currentViewSize] -
         this.props.dataItemsPerPage[currentViewSize];
-      var newCurrentPage = Math.floor(firstDataIndex / nextProps.dataItemsPerPage[nextViewSize]) + 1;
+      let newCurrentPage = Math.floor(firstDataIndex / nextProps.dataItemsPerPage[nextViewSize]) + 1;
       this.setState({
-        currentPage: newCurrentPage
+        currentPage: newCurrentPage,
       });
     }
   },
@@ -94,15 +99,15 @@ var DataSelector = createReactClass({
     return ClassNames({
       'oo-item': true,
       'oo-item-selected': this.props.selectedData === item && this.props.enabled,
-      'oo-disabled': !this.props.enabled
+      'oo-disabled': !this.props.enabled,
     });
   },
 
   shouldAutoFocusItem: function(dataItems, itemIndex, isSelected) {
-    var autoFocusFirst = this.autoFocus.first && itemIndex === 0;
-    var autoFocusLast = this.autoFocus.last && itemIndex === dataItems.length - 1;
-    var autoFocusSelected = this.autoFocus.selected && isSelected;
-    var autoFocus = autoFocusFirst || autoFocusLast || autoFocusSelected;
+    let autoFocusFirst = this.autoFocus.first && itemIndex === 0;
+    let autoFocusLast = this.autoFocus.last && itemIndex === dataItems.length - 1;
+    let autoFocusSelected = this.autoFocus.selected && isSelected;
+    let autoFocus = autoFocusFirst || autoFocusLast || autoFocusSelected;
     return autoFocus;
   },
 
@@ -115,7 +120,7 @@ var DataSelector = createReactClass({
    * @returns {Function} A callback that will store the ref of the corresponding item button.
    */
   getItemButtonRefCallback: function(dataItem) {
-    var refCallback = function(component) {
+    let refCallback = function(component) {
       this.itemButtons[dataItem] = component;
     };
     return refCallback.bind(this);
@@ -123,24 +128,24 @@ var DataSelector = createReactClass({
 
   render: function() {
     // pagination
-    var currentViewSize = this.props.viewSize;
-    var dataItemsPerPage = this.props.dataItemsPerPage[currentViewSize];
-    var startAt = dataItemsPerPage * (this.state.currentPage - 1);
-    var endAt = dataItemsPerPage * this.state.currentPage;
-    var dataItems = this.props.availableDataItems.slice(startAt, endAt);
+    let currentViewSize = this.props.viewSize;
+    let dataItemsPerPage = this.props.dataItemsPerPage[currentViewSize];
+    let startAt = dataItemsPerPage * (this.state.currentPage - 1);
+    let endAt = dataItemsPerPage * this.state.currentPage;
+    let dataItems = this.props.availableDataItems.slice(startAt, endAt);
 
     // Build data content blocks
-    var dataContentBlocks = [];
-    for (var i = 0; i < dataItems.length; i++) {
-      var currentDataItem = dataItems[i];
+    let dataContentBlocks = [];
+    for (let i = 0; i < dataItems.length; i++) {
+      let currentDataItem = dataItems[i];
       // accent color
-      var isSelected = this.props.selectedData === currentDataItem;
-      var selectedItemStyle = {};
+      let isSelected = this.props.selectedData === currentDataItem;
+      let selectedItemStyle = {};
       if (isSelected && this.props.enabled && this.props.skinConfig.general.accentColor) {
         selectedItemStyle = { backgroundColor: this.props.skinConfig.general.accentColor };
       }
       // Determine whether we should auto focus or not
-      var autoFocus = this.shouldAutoFocusItem(dataItems, i, isSelected);
+      let autoFocus = this.shouldAutoFocusItem(dataItems, i, isSelected);
 
       dataContentBlocks.push(
         <AccessibleButton
@@ -159,13 +164,13 @@ var DataSelector = createReactClass({
       );
     }
 
-    var leftChevron = ClassNames({
+    let leftChevron = ClassNames({
       'oo-left-button': true,
-      'oo-hidden': !this.props.enabled || this.state.currentPage <= 1
+      'oo-hidden': !this.props.enabled || this.state.currentPage <= 1,
     });
-    var rightChevron = ClassNames({
+    let rightChevron = ClassNames({
       'oo-right-button': true,
-      'oo-hidden': !this.props.enabled || endAt >= this.props.availableDataItems.length
+      'oo-hidden': !this.props.enabled || endAt >= this.props.availableDataItems.length,
     });
 
     return (
@@ -197,7 +202,7 @@ var DataSelector = createReactClass({
         </AccessibleButton>
       </div>
     );
-  }
+  },
 });
 
 DataSelector = AccessibleMenu(DataSelector, { useRovingTabindex: true });
@@ -212,9 +217,9 @@ DataSelector.propTypes = {
   onDataChange: PropTypes.func.isRequired,
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string
-    })
-  })
+      accentColor: PropTypes.string,
+    }),
+  }),
 };
 
 module.exports = DataSelector;

@@ -1,11 +1,11 @@
-var React = require('react');
-var ClassNames = require('classnames');
-var Utils = require('./utils');
-var CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let ClassNames = require('classnames');
+let Utils = require('./utils');
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var AccessibleButton = createReactClass({
+let AccessibleButton = createReactClass({
   getInitialState: function() {
     this.triggeredWithKeyboard = false;
     return {};
@@ -18,7 +18,7 @@ var AccessibleButton = createReactClass({
   },
 
   componentDidUpdate: function(prevProps) {
-    var prevAutoFocus = prevProps ? prevProps.autoFocus : false;
+    let prevAutoFocus = prevProps ? prevProps.autoFocus : false;
 
     if (!prevAutoFocus && this.props.autoFocus) {
       this.focus();
@@ -111,7 +111,7 @@ var AccessibleButton = createReactClass({
         {this.props.children}
       </button>
     );
-  }
+  },
 });
 
 AccessibleButton.propTypes = {
@@ -135,7 +135,7 @@ AccessibleButton.propTypes = {
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   onFocus: PropTypes.func,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 
 // Define focusId as a getter so that it returns a different value
@@ -147,8 +147,8 @@ AccessibleButton.defaultProps = Object.create(
       enumerable: true,
       get: function() {
         return Math.random().toString(36).substr(2, 10);
-      }
-    }
+      },
+    },
   }
 );
 

@@ -1,14 +1,17 @@
-var React = require('react'),
-    Icon = require('./icon'),
-    ClassNames = require('classnames'),
-    CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var UnmuteIcon = createReactClass({
+let Icon = require('./icon');
+
+let ClassNames = require('classnames');
+
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let UnmuteIcon = createReactClass({
   getInitialState: function() {
     return {
-      collapseTime: 2000
+      collapseTime: 2000,
     };
   },
 
@@ -25,7 +28,7 @@ var UnmuteIcon = createReactClass({
   },
 
   componentDidMount: function() {
-    var expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
+    let expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
     if (expanded) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(
@@ -43,7 +46,7 @@ var UnmuteIcon = createReactClass({
   },
 
   render: function() {
-    var volumeIcon, volumeAriaLabel;
+    let volumeIcon, volumeAriaLabel;
     if (this.props.controller.state.volumeState.muted) {
       volumeIcon = 'volumeOff';
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
@@ -52,11 +55,11 @@ var UnmuteIcon = createReactClass({
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
     }
 
-    var expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
+    let expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
 
-    var myClass = ClassNames({
+    let myClass = ClassNames({
       'oo-unmute': true,
-      'oo-expanded': expanded
+      'oo-expanded': expanded,
     });
 
     return (
@@ -75,7 +78,7 @@ var UnmuteIcon = createReactClass({
         {expanded ? <div className="oo-unmute-message">{CONSTANTS.SKIN_TEXT.SELECT_TO_UNMUTE}</div> : null}
       </button>
     );
-  }
+  },
 });
 
 UnmuteIcon.propTypes = {
@@ -83,10 +86,10 @@ UnmuteIcon.propTypes = {
     state: PropTypes.shape({
       volumeState: PropTypes.shape({
         muted: PropTypes.bool,
-        unmuteIconCollapsed: PropTypes.bool
-      })
-    })
-  })
+        unmuteIconCollapsed: PropTypes.bool,
+      }),
+    }),
+  }),
 };
 
 module.exports = UnmuteIcon;

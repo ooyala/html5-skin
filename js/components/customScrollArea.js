@@ -9,7 +9,6 @@ const ScrollArea = require('react-scrollbar/dist/no-css').default;
  * doesn't work with touch devices, hence the need for this custom component.
  */
 class CustomScrollArea extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = { canScroll: false };

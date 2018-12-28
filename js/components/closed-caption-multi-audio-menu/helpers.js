@@ -1,6 +1,6 @@
-var CONSTANTS = require('../../constants/constants');
-var Utils = require('../utils');
-var _ = require('underscore');
+let CONSTANTS = require('../../constants/constants');
+let Utils = require('../utils');
+let _ = require('underscore');
 
 /**
  * Gets display label by checking
@@ -11,11 +11,11 @@ var _ = require('underscore');
  * @returns {String} displayLabel - readable display label
  */
 function getDisplayLabel(audioTrack) {
-  var displayLabel = '';
+  let displayLabel = '';
 
   if (audioTrack && audioTrack.label) {
     // special case for DASH where label is per default equal to lang
-    var isLabelNeeded = audioTrack.lang !== audioTrack.label;
+    let isLabelNeeded = audioTrack.lang !== audioTrack.label;
 
     if (isLabelNeeded) {
       displayLabel = audioTrack.label;
@@ -33,14 +33,14 @@ function getDisplayLabel(audioTrack) {
  * @returns {String} displayLanguage - localized language
  */
 function getDisplayLanguage(languagesList, languageCode) {
-  var displayLanguage = '';
+  let displayLanguage = '';
   if (
     !!Utils.isValidString(languageCode) &&
     languagesList &&
     _.isArray(languagesList) &&
     languagesList.length
   ) {
-    var matchingLanguage = _.find(languagesList, function(language) {
+    let matchingLanguage = _.find(languagesList, function(language) {
       return (
         language['2T'] === languageCode ||
         language['1'] === languageCode ||
@@ -67,10 +67,10 @@ function getDisplayLanguage(languagesList, languageCode) {
  */
 function getDisplayTitle(trackParam) {
   // set default function params
-  var displayLanguage = trackParam.language || '';
-  var displayLabel = trackParam.label || '';
-  var noLanguageText = trackParam.noLanguageText || CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
-  var langCode = trackParam.langCode;
+  let displayLanguage = trackParam.language || '';
+  let displayLabel = trackParam.label || '';
+  let noLanguageText = trackParam.noLanguageText || CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+  let langCode = trackParam.langCode;
 
   if (!displayLanguage.length && !displayLabel.length) {
     return noLanguageText;
@@ -97,16 +97,13 @@ function getDisplayTitle(trackParam) {
  * @returns {String} localized special audio track name or original name or empty string
  */
 function getLocalizedSpecialLanguage(langCode, userLanguage, localizableStrings, languageMap) {
-  var phrase = languageMap ? languageMap[langCode] : '';
-  var localizedLanguage = Utils.getLocalizedString(
+  let phrase = languageMap ? languageMap[langCode] : '';
+  let localizedLanguage = Utils.getLocalizedString(
     userLanguage,
     phrase,
     localizableStrings
   );
-  localizedLanguage = localizedLanguage ?
-    localizedLanguage
-    :
-    phrase ? phrase : '';
+  localizedLanguage = localizedLanguage || (phrase || '');
   return localizedLanguage;
 }
 
@@ -119,10 +116,9 @@ function getLocalizedSpecialLanguage(langCode, userLanguage, localizableStrings,
  * @returns {boolean} - true if language code is one of specials, false otherwise
  */
 function isSpecialLanguage(langCode, languageMap) {
-  var isSpecialLanguage = languageMap ? !!languageMap[langCode] : false;
+  let isSpecialLanguage = languageMap ? !!languageMap[langCode] : false;
   return isSpecialLanguage;
 }
-
 
 /**
  * Transforms tracks list based on criteria
@@ -134,62 +130,62 @@ function isSpecialLanguage(langCode, languageMap) {
  * @returns {Array} transformedTracksList - list of transformed tracks
  */
 function transformTracksList(tracksList, noLanguageText) {
-  var transformedTracksList = [];
+  let transformedTracksList = [];
   // first we group by language to know if we have distinct tracks
   if (tracksList && tracksList.length) {
-    var groupedTracks = _.groupBy(tracksList, 'language');
-    var groupedKeys = _.keys(groupedTracks);
+    let groupedTracks = _.groupBy(tracksList, 'language');
+    let groupedKeys = _.keys(groupedTracks);
 
     // if all languages are distinct - discard labels
     if (groupedKeys.length === tracksList.length) {
       transformedTracksList = tracksList.map(function(audioTrack) {
-        var trackDisplayTitle = getDisplayTitle({
+        let trackDisplayTitle = getDisplayTitle({
           language: audioTrack.language,
           langCode: audioTrack.lang,
-          noLanguageText: noLanguageText
+          noLanguageText: noLanguageText,
         });
-        var transformedTrack = {
+        let transformedTrack = {
           id: audioTrack.id,
           label: trackDisplayTitle,
-          enabled: audioTrack.enabled
+          enabled: audioTrack.enabled,
         };
 
         return transformedTrack;
       });
     } else {
-      var uniqueTracks = groupedKeys.map(function(key) {
+      let uniqueTracks = groupedKeys.map(function(key) {
         // if there are multiple tracks with the same language code
         if (groupedTracks[key].length > 1) {
           // get each list of duplicating tracks
           return groupedTracks[key].map(function(audioTrack) {
             // get display title based on language and label
-            var trackDisplayTitle = getDisplayTitle({
+            let trackDisplayTitle = getDisplayTitle({
               language: audioTrack.language,
               label: audioTrack.label,
               langCode: audioTrack.lang,
-              noLanguageText: noLanguageText
+              noLanguageText: noLanguageText,
             });
-            
-            var transformedTrack = {
+
+            let transformedTrack = {
               enabled: audioTrack.enabled,
               label: trackDisplayTitle,
-              id: audioTrack.id
+              id: audioTrack.id,
             };
 
             return transformedTrack;
           });
         } else {
           // this track is distinct
-          var audioTrack = _.head(groupedTracks[key]);
-          var trackDisplayTitle = getDisplayTitle({
+          let audioTrack = _.head(groupedTracks[key]);
+          let trackDisplayTitle = getDisplayTitle({
             language: audioTrack.language,
             langCode: audioTrack.lang,
-            noLanguageText: noLanguageText
+            noLanguageText: noLanguageText,
           });
-          var transformedTrack = {
+          let transformedTrack = {
             enabled: audioTrack.enabled,
             label: trackDisplayTitle,
-            id: audioTrack.id
+            id: audioTrack.id,
           };
 
           return transformedTrack;
@@ -209,32 +205,32 @@ function transformTracksList(tracksList, noLanguageText) {
  * @returns {Array<{ label: String, enabled: Boolean, id: String }>} uniqueTracksList
  */
 function getUniqueTracks(audioTracksList) {
-  var uniqueTracksList = [];
+  let uniqueTracksList = [];
 
   if (audioTracksList && audioTracksList.length && Array.isArray(audioTracksList)) {
-    var groupedTracks = _.groupBy(audioTracksList, 'label');
-    var uniqueKeys = _.keys(groupedTracks);
+    let groupedTracks = _.groupBy(audioTracksList, 'label');
+    let uniqueKeys = _.keys(groupedTracks);
 
     // if all keys are unique - return non-modified tracks
     if (uniqueKeys.length === audioTracksList.length) {
       uniqueTracksList = audioTracksList;
     } else {
-      /* 
-      * after grouping we get an object where key is name of the track 
+      /*
+      * after grouping we get an object where key is name of the track
       * and value is tracks with the same name so we need to iterate over keys
       * and flatten it afterwards
       */
-      var uniqueTracks = uniqueKeys.map(function(key) {
+      let uniqueTracks = uniqueKeys.map(function(key) {
         if (groupedTracks[key].length > 1) {
           return groupedTracks[key].map(function(audioTrack, index) {
             // modify zero-based index of array to get user-friendly index
-            var trackIndex = index ? ' ' + index : '';
-            var audioTrackLabel = audioTrack.label.concat(trackIndex);
+            let trackIndex = index ? ' ' + index : '';
+            let audioTrackLabel = audioTrack.label.concat(trackIndex);
             // add track index
-            var uniqueTrack = {
+            let uniqueTrack = {
               enabled: audioTrack.enabled,
               label: audioTrackLabel,
-              id: audioTrack.id
+              id: audioTrack.id,
             };
 
             return uniqueTrack;
@@ -258,5 +254,5 @@ module.exports = {
   transformTracksList: transformTracksList,
   getUniqueTracks: getUniqueTracks,
   getLocalizedSpecialLanguage: getLocalizedSpecialLanguage,
-  isSpecialLanguage: isSpecialLanguage
+  isSpecialLanguage: isSpecialLanguage,
 };

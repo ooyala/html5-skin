@@ -7,16 +7,21 @@
  * @class UpNextPanel
  * @constructor
  */
-var React = require('react'),
-    CONSTANTS = require('./../constants/constants'),
-    Utils = require('./utils'),
-    CloseButton = require('./closeButton'),
-    CountDownClock = require('./countDownClock'),
-    Icon = require('../components/icon');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var UpNextPanel = createReactClass({
+let CONSTANTS = require('./../constants/constants');
+
+let Utils = require('./utils');
+
+let CloseButton = require('./closeButton');
+
+let CountDownClock = require('./countDownClock');
+
+let Icon = require('../components/icon');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let UpNextPanel = createReactClass({
   closeUpNextPanel: function() {
     this.props.controller.upNextDismissButtonClicked();
   },
@@ -28,23 +33,23 @@ var UpNextPanel = createReactClass({
     const customData = {
       source: CONSTANTS.SCREEN.UP_NEXT_SCREEN,
       countdown: 0,
-      autoplay: true
+      autoplay: true,
     };
     const eventData = {
       clickedVideo: asset,
-      custom:customData,
-      metadata : Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData)
+      custom: customData,
+      metadata: Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData),
     };
     this.props.controller.sendDiscoveryClickEvent(eventData, false);
   },
 
   render: function() {
-    var upNextString = Utils.getLocalizedString(
+    let upNextString = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.UP_NEXT,
       this.props.localizableStrings
     );
-    var thumbnailStyle = {};
+    let thumbnailStyle = {};
     if (Utils.isValidString(this.props.upNextInfo.upNextData.preview_image_url)) {
       thumbnailStyle.backgroundImage = 'url(\'' + this.props.upNextInfo.upNextData.preview_image_url + '\')';
     }
@@ -78,7 +83,7 @@ var UpNextPanel = createReactClass({
         <CloseButton {...this.props} cssClass="oo-up-next-close-btn" closeAction={this.closeUpNextPanel} />
       </div>
     );
-  }
+  },
 });
 
 UpNextPanel.propTypes = {
@@ -86,34 +91,34 @@ UpNextPanel.propTypes = {
     upNextData: PropTypes.shape({
       preview_image_url: PropTypes.string,
       name: PropTypes.string,
-      description: PropTypes.string
-    })
+      description: PropTypes.string,
+    }),
   }),
   skinConfig: PropTypes.shape({
     upNext: PropTypes.shape({
-      timeToShow: PropTypes.number
+      timeToShow: PropTypes.number,
     }),
-    icons: PropTypes.objectOf(PropTypes.object)
-  })
+    icons: PropTypes.objectOf(PropTypes.object),
+  }),
 };
 
 UpNextPanel.defaultProps = {
   skinConfig: {
     upNext: {
-      timeToShow: 10
+      timeToShow: 10,
     },
     icons: {
       play: { fontStyleClass: 'oo-icon oo-icon-play' },
-      dismiss: { fontStyleClass: 'oo-icon oo-icon-close' }
-    }
+      dismiss: { fontStyleClass: 'oo-icon oo-icon-close' },
+    },
   },
   upNextInfo: {
-    upNextData: {}
+    upNextData: {},
   },
   controller: {
     upNextDismissButtonClicked: function() {},
-    sendDiscoveryClickEvent: function(a, b) {}
-  }
+    sendDiscoveryClickEvent: function(a, b) {},
+  },
 };
 
 module.exports = UpNextPanel;

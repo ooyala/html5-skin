@@ -1,14 +1,14 @@
-var MACROS = require('./macros');
+let MACROS = require('./macros');
 /** ******************************************************************
  CONSTANT
  *********************************************************************/
-var CONSTANTS = {
+let CONSTANTS = {
   STATE: {
     START: 'start',
     PLAYING: 'playing',
     PAUSE: 'pause',
     END: 'end',
-    ERROR: 'error'
+    ERROR: 'error',
   },
 
   SCREEN: {
@@ -29,24 +29,24 @@ var CONSTANTS = {
     VIDEO_QUALITY_SCREEN: 'videoQualityScreen',
     ERROR_SCREEN: 'errorScreen',
     MULTI_AUDIO_SCREEN: 'multiAudioScreen',
-    PLAYBACK_SPEED_SCREEN: 'playbackSpeedScreen'
+    PLAYBACK_SPEED_SCREEN: 'playbackSpeedScreen',
   },
 
   UI_TAG: {
     DISCOVERY: 'discovery-panel',
-    UP_NEXT: 'up-next-panel'
+    UP_NEXT: 'up-next-panel',
   },
 
   DISCOVERY: {
     ID_TYPE: 'ooyala',
-    SOURCE: 'ooyala-discovery'
+    SOURCE: 'ooyala-discovery',
   },
 
   MENU_OPTIONS: {
     VIDEO_QUALITY: 'videoQualityOptions',
     CLOSED_CAPTIONS: 'closedCaptionOptions',
     MULTI_AUDIO: 'multiAudioOptions',
-    PLAYBACK_SPEED: 'playbackSpeedOptions'
+    PLAYBACK_SPEED: 'playbackSpeedOptions',
   },
 
   SKIN_TEXT: {
@@ -131,7 +131,7 @@ var CONSTANTS = {
     NO_LINGUISTIC_CONTENT: 'No linguistic content',
     UNCODED_LANGUAGES: 'Uncoded languages',
     MULTIPLE_LANGUAGES: 'Multiple languages',
-    CHROMECAST: 'Chromecast'
+    CHROMECAST: 'Chromecast',
   },
 
   ARIA_LABELS: {
@@ -175,12 +175,12 @@ var CONSTANTS = {
     MULTI_AUDIO_OPTIONS: 'Closed Multi Audio Options',
     PREVIOUS_VIDEO: 'Previous Video',
     NEXT_VIDEO: 'Next Video',
-    SKIP_BACKWARD: 'Rewind '  + MACROS.SECONDS + ' Seconds',
+    SKIP_BACKWARD: 'Rewind ' + MACROS.SECONDS + ' Seconds',
     SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward',
     PLAYBACK_SPEED: MACROS.RATE + 'x Playback Speed',
     PLAYBACK_SPEED_OPTION: 'Speed',
     NORMAL_SPEED: 'Normal Speed',
-    CHROMECAST: 'Chromecast'
+    CHROMECAST: 'Chromecast',
   },
 
   CONTROL_BAR_KEYS: {
@@ -200,7 +200,7 @@ var CONSTANTS = {
     FULLSCREEN: 'fullscreen',
     LOGO: 'logo',
     CHROMECAST: 'chromecast',
-    SKIP_CONTROLS: 'skipControls'
+    SKIP_CONTROLS: 'skipControls',
   },
 
   ARIA_ROLES: {
@@ -213,7 +213,7 @@ var CONSTANTS = {
     CHECKBOX: 'checkbox',
     TAB_LIST: 'tablist',
     TAB: 'tab',
-    TAB_PANEL: 'tabpanel'
+    TAB_PANEL: 'tabpanel',
   },
 
   KEYBD_FOCUS_ID_ATTR: 'data-focus-id',
@@ -226,7 +226,7 @@ var CONSTANTS = {
     AUTO_QUALITY: 'autoQuality',
     CLOSE: 'close',
     MULTI_AUDIO: 'multiAudio',
-    MENU_ITEM: 'menuItem'
+    MENU_ITEM: 'menuItem',
   },
 
   SKIP_CTRLS_KEYS: {
@@ -234,12 +234,12 @@ var CONSTANTS = {
     SKIP_BACKWARD: 'skipBackward',
     SKIP_FORWARD: 'skipForward',
     NEXT_VIDEO: 'nextVideo',
-    PLAY_PAUSE: 'playPause'
+    PLAY_PAUSE: 'playPause',
   },
 
   A11Y_CTRLS: {
     SEEK_DELTA: 5,
-    VOLUME_CHANGE_DELTA: 10
+    VOLUME_CHANGE_DELTA: 10,
   },
 
   KEYCODES: {
@@ -252,14 +252,14 @@ var CONSTANTS = {
     A: 65,
     D: 68,
     W: 87,
-    S: 83
+    S: 83,
   },
 
   DIRECTIONS: {
     LEFT: 'left',
     RIGHT: 'right',
     UP: 'up',
-    DOWN: 'down'
+    DOWN: 'down',
   },
 
   // KeyboardEvent's which and keyCode properties are deprecated.
@@ -277,7 +277,7 @@ var CONSTANTS = {
     ARROW_LEFT: 'ArrowLeft',
     ARROW_RIGHT: 'ArrowRight',
     HOME: 'Home',
-    END: 'End'
+    END: 'End',
   },
 
   UI: {
@@ -296,7 +296,7 @@ var CONSTANTS = {
     // When the previous video button is clicked, if the playhead value (in seconds) is
     // below this constant the controller will request the previous video instead of rewinding
     REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD: 2,
-    AUDIO_ONLY_DEFAULT_HEIGHT: '138px'
+    AUDIO_ONLY_DEFAULT_HEIGHT: '138px',
   },
 
   PLAYBACK_SPEED: {
@@ -313,24 +313,24 @@ var CONSTANTS = {
   },
 
   WATERMARK: {
-    DEFAULT_SCALING_PERCENTAGE: 10
+    DEFAULT_SCALING_PERCENTAGE: 10,
   },
 
   AD_CLICK_SOURCE: {
     VIDEO_WINDOW: 'videoWindow',
     LEARN_MORE_BUTTON: 'learnMoreButton',
-    OVERLAY: 'overlay'
+    OVERLAY: 'overlay',
   },
 
   PAUSE_REASON: {
-    TRANSITION: 'transition'
+    TRANSITION: 'transition',
   },
 
   MEDIA_TYPE: {
     HTML5: 'html5',
     FLASH: 'flash',
     VIDEO: 'video',
-    OBJECT: 'object'
+    OBJECT: 'object',
   },
 
   LANGUAGE: {
@@ -342,7 +342,7 @@ var CONSTANTS = {
     UNDEFINED_LANGUAGE: 'und',
     NO_LINGUISTIC_CONTENT: 'zxx',
     UNCODED_LANGUAGES: 'mis',
-    MULTIPLE_LANGUAGES: 'mul'
+    MULTIPLE_LANGUAGES: 'mul',
   },
 
   ERROR_CODE: {
@@ -376,93 +376,93 @@ var CONSTANTS = {
     EMPTY_CHANNEL_SET: 'empty_channel_set',
     CHANNEL_CONTENT: 'channel_content',
     UNSUPPORTED_ENCODING: 'unsupported_encoding',
-    UNABLE_TO_CREATE_VIDEO_ELEMENT: 'unable_to_create_video_element'
+    UNABLE_TO_CREATE_VIDEO_ELEMENT: 'unable_to_create_video_element',
   },
 
   CLOSED_CAPTIONS: {
-    NO_LANGUAGE: 'none'
+    NO_LANGUAGE: 'none',
   },
 
   QUALITY_SELECTION: {
     AUTO_QUALITY: 'auto',
     FORMAT: {
       RESOLUTION: 'resolution',
-      BITRATE: 'bitrate'
+      BITRATE: 'bitrate',
     },
     TEXT: {
       RESOLUTION_BITRATE: MACROS.RESOLUTION + 'p (' + MACROS.BITRATE + ')',
       RESOLUTION_ONLY: MACROS.RESOLUTION + 'p',
       TIERED_RESOLUTION_ONLY: MACROS.RESOLUTION + 'p (' + MACROS.RESOLUTION_TIER + ')',
-      BITRATE_ONLY: MACROS.BITRATE
-    }
+      BITRATE_ONLY: MACROS.BITRATE,
+    },
   },
 
   RESOLUTION_TIER: {
     TWO: ['Low', 'High'],
-    THREE: ['Low', 'Medium', 'High']
+    THREE: ['Low', 'Medium', 'High'],
   },
 
   ERROR_MESSAGE: {
     network: {
       name: 'OO.ERROR.API.NETWORK',
       title: 'NETWORK ERROR',
-      description: 'Cannot Contact Server'
+      description: 'Cannot Contact Server',
     },
     sas: {
       name: 'OO.ERROR.API.SAS.GENERIC',
       title: 'SAS ERROR',
-      description: 'Invalid Authorization Response'
+      description: 'Invalid Authorization Response',
     },
     geo: {
       name: 'OO.ERROR.API.SAS.GEO',
       title: 'SAS GEO ERROR',
-      description: 'This video is not authorized in your location'
+      description: 'This video is not authorized in your location',
     },
     domain: {
       name: 'OO.ERROR.API.SAS.DOMAIN',
       title: 'SAS DOMAIN ERROR',
-      description: 'This video is not authorized for your domain'
+      description: 'This video is not authorized for your domain',
     },
     future: {
       name: 'OO.ERROR.API.SAS.FUTURE',
       title: 'VIDEO COMING SOON!',
       description: 'This video is not available yet',
-      action: 'You may need to refresh the page to access the video after it becomes available'
+      action: 'You may need to refresh the page to access the video after it becomes available',
     },
     past: {
       name: 'OO.ERROR.API.SAS.PAST',
       title: 'VIDEO NO LONGER AVAILABLE',
-      description: 'This video is no longer available'
+      description: 'This video is no longer available',
     },
     device: {
       name: 'OO.ERROR.API.SAS.DEVICE',
       title: 'SAS DEVICE ERROR',
-      description: 'This video is not authorized for playback on this device'
+      description: 'This video is not authorized for playback on this device',
     },
     proxy: {
       name: 'OO.ERROR.API.SAS.PROXY',
       title: 'SAS PROXY ERROR',
-      description: 'An anonymous proxy was detected. Please disable the proxy and retry.'
+      description: 'An anonymous proxy was detected. Please disable the proxy and retry.',
     },
     concurrent_streams: {
       name: 'OO.ERROR.API.SAS.CONCURRENT_STREAMS',
       title: 'CONCURRENT STREAMS NUMBER EXCEEDED',
-      description: 'You have exceeded the maximum number of concurrent streams'
+      description: 'You have exceeded the maximum number of concurrent streams',
     },
     device_binding_failed: {
       name: 'OO.ERROR.API.SAS.ERROR.DEVICE_BINDING_FAILED',
       title: 'DEVICE BINDING ERROR',
-      description: 'Device binding failed'
+      description: 'Device binding failed',
     },
     device_id_too_long: {
       name: 'OO.ERROR.API.SAS.ERROR.DEVICE_ID_TOO_LONG',
       title: 'DEVICE ID TOO LONG',
-      description: 'Device ID is too long'
+      description: 'Device ID is too long',
     },
     device_invalid_auth_token: {
       name: 'OO.ERROR.API.SAS.ERROR.DEVICE_INVALID_AUTH_TOKEN',
       title: 'INVALID PLAYER TOKEN',
-      description: 'Invalid Ooyala Player token'
+      description: 'Invalid Ooyala Player token',
     },
     device_limit_reached: {
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_DEVICE_LIMIT_REACHED',
@@ -470,7 +470,7 @@ var CONSTANTS = {
       description:
         'Unable to access this content, as the maximum number of devices' +
         ' has already been authorized. Error Code 29',
-      action: 'Please remove one of your authorized devices to enable this device.'
+      action: 'Please remove one of your authorized devices to enable this device.',
     },
     non_registered_device: {
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_NON_REGISTERED_DEVICE',
@@ -478,104 +478,104 @@ var CONSTANTS = {
       description:
         'Unable to register this device to this account, as the maximum' +
         ' number of authorized devices has already been reached. Error Code 22',
-      action: 'Please remove one of your authorized devices to enable this device.'
+      action: 'Please remove one of your authorized devices to enable this device.',
     },
     drm_general_failure: {
       name: 'OO.ERROR.API.SAS.ERROR_DRM_GENERAL_FAILURE',
       title: 'LICENSE ERROR',
-      description: 'General error acquiring license'
+      description: 'General error acquiring license',
     },
     drm_server_error: {
       name: 'OO.ERROR.API.SAS.ERROR_DRM_RIGHTS_SERVER_ERROR',
       title: 'DRM SERVER ERROR',
-      description: 'DRM server error'
+      description: 'DRM server error',
     },
     invalid_entitlements: {
       name: 'OO.ERROR.API.SAS.ERROR_INVALID_ENTITLEMENTS',
       title: 'INVALID ENTITLEMENTS ERROR',
-      description: 'User Entitlement Terminated - Stream No Longer Active for the User'
+      description: 'User Entitlement Terminated - Stream No Longer Active for the User',
     },
     invalid_heartbeat: {
       name: 'OO.ERROR.API.SAS.INVALID_HEARTBEAT',
       title: 'INVALID HEARTBEAT',
-      description: 'Invalid heartbeat response'
+      description: 'Invalid heartbeat response',
     },
     content_tree: {
       name: 'OO.ERROR.API.CONTENT_TREE',
       title: 'INVALID CONTENT',
-      description: 'Invalid Content'
+      description: 'Invalid Content',
     },
     metadata: {
       name: 'OO.ERROR.API.METADATA',
       title: 'INVALID METADATA',
-      description: 'Invalid Metadata'
+      description: 'Invalid Metadata',
     },
     playback: {
       name: 'OO.ERROR.PLAYBACK.GENERIC',
       title: 'PLAYBACK ERROR',
-      description: 'Could not play the content'
+      description: 'Could not play the content',
     },
     stream: {
       name: 'OO.ERROR.PLAYBACK.STREAM',
       title: 'PLAYBACK STREAM ERROR',
-      description: 'This video isn\'t encoded for your device'
+      description: 'This video isn\'t encoded for your device',
     },
     livestream: {
       name: 'OO.ERROR.PLAYBACK.LIVESTREAM',
       title: 'PLAYBACK LIVESTREAM ERROR',
-      description: 'Live stream is off air'
+      description: 'Live stream is off air',
     },
     network_error: {
       name: 'OO.ERROR.PLAYBACK.NETWORK',
       title: 'PLAYBACK NETWORK ERROR',
-      description: 'Network connection temporarily lost'
+      description: 'Network connection temporarily lost',
     },
     unplayable_content: {
       name: 'OO.ERROR.UNPLAYABLE_CONTENT',
       title: 'UNPLAYABLE CONTENT ERROR',
-      description: 'This video is not playable on this player'
+      description: 'This video is not playable on this player',
     },
     invalid_external_id: {
       name: 'OO.ERROR.INVALID.EXTERNAL_ID',
       title: 'INVALID EXTERNAL ID',
-      description: 'Invalid External ID'
+      description: 'Invalid External ID',
     },
     empty_channel: {
       name: 'OO.ERROR.EMPTY_CHANNEL',
       title: 'EMPTY CHANNEL ERROR',
-      description: 'This channel is empty'
+      description: 'This channel is empty',
     },
     empty_channel_set: {
       name: 'OO.ERROR.EMPTY_CHANNEL_SET',
       title: 'EMPTY CHANNEL SET ERROR',
-      description: 'This channel set is empty'
+      description: 'This channel set is empty',
     },
     channel_content: {
       name: 'OO.ERROR.CHANNEL_CONTENT',
       title: 'CHANNEL CONTENT ERROR',
-      description: 'This channel is not playable at this time'
+      description: 'This channel is not playable at this time',
     },
     unsupported_encoding: {
       name: 'OO.ERROR.VC.UNSUPPORTED_ENCODING',
       title: 'UNSUPPORTED CONTENT TYPE',
-      description: 'This video encoding is not supported on your device'
+      description: 'This video encoding is not supported on your device',
     },
     unable_to_create_video_element: {
       name: 'OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT',
       description:
         'Something happened while we were trying to play your video! ' +
-        'Click replay or simply reload your page.'
-    }
+        'Click replay or simply reload your page.',
+    },
   },
   THUMBNAIL: {
     MAX_VR_THUMBNAIL_BG_WIDTH: 380,
     MAX_VR_THUMBNAIL_CAROUSEL_BG_WIDTH: 320,
     THUMBNAIL_VR_RATIO: 4,
-    THUMBNAIL_CAROUSEL_VR_RATIO: 3
+    THUMBNAIL_CAROUSEL_VR_RATIO: 3,
   },
   CLASS_NAMES: {
-    SELECTABLE_SCREEN: 'oo-state-screen-selectable'
-  }
+    SELECTABLE_SCREEN: 'oo-state-screen-selectable',
+  },
 };
 
 // Maps menu options to their respective screens

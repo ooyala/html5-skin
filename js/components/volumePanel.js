@@ -7,13 +7,11 @@ const ControlBar = require('./controlBar');
  * Screen modes of the menu.
  */
 class VolumePanel extends React.Component {
-
   constructor(props) {
     super(props);
   }
 
   render() {
-
     return (
       <div className="oo-absolute-centered oo-volume-panel">
         <ControlBar
@@ -30,8 +28,8 @@ class VolumePanel extends React.Component {
           buffered={this.props.buffered}
           responsiveView={this.props.responsiveId}
           componentWidth={this.props.componentWidth}
-          controlBarItems={[{"name":"volume", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }]}
-          />
+          controlBarItems={[{ 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 200 }]}
+        />
       </div>
     );
   }
@@ -57,21 +55,21 @@ VolumePanel.propTypes = {
   onBlur: PropTypes.func,
   skinConfig: PropTypes.shape({
     responsive: PropTypes.shape({
-      breakpoints: PropTypes.object
-    })
+      breakpoints: PropTypes.object,
+    }),
   }),
   controller: PropTypes.shape({
     state: PropTypes.object,
     videoVrSource: PropTypes.shape({
-      vr: PropTypes.object
+      vr: PropTypes.object,
     }),
     cancelTimer: PropTypes.func,
     startHideControlBarTimer: PropTypes.func,
     hideVolumeSliderBar: PropTypes.func,
     closePopover: PropTypes.func,
     closeOtherPopovers: PropTypes.func,
-    isVrStereo: PropTypes.bool
-  })
+    isVrStereo: PropTypes.bool,
+  }),
 };
 
 module.exports = VolumePanel;

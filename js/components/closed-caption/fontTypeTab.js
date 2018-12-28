@@ -1,10 +1,12 @@
-var React = require('react'),
-    CONSTANTS = require('../../constants/constants'),
-    DataSelector = require('../dataSelector');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var FontTypeTab = createReactClass({
+let CONSTANTS = require('../../constants/constants');
+
+let DataSelector = require('../dataSelector');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let FontTypeTab = createReactClass({
   getInitialState: function() {
     return {
       selectedFontType: this.props.closedCaptionOptions.fontType,
@@ -15,8 +17,8 @@ var FontTypeTab = createReactClass({
         'Proportional Sans-Serif',
         'Casual',
         'Cursive',
-        'Small Capitals'
-      ]
+        'Small Capitals',
+      ],
     };
   },
 
@@ -26,7 +28,7 @@ var FontTypeTab = createReactClass({
     }
     this.props.controller.onClosedCaptionChange('fontType', fontType);
     this.setState({
-      selectedFontType: fontType
+      selectedFontType: fontType,
     });
   },
 
@@ -45,11 +47,11 @@ var FontTypeTab = createReactClass({
         />
       </div>
     );
-  }
+  },
 });
 
 FontTypeTab.propTypes = {
-  dataItemsPerPage: PropTypes.objectOf(PropTypes.number)
+  dataItemsPerPage: PropTypes.objectOf(PropTypes.number),
 };
 
 FontTypeTab.defaultProps = {
@@ -57,9 +59,9 @@ FontTypeTab.defaultProps = {
     xs: 1,
     sm: 4,
     md: 8,
-    lg: 8
+    lg: 8,
   },
-  responsiveView: 'md'
+  responsiveView: 'md',
 };
 
 module.exports = FontTypeTab;

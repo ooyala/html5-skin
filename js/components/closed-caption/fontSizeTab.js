@@ -1,18 +1,24 @@
-var React = require('react'),
-    ClassNames = require('classnames'),
-    Utils = require('../utils'),
-    AccessibleButton = require('../accessibleButton'),
-    AccessibleMenu = require('../higher-order/accessibleMenu'),
-    CONSTANTS = require('../../constants/constants'),
-    SelectionContainer = require('./selectionContainer');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var FontSizeTab = createReactClass({
+let ClassNames = require('classnames');
+
+let Utils = require('../utils');
+
+let AccessibleButton = require('../accessibleButton');
+
+let AccessibleMenu = require('../higher-order/accessibleMenu');
+
+let CONSTANTS = require('../../constants/constants');
+
+let SelectionContainer = require('./selectionContainer');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let FontSizeTab = createReactClass({
   getInitialState: function() {
     return {
       selectedFontSize: this.props.closedCaptionOptions.fontSize,
-      fontSizes: ['Small', 'Medium', 'Large', 'Extra Large']
+      fontSizes: ['Small', 'Medium', 'Large', 'Extra Large'],
     };
   },
 
@@ -22,7 +28,7 @@ var FontSizeTab = createReactClass({
     }
     this.props.controller.onClosedCaptionChange('fontSize', fontSize);
     this.setState({
-      selectedFontSize: fontSize
+      selectedFontSize: fontSize,
     });
   },
 
@@ -36,26 +42,26 @@ var FontSizeTab = createReactClass({
         this.props.closedCaptionOptions.fontSize === item &&
         this.props.closedCaptionOptions.enabled &&
         elementType === 'label',
-      'oo-disabled': !this.props.closedCaptionOptions.enabled
+      'oo-disabled': !this.props.closedCaptionOptions.enabled,
     });
   },
 
   render: function() {
-    var fontSizeTitle = Utils.getLocalizedString(
+    let fontSizeTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.FONT_SIZE,
       this.props.localizableStrings
     );
-    var fontSizeSelection = Utils.getLocalizedString(
+    let fontSizeSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.fontSize.toUpperCase().replace(' ', '_')],
       this.props.localizableStrings
     );
-    var fontItems = [];
-    for (var i = 0; i < this.state.fontSizes.length; i++) {
+    let fontItems = [];
+    for (let i = 0; i < this.state.fontSizes.length; i++) {
       // accent color
-      var isSelected = this.props.closedCaptionOptions.fontSize === this.state.fontSizes[i];
-      var selectedFontSizeStyle = {};
+      let isSelected = this.props.closedCaptionOptions.fontSize === this.state.fontSizes[i];
+      let selectedFontSizeStyle = {};
       if (
         this.props.closedCaptionOptions.enabled &&
         this.props.skinConfig.general.accentColor &&
@@ -63,7 +69,7 @@ var FontSizeTab = createReactClass({
       ) {
         selectedFontSizeStyle = { color: this.props.skinConfig.general.accentColor };
       }
-      var itemLabel = Utils.getLocalizedString(
+      let itemLabel = Utils.getLocalizedString(
         this.props.language,
         CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(' ', '_')],
         this.props.localizableStrings
@@ -109,7 +115,7 @@ var FontSizeTab = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 FontSizeTab = AccessibleMenu(FontSizeTab, { useRovingTabindex: true });
@@ -119,17 +125,17 @@ FontSizeTab.propTypes = {
   localizableStrings: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
   closedCaptionOptions: PropTypes.shape({
     enabled: PropTypes.bool,
-    fontSize: PropTypes.string
+    fontSize: PropTypes.string,
   }),
   controller: PropTypes.shape({
     toggleClosedCaptionEnabled: PropTypes.func.isRequired,
-    onClosedCaptionChange: PropTypes.func.isRequired
+    onClosedCaptionChange: PropTypes.func.isRequired,
   }),
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string
-    })
-  })
+      accentColor: PropTypes.string,
+    }),
+  }),
 };
 
 module.exports = FontSizeTab;

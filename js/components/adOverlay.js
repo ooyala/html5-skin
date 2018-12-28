@@ -1,13 +1,16 @@
 /** ******************************************************************
   AD OVERLAY
 *********************************************************************/
-var React = require('react'),
-    ClassNames = require('classnames'),
-    CloseButton = require('./closeButton'),
-    CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
+let React = require('react');
 
-var AdOverlay = createReactClass({
+let ClassNames = require('classnames');
+
+let CloseButton = require('./closeButton');
+
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+
+let AdOverlay = createReactClass({
   closeOverlay: function() {
     this.props.controller.closeNonlinearAd();
     this.props.controller.onSkipAdClicked();
@@ -24,13 +27,13 @@ var AdOverlay = createReactClass({
   },
 
   render: function() {
-    var adOverlayClass = ClassNames({
+    let adOverlayClass = ClassNames({
       'oo-ad-overlay': true,
-      'oo-hidden': !this.props.overlay && this.props.showOverlay
+      'oo-hidden': !this.props.overlay && this.props.showOverlay,
     });
-    var closeButtonClass = ClassNames({
+    let closeButtonClass = ClassNames({
       'oo-ad-overlay-close-button': true,
-      'oo-hidden': !this.props.showOverlayCloseButton
+      'oo-hidden': !this.props.showOverlayCloseButton,
     });
 
     return (
@@ -47,6 +50,6 @@ var AdOverlay = createReactClass({
         />
       </div>
     );
-  }
+  },
 });
 module.exports = AdOverlay;

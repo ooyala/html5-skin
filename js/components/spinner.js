@@ -1,7 +1,7 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
+let React = require('react');
+let createReactClass = require('create-react-class');
 
-var Spinner = createReactClass({
+let Spinner = createReactClass({
   render: function() {
     return (
       <div className="oo-spinner-screen">
@@ -10,6 +10,6 @@ var Spinner = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 module.exports = Spinner;

@@ -9,7 +9,7 @@ class DirectionControlVr extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTouched: false
+      isTouched: false,
     };
     this.rotateVrVideo = this.rotateVrVideo.bind(this);
   };
@@ -24,7 +24,7 @@ class DirectionControlVr extends React.Component {
       this.props.handleVrViewControlsClick(event, isRotated, this.props.dir);
 
       this.setState({
-        isTouched: isRotated
+        isTouched: isRotated,
       });
     }
   };
@@ -56,7 +56,7 @@ class DirectionControlVr extends React.Component {
 };
 
 DirectionControlVr.propTypes = {
-  handleVrViewControlsClick: PropTypes.func
+  handleVrViewControlsClick: PropTypes.func,
 };
 
 export { DirectionControlVr };

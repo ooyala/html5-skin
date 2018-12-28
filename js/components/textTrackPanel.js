@@ -3,15 +3,15 @@
  *
  * @module TextTrackPanel
  */
-var React = require('react');
-var Utils = require('./utils');
-var classNames = require('classnames');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let Utils = require('./utils');
+let classNames = require('classnames');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var baseFontSize = 1.0;
+let baseFontSize = 1.0;
 
-var TextTrackPanel = createReactClass({
+let TextTrackPanel = createReactClass({
   colorMap: {
     White: '255,255,255',
     Blue: '0,0,255',
@@ -21,7 +21,7 @@ var TextTrackPanel = createReactClass({
     Red: '255,0,0',
     Cyan: '0,255,255',
     Black: '0,0,0',
-    Transparent: '0,0,0'
+    Transparent: '0,0,0',
   },
 
   fontTypeMap: {
@@ -32,7 +32,7 @@ var TextTrackPanel = createReactClass({
       'Roboto, "Arial Unicode Ms", Arial, Helvetica, Verdana, "PT Sans Caption", sans-serif',
     Casual: '"Comic Sans MS", Impact, Handlee, fantasy',
     Cursive: '"Monotype Corsiva", "URW Chancery L", "Apple Chancery", "Dancing Script", cursive',
-    'Small Capitals': '"Arial Unicode Ms", Arial, Helvetica, Verdana, "Marcellus SC", sans-serif'
+    'Small Capitals': '"Arial Unicode Ms", Arial, Helvetica, Verdana, "Marcellus SC", sans-serif',
   },
 
   fontVariantMap: {
@@ -42,7 +42,7 @@ var TextTrackPanel = createReactClass({
     'Proportional Sans-Serif': 'normal',
     Casual: 'normal',
     Cursive: 'normal',
-    'Small Capitals': 'small-caps'
+    'Small Capitals': 'small-caps',
   },
 
   fontSizeMap: {
@@ -50,49 +50,49 @@ var TextTrackPanel = createReactClass({
       xs: baseFontSize * 0.8 + 'em',
       sm: baseFontSize * 1.0 + 'em',
       md: baseFontSize * 1.2 + 'em',
-      lg: baseFontSize * 1.4 + 'em'
+      lg: baseFontSize * 1.4 + 'em',
     },
     Medium: {
       xs: baseFontSize * 1.2 + 'em',
       sm: baseFontSize * 1.4 + 'em',
       md: baseFontSize * 1.6 + 'em',
-      lg: baseFontSize * 1.8 + 'em'
+      lg: baseFontSize * 1.8 + 'em',
     },
     Large: {
       xs: baseFontSize * 1.6 + 'em',
       sm: baseFontSize * 1.8 + 'em',
       md: baseFontSize * 2.0 + 'em',
-      lg: baseFontSize * 2.2 + 'em'
+      lg: baseFontSize * 2.2 + 'em',
     },
     'Extra Large': {
       xs: baseFontSize * 2.0 + 'em',
       sm: baseFontSize * 2.2 + 'em',
       md: baseFontSize * 2.4 + 'em',
-      lg: baseFontSize * 2.6 + 'em'
-    }
+      lg: baseFontSize * 2.6 + 'em',
+    },
   },
 
   textEnhancementMap: {
     Uniform: 'none',
     Depressed: '1px 1px white',
     Raised: '-1px -1px white, -3px 0px 5px black',
-    Shadow: '2px 2px 2px #1a1a1a'
+    Shadow: '2px 2px 2px #1a1a1a',
   },
 
   setWindowBackgroundStyle: function(color, opacity) {
     if (color === 'Transparent') opacity = 0;
     return {
-      backgroundColor: 'rgba(' + this.colorMap[color] + ',' + opacity + ')'
+      backgroundColor: 'rgba(' + this.colorMap[color] + ',' + opacity + ')',
     };
   },
 
   setTextStyle: function(color, opacity, fontType, fontSize, textEnhancement, direction) {
-    var styles = {
+    let styles = {
       color: 'rgba(' + this.colorMap[color] + ',' + opacity + ')',
       fontFamily: this.fontTypeMap[fontType],
       fontVariant: this.fontVariantMap[fontType],
       fontSize: this.fontSizeMap[fontSize][this.props.responsiveView],
-      textShadow: this.textEnhancementMap[textEnhancement]
+      textShadow: this.textEnhancementMap[textEnhancement],
     };
     if (direction) {
       styles.direction = direction;
@@ -104,8 +104,8 @@ var TextTrackPanel = createReactClass({
     if (!this.props.cueText) {
       return null;
     }
-    var className = classNames('oo-text-track-container', {
-      'oo-in-background': this.props.isInBackground
+    let className = classNames('oo-text-track-container', {
+      'oo-in-background': this.props.isInBackground,
     });
 
     return (
@@ -142,7 +142,7 @@ var TextTrackPanel = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 TextTrackPanel.propTypes = {
@@ -157,9 +157,9 @@ TextTrackPanel.propTypes = {
     windowOpacity: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     fontType: PropTypes.string,
     fontSize: PropTypes.string,
-    textEnhancement: PropTypes.string
+    textEnhancement: PropTypes.string,
   }),
-  direction: PropTypes.string
+  direction: PropTypes.string,
 };
 
 TextTrackPanel.defaultProps = {
@@ -173,9 +173,9 @@ TextTrackPanel.defaultProps = {
     windowOpacity: 0,
     fontType: 'Proportional Sans-Serif',
     fontSize: 'Medium',
-    textEnhancement: 'Uniform'
+    textEnhancement: 'Uniform',
   },
-  direction: ''
+  direction: '',
 };
 
 module.exports = TextTrackPanel;

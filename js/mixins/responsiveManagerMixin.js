@@ -9,7 +9,7 @@ const ResponsiveManagerMixin = {
       componentWidth: null,
       componentHeight: null,
       responsiveClass: null,
-      responsiveId: null
+      responsiveId: null,
     };
   },
 
@@ -63,7 +63,7 @@ const ResponsiveManagerMixin = {
     const breakpoints = this.props.skinConfig.responsive.breakpoints;
     let breakpointData = {
       classes: {},
-      ids: {}
+      ids: {},
     };
 
     let key;
@@ -100,8 +100,8 @@ const ResponsiveManagerMixin = {
       componentWidth: componentWidth,
       componentHeight: componentHeight,
       responsiveClass: ClassNames(breakpointData.classes),
-      responsiveId: ClassNames(breakpointData.ids)
+      responsiveId: ClassNames(breakpointData.ids),
     });
-  }
+  },
 };
 module.exports = ResponsiveManagerMixin;

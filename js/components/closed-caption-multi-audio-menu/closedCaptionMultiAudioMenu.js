@@ -1,16 +1,16 @@
-var React = require('react');
-var classnames = require('classnames');
-var _ = require('underscore');
+let React = require('react');
+let classnames = require('classnames');
+let _ = require('underscore');
 
-var Utils = require('../utils');
+let Utils = require('../utils');
 
-var CONSTANTS = require('../../constants/constants');
-var Tab = require('./tab');
-var MultiAudioTab = require('./multiAudioTab');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let CONSTANTS = require('../../constants/constants');
+let Tab = require('./tab');
+let MultiAudioTab = require('./multiAudioTab');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var ClosedCaptionMultiAudioMenu = createReactClass({
+let ClosedCaptionMultiAudioMenu = createReactClass({
   /**
    *
    * @param {Array} languageList - list of available languages
@@ -19,14 +19,14 @@ var ClosedCaptionMultiAudioMenu = createReactClass({
    * @private
    */
   getClosedCaptions: function(languageList, language) {
-    var closedCaptionList = [];
+    let closedCaptionList = [];
     if (Array.isArray(languageList)) {
-      for (var index = 0; index < languageList.length; index++) {
-        var isSelectedCc = languageList[index] === language;
-        var cc = {
+      for (let index = 0; index < languageList.length; index++) {
+        let isSelectedCc = languageList[index] === language;
+        let cc = {
           id: languageList[index],
           label: languageList[index],
-          enabled: isSelectedCc
+          enabled: isSelectedCc,
         };
         closedCaptionList.push(cc);
       }
@@ -56,24 +56,24 @@ var ClosedCaptionMultiAudioMenu = createReactClass({
       this.props.controller.state.multiAudio &&
       this.props.controller.state.multiAudio.tracks
     ) {
-      var tracks = this.props.controller.state.multiAudio.tracks;
+      let tracks = this.props.controller.state.multiAudio.tracks;
 
       // find selected track in a list of available tracks
-      var selectedAudioTrack = _.find(tracks, function(track) {
+      let selectedAudioTrack = _.find(tracks, function(track) {
         return track.id === id;
       });
       this.props.controller.setCurrentAudio(selectedAudioTrack);
     }
     if (this.props.togglePopoverAction && typeof this.props.togglePopoverAction === 'function') {
       this.props.togglePopoverAction({
-        restoreToggleButtonFocus: true
+        restoreToggleButtonFocus: true,
       });
     }
   },
 
   render: function() {
-    var multiAudioCol = null;
-    var closedCaptionsCol = null;
+    let multiAudioCol = null;
+    let closedCaptionsCol = null;
     if (
       this.props.controller &&
       this.props.controller.state &&
@@ -105,7 +105,7 @@ var ClosedCaptionMultiAudioMenu = createReactClass({
       this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
       this.props.controller.state.closedCaptionOptions.availableLanguages.languages.length > 0
     ) {
-      var closedCaptionList = this.getClosedCaptions(
+      let closedCaptionList = this.getClosedCaptions(
         this.props.controller.state.closedCaptionOptions.availableLanguages.languages,
         this.props.controller.state.closedCaptionOptions.language
       );
@@ -130,7 +130,7 @@ var ClosedCaptionMultiAudioMenu = createReactClass({
         {closedCaptionsCol}
       </div>
     );
-  }
+  },
 });
 
 ClosedCaptionMultiAudioMenu.propTypes = {
@@ -145,11 +145,11 @@ ClosedCaptionMultiAudioMenu.propTypes = {
     state: PropTypes.shape({
       closedCaptionOptions: PropTypes.object,
       multiAudio: PropTypes.shape({
-        tracks: PropTypes.array
-      })
+        tracks: PropTypes.array,
+      }),
     }),
-    languageList: PropTypes.array
-  })
+    languageList: PropTypes.array,
+  }),
 };
 
 module.exports = ClosedCaptionMultiAudioMenu;

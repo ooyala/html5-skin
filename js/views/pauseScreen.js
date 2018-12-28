@@ -17,7 +17,6 @@ const ViewControlsVr = require('../components/viewControlsVr');
 const withAutoHide = require('./higher-order/withAutoHide.js');
 const CastPanel = require('../components/castPanel');
 
-
 /**
  * Represents a screen when a video is paused
  */
@@ -30,7 +29,7 @@ class PauseScreen extends React.Component {
         (this.props.skinConfig.pauseScreen.showTitle && !!this.props.contentTree.title) ||
         (this.props.skinConfig.pauseScreen.showDescription && !!this.props.contentTree.description),
       controlBarVisible: true,
-      animate: false
+      animate: false,
     };
 
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
@@ -47,9 +46,9 @@ class PauseScreen extends React.Component {
     this.hideVrPauseButton();
     if (this.props.controller.videoVr) {
       document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
-      document.addEventListener('touchmove', this.handlePlayerMouseMove, {passive: false});
+      document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
       document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, {passive: false});
+      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
     }
   }
 
@@ -76,7 +75,7 @@ class PauseScreen extends React.Component {
    */
   startAnimation() {
     this.setState({
-      animate: true
+      animate: true,
     });
   }
 
@@ -90,7 +89,7 @@ class PauseScreen extends React.Component {
         descriptionText: Utils.truncateTextToWidth(
           ReactDOM.findDOMNode(this.description),
           this.props.contentTree.description
-        )
+        ),
       });
     }
   }
@@ -171,14 +170,14 @@ class PauseScreen extends React.Component {
   render() {
     // inline style for config/skin.json elements only
     const titleStyle = {
-      color: this.props.skinConfig.startScreen.titleFont.color
+      color: this.props.skinConfig.startScreen.titleFont.color,
     };
     const descriptionStyle = {
-      color: this.props.skinConfig.startScreen.descriptionFont.color
+      color: this.props.skinConfig.startScreen.descriptionFont.color,
     };
     const actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity,
     };
 
     // CSS class manipulation from config/skin.json
@@ -191,7 +190,7 @@ class PauseScreen extends React.Component {
         this.state.animate &&
         (!this.props.pauseAnimationDisabled ||
           this.props.controller.state.cast.connected) &&
-        this.props.controller.state.controlBarVisible
+        this.props.controller.state.controlBarVisible,
     });
     const infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
@@ -203,16 +202,16 @@ class PauseScreen extends React.Component {
       'oo-info-panel-left':
         this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('left') > -1,
       'oo-info-panel-right':
-        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
+        this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1,
     });
     const titleClass = ClassNames({
       'oo-state-screen-title': true,
       'oo-text-truncate': true,
-      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1,
     });
     const descriptionClass = ClassNames({
       'oo-state-screen-description': true,
-      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1
+      'oo-pull-right': this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase().indexOf('right') > -1,
     });
 
     const actionIconClass = ClassNames({
@@ -227,7 +226,7 @@ class PauseScreen extends React.Component {
         this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
       'oo-action-icon-right':
         this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
-      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled
+      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled,
     });
 
     const titleMetadata = (
@@ -296,15 +295,14 @@ class PauseScreen extends React.Component {
     const stateScreenPosterClass = ClassNames({
       'oo-blur': true,
       'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
-      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small'
+      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small',
     });
 
     // Depends of there's another element/panel at the center of the player we will push down
     // the cast panel to allow both elements be visible to the user
     const castPanelClass = ClassNames({
-      'oo-info-panel-cast-bottom': skipControlsEnabled
-    })
-
+      'oo-info-panel-cast-bottom': skipControlsEnabled,
+    });
 
     return (
       <div className="oo-state-screen oo-pause-screen">
@@ -401,4 +399,4 @@ class PauseScreen extends React.Component {
 
 const PauseScreenWithAutoHide = withAutoHide(PauseScreen);
 
-export {PauseScreen, PauseScreenWithAutoHide};
+export { PauseScreen, PauseScreenWithAutoHide };

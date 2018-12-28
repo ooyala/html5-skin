@@ -3,14 +3,17 @@
  *
  * @module Watermark
  */
-var React = require('react'),
-    CONSTANTS = require('../constants/constants'),
-    Utils = require('../components/utils'),
-    ClassNames = require('classnames');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var Watermark = createReactClass({
+let CONSTANTS = require('../constants/constants');
+
+let Utils = require('../components/utils');
+
+let ClassNames = require('classnames');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let Watermark = createReactClass({
   handleWatermarkClick: function() {
     if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
       this.props.controller.togglePlayPause();
@@ -18,22 +21,22 @@ var Watermark = createReactClass({
   },
 
   render: function() {
-    var watermarkUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.imageResource.url');
-    var clickUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.clickUrl');
-    var watermarkPosition = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.position');
+    let watermarkUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.imageResource.url');
+    let clickUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.clickUrl');
+    let watermarkPosition = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.position');
 
-    var watermarkTarget = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.target', '_blank');
-    var watermarkTransparency = Utils.getPropertyValue(
+    let watermarkTarget = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.target', '_blank');
+    let watermarkTransparency = Utils.getPropertyValue(
       this.props.skinConfig,
       'general.watermark.transparency',
       1
     );
-    var watermarkScalingOption = Utils.getPropertyValue(
+    let watermarkScalingOption = Utils.getPropertyValue(
       this.props.skinConfig,
       'general.watermark.scalingOption',
       'default'
     );
-    var watermarkScalingPercentage = Utils.getPropertyValue(
+    let watermarkScalingPercentage = Utils.getPropertyValue(
       this.props.skinConfig,
       'general.watermark.scalingPercentage'
     );
@@ -68,7 +71,7 @@ var Watermark = createReactClass({
       watermarkPosition = watermarkPosition + 'center';
     }
 
-    var watermarkClass = ClassNames({
+    let watermarkClass = ClassNames({
       'oo-watermark-container': true,
       'oo-watermark-no-clickURL': !clickUrl,
       'oo-watermark-top': watermarkPosition.indexOf('top') > -1,
@@ -79,15 +82,15 @@ var Watermark = createReactClass({
       'oo-watermark-center-horizontal':
         watermarkPosition.indexOf('bottomcenter') > -1 || watermarkPosition.indexOf('topcenter') > -1,
       'oo-watermark-center-vertical':
-        watermarkPosition.indexOf('centerright') > -1 || watermarkPosition.indexOf('centerleft') > -1
+        watermarkPosition.indexOf('centerright') > -1 || watermarkPosition.indexOf('centerleft') > -1,
     });
 
-    var watermarkImageClass = ClassNames({
+    let watermarkImageClass = ClassNames({
       'oo-blur': this.props.nonClickable,
-      'oo-watermark': true
+      'oo-watermark': true,
     });
 
-    var watermarkImage = (
+    let watermarkImage = (
       <img
         className={watermarkImageClass}
         style={watermarkImageStyle}
@@ -95,13 +98,13 @@ var Watermark = createReactClass({
         ref="watermarkImage"
       />
     );
-    if (this.props.nonClickable || !clickUrl)
+    if (this.props.nonClickable || !clickUrl) {
       return (
         <div className={watermarkClass} ref="watermark" style={watermarkStyle}>
           {watermarkImage}
         </div>
       );
-    else
+    } else {
       return (
         <a
           className={watermarkClass}
@@ -114,7 +117,8 @@ var Watermark = createReactClass({
           {watermarkImage}
         </a>
       );
-  }
+    }
+  },
 });
 
 Watermark.propTypes = {
@@ -123,7 +127,7 @@ Watermark.propTypes = {
     general: PropTypes.shape({
       watermark: PropTypes.shape({
         imageResource: PropTypes.shape({
-          url: PropTypes.string
+          url: PropTypes.string,
         }),
         clickUrl: PropTypes.string,
         position: PropTypes.string,
@@ -131,13 +135,13 @@ Watermark.propTypes = {
         transparency: PropTypes.number,
         scalingOption: PropTypes.string,
         scalingPercentage: PropTypes.number,
-        nonClickable: PropTypes.bool
-      })
-    })
+        nonClickable: PropTypes.bool,
+      }),
+    }),
   }),
   controller: PropTypes.shape({
-    togglePlayPause: PropTypes.func
-  })
+    togglePlayPause: PropTypes.func,
+  }),
 };
 
 Watermark.defaultProps = {
@@ -146,7 +150,7 @@ Watermark.defaultProps = {
     general: {
       watermark: {
         imageResource: {
-          url: ''
+          url: '',
         },
         clickUrl: '',
         position: 'bottomRight',
@@ -154,13 +158,13 @@ Watermark.defaultProps = {
         transparency: 1,
         scalingOption: 'default',
         scalingPercentage: 10,
-        nonClickable: false
-      }
-    }
+        nonClickable: false,
+      },
+    },
   },
   controller: {
-    togglePlayPause: function() {}
-  }
+    togglePlayPause: function() {},
+  },
 };
 
 module.exports = Watermark;

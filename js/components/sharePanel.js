@@ -7,25 +7,28 @@
  * @class SharePanel
  * @constructor
  */
-var React = require('react'),
-    ClassNames = require('classnames'),
-    Utils = require('./utils'),
-    CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var _ = require('underscore');
+let React = require('react');
 
-var SharePanel = createReactClass({
+let ClassNames = require('classnames');
+
+let Utils = require('./utils');
+
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let _ = require('underscore');
+
+let SharePanel = createReactClass({
   tabs: { SHARE: 'social', EMBED: 'embed' },
 
   getInitialState: function() {
-    var shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
-    var socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
-    var activeTab = shareContent ? shareContent[0] : null;
+    let shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
+    let socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
+    let activeTab = shareContent ? shareContent[0] : null;
 
     // If no social buttons are specified, default to the first tab
     // that isn't the 'social' tab, since it will be hidden
     if (shareContent && !socialContent.length) {
-      for (var i = 0; i < shareContent.length; i++) {
+      for (let i = 0; i < shareContent.length; i++) {
         if (shareContent[i] !== 'social') {
           activeTab = shareContent[i];
           break;
@@ -35,17 +38,17 @@ var SharePanel = createReactClass({
 
     return {
       activeTab: activeTab,
-      hasError: false
+      hasError: false,
     };
   },
 
   getActivePanel: function() {
     if (this.state.activeTab === this.tabs.SHARE) {
-      var socialContent = _.uniq(
+      let socialContent = _.uniq(
         Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', [])
       );
 
-      var shareButtons = [];
+      let shareButtons = [];
       socialContent.forEach(function(shareButton) {
         switch (shareButton) {
           case 'twitter':
@@ -86,25 +89,25 @@ var SharePanel = createReactClass({
 
   handleEmailClick: function(event) {
     event.preventDefault();
-    var emailBody = Utils.getLocalizedString(
+    let emailBody = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.EMAIL_BODY,
       this.props.localizableStrings
     );
-    var mailToUrl = 'mailto:';
+    let mailToUrl = 'mailto:';
     mailToUrl += '?subject=' + encodeURIComponent(this.props.contentTree.title);
     mailToUrl += '&body=' + encodeURIComponent(emailBody + location.href);
     // location.href = mailToUrl; //same window
-    //TODO: Add html5-common to html5-skin?
+    // TODO: Add html5-common to html5-skin?
     if (OO.isIos && OO.isSafari) {
       document.location = mailToUrl;
     } else {
-      var emailWindow = window.open(mailToUrl, 'email', 'height=315,width=780'); // new window
+      let emailWindow = window.open(mailToUrl, 'email', 'height=315,width=780'); // new window
       setTimeout(function() {
         try {
           // If we can't access href, a web client has taken over and this will throw
           // an exception, preventing the window from being closed.
-          var test = emailWindow.location.href;
+          let test = emailWindow.location.href;
           emailWindow.close();
         } catch (e) {
           console.log('email send error - ', e);
@@ -115,13 +118,13 @@ var SharePanel = createReactClass({
   },
 
   handleFacebookClick: function() {
-    var facebookUrl = 'http://www.facebook.com/sharer.php';
+    let facebookUrl = 'http://www.facebook.com/sharer.php';
     facebookUrl += '?u=' + encodeURIComponent(location.href);
     window.open(facebookUrl, 'facebook window', 'height=315,width=780');
   },
 
   handleGPlusClick: function() {
-    var gPlusUrl = 'https://plus.google.com/share';
+    let gPlusUrl = 'https://plus.google.com/share';
     gPlusUrl += '?url=' + encodeURIComponent(location.href);
     window.open(
       gPlusUrl,
@@ -131,7 +134,7 @@ var SharePanel = createReactClass({
   },
 
   handleTwitterClick: function() {
-    var twitterUrl = 'https://twitter.com/intent/tweet';
+    let twitterUrl = 'https://twitter.com/intent/tweet';
     twitterUrl += '?text=' + encodeURIComponent(this.props.contentTree.title + ': ');
     twitterUrl += '&url=' + encodeURIComponent(location.href);
     window.open(twitterUrl, 'twitter window', 'height=300,width=750');
@@ -142,39 +145,40 @@ var SharePanel = createReactClass({
   },
 
   render: function() {
-    var shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
-    var socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
+    let shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent');
+    let socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
     if (!shareContent) return null;
 
-    var showEmbedTab = false;
-    var showShareTab = false;
+    let showEmbedTab = false;
+    let showShareTab = false;
 
-    for (var i = 0; i < shareContent.length; i++) {
+    for (let i = 0; i < shareContent.length; i++) {
       if (shareContent[i] === this.tabs.EMBED) showEmbedTab = true;
       if (shareContent[i] === this.tabs.SHARE && socialContent.length) showShareTab = true;
     }
 
-    var shareTab = ClassNames({
+    let shareTab = ClassNames({
       'oo-share-tab': true,
       'oo-active': this.state.activeTab === this.tabs.SHARE,
-      'oo-hidden': !showShareTab
+      'oo-hidden': !showShareTab,
     });
-    var embedTab = ClassNames({
+    let embedTab = ClassNames({
       'oo-embed-tab': true,
       'oo-active': this.state.activeTab === this.tabs.EMBED,
-      'oo-hidden': !showEmbedTab
+      'oo-hidden': !showEmbedTab,
     });
 
-    var shareString = Utils.getLocalizedString(
-        this.props.language,
-        CONSTANTS.SKIN_TEXT.SHARE,
-        this.props.localizableStrings
-      ),
-        embedString = Utils.getLocalizedString(
-        this.props.language,
-        CONSTANTS.SKIN_TEXT.EMBED,
-        this.props.localizableStrings
-      );
+    let shareString = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.SHARE,
+      this.props.localizableStrings
+    );
+
+    let embedString = Utils.getLocalizedString(
+      this.props.language,
+      CONSTANTS.SKIN_TEXT.EMBED,
+      this.props.localizableStrings
+    );
 
     return (
       <div className="oo-content-panel oo-share-panel">
@@ -189,13 +193,13 @@ var SharePanel = createReactClass({
         {this.getActivePanel()}
       </div>
     );
-  }
+  },
 });
 
 SharePanel.defaultProps = {
   contentTree: {
-    title: ''
-  }
+    title: '',
+  },
 };
 
 module.exports = SharePanel;

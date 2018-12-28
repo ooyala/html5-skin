@@ -1,16 +1,16 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var ClassNames = require('classnames');
-var Slider = require('./slider');
-var Utils = require('./utils');
-var MACROS = require('../constants/macros');
-var CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let ReactDOM = require('react-dom');
+let ClassNames = require('classnames');
+let Slider = require('./slider');
+let Utils = require('./utils');
+let MACROS = require('../constants/macros');
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var VolumeControls = createReactClass({
+let VolumeControls = createReactClass({
   volumeChange: function(vol) {
-    var newVol = Utils.ensureNumber(vol, 1);
+    let newVol = Utils.ensureNumber(vol, 1);
     this.props.controller.setVolume(newVol);
     // unmute when volume is changed when muted
     if (newVol !== 0) {
@@ -19,7 +19,7 @@ var VolumeControls = createReactClass({
   },
 
   handleVolumeClick: function(event) {
-    var clickedBarVolume = Utils.getPropertyValue(event, 'currentTarget.dataset.volume');
+    let clickedBarVolume = Utils.getPropertyValue(event, 'currentTarget.dataset.volume');
     // For unit tests, since Jest doesn't currently support dataset and it also doesn't
     // allow overriding currentTarget. The right property to use here is currentTarget.
     // Note that currentTarget should never be null IRL.
@@ -34,7 +34,7 @@ var VolumeControls = createReactClass({
   },
 
   handleVolumeSliderChange: function(value) {
-    var newVolume = parseFloat(value);
+    let newVolume = parseFloat(value);
     this.volumeChange(newVolume);
   },
 
@@ -103,22 +103,22 @@ var VolumeControls = createReactClass({
    * @returns {ReactElement} - volumeBar react element
    */
   renderVolumeBars: function() {
-    var volumeBars = [];
+    let volumeBars = [];
 
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
       // Create each volume tick separately
-      var barVolume = (i + 1) / 10;
-      var turnedOn =
+      let barVolume = (i + 1) / 10;
+      let turnedOn =
         this.props.controller.state.volumeState.volume >= barVolume &&
         !this.props.controller.state.volumeState.muted;
-      var volumeClass = ClassNames({
+      let volumeClass = ClassNames({
         'oo-volume-bar': true,
-        'oo-on': turnedOn
+        'oo-on': turnedOn,
       });
-      var barStyle = {
+      let barStyle = {
         backgroundColor: this.props.skinConfig.controlBar.volumeControl.color
           ? this.props.skinConfig.controlBar.volumeControl.color
-          : this.props.skinConfig.general.accentColor
+          : this.props.skinConfig.general.accentColor,
       };
 
       volumeBars.push(
@@ -135,8 +135,8 @@ var VolumeControls = createReactClass({
       );
     }
 
-    var volumePercent = this.getVolumePercent();
-    var ariaValueText = this.getAriaValueText();
+    let volumePercent = this.getVolumePercent();
+    let ariaValueText = this.getAriaValueText();
 
     return (
       <span
@@ -163,7 +163,7 @@ var VolumeControls = createReactClass({
    * @returns {React.Element} volume slider element
    */
   renderVolumeSlider: function() {
-    var volume = this.props.controller.state.volumeState.muted
+    let volume = this.props.controller.state.volumeState.muted
       ? 0
       : parseFloat(this.props.controller.state.volumeState.volume);
     return (
@@ -198,7 +198,7 @@ var VolumeControls = createReactClass({
     } else {
       return this.renderVolumeBars();
     }
-  }
+  },
 });
 
 VolumeControls.propTypes = {
@@ -209,34 +209,34 @@ VolumeControls.propTypes = {
       volumeState: PropTypes.shape({
         volumeSliderVisible: PropTypes.bool.isRequired,
         volume: PropTypes.number.isRequired,
-        muted: PropTypes.bool.isRequired
-      })
+        muted: PropTypes.bool.isRequired,
+      }),
     }),
-    setVolume: PropTypes.func.isRequired
+    setVolume: PropTypes.func.isRequired,
   }),
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string
+      accentColor: PropTypes.string,
     }),
     controlBar: PropTypes.shape({
       volumeControl: PropTypes.shape({
-        color: PropTypes.string
-      })
-    })
-  })
+        color: PropTypes.string,
+      }),
+    }),
+  }),
 };
 
 VolumeControls.defaultProps = {
   skinConfig: {
     general: {
-      accentColor: '#448aff'
+      accentColor: '#448aff',
     },
     controlBar: {
       volumeControl: {
-        color: '#448aff'
-      }
-    }
-  }
+        color: '#448aff',
+      },
+    },
+  },
 };
 
 module.exports = VolumeControls;

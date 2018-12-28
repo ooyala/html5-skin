@@ -1,10 +1,10 @@
-var React = require('react');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var Logo = createReactClass({
+let Logo = createReactClass({
   render: function() {
-    var content = this.props.clickUrl ? (
+    let content = this.props.clickUrl ? (
       <a href={this.props.clickUrl} target={this.props.target}>
         <img width={this.props.width} height={this.props.height} src={this.props.imageUrl} />
       </a>
@@ -18,7 +18,7 @@ var Logo = createReactClass({
         {content}
       </div>
     );
-  }
+  },
 });
 
 Logo.propTypes = {
@@ -27,7 +27,7 @@ Logo.propTypes = {
   target: PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  style: PropTypes.object
+  style: PropTypes.object,
 };
 
 Logo.defaultProps = {
@@ -36,7 +36,7 @@ Logo.defaultProps = {
   target: '_blank',
   width: null,
   height: null,
-  style: {}
+  style: {},
 };
 
 module.exports = Logo;

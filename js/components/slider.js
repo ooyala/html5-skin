@@ -1,16 +1,20 @@
-var React = require('react'),
-    ClassNames = require('classnames'),
-    MACROS = require('../constants/macros'),
-    CONSTANTS = require('../constants/constants'),
-    Utils = require('./utils');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var Slider = createReactClass({
+let ClassNames = require('classnames');
+
+let MACROS = require('../constants/macros');
+
+let CONSTANTS = require('../constants/constants');
+
+let Utils = require('./utils');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let Slider = createReactClass({
 
   getInitialState: function() {
     return {
-      isDragging: false
+      isDragging: false,
     };
   },
 
@@ -36,13 +40,13 @@ var Slider = createReactClass({
 
   handleSliderColoring: function(props) {
     if (!Utils.isEdge()) {
-      var input = this.refs[this.props.itemRef];
-      var style = window.getComputedStyle(input, null);
+      let input = this.refs[this.props.itemRef];
+      let style = window.getComputedStyle(input, null);
 
-      var colorBeforeThumb = style.getPropertyValue('border-left-color');
-      var colorAfterThumb = style.getPropertyValue('border-right-color');
+      let colorBeforeThumb = style.getPropertyValue('border-left-color');
+      let colorAfterThumb = style.getPropertyValue('border-right-color');
 
-      var value = (props.value - props.minValue) / (props.maxValue - props.minValue);
+      let value = (props.value - props.minValue) / (props.maxValue - props.minValue);
       input.style.backgroundImage = [
         '-webkit-gradient(',
         'linear, ',
@@ -50,7 +54,7 @@ var Slider = createReactClass({
         'right top, ',
         'color-stop(' + value + ', ' + colorBeforeThumb + '), ',
         'color-stop(' + value + ', ' + colorAfterThumb + ')',
-        ')'
+        ')',
       ].join('');
     }
   },
@@ -59,7 +63,7 @@ var Slider = createReactClass({
     if (!event.target) {
       return;
     }
-    var value = Utils.ensureNumber(event.target.value, 0);
+    let value = Utils.ensureNumber(event.target.value, 0);
     // These browsers might return a super small fractional number instead of 0
     // in some cases, this is a workaround for that.
     if (Utils.isIE() || Utils.isEdge()) {
@@ -96,10 +100,10 @@ var Slider = createReactClass({
     if (!target || !window.MutationObserver) {
       return;
     }
-    var observer = new MutationObserver(this.triggerOnChangeForIe);
-    var observerConfig = {
+    let observer = new MutationObserver(this.triggerOnChangeForIe);
+    let observerConfig = {
       attributes: true,
-      attributeFilter: ['value']
+      attributeFilter: ['value'],
     };
     observer.observe(target, observerConfig);
     return observer;
@@ -112,19 +116,19 @@ var Slider = createReactClass({
    * @private
    */
   triggerOnChangeForIe: function() {
-    var domElement = this.refs[this.props.itemRef];
+    let domElement = this.refs[this.props.itemRef];
 
     if (domElement) {
       // Note that we use the attribute's value, rather than the element's value
       // property, which seems to have the wrong value some times.
-      var newValue = Utils.ensureNumber(domElement.getAttribute('value'), 0);
+      let newValue = Utils.ensureNumber(domElement.getAttribute('value'), 0);
       this.props.onChange(newValue);
     }
   },
 
   onMouseDown: function() {
     this.setState({
-      isDragging: true
+      isDragging: true,
     });
   },
 
@@ -132,7 +136,7 @@ var Slider = createReactClass({
     Utils.blurOnMouseUp(event);
 
     this.setState({
-      isDragging: false
+      isDragging: false,
     });
   },
 
@@ -150,7 +154,7 @@ var Slider = createReactClass({
    * @param {Event} event The keydown event object.
    */
   onKeyDown: function(event) {
-    var value;
+    let value;
 
     switch (event.key) {
       case CONSTANTS.KEY_VALUES.ARROW_UP:
@@ -184,11 +188,11 @@ var Slider = createReactClass({
    * @returns {Number} The next value to the left or right of the current value.
    */
   getNextSliderValue: function(forward) {
-    var value = 0;
-    var sign = forward ? 1 : -1;
-    var delta = Utils.ensureNumber(this.props.value) + Utils.ensureNumber(this.props.step, 1) * sign;
-    var min = Utils.ensureNumber(this.props.minValue, -Infinity);
-    var max = Utils.ensureNumber(this.props.maxValue, Infinity);
+    let value = 0;
+    let sign = forward ? 1 : -1;
+    let delta = Utils.ensureNumber(this.props.value) + Utils.ensureNumber(this.props.step, 1) * sign;
+    let min = Utils.ensureNumber(this.props.minValue, -Infinity);
+    let max = Utils.ensureNumber(this.props.maxValue, Infinity);
     value = Utils.constrainToRange(delta, min, max);
     value = Utils.toFixedNumber(value, 2);
     return value;
@@ -202,7 +206,7 @@ var Slider = createReactClass({
    * @returns {Object} An object with the following properties: valueMin, valueMax, valueNow, valueText.
    */
   getAriaValues: function() {
-    var aria = {};
+    let aria = {};
 
     if (this.props.usePercentageForAria) {
       aria.valueMin = 0;
@@ -223,10 +227,10 @@ var Slider = createReactClass({
   },
 
   render: function() {
-    var aria = this.getAriaValues();
+    let aria = this.getAriaValues();
 
     const className = ClassNames('oo-slider', this.props.className, {
-      'oo-dragging': this.state.isDragging
+      'oo-dragging': this.state.isDragging,
     });
 
     return (
@@ -254,7 +258,7 @@ var Slider = createReactClass({
         onKeyDown={this.isIeFixRequired() ? this.onKeyDown : null}
       />
     );
-  }
+  },
 });
 
 Slider.propTypes = {
@@ -267,7 +271,7 @@ Slider.propTypes = {
   usePercentageForAria: PropTypes.bool,
   settingName: PropTypes.string,
   className: PropTypes.string,
-  itemRef: PropTypes.string
+  itemRef: PropTypes.string,
 };
 
 Slider.defaultProps = Object.create(
@@ -279,8 +283,8 @@ Slider.defaultProps = Object.create(
         return Math.random()
           .toString(36)
           .substr(2, 10);
-      }
-    }
+      },
+    },
   }
 );
 

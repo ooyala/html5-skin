@@ -1,25 +1,25 @@
-var React = require('react');
+let React = require('react');
 
-var Tab = require('./tab');
-var helpers = require('./helpers');
-var CONSTANTS = require('../../constants/constants');
-var Utils = require('../utils');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let Tab = require('./tab');
+let helpers = require('./helpers');
+let CONSTANTS = require('../../constants/constants');
+let Utils = require('../utils');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var SPECIAL_LANGUAGES_MAP = {};
+let SPECIAL_LANGUAGES_MAP = {};
 SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE] = CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
 SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.NO_LINGUISTIC_CONTENT] = CONSTANTS.SKIN_TEXT.NO_LINGUISTIC_CONTENT;
 SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.UNCODED_LANGUAGES] = CONSTANTS.SKIN_TEXT.UNCODED_LANGUAGES;
 SPECIAL_LANGUAGES_MAP[CONSTANTS.LANGUAGE.MULTIPLE_LANGUAGES] = CONSTANTS.SKIN_TEXT.MULTIPLE_LANGUAGES;
 
-var MultiAudioTab = createReactClass({
+let MultiAudioTab = createReactClass({
   render: function() {
     // transform tracks to human readable format
-    var readableTracksList = this.props.audioTracksList.map(
+    let readableTracksList = this.props.audioTracksList.map(
       function(audioTrack) {
-        var displayLanguage = '';
-        var isSpecialLanguage = helpers.isSpecialLanguage(audioTrack.lang, SPECIAL_LANGUAGES_MAP);
+        let displayLanguage = '';
+        let isSpecialLanguage = helpers.isSpecialLanguage(audioTrack.lang, SPECIAL_LANGUAGES_MAP);
         if (isSpecialLanguage) {
           displayLanguage = helpers.getLocalizedSpecialLanguage(
             audioTrack.lang,
@@ -31,28 +31,28 @@ var MultiAudioTab = createReactClass({
           displayLanguage = helpers.getDisplayLanguage(this.props.languageList, audioTrack.lang);
         }
 
-        var displayLabel = helpers.getDisplayLabel(audioTrack);
+        let displayLabel = helpers.getDisplayLabel(audioTrack);
 
-        var languageElement = {
+        let languageElement = {
           enabled: audioTrack.enabled,
           language: displayLanguage,
           label: displayLabel,
           id: audioTrack.id,
-          lang: audioTrack.lang
+          lang: audioTrack.lang,
         };
 
         return languageElement;
       }.bind(this)
     );
 
-    var noLanguageText = Utils.getLocalizedString(
+    let noLanguageText = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE,
       this.props.localizableStrings
     );
-    var transformedTracksList = helpers.transformTracksList(readableTracksList, noLanguageText);
+    let transformedTracksList = helpers.transformTracksList(readableTracksList, noLanguageText);
 
-    var uniqueTracksList = helpers.getUniqueTracks(transformedTracksList);
+    let uniqueTracksList = helpers.getUniqueTracks(transformedTracksList);
 
     return (
       <Tab
@@ -62,7 +62,7 @@ var MultiAudioTab = createReactClass({
         header={this.props.header}
       />
     );
-  }
+  },
 });
 
 MultiAudioTab.propTypes = {
@@ -72,7 +72,7 @@ MultiAudioTab.propTypes = {
       id: PropTypes.string.isRequired,
       lang: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-      enabled: PropTypes.bool.isRequired
+      enabled: PropTypes.bool.isRequired,
     })
   ).isRequired,
   skinConfig: PropTypes.object,
@@ -80,7 +80,7 @@ MultiAudioTab.propTypes = {
   handleClick: PropTypes.func,
   language: PropTypes.string,
   languageList: PropTypes.array,
-  localizableStrings: PropTypes.object
+  localizableStrings: PropTypes.object,
 };
 
 module.exports = MultiAudioTab;

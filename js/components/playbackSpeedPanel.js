@@ -10,7 +10,6 @@ const MACROS = require('../constants/macros');
  * Screen modes of the menu.
  */
 class PlaybackSpeedPanel extends React.Component {
-
   constructor(props) {
     super(props);
     this.onMenuItemClick = this.onMenuItemClick.bind(this);
@@ -29,7 +28,7 @@ class PlaybackSpeedPanel extends React.Component {
   /**
    * Extracts and normalizes the configured speed options to use for the menu.
    * @private
-   * @return {Array} The array of sorted values to use for the menu items, constrained
+   * @returns {Array} The array of sorted values to use for the menu items, constrained
    * to min and max values and truncated to 2 decimals
    */
   getPlaybackSpeedOptions() {
@@ -57,7 +56,7 @@ class PlaybackSpeedPanel extends React.Component {
    * Maps playback speed options to menu item objects that contain the label, aria
    * labe, etc., that will be displayed by the menu panel
    * @private
-   * @return {Array} An array of menu items with the existing playback speed options
+   * @returns {Array} An array of menu items with the existing playback speed options
    */
   getMenuItems() {
     const { language, localizableStrings } = this.props;
@@ -82,7 +81,7 @@ class PlaybackSpeedPanel extends React.Component {
       const menuItem = {
         value: option,
         label: itemLabel,
-        ariaLabel: ariaLabel
+        ariaLabel: ariaLabel,
       };
       return menuItem;
     });
@@ -97,7 +96,7 @@ class PlaybackSpeedPanel extends React.Component {
       localizableStrings,
       controller,
       skinConfig,
-      onClose
+      onClose,
     } = this.props;
 
     const selectedValue = Utils.getPropertyValue(
@@ -133,19 +132,19 @@ PlaybackSpeedPanel.propTypes = {
   controller: PropTypes.shape({
     state: PropTypes.shape({
       playbackSpeedOptions: PropTypes.shape({
-        currentSpeed: PropTypes.number.isRequired
-      })
+        currentSpeed: PropTypes.number.isRequired,
+      }),
     }),
-    setPlaybackSpeed: PropTypes.func.isRequired
+    setPlaybackSpeed: PropTypes.func.isRequired,
   }),
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string
+      accentColor: PropTypes.string,
     }),
     playbackSpeed: PropTypes.shape({
-      options: PropTypes.arrayOf(PropTypes.number).isRequired
-    })
-  })
+      options: PropTypes.arrayOf(PropTypes.number).isRequired,
+    }),
+  }),
 };
 
 module.exports = PlaybackSpeedPanel;

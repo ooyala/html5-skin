@@ -1,17 +1,21 @@
-var React = require('react'),
-    ClassNames = require('classnames'),
-    AccessibleButton = require('./accessibleButton'),
-    AccessibleMenu = require('./higher-order/accessibleMenu'),
-    CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var ColorSelector = createReactClass({
+let ClassNames = require('classnames');
+
+let AccessibleButton = require('./accessibleButton');
+
+let AccessibleMenu = require('./higher-order/accessibleMenu');
+
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let ColorSelector = createReactClass({
   setClassname: function(item) {
     return ClassNames({
       'oo-item': true,
       'oo-item-selected': this.props.selectedColor === item && this.props.enabled,
-      'oo-disabled': !this.props.enabled
+      'oo-disabled': !this.props.enabled,
     });
   },
 
@@ -20,17 +24,17 @@ var ColorSelector = createReactClass({
   },
 
   render: function() {
-    var colorItems = [];
-    for (var i = 0; i < this.props.colors.length; i++) {
+    let colorItems = [];
+    for (let i = 0; i < this.props.colors.length; i++) {
       // accent color
-      var isSelected = this.props.selectedColor === this.props.colors[i];
-      var activeColorStyle = {};
+      let isSelected = this.props.selectedColor === this.props.colors[i];
+      let activeColorStyle = {};
       if (this.props.enabled && isSelected && this.props.skinConfig.general.accentColor) {
-        var selectedColorStyle = 'solid ';
+        let selectedColorStyle = 'solid ';
         selectedColorStyle += this.props.skinConfig.general.accentColor;
         activeColorStyle = { border: selectedColorStyle };
       }
-      var ariaLabel = this.props.ariaLabel + ' ' + this.props.colors[i];
+      let ariaLabel = this.props.ariaLabel + ' ' + this.props.colors[i];
 
       colorItems.push(
         <div
@@ -55,7 +59,7 @@ var ColorSelector = createReactClass({
         {colorItems}
       </div>
     );
-  }
+  },
 });
 
 ColorSelector = AccessibleMenu(ColorSelector, { useRovingTabindex: true });
@@ -68,9 +72,9 @@ ColorSelector.propTypes = {
   onColorChange: PropTypes.func,
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string
-    })
-  })
+      accentColor: PropTypes.string,
+    }),
+  }),
 };
 
 module.exports = ColorSelector;

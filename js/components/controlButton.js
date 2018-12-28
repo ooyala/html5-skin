@@ -12,7 +12,7 @@ const CONSTANTS = require('../constants/constants');
  * The component is picked at runtime by ControlButton depending on the props that
  * were passed to it.
  * @param {Object} props Component's props
- * @return {Component} React component
+ * @returns {Component} React component
  */
 class NonAccessibleButton extends React.Component {
   render() {
@@ -36,7 +36,6 @@ class NonAccessibleButton extends React.Component {
  * icons, highlighting, tooltips and accessibility.
  */
 class ControlButton extends React.Component {
-
   constructor(props) {
     super(props);
     this.storeRef = this.storeRef.bind(this);
@@ -65,7 +64,7 @@ class ControlButton extends React.Component {
    * enabled for this particular instance. Accessibility is enabled by default
    * unless the ariaHidden prop is set to false explicitly.
    * @private
-   * @return {Component} An AccessibleButton or NonAccessibleButton component, depending on the case
+   * @returns {Component} An AccessibleButton or NonAccessibleButton component, depending on the case
    */
   getButtonComponent() {
     let Component;
@@ -81,12 +80,12 @@ class ControlButton extends React.Component {
   /**
    * Extracts the default styles for the button icon from the skin.json.
    * @private
-   * @return {Object} An object with color and opacity properties which represent the default style of the button
+   * @returns {Object} An object with color and opacity properties which represent the default style of the button
    */
   getIconStyles() {
     const iconStyles = {
       color: Utils.getPropertyValue(this.props.skinConfig, 'controlBar.iconStyle.inactive.color'),
-      opacity: Utils.getPropertyValue(this.props.skinConfig, 'controlBar.iconStyle.inactive.opacity')
+      opacity: Utils.getPropertyValue(this.props.skinConfig, 'controlBar.iconStyle.inactive.opacity'),
     };
     return iconStyles;
   }
@@ -153,7 +152,7 @@ class ControlButton extends React.Component {
    * Extracts the responsive UI multiplier value from the skin config depending on the
    * responsive view that is currently active.
    * @private
-   * @return {Number} The numeric value of the UI multiplier that matches the current responsive view.
+   * @returns {Number} The numeric value of the UI multiplier that matches the current responsive view.
    */
   getResponsiveUiMultiplier() {
     const responsiveView = this.props.responsiveView;
@@ -166,7 +165,7 @@ class ControlButton extends React.Component {
    * Determines whether or not tooltips are enabled considering the current
    * platform and skin configuration.
    * @private
-   * @return {Boolean} True if tooltips are enabled, false otherwise
+   * @returns {Boolean} True if tooltips are enabled, false otherwise
    */
   areTooltipsEnabled() {
     let enabled = false;
@@ -185,7 +184,7 @@ class ControlButton extends React.Component {
    * Determines the vertical offset value to use for tooltips depending on the
    * props that were passed to this component.
    * @private
-   * @return {Number} A numerical value representing the vertical offset at which tooltips will be rendered
+   * @returns {Number} A numerical value representing the vertical offset at which tooltips will be rendered
    */
   getTooltipVerticalOffset() {
     let tooltipVerticalOffset;
@@ -207,7 +206,7 @@ class ControlButton extends React.Component {
    * alignment or returns the default tooltip alignment value.
    * @private
    * @param {type} key An id (usually the focusId prop) that identifies the button whose tooltip alignment we want to determine
-   * @return {string} A value from CONSTANTS.TOOLTIP_ALIGNMENT which represents the tooltip alignment
+   * @returns {string} A value from CONSTANTS.TOOLTIP_ALIGNMENT which represents the tooltip alignment
    */
   getTooltipAlignment(key) {
     if (typeof this.props.getTooltipAlignment === 'function') {
@@ -305,33 +304,33 @@ ControlButton.propTypes = {
   onClick: PropTypes.func,
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string.isRequired
+      accentColor: PropTypes.string.isRequired,
     }),
     responsive: PropTypes.shape({
-      breakpoints: PropTypes.object
+      breakpoints: PropTypes.object,
     }),
     controlBar: PropTypes.shape({
       height: PropTypes.number.isRequired,
       iconStyle: PropTypes.shape({
         active: PropTypes.shape({
           color: PropTypes.string.isRequired,
-          opacity: PropTypes.number.isRequired
+          opacity: PropTypes.number.isRequired,
         }),
         inactive: PropTypes.shape({
           color: PropTypes.string.isRequired,
-          opacity: PropTypes.number.isRequired
-        })
+          opacity: PropTypes.number.isRequired,
+        }),
       }),
       tooltips: PropTypes.shape({
-        enabled: PropTypes.bool
-      })
-    })
+        enabled: PropTypes.bool,
+      }),
+    }),
   }),
   controller: PropTypes.shape({
     state: PropTypes.shape({
-      isMobile: PropTypes.bool.isRequired
-    })
-  })
+      isMobile: PropTypes.bool.isRequired,
+    }),
+  }),
 };
 
 module.exports = ControlButton;

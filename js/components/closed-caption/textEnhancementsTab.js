@@ -1,18 +1,24 @@
-var React = require('react'),
-    ClassNames = require('classnames'),
-    Utils = require('../utils'),
-    AccessibleButton = require('../accessibleButton'),
-    AccessibleMenu = require('../higher-order/accessibleMenu'),
-    CONSTANTS = require('../../constants/constants'),
-    SelectionContainer = require('./selectionContainer');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var TextEnhancementsTab = createReactClass({
+let ClassNames = require('classnames');
+
+let Utils = require('../utils');
+
+let AccessibleButton = require('../accessibleButton');
+
+let AccessibleMenu = require('../higher-order/accessibleMenu');
+
+let CONSTANTS = require('../../constants/constants');
+
+let SelectionContainer = require('./selectionContainer');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let TextEnhancementsTab = createReactClass({
   getInitialState: function() {
     return {
       selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement,
-      textEnhancements: ['Uniform', 'Depressed', 'Raised', 'Shadow']
+      textEnhancements: ['Uniform', 'Depressed', 'Raised', 'Shadow'],
     };
   },
 
@@ -22,7 +28,7 @@ var TextEnhancementsTab = createReactClass({
     }
     this.props.controller.onClosedCaptionChange('textEnhancement', textEnhancement);
     this.setState({
-      selectedTextEnhancement: textEnhancement
+      selectedTextEnhancement: textEnhancement,
     });
   },
 
@@ -36,26 +42,26 @@ var TextEnhancementsTab = createReactClass({
         this.props.closedCaptionOptions.textEnhancement === item &&
         this.props.closedCaptionOptions.enabled &&
         elementType === 'label',
-      'oo-disabled': !this.props.closedCaptionOptions.enabled
+      'oo-disabled': !this.props.closedCaptionOptions.enabled,
     });
   },
 
   render: function() {
-    var textEnhancementTitle = Utils.getLocalizedString(
+    let textEnhancementTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENT,
       this.props.localizableStrings
     );
-    var textEnhancementSelection = Utils.getLocalizedString(
+    let textEnhancementSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textEnhancement.toUpperCase()],
       this.props.localizableStrings
     );
-    var textEnhancementItems = [];
-    for (var i = 0; i < this.state.textEnhancements.length; i++) {
+    let textEnhancementItems = [];
+    for (let i = 0; i < this.state.textEnhancements.length; i++) {
       // accent color
-      var isSelected = this.props.closedCaptionOptions.textEnhancement === this.state.textEnhancements[i];
-      var selectedTextEnhancementStyle = {};
+      let isSelected = this.props.closedCaptionOptions.textEnhancement === this.state.textEnhancements[i];
+      let selectedTextEnhancementStyle = {};
       if (
         this.props.closedCaptionOptions.enabled &&
         this.props.skinConfig.general.accentColor &&
@@ -63,7 +69,7 @@ var TextEnhancementsTab = createReactClass({
       ) {
         selectedTextEnhancementStyle = { color: this.props.skinConfig.general.accentColor };
       }
-      var itemLabel = Utils.getLocalizedString(
+      let itemLabel = Utils.getLocalizedString(
         this.props.language,
         CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
         this.props.localizableStrings
@@ -112,7 +118,7 @@ var TextEnhancementsTab = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab, { useRovingTabindex: true });
@@ -122,17 +128,17 @@ TextEnhancementsTab.propTypes = {
   localizableStrings: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
   controller: PropTypes.shape({
     toggleClosedCaptionEnabled: PropTypes.func.isRequired,
-    onClosedCaptionChange: PropTypes.func.isRequired
+    onClosedCaptionChange: PropTypes.func.isRequired,
   }),
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
-      accentColor: PropTypes.string
-    })
+      accentColor: PropTypes.string,
+    }),
   }),
   closedCaptionOptions: PropTypes.shape({
     textEnhancement: PropTypes.string,
-    enabled: PropTypes.bool
-  })
+    enabled: PropTypes.bool,
+  }),
 };
 
 module.exports = TextEnhancementsTab;

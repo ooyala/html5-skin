@@ -1,23 +1,26 @@
-var React = require('react'),
-    DataSelector = require('../dataSelector'),
-    CONSTANTS = require('../../constants/constants'),
-    values = require('lodash.values');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var LanguageTab = createReactClass({
+let DataSelector = require('../dataSelector');
+
+let CONSTANTS = require('../../constants/constants');
+
+let values = require('lodash.values');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let LanguageTab = createReactClass({
   getInitialState: function() {
     return {
       selectedLanguage: this.props.closedCaptionOptions.availableLanguages.locale[
         this.props.closedCaptionOptions.language
-      ]
+      ],
     };
   },
 
   changeLanguage: function(language) {
-    var availableLanguages = this.props.closedCaptionOptions.availableLanguages;
-    var invertedLocale = {};
-    for (var i = 0; i < availableLanguages.languages.length; i++) {
+    let availableLanguages = this.props.closedCaptionOptions.availableLanguages;
+    let invertedLocale = {};
+    for (let i = 0; i < availableLanguages.languages.length; i++) {
       invertedLocale[availableLanguages.locale[availableLanguages.languages[i]]] =
         availableLanguages.languages[i];
     }
@@ -28,7 +31,7 @@ var LanguageTab = createReactClass({
 
     this.props.controller.onClosedCaptionChange('language', invertedLocale[language]);
     this.setState({
-      selectedLanguage: language
+      selectedLanguage: language,
     });
   },
 
@@ -47,11 +50,11 @@ var LanguageTab = createReactClass({
         />
       </div>
     );
-  }
+  },
 });
 
 LanguageTab.propTypes = {
-  dataItemsPerPage: PropTypes.objectOf(PropTypes.number)
+  dataItemsPerPage: PropTypes.objectOf(PropTypes.number),
 };
 
 LanguageTab.defaultProps = {
@@ -59,9 +62,9 @@ LanguageTab.defaultProps = {
     xs: 1,
     sm: 4,
     md: 8,
-    lg: 8
+    lg: 8,
   },
-  responsiveView: 'md'
+  responsiveView: 'md',
 };
 
 module.exports = LanguageTab;

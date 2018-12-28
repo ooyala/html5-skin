@@ -22,13 +22,13 @@ const MenuPanelItem = ({
   onClick,
 }) => {
   const itemClassName = classNames('oo-menu-panel-item', {
-    'oo-selected': isSelected
+    'oo-selected': isSelected,
   });
   const itemButtonClassName = classNames('oo-menu-btn', buttonClassName, {
-    'oo-selected': isSelected
+    'oo-selected': isSelected,
   });
   const buttonStyle = {
-    color: isSelected ? accentColor : null
+    color: isSelected ? accentColor : null,
   };
 
   return (
@@ -60,7 +60,7 @@ const MenuPanelItem = ({
 MenuPanelItem.propTypes = {
   itemValue: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.number
+    PropTypes.number,
   ]).isRequired,
   itemLabel: PropTypes.string.isRequired,
   ariaLabel: PropTypes.string.isRequired,

@@ -8,7 +8,6 @@ const utils = require('./utils');
  * The panel to display that player currently casting to receiver
  */
 class CastPanel extends React.Component {
-
   render() {
     const connectedText = utils.getLocalizedString(
       this.props.language,
@@ -16,7 +15,7 @@ class CastPanel extends React.Component {
       this.props.localizableStrings
     );
     const castPanelClass = ClassNames('oo-info-panel-cast', this.props.className);
-    
+
     return (
       <div className={castPanelClass}>
         <p>{connectedText} <span>{this.props.device}</span></p>

@@ -1,16 +1,22 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
-var React = require('react'),
-    AccessibleButton = require('./accessibleButton'),
-    AccessibleMenu = require('./higher-order/accessibleMenu'),
-    CONSTANTS = require('../constants/constants'),
-    Utils = require('./utils'),
-    ClassNames = require('classnames'),
-    Icon = require('./icon');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var Tabs = createReactClass({
+let AccessibleButton = require('./accessibleButton');
+
+let AccessibleMenu = require('./higher-order/accessibleMenu');
+
+let CONSTANTS = require('../constants/constants');
+
+let Utils = require('./utils');
+
+let ClassNames = require('classnames');
+
+let Icon = require('./icon');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let Tabs = createReactClass({
   highlight: function(evt) {
     if (this.props.skinConfig.general.accentColor) {
       evt.target.style.color = this.props.skinConfig.general.accentColor;
@@ -25,14 +31,14 @@ var Tabs = createReactClass({
 
   getInitialState: function() {
     return {
-      tabActive: this.props.tabActive
+      tabActive: this.props.tabActive,
     };
   },
 
   componentDidMount: function() {
-    var index = this.state.tabActive;
-    var selectedPanel = this.refs['tab-panel'];
-    var selectedMenu = this.refs['tab-menu-' + index];
+    let index = this.state.tabActive;
+    let selectedPanel = this.refs['tab-panel'];
+    let selectedMenu = this.refs['tab-menu-' + index];
 
     if (this.props.onMount) {
       this.props.onMount(index, selectedPanel, selectedMenu);
@@ -48,13 +54,13 @@ var Tabs = createReactClass({
   setActive: function(index, e) {
     e.preventDefault();
 
-    var onAfterChange = this.props.onAfterChange;
-    var onBeforeChange = this.props.onBeforeChange;
-    var selectedPanel = this.refs['tab-panel'];
-    var selectedTabMenu = this.refs['tab-menu-' + index];
+    let onAfterChange = this.props.onAfterChange;
+    let onBeforeChange = this.props.onBeforeChange;
+    let selectedPanel = this.refs['tab-panel'];
+    let selectedTabMenu = this.refs['tab-menu-' + index];
 
     if (onBeforeChange) {
-      var cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
+      let cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
       if (cancel === false) {
         return;
       }
@@ -76,7 +82,7 @@ var Tabs = createReactClass({
       this.props.children = [this.props.children];
     }
 
-    var menuItems = this.props.children
+    let menuItems = this.props.children
       .map(function(panel) {
         return typeof panel === 'function' ? panel() : panel;
       })
@@ -85,19 +91,19 @@ var Tabs = createReactClass({
       })
       .map(
         function(panel, index) {
-          var tabIndex = index + 1;
-          var ref = 'tab-menu-' + tabIndex;
-          var title = panel.props.title;
-          var activeTabStyle = {};
-          var isSelected = this.state.tabActive === tabIndex;
+          let tabIndex = index + 1;
+          let ref = 'tab-menu-' + tabIndex;
+          let title = panel.props.title;
+          let activeTabStyle = {};
+          let isSelected = this.state.tabActive === tabIndex;
 
-          var classes = ClassNames('tabs-menu-item', 'tabs-menu-item-' + index, {
-            'is-active': isSelected
+          let classes = ClassNames('tabs-menu-item', 'tabs-menu-item-' + index, {
+            'is-active': isSelected,
           });
 
           // accent color
           if (isSelected && this.props.skinConfig.general.accentColor) {
-            var activeMenuColor = 'solid ';
+            let activeMenuColor = 'solid ';
             activeMenuColor += this.props.skinConfig.general.accentColor;
             activeTabStyle = { borderBottom: activeMenuColor };
           }
@@ -142,8 +148,8 @@ var Tabs = createReactClass({
   },
 
   getSelectedPanel: function() {
-    var index = this.state.tabActive - 1;
-    var panel = this.props.children[index];
+    let index = this.state.tabActive - 1;
+    let panel = this.props.children[index];
 
     return (
       <div ref="tab-panel" className="tab-panel" role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
@@ -188,11 +194,11 @@ var Tabs = createReactClass({
     if (menuItem.offsetLeft < this.tabsNavigationElement.scrollLeft) {
       this.tabsNavigationElement.scrollLeft = menuItem.offsetLeft;
     } else {
-      var menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
-      //getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
-      //but we can mock getBoundingClientRect.
-      var tabsNavigationElementClientWidth = this.tabsNavigationElement.clientWidth || this.tabsNavigationElement.getBoundingClientRect().width;
-      var maxVisiblePoint = this.tabsNavigationElement.scrollLeft + tabsNavigationElementClientWidth;
+      let menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
+      // getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
+      // but we can mock getBoundingClientRect.
+      let tabsNavigationElementClientWidth = this.tabsNavigationElement.clientWidth || this.tabsNavigationElement.getBoundingClientRect().width;
+      let maxVisiblePoint = this.tabsNavigationElement.scrollLeft + tabsNavigationElementClientWidth;
       // Element overflows from the currently visible navigation area. Adjust the
       // navigation's scroll value so that the whole menu item fits inside the visible area.
       if (menuItemRightEdge > maxVisiblePoint) {
@@ -202,15 +208,15 @@ var Tabs = createReactClass({
   },
 
   render: function() {
-    var className = ClassNames('tabs', this.props.className);
+    let className = ClassNames('tabs', this.props.className);
 
-    var leftScrollButton = ClassNames({
+    let leftScrollButton = ClassNames({
       'oo-left-tab-button': true,
-      'oo-left-tab-button-active': this.props.showScrollButtons
+      'oo-left-tab-button-active': this.props.showScrollButtons,
     });
-    var rightScrollButton = ClassNames({
+    let rightScrollButton = ClassNames({
       'oo-right-tab-button': true,
-      'oo-right-tab-button-active': this.props.showScrollButtons
+      'oo-right-tab-button-active': this.props.showScrollButtons,
     });
 
     return (
@@ -235,7 +241,7 @@ var Tabs = createReactClass({
         </a>
       </div>
     );
-  }
+  },
 });
 
 Tabs = AccessibleMenu(Tabs, { selector: '.tabs-menu', useRovingTabindex: true });
@@ -244,17 +250,17 @@ Tabs.propTypes = {
   className: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.string,
-    PropTypes.object
+    PropTypes.object,
   ]),
   tabActive: PropTypes.number,
   onMount: PropTypes.func,
   onBeforeChange: PropTypes.func,
   onAfterChange: PropTypes.func,
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired,
 };
 
 Tabs.defaultProps = {
-  tabActive: 1
+  tabActive: 1,
 };
 
 module.exports = Tabs;
@@ -263,10 +269,10 @@ Tabs.Panel = createReactClass({
   displayName: 'Panel',
   propTypes: {
     title: PropTypes.string.isRequired,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired
+    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired,
   },
 
   render: function() {
     return <span>{this.props.children}</span>;
-  }
+  },
 });

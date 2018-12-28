@@ -33,7 +33,7 @@ class PlayingScreen extends React.Component {
     this.state = {
       isVrNotificationHidden: false,
       isVrIconHidden: false,
-      timer: null
+      timer: null,
     };
 
     this.handlePlayerMouseMove = this.handlePlayerMouseMove.bind(this);
@@ -278,7 +278,7 @@ class PlayingScreen extends React.Component {
         ) + 's';
       style = {
         animationDuration: duration,
-        webkitAnimationDuration: duration
+        webkitAnimationDuration: duration,
       };
     }
     return style;
@@ -366,7 +366,7 @@ class PlayingScreen extends React.Component {
       (skipControlsEnabled && this.props.controller.state.controlBarVisible)
     );
     const className = ClassNames('oo-state-screen oo-playing-screen', {
-      'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible
+      'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible,
     });
 
     // Always show the poster image on cast session
@@ -381,14 +381,14 @@ class PlayingScreen extends React.Component {
     const stateScreenPosterClass = ClassNames({
       'oo-blur': true,
       'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
-      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small'
+      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small',
     });
 
     // Depends of there's another element/panel at the center of the player we will push down
     // the cast panel to allow both elements be visible to the user
     const castPanelClass = ClassNames({
-      'oo-info-panel-cast-bottom': skipControlsEnabled
-    })
+      'oo-info-panel-cast-bottom': skipControlsEnabled,
+    });
 
     // Add a blur only when the content it being casted on a chromecast device and a fading layer
     if (this.props.controller.state.cast.connected) {
@@ -400,7 +400,7 @@ class PlayingScreen extends React.Component {
     const fadeUnderlayClass = ClassNames({
       'oo-fading-underlay': true,
       'oo-fading-underlay-active': this.props.controller.state.cast.connected,
-      'oo-animate-fade': true
+      'oo-animate-fade': true,
     });
 
     return (
@@ -491,4 +491,4 @@ class PlayingScreen extends React.Component {
 
 const PlayingScreenWithAutoHide = withAutoHide(PlayingScreen);
 
-export {PlayingScreen, PlayingScreenWithAutoHide};
+export { PlayingScreen, PlayingScreenWithAutoHide };

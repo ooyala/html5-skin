@@ -7,29 +7,34 @@
  * @class AdPanel
  * @constructor
  */
-var React = require('react'),
-    CONSTANTS = require('../constants/constants'),
-    Spinner = require('./spinner'),
-    ClassNames = require('classnames'),
-    Utils = require('./utils'),
-    Icon = require('../components/icon');
-var createReactClass = require('create-react-class');
+let React = require('react');
 
-var AdPanelTopBarItem = createReactClass({
+let CONSTANTS = require('../constants/constants');
+
+let Spinner = require('./spinner');
+
+let ClassNames = require('classnames');
+
+let Utils = require('./utils');
+
+let Icon = require('../components/icon');
+let createReactClass = require('create-react-class');
+
+let AdPanelTopBarItem = createReactClass({
   render: function() {
     return (
       <a className={this.props.itemClassName} onClick={this.props.onButtonClicked}>
         {this.props.children}
       </a>
     );
-  }
+  },
 });
 
-var AdPanel = createReactClass({
+let AdPanel = createReactClass({
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
-      adEndTime: this.props.controller.state.adEndTime
+      adEndTime: this.props.controller.state.adEndTime,
     };
   },
 
@@ -55,10 +60,10 @@ var AdPanel = createReactClass({
   },
 
   populateAdTopBar: function() {
-    var adTopBarItems = [];
+    let adTopBarItems = [];
 
     // // Ad title
-    var adTitle = 'Unknown';
+    let adTitle = 'Unknown';
     if (
       this.props.currentAdsInfo &&
       this.props.currentAdsInfo.currentAdItem &&
@@ -72,7 +77,7 @@ var AdPanel = createReactClass({
     }
     // AMC puts "Unknown" in the name field if ad name unavailable
     if (this.isValidAdPlaybackInfo(adTitle) && this.props.componentWidth > 560) {
-      var adTitleDiv = (
+      let adTitleDiv = (
         <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="oo-ad-title">
           {adTitle}
         </AdPanelTopBarItem>
@@ -81,19 +86,19 @@ var AdPanel = createReactClass({
     }
 
     // Ad playback Info
-    var adPlaybackInfo = Utils.getLocalizedString(
+    let adPlaybackInfo = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.AD,
       this.props.localizableStrings
     );
-    var currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
-    var totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
+    let currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
+    let totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
     if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
       adPlaybackInfo = adPlaybackInfo + ': (' + currentAdIndex + '/' + totalNumberOfAds + ')';
     }
 
     if (this.props.skinConfig.adScreen.showAdCountDown) {
-      var remainingTime = this.props.controller.getAdRemainingTime();
+      let remainingTime = this.props.controller.getAdRemainingTime();
 
       if (isFinite(remainingTime)) {
         remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
@@ -103,7 +108,7 @@ var AdPanel = createReactClass({
       }
     }
 
-    var adPlaybackInfoDiv = (
+    let adPlaybackInfoDiv = (
       <AdPanelTopBarItem ref="adPlaybackInfo" key="adPlaybackInfo" itemClassName="oo-ad-playback-info">
         {adPlaybackInfo}
       </AdPanelTopBarItem>
@@ -111,24 +116,24 @@ var AdPanel = createReactClass({
     adTopBarItems.push(adPlaybackInfoDiv);
 
     // Flexible space
-    var flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" itemClassName="oo-flexible-space" />;
+    let flexibleSpaceDiv = <AdPanelTopBarItem key="flexibleSpace" itemClassName="oo-flexible-space" />;
     adTopBarItems.push(flexibleSpaceDiv);
 
     // Learn more
-    var learnMoreClass = ClassNames({
+    let learnMoreClass = ClassNames({
       'oo-learn-more': true,
-      'oo-hidden': !this.props.currentAdsInfo.currentAdItem.hasClickUrl
+      'oo-hidden': !this.props.currentAdsInfo.currentAdItem.hasClickUrl,
     });
     if (
       this.props.currentAdsInfo.currentAdItem !== null &&
       this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)
     ) {
-      var learnMoreText = Utils.getLocalizedString(
+      let learnMoreText = Utils.getLocalizedString(
         this.props.language,
         CONSTANTS.SKIN_TEXT.LEARN_MORE,
         this.props.localizableStrings
       );
-      var learnMoreButtonDiv = (
+      let learnMoreButtonDiv = (
         <AdPanelTopBarItem
           key="learnMoreButton"
           ref="learnMoreButton"
@@ -143,17 +148,17 @@ var AdPanel = createReactClass({
     }
 
     // Skip
-    var skipButtonClass = ClassNames({
+    let skipButtonClass = ClassNames({
       'oo-skip-button': true,
       'oo-visible': this.props.currentAdsInfo.skipAdButtonEnabled,
-      'oo-enabled': this.props.currentAdsInfo.skipAdButtonEnabled
+      'oo-enabled': this.props.currentAdsInfo.skipAdButtonEnabled,
     });
-    var skipButtonText = Utils.getLocalizedString(
+    let skipButtonText = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.SKIP_AD,
       this.props.localizableStrings
     );
-    var skipButtonDiv = (
+    let skipButtonDiv = (
       <AdPanelTopBarItem
         key="skipButton"
         ref="skipButton"
@@ -170,11 +175,11 @@ var AdPanel = createReactClass({
   },
 
   render: function() {
-    var spinner = null;
+    let spinner = null;
     if (this.props.controller.state.buffering === true) {
       spinner = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />;
     }
-    var adTopBarItems = this.populateAdTopBar();
+    let adTopBarItems = this.populateAdTopBar();
     return (
       <div className="oo-ad-screen-panel">
         {spinner}
@@ -189,7 +194,7 @@ var AdPanel = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 AdPanel.defaultProps = {
@@ -204,10 +209,10 @@ AdPanel.defaultProps = {
       hasClickUrl: false,
       name: '',
       indexInPod: 0,
-      isLive: false
-    }
+      isLive: false,
+    },
   },
-  adEndTime: 0
+  adEndTime: 0,
 };
 
 module.exports = AdPanel;

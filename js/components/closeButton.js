@@ -1,11 +1,14 @@
-var React = require('react'),
-    AccessibleButton = require('./accessibleButton'),
-    Icon = require('../components/icon'),
-    CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var CloseButton = createReactClass({
+let AccessibleButton = require('./accessibleButton');
+
+let Icon = require('../components/icon');
+
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let CloseButton = createReactClass({
   render: function() {
     return (
       <AccessibleButton
@@ -18,17 +21,17 @@ var CloseButton = createReactClass({
         <Icon {...this.props} icon="dismiss" className={this.props.className} />
       </AccessibleButton>
     );
-  }
+  },
 });
 
 CloseButton.propTypes = {
   closeAction: PropTypes.func,
   fontStyleClass: PropTypes.string,
-  cssClass: PropTypes.string
+  cssClass: PropTypes.string,
 };
 
 CloseButton.defaultProps = {
-  cssClass: 'oo-close-button'
+  cssClass: 'oo-close-button',
 };
 
 module.exports = CloseButton;

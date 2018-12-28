@@ -1,14 +1,14 @@
-var React = require('react');
-var CustomScrollArea = require('../customScrollArea');
-var Icon = require('../icon');
-var AccessibleButton = require('../accessibleButton');
-var AccessibleMenu = require('../higher-order/accessibleMenu');
-var classnames = require('classnames');
-var CONSTANTS = require('../../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let CustomScrollArea = require('../customScrollArea');
+let Icon = require('../icon');
+let AccessibleButton = require('../accessibleButton');
+let AccessibleMenu = require('../higher-order/accessibleMenu');
+let classnames = require('classnames');
+let CONSTANTS = require('../../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var Tab = createReactClass({
+let Tab = createReactClass({
   handleClick: function(id) {
     if (typeof this.props.handleClick === 'function') {
       this.props.handleClick(id);
@@ -34,7 +34,7 @@ var Tab = createReactClass({
                   key={item.id}
                   role={CONSTANTS.ARIA_ROLES.PRESENTATION}
                   className={classnames('oo-cc-ma-menu__element', {
-                    'oo-cc-ma-menu__element--active': item.enabled
+                    'oo-cc-ma-menu__element--active': item.enabled,
                   })}
                 >
                   <AccessibleButton
@@ -62,7 +62,7 @@ var Tab = createReactClass({
         </CustomScrollArea>
       </div>
     );
-  }
+  },
 });
 
 Tab = AccessibleMenu(Tab, { useRovingTabindex: false });
@@ -74,10 +74,10 @@ Tab.defaultProps = {
         xs: { id: 'xs' },
         sm: { id: 'sm' },
         md: { id: 'md' },
-        lg: { id: 'lg' }
-      }
-    }
-  }
+        lg: { id: 'lg' },
+      },
+    },
+  },
 };
 
 Tab.propTypes = {
@@ -87,11 +87,11 @@ Tab.propTypes = {
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
-      enabled: PropTypes.bool.isRequired
+      enabled: PropTypes.bool.isRequired,
     })
   ).isRequired,
   skinConfig: PropTypes.object,
-  handleClick: PropTypes.func
+  handleClick: PropTypes.func,
 };
 
 module.exports = Tab;

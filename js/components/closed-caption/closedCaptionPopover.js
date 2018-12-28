@@ -1,13 +1,19 @@
-var React = require('react'),
-    CONSTANTS = require('../../constants/constants'),
-    Utils = require('../utils'),
-    AccessibleMenu = require('../higher-order/accessibleMenu'),
-    AccessibleButton = require('../accessibleButton'),
-    OnOffSwitch = require('./onOffSwitch'),
-    CloseButton = require('../closeButton');
-var createReactClass = require('create-react-class');
+let React = require('react');
 
-var ClosedCaptionPopover = createReactClass({
+let CONSTANTS = require('../../constants/constants');
+
+let Utils = require('../utils');
+
+let AccessibleMenu = require('../higher-order/accessibleMenu');
+
+let AccessibleButton = require('../accessibleButton');
+
+let OnOffSwitch = require('./onOffSwitch');
+
+let CloseButton = require('../closeButton');
+let createReactClass = require('create-react-class');
+
+let ClosedCaptionPopover = createReactClass({
   handleMoreCaptions: function() {
     if (this.moreOptionsBtn) {
       // When the Closed Captions screen is closed it will go straight to the control bar without
@@ -25,12 +31,12 @@ var ClosedCaptionPopover = createReactClass({
 
   handleClose: function() {
     this.props.togglePopoverAction({
-      restoreToggleButtonFocus: true
+      restoreToggleButtonFocus: true,
     });
   },
 
   render: function() {
-    var captionBtnText = Utils.getLocalizedString(
+    let captionBtnText = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.CC_OPTIONS,
       this.props.localizableStrings
@@ -63,7 +69,7 @@ var ClosedCaptionPopover = createReactClass({
         </li>
       </ul>
     );
-  }
+  },
 });
 
 // Extend with AccessibleMenu features

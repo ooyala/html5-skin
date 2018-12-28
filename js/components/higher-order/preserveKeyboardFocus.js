@@ -13,12 +13,10 @@ const PropTypes = require('prop-types');
  * Composed components must declare listeners for the onFocus and onBlur events.
  * @public
  * @param {Component} ComposedComponent The component to extend
- * @return {Component} A component extended with PreserveKeyboardFocus functionality
+ * @returns {Component} A component extended with PreserveKeyboardFocus functionality
  */
 const preserveKeyboardFocus = function(ComposedComponent) {
-
   class PreserveKeyboardFocus extends React.Component {
-
     constructor(props) {
       super(props);
       this.onFocus = this.onFocus.bind(this);
@@ -106,18 +104,17 @@ const preserveKeyboardFocus = function(ComposedComponent) {
         </ComposedComponent>
       );
     }
-
   }
 
   PreserveKeyboardFocus.propTypes = {
     playerState: PropTypes.string,
     controller: PropTypes.shape({
       state: PropTypes.shape({
-        focusedControl: PropTypes.string
+        focusedControl: PropTypes.string,
       }),
       setFocusedControl: PropTypes.func.isRequired,
-      startHideControlBarTimer: PropTypes.func.isRequired
-    })
+      startHideControlBarTimer: PropTypes.func.isRequired,
+    }),
   };
 
   return PreserveKeyboardFocus;

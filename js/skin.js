@@ -1,6 +1,9 @@
 /** ******************************************************************
   RENDERER PLACEHOLDER
 *********************************************************************/
+import { PlayingScreen, PlayingScreenWithAutoHide } from './views/playingScreen';
+import { PauseScreen, PauseScreenWithAutoHide } from './views/pauseScreen';
+
 const React = require('react');
 const Utils = require('./components/utils');
 const CONSTANTS = require('./constants/constants');
@@ -10,7 +13,7 @@ const ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPan
 const DiscoveryPanel = require('./components/discoveryPanel');
 const VideoQualityPanel = require('./components/videoQualityPanel');
 const PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
-const ClosedCaptionMultiAudioMenu = 
+const ClosedCaptionMultiAudioMenu =
   require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 const SharePanel = require('./components/sharePanel');
 const VolumePanel = require('./components/volumePanel');
@@ -22,9 +25,6 @@ const ErrorScreen = require('./views/errorScreen');
 const ContentScreen = require('./views/contentScreen');
 const ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
 const createReactClass = require('create-react-class');
-
-import {PlayingScreen, PlayingScreenWithAutoHide} from './views/playingScreen';
-import {PauseScreen, PauseScreenWithAutoHide} from './views/pauseScreen';
 const AudioOnlyScreen = require('./views/audioOnlyScreen');
 const ClassNames = require('classnames');
 
@@ -50,7 +50,7 @@ const Skin = createReactClass({
       isVrMouseDown: false,
       isVrMouseMove: false,
       xVrMouseStart: 0,
-      yVrMouseStart: 0
+      yVrMouseStart: 0,
     };
   },
 
@@ -98,8 +98,8 @@ const Skin = createReactClass({
           duration,
           buffered,
           currentAdPlayhead,
-          totalTime
-        }
+          totalTime,
+        };
       }, resolve);
     });
   },
@@ -123,18 +123,16 @@ const Skin = createReactClass({
    * @returns {string} The current playhead time in (HH:)MM:SS format or null if the current playhead is invalid or timeshift is 0
    */
   getPlayheadTime: function() {
-    let playheadTime = isFinite(parseInt(this.state.currentPlayhead)) ?
-      Utils.formatSeconds(parseInt(this.state.currentPlayhead))
-      :
-      null;
-    var isLiveStream = this.state.isLiveStream;
-    var timeShift = this.state.currentPlayhead - this.state.duration;
+    let playheadTime = isFinite(parseInt(this.state.currentPlayhead))
+      ? Utils.formatSeconds(parseInt(this.state.currentPlayhead))
+      : null;
+    let isLiveStream = this.state.isLiveStream;
+    let timeShift = this.state.currentPlayhead - this.state.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
-    var isLiveNow = Math.abs(timeShift) < 1;
-    playheadTime = isLiveStream ?
-      (isLiveNow ? null : Utils.formatSeconds(timeShift))
-      :
-      playheadTime;
+    let isLiveNow = Math.abs(timeShift) < 1;
+    playheadTime = isLiveStream
+      ? (isLiveNow ? null : Utils.formatSeconds(timeShift))
+      : playheadTime;
     return playheadTime;
   },
 
@@ -147,18 +145,17 @@ const Skin = createReactClass({
    * @param {MouseEvent} event - event
    */
   handleVrPlayerMouseDown: function(event) {
-
     // continue only if video is vr and non in stereo mode
     if (!this.props.controller || this.props.controller.isVrStereo || !this.props.controller.videoVr) {
       return;
     }
 
-    //Sets coordinate values for further calculation of rotation coordinates
+    // Sets coordinate values for further calculation of rotation coordinates
     const coords = Utils.getCoords(event);
     this.setState({
       isVrMouseDown: true,
       xVrMouseStart: coords.x,
-      yVrMouseStart: coords.y
+      yVrMouseStart: coords.y,
     });
 
     // Check current a vr video position (an user could change position using tilting)
@@ -180,7 +177,7 @@ const Skin = createReactClass({
     if (this.props.controller && this.props.controller.videoVr && this.state.isVrMouseDown) {
       event.preventDefault();
       this.setState({
-        isVrMouseMove: true
+        isVrMouseMove: true,
       });
       if (typeof this.props.controller.onTouchMove === 'function') {
         const coords = Utils.getCoords(event);
@@ -212,10 +209,9 @@ const Skin = createReactClass({
       this.setState({
         isVrMouseDown: false,
         xVrMouseStart: 0,
-        yVrMouseStart: 0
+        yVrMouseStart: 0,
       });
     }
-
   },
 
   /**
@@ -224,7 +220,7 @@ const Skin = createReactClass({
    */
   handleVrPlayerClick: function() {
     this.setState({
-      isVrMouseMove: false
+      isVrMouseMove: false,
     });
   },
 
@@ -344,15 +340,14 @@ const Skin = createReactClass({
    */
   handleTouchEndOnWindow: function() {
     if (this.props.controller.videoVr) { // only for vr on mobile
-
       this.setState({
         isVrMouseDown: false,
         isVrMouseMove: false,
         xVrMouseStart: 0,
-        yVrMouseStart: 0
+        yVrMouseStart: 0,
       });
 
-      //@TODO: now function this.props.controller.onEndMove(); is not worked correctly now. Fix it.
+      // @TODO: now function this.props.controller.onEndMove(); is not worked correctly now. Fix it.
       // Related bug is https://jira.corp.ooyala.com/browse/PLAYER-4797
     }
   },
@@ -735,8 +730,8 @@ const Skin = createReactClass({
       }
     }
 
-    var className = ClassNames(this.state.responsiveClass, 'oo-responsive', {
-      'oo-audio-only': this.props.controller.state.audioOnly
+    let className = ClassNames(this.state.responsiveClass, 'oo-responsive', {
+      'oo-audio-only': this.props.controller.state.audioOnly,
     });
 
     return (
@@ -746,7 +741,7 @@ const Skin = createReactClass({
         {screen}
       </div>
     );
-  }
+  },
 });
 
 Skin.defaultProps = {
@@ -754,28 +749,28 @@ Skin.defaultProps = {
     general: {
       loadingImage: {
         imageResource: {
-          url: null
-        }
-      }
+          url: null,
+        },
+      },
     },
     responsive: {
       breakpoints: {
         md: {
-          multiplier: 1
-        }
-      }
+          multiplier: 1,
+        },
+      },
     },
     controlBar: {
-      height: 90
-    }
+      height: 90,
+    },
   },
   controller: {
     state: {
       adVideoDuration: 0,
-      errorCode: 404
+      errorCode: 404,
     },
-    publishOverlayRenderingEvent: function() {}
-  }
+    publishOverlayRenderingEvent: function() {},
+  },
 };
 
 module.exports = Skin;

@@ -1,20 +1,20 @@
 /** ******************************************************************
   ERROR SCREEN
 *********************************************************************/
-var React = require('react');
-var ClassNames = require('classnames');
-var CONSTANTS = require('../constants/constants');
-var Utils = require('../components/utils');
-var AccessibilityMixin = require('../mixins/accessibilityMixin');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let ClassNames = require('classnames');
+let CONSTANTS = require('../constants/constants');
+let Utils = require('../components/utils');
+let AccessibilityMixin = require('../mixins/accessibilityMixin');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var ErrorScreen = createReactClass({
+let ErrorScreen = createReactClass({
   mixins: [AccessibilityMixin],
 
   render: function() {
-    var errorTitle;
-    var errorDescription;
+    let errorTitle;
+    let errorDescription;
     var errorAction;
     if (CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)) {
       var errorAction = CONSTANTS.SKIN_TEXT.ERROR_ACTION;
@@ -35,7 +35,7 @@ var ErrorScreen = createReactClass({
       );
 
       // / TODO - need to make countdown functionality display for all languages
-      var startTime = this.props.errorCode.flight_start_time;
+      let startTime = this.props.errorCode.flight_start_time;
       if (
         this.props.errorCode.code === CONSTANTS.ERROR_CODE.FUTURE &&
         this.props.language === CONSTANTS.LANGUAGE.ENGLISH &&
@@ -56,9 +56,9 @@ var ErrorScreen = createReactClass({
       errorAction = null;
     }
 
-    var errorContentClass = ClassNames({
+    let errorContentClass = ClassNames({
       'oo-error-content': true,
-      'oo-center-block': true
+      'oo-center-block': true,
     });
 
     return (
@@ -70,28 +70,28 @@ var ErrorScreen = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 ErrorScreen.propTypes = {
   controller: PropTypes.shape({
     state: PropTypes.shape({
-      accessibilityControlsEnabled: PropTypes.bool.isRequired
-    }).isRequired
+      accessibilityControlsEnabled: PropTypes.bool.isRequired,
+    }).isRequired,
   }).isRequired,
   errorCode: PropTypes.shape({
-    code: PropTypes.string
+    code: PropTypes.string,
   }).isRequired,
   language: PropTypes.string,
-  localizableStrings: PropTypes.object
+  localizableStrings: PropTypes.object,
 };
 
 ErrorScreen.defaultProps = {
   controller: {
     state: {
-      accessibilityControlsEnabled: true
-    }
-  }
+      accessibilityControlsEnabled: true,
+    },
+  },
 };
 
 module.exports = ErrorScreen;

@@ -1,9 +1,9 @@
-var React = require('react');
-var CONSTANTS = require('../../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let CONSTANTS = require('../../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var SelectionContainer = createReactClass({
+let SelectionContainer = createReactClass({
   render: function() {
     return (
       <div className={'oo-selection-container' + (this.props.className ? ' ' + this.props.className : '')}>
@@ -22,7 +22,7 @@ var SelectionContainer = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 SelectionContainer.propTypes = {
@@ -31,7 +31,7 @@ SelectionContainer.propTypes = {
   title: PropTypes.string,
   ariaLabel: PropTypes.string,
   role: PropTypes.string,
-  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired,
 };
 
 module.exports = SelectionContainer;

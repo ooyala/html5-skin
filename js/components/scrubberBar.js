@@ -1,21 +1,27 @@
 /** ******************************************************************
   SCRUBBER BAR
 *********************************************************************/
-var React = require('react'),
-    ReactDOM = require('react-dom'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    ThumbnailsContainer = require('./thumbnailContainer'),
-    Utils = require('./utils'),
-    MACROS = require('../constants/macros'),
-    CONSTANTS = require('../constants/constants');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+
+let ReactDOM = require('react-dom');
+
+let ResizeMixin = require('../mixins/resizeMixin');
+
+let ThumbnailsContainer = require('./thumbnailContainer');
+
+let Utils = require('./utils');
+
+let MACROS = require('../constants/macros');
+
+let CONSTANTS = require('../constants/constants');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
 const ClassNames = require('classnames');
 
-var ScrubberBar = createReactClass({
+let ScrubberBar = createReactClass({
   mixins: [ResizeMixin],
-  //Using temporary isMounted strategy mentioned in https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
+  // Using temporary isMounted strategy mentioned in https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
   _isMounted: false,
 
   getInitialState: function() {
@@ -29,7 +35,7 @@ var ScrubberBar = createReactClass({
       scrubbingPlayheadX: 0,
       hoveringX: 0,
       currentPlayhead: 0,
-      transitionedDuringSeek: false
+      transitionedDuringSeek: false,
     };
   },
 
@@ -44,7 +50,7 @@ var ScrubberBar = createReactClass({
     this.handleResize();
   },
 
-  componentDidUpdate: function(){
+  componentDidUpdate: function() {
     if (this.props.forceResize) {
       this.handleResize();
     }
@@ -68,14 +74,14 @@ var ScrubberBar = createReactClass({
   },
 
   getResponsiveUIMultiple: function(responsiveView) {
-    var multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
+    let multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
     return multiplier;
   },
 
   handleResize: function() {
     this.setState({
       scrubberBarWidth: ReactDOM.findDOMNode(this.refs.scrubberBar).clientWidth,
-      playheadWidth: ReactDOM.findDOMNode(this.refs.playhead).clientWidth
+      playheadWidth: ReactDOM.findDOMNode(this.refs.playhead).clientWidth,
     });
   },
 
@@ -128,14 +134,14 @@ var ScrubberBar = createReactClass({
       if (this.touchInitiated) {
         evt = evt.touches[0];
       }
-      var deltaX = evt.clientX - this.lastScrubX;
-      var scrubbingPlayheadX =
+      let deltaX = evt.clientX - this.lastScrubX;
+      let scrubbingPlayheadX =
         this.props.currentPlayhead * this.state.scrubberBarWidth / this.props.duration + deltaX;
       this.props.controller.updateSeekingPlayhead(
         scrubbingPlayheadX / this.state.scrubberBarWidth * this.props.duration
       );
       this.setState({
-        scrubbingPlayheadX: scrubbingPlayheadX
+        scrubbingPlayheadX: scrubbingPlayheadX,
       });
       this.lastScrubX = evt.clientX;
     }
@@ -152,7 +158,7 @@ var ScrubberBar = createReactClass({
     evt.cancelBubble = true; // IE
 
     // Remove keyboard focus when clicking on scrubber bar
-    var scrubberBar = ReactDOM.findDOMNode(this.refs.scrubberBar);
+    let scrubberBar = ReactDOM.findDOMNode(this.refs.scrubberBar);
     if (scrubberBar && typeof scrubberBar.blur === 'function') {
       scrubberBar.blur();
     }
@@ -169,7 +175,7 @@ var ScrubberBar = createReactClass({
     if (this._isMounted) {
       this.setState({
         currentPlayhead: this.props.currentPlayhead,
-        scrubbingPlayheadX: 0
+        scrubbingPlayheadX: 0,
       });
       this.props.controller.endSeeking();
     }
@@ -204,7 +210,7 @@ var ScrubberBar = createReactClass({
     if (this.touchInitiated && evt.type === 'mousedown') {
       return;
     }
-    var offsetX = 0;
+    let offsetX = 0;
     this.touchInitiated = evt.type === 'touchstart';
     if (this.touchInitiated) {
       offsetX = evt.targetTouches[0].pageX - evt.target.getBoundingClientRect().left;
@@ -213,7 +219,7 @@ var ScrubberBar = createReactClass({
     }
 
     this.setState({
-      scrubbingPlayheadX: offsetX
+      scrubbingPlayheadX: offsetX,
     });
     this.props.controller.updateSeekingPlayhead(offsetX / this.state.scrubberBarWidth * this.props.duration);
     this.handlePlayheadMouseDown(evt);
@@ -231,7 +237,7 @@ var ScrubberBar = createReactClass({
     this.props.controller.setScrubberBarHoverState(true);
 
     this.setState({
-      hoveringX: evt.nativeEvent.offsetX
+      hoveringX: evt.nativeEvent.offsetX,
     });
   },
 
@@ -243,7 +249,7 @@ var ScrubberBar = createReactClass({
     if (!this.props.controller.state.thumbnails) return;
     this.props.controller.setScrubberBarHoverState(false);
     this.setState({
-      hoveringX: 0
+      hoveringX: 0,
     });
   },
 
@@ -257,8 +263,8 @@ var ScrubberBar = createReactClass({
    * @returns {string} ariaValueText
    */
   getAriaValueText: function() {
-    var ariaValueText;
-    var timeDisplayValues = Utils.getTimeDisplayValues(
+    let ariaValueText;
+    let timeDisplayValues = Utils.getTimeDisplayValues(
       this.props.currentPlayhead,
       this.props.duration,
       this.props.isLiveStream
@@ -285,26 +291,26 @@ var ScrubberBar = createReactClass({
   },
 
   render: function() {
-    var scrubberBarStyle = {
-      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor
+    let scrubberBarStyle = {
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.backgroundColor,
     };
-    var bufferedIndicatorStyle = {
+    let bufferedIndicatorStyle = {
       width: Math.min(parseFloat(this.props.buffered) / parseFloat(this.props.duration) * 100, 100) + '%',
-      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor
+      backgroundColor: this.props.skinConfig.controlBar.scrubberBar.bufferedColor,
     };
-    var playedIndicatorStyle = {
+    let playedIndicatorStyle = {
       width:
         Math.min(parseFloat(this.props.currentPlayhead) / parseFloat(this.props.duration) * 100, 100) + '%',
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
         ? this.props.skinConfig.controlBar.scrubberBar.playedColor
-        : this.props.skinConfig.general.accentColor
+        : this.props.skinConfig.general.accentColor,
     };
-    var playheadStyle = {
+    let playheadStyle = {
       backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
         ? this.props.skinConfig.controlBar.scrubberBar.playedColor
-        : this.props.skinConfig.general.accentColor
+        : this.props.skinConfig.general.accentColor,
     };
-    var playheadPaddingStyle = {};
+    let playheadPaddingStyle = {};
 
     if (!this.state.transitionedDuringSeek) {
       if (this.state.scrubbingPlayheadX && this.state.scrubbingPlayheadX !== 0) {
@@ -327,13 +333,13 @@ var ScrubberBar = createReactClass({
       if (isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
     }
 
-    var playheadMouseDown = this.handlePlayheadMouseDown;
-    var scrubberBarMouseDown = this.handleScrubberBarMouseDown;
-    var scrubberBarMouseOver = this.handleScrubberBarMouseOver;
-    var scrubberBarMouseOut = this.handleScrubberBarMouseOut;
-    var scrubberBarMouseMove = this.handleScrubberBarMouseMove;
-    var playedIndicatorClassName = 'oo-played-indicator';
-    var playheadClassName = 'oo-playhead';
+    let playheadMouseDown = this.handlePlayheadMouseDown;
+    let scrubberBarMouseDown = this.handleScrubberBarMouseDown;
+    let scrubberBarMouseOver = this.handleScrubberBarMouseOver;
+    let scrubberBarMouseOut = this.handleScrubberBarMouseOut;
+    let scrubberBarMouseMove = this.handleScrubberBarMouseMove;
+    let playedIndicatorClassName = 'oo-played-indicator';
+    let playheadClassName = 'oo-playhead';
 
     if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) {
       playheadClassName += ' oo-ad-playhead';
@@ -345,18 +351,18 @@ var ScrubberBar = createReactClass({
       playedIndicatorStyle.backgroundColor = this.props.skinConfig.controlBar.adScrubberBar.playedColor;
     }
 
-    var hoverTime = 0;
-    var hoverPosition = 0;
-    var hoveredIndicatorStyle = null;
-    var hovering = false;
+    let hoverTime = 0;
+    let hoverPosition = 0;
+    let hoveredIndicatorStyle = null;
+    let hovering = false;
 
-    var thumbnailsContainer = null;
+    let thumbnailsContainer = null;
 
     if (
       this.props.controller.state.thumbnails &&
       (this.state.scrubbingPlayheadX || this.lastScrubX || this.state.hoveringX)
     ) {
-      var vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
+      let vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
       if (
         this.props.controller &&
         this.props.controller.state &&
@@ -364,15 +370,15 @@ var ScrubberBar = createReactClass({
       ) {
         vrViewingDirection = this.props.controller.state.vrViewingDirection;
       }
-      var fullscreen = false;
+      let fullscreen = false;
       if (this.props.controller && this.props.controller.state && this.props.controller.state.fullscreen) {
         fullscreen = this.props.controller.state.fullscreen;
       }
-      var videoVr = false;
+      let videoVr = false;
       if (this.props.controller && this.props.controller.videoVr) {
         videoVr = this.props.controller.videoVr;
       }
-      var isCarousel = false;
+      let isCarousel = false;
       if (this.state.scrubbingPlayheadX) {
         hoverPosition = this.state.scrubbingPlayheadX;
         hoverTime = this.state.scrubbingPlayheadX / this.state.scrubberBarWidth * this.props.duration;
@@ -390,7 +396,7 @@ var ScrubberBar = createReactClass({
           width: Math.min(parseFloat(hoverTime) / parseFloat(this.props.duration) * 100, 100) + '%',
           backgroundColor: this.props.skinConfig.controlBar.scrubberBar.playedColor
             ? this.props.skinConfig.controlBar.scrubberBar.playedColor
-            : this.props.skinConfig.general.accentColor
+            : this.props.skinConfig.general.accentColor,
         };
         hovering = true;
         playheadClassName += ' oo-playhead-hovering';
@@ -414,10 +420,10 @@ var ScrubberBar = createReactClass({
     const scrubberBarClass = ClassNames({
       'oo-scrubber-bar': true,
       'oo-scrubber-bar-hover': hovering,
-      'oo-scrubber-bar-video': !this.props.audioOnly
+      'oo-scrubber-bar-video': !this.props.audioOnly,
     });
 
-    var ariaValueText = this.getAriaValueText();
+    let ariaValueText = this.getAriaValueText();
 
     return (
       <div
@@ -460,7 +466,7 @@ var ScrubberBar = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 ScrubberBar.defaultProps = {
@@ -469,15 +475,15 @@ ScrubberBar.defaultProps = {
       scrubberBar: {
         backgroundColor: 'rgba(5,175,175,1)',
         bufferedColor: 'rgba(127,5,127,1)',
-        playedColor: 'rgba(67,137,5,1)'
+        playedColor: 'rgba(67,137,5,1)',
       },
       adScrubberBar: {
         backgroundColor: 'rgba(175,175,5,1)',
         bufferedColor: 'rgba(127,5,127,1)',
-        playedColor: 'rgba(5,63,128,1)'
-      }
-    }
-  }
+        playedColor: 'rgba(5,63,128,1)',
+      },
+    },
+  },
 };
 
 module.exports = ScrubberBar;

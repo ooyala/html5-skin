@@ -5,17 +5,17 @@
  * @class MoreOptionsPanel
  * @constructor
  */
-var React = require('react');
-var Utils = require('./utils');
-var CONSTANTS = require('../constants/constants');
-var ClassNames = require('classnames');
-var AnimateMixin = require('../mixins/animateMixin');
-var Icon = require('../components/icon');
-var ControlButton = require('./controlButton');
-var PlaybackSpeedButton = require('./playbackSpeedButton');
-var createReactClass = require('create-react-class');
+let React = require('react');
+let Utils = require('./utils');
+let CONSTANTS = require('../constants/constants');
+let ClassNames = require('classnames');
+let AnimateMixin = require('../mixins/animateMixin');
+let Icon = require('../components/icon');
+let ControlButton = require('./controlButton');
+let PlaybackSpeedButton = require('./playbackSpeedButton');
+let createReactClass = require('create-react-class');
 
-var MoreOptionsPanel = createReactClass({
+let MoreOptionsPanel = createReactClass({
   mixins: [AnimateMixin],
 
   handleShareClick: function() {
@@ -41,7 +41,7 @@ var MoreOptionsPanel = createReactClass({
   },
 
   /**
-   * Opens the Playback Speed menu in screen mode when the playback speed button is clicked.   
+   * Opens the Playback Speed menu in screen mode when the playback speed button is clicked.
    * @private
    */
   handlePlaybackSpeedClick: function() {
@@ -49,7 +49,7 @@ var MoreOptionsPanel = createReactClass({
   },
 
   buildMoreOptionsButtonList: function() {
-    var commonButtonProps = {
+    let commonButtonProps = {
       language: this.props.language,
       localizableStrings: this.props.localizableStrings,
       responsiveView: this.props.responsiveView,
@@ -60,10 +60,10 @@ var MoreOptionsPanel = createReactClass({
       },
       getTooltipAlignment: function(key) {
         return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
-      }
+      },
     };
 
-    var optionsItemsTemplates = {};
+    let optionsItemsTemplates = {};
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.QUALITY] = (
       <ControlButton
         {...commonButtonProps}
@@ -134,10 +134,10 @@ var MoreOptionsPanel = createReactClass({
       </ControlButton>
     );
 
-    var items = this.props.controller.state.moreOptionsItems;
-    var moreOptionsItems = [];
+    let items = this.props.controller.state.moreOptionsItems;
+    let moreOptionsItems = [];
 
-    for (var i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i++) {
       moreOptionsItems.push(optionsItemsTemplates[items[i].name]);
     }
 
@@ -145,19 +145,19 @@ var MoreOptionsPanel = createReactClass({
   },
 
   render: function() {
-    var moreOptionsItemsClass = ClassNames({
+    let moreOptionsItemsClass = ClassNames({
       'oo-more-options-items': true,
-      'oo-animate-more-options': this.state.animate
+      'oo-animate-more-options': this.state.animate,
     });
 
-    var moreOptionsItems = this.buildMoreOptionsButtonList();
+    let moreOptionsItems = this.buildMoreOptionsButtonList();
 
     return (
       <div className="oo-content-panel oo-more-options-panel">
         <div className={moreOptionsItemsClass}>{moreOptionsItems}</div>
       </div>
     );
-  }
+  },
 });
 
 MoreOptionsPanel.defaultProps = {
@@ -166,15 +166,15 @@ MoreOptionsPanel.defaultProps = {
       iconStyle: {
         active: {
           color: '#FFF',
-          opacity: 1
+          opacity: 1,
         },
         inactive: {
           color: '#FFF',
-          opacity: 0.6
-        }
-      }
-    }
-  }
+          opacity: 0.6,
+        },
+      },
+    },
+  },
 };
 
 module.exports = MoreOptionsPanel;

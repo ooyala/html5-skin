@@ -19,7 +19,7 @@ class AudioOnlyScreen extends React.Component {
     this.state = {
       controlBarVisible: true,
       animate: false,
-      forceResize: false
+      forceResize: false,
     };
     this.handleLiveClick = this.handleLiveClick.bind(this);
   }
@@ -27,13 +27,13 @@ class AudioOnlyScreen extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     // [PLAYER-4848] If we find out that this is a live stream, we need to force a resize of the scrubber bar.
     // This ensures the playhead offset is correctly calculated for the UI differences when the stream is LIVE.
-    if (this.state.forceResize !== prevState.forceResize){
+    if (this.state.forceResize !== prevState.forceResize) {
       this.setState({ forceResize: false });
     } else if (
-        !prevState.forceResize &&
+      !prevState.forceResize &&
         this.props.isLiveStream !== prevProps.isLiveStream &&
         this.props.isLiveStream
-      ) {
+    ) {
       this.setState({ forceResize: true });
     }
   }
@@ -48,19 +48,19 @@ class AudioOnlyScreen extends React.Component {
 
   render() {
     const titleStyle = {
-      color: this.props.skinConfig.startScreen.titleFont.color
+      color: this.props.skinConfig.startScreen.titleFont.color,
     };
     const infoPanelClass = ClassNames({
-      'oo-state-screen-audio-title': true
+      'oo-state-screen-audio-title': true,
     });
     const titleClass = ClassNames({
-      'oo-state-screen-audio-info': true
+      'oo-state-screen-audio-info': true,
     });
     const textStyle = {
-      'maxWidth': '70%'
+      'maxWidth': '70%',
     };
     const textClass = ClassNames({
-      'oo-text-truncate': true
+      'oo-text-truncate': true,
     });
     const titleMetadata = (
       <div style={textStyle} className={textClass}>
@@ -81,20 +81,20 @@ class AudioOnlyScreen extends React.Component {
     let scrubberLeft = (<span className="oo-scrubber-bar-left oo-scrubber-bar-current-time">{this.props.playheadTime}</span>);
     let scrubberRight = (<span className="oo-scrubber-bar-right oo-scrubber-bar-duration">{this.props.totalTime}</span>);
     if (this.props.isLiveStream) {
-      let dvrText = isLiveNow ? "--:--" : this.props.playheadTime;
+      let dvrText = isLiveNow ? '--:--' : this.props.playheadTime;
       let liveClick = isLiveNow ? null : this.handleLiveClick;
       const liveClass = ClassNames({
         'oo-scrubber-bar-left oo-live oo-live-indicator': true,
-        'oo-live-nonclickable': liveClick
+        'oo-live-nonclickable': liveClick,
       });
       scrubberLeft = (
         <a key={CONSTANTS.CONTROL_BAR_KEYS.LIVE} className={liveClass} ref="LiveButton" onClick={liveClick}>
-        <div className="oo-live-circle" />
-        <span className="oo-live-text">{liveText}</span></a>);
+          <div className="oo-live-circle" />
+          <span className="oo-live-text">{liveText}</span></a>);
       scrubberRight = (<span className="oo-scrubber-bar-right oo-scrubber-bar-current-time">{dvrText}</span>);
     }
 
-   //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
+    // TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
     return (
       <div className="oo-state-screen-audio oo-flex-column-parent">
         <div className={infoPanelClass}>

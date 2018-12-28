@@ -1,23 +1,24 @@
-var React = require('react'),
-    Utils = require('./utils');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var DiscoverItem = createReactClass({
+let Utils = require('./utils');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let DiscoverItem = createReactClass({
   getInitialState: function() {
     return {
-      imgError: false
+      imgError: false,
     };
   },
 
   componentWillMount: function() {
-    var img = new Image();
+    let img = new Image();
     img.src = this.props.src;
 
     // check if error occurs while loading img
     img.onerror = function() {
       this.setState({
-        imgError: true
+        imgError: true,
       });
     }.bind(this);
   },
@@ -28,16 +29,16 @@ var DiscoverItem = createReactClass({
       return null;
     }
 
-    var thumbnailStyle = {
-      backgroundImage: 'url(\'' + this.props.src + '\')'
+    let thumbnailStyle = {
+      backgroundImage: 'url(\'' + this.props.src + '\')',
     };
 
-    var itemTitleStyle = {
+    let itemTitleStyle = {
       color: Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.contentTitle.font.color'),
       fontFamily: Utils.getPropertyValue(
         this.props.skinConfig,
         'discoveryScreen.contentTitle.font.fontFamily'
-      )
+      ),
     };
 
     return (
@@ -55,7 +56,7 @@ var DiscoverItem = createReactClass({
         />
       </div>
     );
-  }
+  },
 });
 
 DiscoverItem.propTypes = {
@@ -64,11 +65,11 @@ DiscoverItem.propTypes = {
       contentTitle: PropTypes.shape({
         font: PropTypes.shape({
           color: PropTypes.string,
-          fontFamily: PropTypes.string
-        })
-      })
-    })
-  })
+          fontFamily: PropTypes.string,
+        }),
+      }),
+    }),
+  }),
 };
 
 module.exports = DiscoverItem;

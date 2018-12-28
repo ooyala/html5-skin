@@ -1,26 +1,34 @@
 /** ******************************************************************
   AD SCREEN
 *********************************************************************/
-var React = require('react'),
-    CONSTANTS = require('../constants/constants'),
-    AdPanel = require('../components/adPanel'),
-    ControlBar = require('../components/controlBar'),
-    ClassNames = require('classnames'),
-    Utils = require('../components/utils'),
-    ResizeMixin = require('../mixins/resizeMixin'),
-    Icon = require('../components/icon'),
-    UnmuteIcon = require('../components/unmuteIcon');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
 
-var AdScreen = createReactClass({
+let CONSTANTS = require('../constants/constants');
+
+let AdPanel = require('../components/adPanel');
+
+let ControlBar = require('../components/controlBar');
+
+let ClassNames = require('classnames');
+
+let Utils = require('../components/utils');
+
+let ResizeMixin = require('../mixins/resizeMixin');
+
+let Icon = require('../components/icon');
+
+let UnmuteIcon = require('../components/unmuteIcon');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
+
+let AdScreen = createReactClass({
   mixins: [ResizeMixin],
 
   getInitialState: function() {
     this.isMobile = this.props.controller.state.isMobile;
     return {
       controlBarVisible: true,
-      timer: null
+      timer: null,
     };
   },
 
@@ -128,12 +136,12 @@ var AdScreen = createReactClass({
   getPlaybackControlItems: function() {
     if (!this.props.controller.state.showAdControls) return null;
 
-    var showControlBar =
+    let showControlBar =
       this.props.playerState === CONSTANTS.STATE.PAUSE ||
       this.props.controller.state.forceControlBarVisible ||
       this.state.controlBarVisible;
 
-    var playbackControlItemTemplates = {
+    let playbackControlItemTemplates = {
       controlBar: (
         <ControlBar
           {...this.props}
@@ -143,11 +151,11 @@ var AdScreen = createReactClass({
           playerState={this.props.playerState}
           key="controlBar"
         />
-      )
+      ),
     };
 
-    var playbackControlItems = [];
-    for (var item in playbackControlItemTemplates) {
+    let playbackControlItems = [];
+    for (let item in playbackControlItemTemplates) {
       if (playbackControlItemTemplates.hasOwnProperty(item)) {
         playbackControlItems.push(playbackControlItemTemplates[item]);
       }
@@ -161,11 +169,11 @@ var AdScreen = createReactClass({
   },
 
   render: function() {
-    var actionIconStyle = {
+    let actionIconStyle = {
       color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity
+      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity,
     };
-    var actionIconClass = ClassNames({
+    let actionIconClass = ClassNames({
       'oo-action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
       'oo-action-icon': this.props.controller.state.adPauseAnimationDisabled,
       'oo-animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
@@ -178,18 +186,18 @@ var AdScreen = createReactClass({
       'oo-action-icon-right':
         this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
       'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
-      'oo-icon-hidden': this.props.playerState !== CONSTANTS.STATE.PAUSE
+      'oo-icon-hidden': this.props.playerState !== CONSTANTS.STATE.PAUSE,
     });
-    var adPanel = null;
+    let adPanel = null;
     if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
       adPanel = <AdPanel {...this.props} />;
     }
-    var playbackControlItems = null;
+    let playbackControlItems = null;
     if (this.props.skinConfig.adScreen.showControlBar) {
       playbackControlItems = this.getPlaybackControlItems();
     }
 
-    var showUnmute =
+    let showUnmute =
       this.props.controller.state.volumeState.mutingForAutoplay &&
       this.props.controller.state.volumeState.muted;
 
@@ -218,6 +226,6 @@ var AdScreen = createReactClass({
         {showUnmute ? <UnmuteIcon {...this.props} /> : null}
       </div>
     );
-  }
+  },
 });
 module.exports = AdScreen;

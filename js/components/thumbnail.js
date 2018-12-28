@@ -3,20 +3,20 @@
  *
  * @module Thumbnail
  */
-var React = require('react');
-var createReactClass = require('create-react-class');
-var PropTypes = require('prop-types');
+let React = require('react');
+let createReactClass = require('create-react-class');
+let PropTypes = require('prop-types');
 
-var Thumbnail = createReactClass({
+let Thumbnail = createReactClass({
   componentDidMount: function() {
     this.props.onRef(this);
   },
 
   shouldComponentUpdate: function(nextProps) {
-    var updateHoverPositon = nextProps.hoverPosition !== this.props.hoverPosition;
-    var updateFullscreen = nextProps.fullscreen !== this.props.fullscreen && this.props.videoVr;
-    var updateVrViewDirection = nextProps.vrViewingDirection !== this.props.vrViewingDirection;
-    var updateImageWidth = nextProps.imageWidth !== this.props.imageWidth;
+    let updateHoverPositon = nextProps.hoverPosition !== this.props.hoverPosition;
+    let updateFullscreen = nextProps.fullscreen !== this.props.fullscreen && this.props.videoVr;
+    let updateVrViewDirection = nextProps.vrViewingDirection !== this.props.vrViewingDirection;
+    let updateImageWidth = nextProps.imageWidth !== this.props.imageWidth;
     return updateHoverPositon || updateFullscreen || updateVrViewDirection || updateImageWidth;
   },
 
@@ -25,7 +25,7 @@ var Thumbnail = createReactClass({
   },
 
   render: function() {
-    var thumbnailClassName = 'oo-thumbnail';
+    let thumbnailClassName = 'oo-thumbnail';
 
     if (this.props.videoVr) {
       thumbnailClassName += ' oo-thumbnail-vr';
@@ -38,7 +38,7 @@ var Thumbnail = createReactClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 Thumbnail.defaultProps = {
@@ -51,7 +51,7 @@ Thumbnail.defaultProps = {
   fullscreen: false,
   positionY: 0,
   positionX: 0,
-  imageWidth: 0
+  imageWidth: 0,
 };
 
 Thumbnail.propTypes = {
@@ -60,14 +60,14 @@ Thumbnail.propTypes = {
   vrViewingDirection: PropTypes.shape({
     yaw: PropTypes.number,
     roll: PropTypes.number,
-    pitch: PropTypes.number
+    pitch: PropTypes.number,
   }),
   time: PropTypes.string,
   positionY: PropTypes.number,
   positionX: PropTypes.number,
   imageWidth: PropTypes.number,
   videoVr: PropTypes.bool,
-  fullscreen: PropTypes.bool
+  fullscreen: PropTypes.bool,
 };
 
 module.exports = Thumbnail;

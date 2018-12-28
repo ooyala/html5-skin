@@ -3,8 +3,8 @@
  *
  * @module Utils
  */
-var DeepMerge = require('deepmerge');
-var CONSTANTS = require('./../constants/constants');
+let DeepMerge = require('deepmerge');
+let CONSTANTS = require('./../constants/constants');
 
 var Utils = {
   /**
@@ -20,12 +20,12 @@ var Utils = {
     if (!domElement || typeof domElement.querySelector !== 'function') {
       return;
     }
-    var query = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']';
+    let query = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']';
 
     if (excludeClass) {
       query += ':not(.' + excludeClass + ')';
     }
-    var firstFocusableElement = domElement.querySelector(query);
+    let firstFocusableElement = domElement.querySelector(query);
 
     if (firstFocusableElement && typeof firstFocusableElement.focus === 'function') {
       firstFocusableElement.focus();
@@ -55,7 +55,7 @@ var Utils = {
    * When value doesn't meet the criteria the function will return either defaultValue (if provided) or null.
    */
   ensureNumber: function(value, defaultValue) {
-    var number = Number(value);
+    let number = Number(value);
     if (!isFinite(number)) {
       return typeof defaultValue === 'undefined' ? null : defaultValue;
     }
@@ -88,7 +88,7 @@ var Utils = {
    * @returns {Number} The equivalent of value with the specified precision. Will return 0 if value is not a valid number.
    */
   toFixedNumber: function(value, digits) {
-    var result = this.ensureNumber(value, 0);
+    let result = this.ensureNumber(value, 0);
     result = this.ensureNumber(result.toFixed(digits));
     return result;
   },
@@ -124,12 +124,12 @@ var Utils = {
     currentPlayhead = this.ensureNumber(currentPlayhead);
     duration = this.ensureNumber(duration, 0);
 
-    var currentTime = '';
-    var totalTime = '';
+    let currentTime = '';
+    let totalTime = '';
 
-    var currentPlayheadInt = parseInt(currentPlayhead, 10);
-    var currentPlayheadTime = isFinite(currentPlayheadInt) ? this.formatSeconds(currentPlayheadInt) : null;
-    var timeShift = (currentPlayhead || 0) - duration;
+    let currentPlayheadInt = parseInt(currentPlayhead, 10);
+    let currentPlayheadTime = isFinite(currentPlayheadInt) ? this.formatSeconds(currentPlayheadInt) : null;
+    let timeShift = (currentPlayhead || 0) - duration;
 
     if (duration) {
       totalTime = this.formatSeconds(duration);
@@ -138,7 +138,7 @@ var Utils = {
     if (isLiveStream) {
       // Checking timeShift < 1 second (not === 0) as processing of the click after we
       // rewinded and then went live may take some time.
-      var isLiveNow = Math.abs(timeShift) < 1;
+      let isLiveNow = Math.abs(timeShift) < 1;
 
       if (useNegativeDvrOffset) {
         // We don't show current time unless there is a time shift when using
@@ -160,7 +160,7 @@ var Utils = {
 
     return {
       currentTime: currentTime,
-      totalTime: totalTime
+      totalTime: totalTime,
     };
   },
 
@@ -169,16 +169,17 @@ var Utils = {
    *
    * @function decode64
    * @param {String} s The base64 encoded string to decode.
-   * @return {String} The String representing the decoded base64.
+   * @returns {String} The String representing the decoded base64.
    */
   decode64: function(s) {
-    s = s.replace(/\n/g,"");
-    var results = "";
-    var j, i = 0;
-    var enc = [];
-    var b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    s = s.replace(/\n/g, '');
+    let results = '';
+    let j; let
+      i = 0;
+    let enc = [];
+    let b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
-    //shortcut for browsers with atob
+    // shortcut for browsers with atob
     if (window.atob) {
       return atob(s);
     }
@@ -188,14 +189,14 @@ var Utils = {
         enc[j] = b64.indexOf(s.charAt(i++));
       }
       results += String.fromCharCode((enc[0] << 2) | (enc[1] >> 4),
-                                      enc[2] == 64 ? 0 : ((enc[1] & 15) << 4) | (enc[2] >> 2),
-                                      enc[3] == 64 ? 0 : ((enc[2] & 3) << 6) | enc[3]);
+        enc[2] == 64 ? 0 : ((enc[1] & 15) << 4) | (enc[2] >> 2),
+        enc[3] == 64 ? 0 : ((enc[2] & 3) << 6) | enc[3]);
     } while (i < s.length);
 
-    //trim tailing null characters
-    return results.replace(/\0/g, "");
+    // trim tailing null characters
+    return results.replace(/\0/g, '');
   },
-/**
+  /**
    * Returns a standard object containing fields required for discovery event data.
 
    * @function getDiscoveryEventData
@@ -204,20 +205,20 @@ var Utils = {
    * @param {String} uiTag UI tag of the element that generated the discovery event
    * @param {Object} asset Object containing the asset data, including embed code and context
    * @param {Object} customData Object containing custom data for the discovery event
-   * @return {Object} An object with the discovery event data.
+   * @returns {Object} An object with the discovery event data.
    */
-  getDiscoveryEventData: function(assetPosition, pageSize, uiTag, asset, customData){
-    var assetData = { embed_code : asset.embed_code,
-                      idType : CONSTANTS.DISCOVERY.ID_TYPE,
-                      ooyalaDiscoveryContext: this.getDiscoveryContext(asset)
-                    };
-    var eventData = { customData : customData,
-                      asset : assetData,
-                      contentSource : CONSTANTS.DISCOVERY.SOURCE,
-                      assetPosition : assetPosition,
-                      pageSize : pageSize,
-                      uiTag : uiTag
-                    };
+  getDiscoveryEventData: function(assetPosition, pageSize, uiTag, asset, customData) {
+    let assetData = { embed_code: asset.embed_code,
+      idType: CONSTANTS.DISCOVERY.ID_TYPE,
+      ooyalaDiscoveryContext: this.getDiscoveryContext(asset),
+    };
+    let eventData = { customData: customData,
+      asset: assetData,
+      contentSource: CONSTANTS.DISCOVERY.SOURCE,
+      assetPosition: assetPosition,
+      pageSize: pageSize,
+      uiTag: uiTag,
+    };
     return eventData;
   },
 
@@ -230,26 +231,23 @@ var Utils = {
   * @returns {Object} This ooyala discovery context
   */
   getDiscoveryContext: function(discoveryAsset) {
-    if (discoveryAsset == null)
-      return {};
+    if (discoveryAsset == null) { return {}; }
 
     // If a discovery context is already attached, no need to do any conversion
-    if (discoveryAsset.ooyalaDiscoveryContext != null)
-    {
+    if (discoveryAsset.ooyalaDiscoveryContext != null) {
       return discoveryAsset.ooyalaDiscoveryContext;
     }
 
-    if (discoveryAsset.bucket_info == null)
-      return {};
+    if (discoveryAsset.bucket_info == null) { return {}; }
 
     // Remove the first char that indicates the bucket number
-    var bucket_info = JSON.parse(discoveryAsset.bucket_info.substring(1));
+    let bucket_info = JSON.parse(discoveryAsset.bucket_info.substring(1));
 
     // Decode the Base64 data and parse as JSON
-    var bucket_decode = JSON.parse(Utils.decode64(bucket_info.encoded));
+    let bucket_decode = JSON.parse(Utils.decode64(bucket_info.encoded));
 
     // Return the new context with converted bucket info
-    return { version: "1", data: bucket_decode };
+    return { version: '1', data: bucket_decode };
   },
 
   /*
@@ -267,10 +265,10 @@ var Utils = {
       function(a, b) {
         a = a || {};
         b = b || {};
-        var bitrateA = this.ensureNumber(a.bitrate, 0);
-        var bitrateB = this.ensureNumber(b.bitrate, 0);
-        var resolutionA = this.ensureNumber(a.width, 1) * this.ensureNumber(a.height, 1);
-        var resolutionB = this.ensureNumber(b.width, 1) * this.ensureNumber(b.height, 1);
+        let bitrateA = this.ensureNumber(a.bitrate, 0);
+        let bitrateB = this.ensureNumber(b.bitrate, 0);
+        let resolutionA = this.ensureNumber(a.width, 1) * this.ensureNumber(a.height, 1);
+        let resolutionB = this.ensureNumber(b.width, 1) * this.ensureNumber(b.height, 1);
         // When both bitrates are equal the difference will be falsy (zero) and
         // the second condition (resolution) will be used instead
         return bitrateB - bitrateA || resolutionB - resolutionA;
@@ -290,7 +288,7 @@ var Utils = {
    * which represent the amount of seconds to skip in each respective direction.
    */
   getSkipTimes: function(skinConfig) {
-    var skipTimes = {};
+    let skipTimes = {};
     skipTimes.backward = this.getPropertyValue(
       skinConfig,
       'skipControls.skipBackwardTime'
@@ -330,7 +328,7 @@ var Utils = {
    * @private
    * @param {*} playbackSpeed The playback speed value that we want to sanitize
    * @param {Boolean} ignoreMinMax Will not constrain to minimum and maximum values when true
-   * @return {Number} A number which is the sanitized version of the value provided
+   * @returns {Number} A number which is the sanitized version of the value provided
    */
   sanitizePlaybackSpeed: function(playbackSpeed, ignoreMinMax) {
     let sanitizedSpeed = this.ensureNumber(
@@ -354,13 +352,13 @@ var Utils = {
    * Removes duplicate values from an array.
    * @private
    * @param {Array} array The array that we want to dedupe
-   * @return {Array} A new array that contains only the unique values from the array parameter
+   * @returns {Array} A new array that contains only the unique values from the array parameter
    */
   dedupeArray: function(array) {
     if (!Array.isArray(array)) {
       return [];
     }
-    var result = array.filter(function(element, index, array) {
+    let result = array.filter(function(element, index, array) {
       return array.indexOf(element) === index;
     });
     return result;
@@ -419,7 +417,7 @@ var Utils = {
    * @returns {String} String truncated to fit the width of the element
    */
   truncateTextToWidth: function(element, text) {
-    var testText = document.createElement('span');
+    let testText = document.createElement('span');
     testText.style.visibility = 'hidden';
     testText.style.position = 'absolute';
     testText.style.top = '0';
@@ -427,12 +425,12 @@ var Utils = {
     testText.style.whiteSpace = 'nowrap';
     testText.innerHTML = text;
     element.appendChild(testText);
-    var actualWidth = element.clientWidth || element.getBoundingClientRect().width;
-    var textWidth = testText.scrollWidth;
-    var truncatedText = '';
+    let actualWidth = element.clientWidth || element.getBoundingClientRect().width;
+    let textWidth = testText.scrollWidth;
+    let truncatedText = '';
     if (textWidth > actualWidth * 1.8) {
-      var truncPercent = actualWidth / textWidth;
-      var newWidth = Math.floor(truncPercent * text.length) * 1.8 - 3;
+      let truncPercent = actualWidth / textWidth;
+      let newWidth = Math.floor(truncPercent * text.length) * 1.8 - 3;
       truncatedText = text.slice(0, newWidth) + '...';
     } else {
       truncatedText = text;
@@ -450,8 +448,8 @@ var Utils = {
    */
 
   clone: function(object) {
-    var clonedObj = {};
-    for (var key in object) {
+    let clonedObj = {};
+    for (let key in object) {
       if (object.hasOwnProperty(key)) {
         clonedObj[key] = object[key];
       }
@@ -470,8 +468,8 @@ var Utils = {
    */
 
   extend: function(original, toMerge) {
-    var extendedObject = Utils.clone(original);
-    for (var key in toMerge) {
+    let extendedObject = Utils.clone(original);
+    for (let key in toMerge) {
       if (toMerge.hasOwnProperty(key)) {
         extendedObject[key] = toMerge[key];
       }
@@ -487,10 +485,10 @@ var Utils = {
    * @returns {String} The time as a string in the HH:MM format
    */
   formatSeconds: function(time) {
-    var timeInSeconds = Math.abs(time);
-    var seconds = parseInt(timeInSeconds, 10) % 60;
-    var hours = parseInt(timeInSeconds / 3600, 10);
-    var minutes = parseInt((timeInSeconds - hours * 3600) / 60, 10);
+    let timeInSeconds = Math.abs(time);
+    let seconds = parseInt(timeInSeconds, 10) % 60;
+    let hours = parseInt(timeInSeconds / 3600, 10);
+    let minutes = parseInt((timeInSeconds - hours * 3600) / 60, 10);
 
     if (hours < 10) {
       hours = '0' + hours;
@@ -504,7 +502,7 @@ var Utils = {
       seconds = '0' + seconds;
     }
 
-    var timeStr = parseInt(hours, 10) > 0 ? hours + ':' + minutes + ':' + seconds : minutes + ':' + seconds;
+    let timeStr = parseInt(hours, 10) > 0 ? hours + ':' + minutes + ':' + seconds : minutes + ':' + seconds;
     if (time >= 0) {
       return timeStr;
     } else {
@@ -559,7 +557,7 @@ var Utils = {
    * @returns {Boolean} Whether the browser is running on Android or not
    */
   isAndroid: function() {
-    var os = window.navigator.appVersion;
+    let os = window.navigator.appVersion;
     return !!os.match(/Android/);
   },
 
@@ -570,7 +568,7 @@ var Utils = {
    * @returns {Boolean} Whether the device is iOS or not
    */
   isIos: function() {
-    var platform = window.navigator.platform;
+    let platform = window.navigator.platform;
     return !!(platform.match(/iPhone/) || platform.match(/iPad/) || platform.match(/iPod/));
   },
 
@@ -581,7 +579,7 @@ var Utils = {
    * @returns {Boolean} Whether the device is an iPhone or not
    */
   isIPhone: function() {
-    var platform = window.navigator.platform;
+    let platform = window.navigator.platform;
     return !!(platform.match(/iPhone/) || platform.match(/iPod/));
   },
 
@@ -595,22 +593,21 @@ var Utils = {
     return this.isAndroid() || this.isIos();
   },
 
-
   /**
    * Get type of user device.
    *
    * @returns {string} - name of the user device, may be one of the values 'desktop', 'phone' or 'tablet'.
    */
   getUserDevice: function() {
-    var device = 'desktop';
-    var userAgent = navigator.userAgent;
+    let device = 'desktop';
+    let userAgent = navigator.userAgent;
     if (userAgent) {
-      var lowerUserAgent = userAgent.toLowerCase();
+      let lowerUserAgent = userAgent.toLowerCase();
       if (/(mobi|ipod|phone|blackberry|opera mini|fennec|minimo|symbian|psp|nintendo ds|archos|skyfire|puffin|blazer|bolt|gobrowser|iris|maemo|semc|teashark|uzard)/
-          .test(lowerUserAgent)) {
+        .test(lowerUserAgent)) {
         device = 'phone';
       } else if (/(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/
-          .test(lowerUserAgent)) {
+        .test(lowerUserAgent)) {
         device = 'tablet';
       }
     }
@@ -635,8 +632,8 @@ var Utils = {
    * @returns {String} The ISO code of the language to use
    */
   getLanguageToUse: function(skinConfig) {
-    var localization = skinConfig.localization;
-    var language, availableLanguages;
+    let localization = skinConfig.localization;
+    let language, availableLanguages;
 
     // set lang to default lang in skin config
     language = localization.defaultLanguage;
@@ -656,10 +653,10 @@ var Utils = {
       }
 
       // remove lang sub-code
-      var primaryLanguage = language.substr(0, 2);
+      let primaryLanguage = language.substr(0, 2);
 
       // check available lang file for browser lang
-      for (var i = 0; i < localization.availableLanguageFile.length; i++) {
+      for (let i = 0; i < localization.availableLanguageFile.length; i++) {
         availableLanguages = localization.availableLanguageFile[i];
         // if lang file available set lang to browser primary lang
         if (primaryLanguage === availableLanguages.language) {
@@ -696,18 +693,18 @@ var Utils = {
    * @returns {String} The countdown time string
    */
   getStartCountdown: function(countdownTimestamp) {
-    var dayString = 'day';
-    var hourString = 'hour';
-    var minuteString = 'minute';
+    let dayString = 'day';
+    let hourString = 'hour';
+    let minuteString = 'minute';
     try {
       if (countdownTimestamp < 0) return '';
-      var days = Math.floor(countdownTimestamp / (24 * 60 * 60 * 1000));
+      let days = Math.floor(countdownTimestamp / (24 * 60 * 60 * 1000));
       if (days !== 1) dayString += 's';
       countdownTimestamp -= days * 24 * 60 * 60 * 1000;
-      var hours = Math.floor(countdownTimestamp / (60 * 60 * 1000));
+      let hours = Math.floor(countdownTimestamp / (60 * 60 * 1000));
       if (hours !== 1) hourString += 's';
       countdownTimestamp -= hours * 60 * 60 * 1000;
-      var minutes = Math.floor(countdownTimestamp / (60 * 1000));
+      let minutes = Math.floor(countdownTimestamp / (60 * 1000));
       if (minutes !== 1) minuteString += 's';
       return (
         '' +
@@ -738,14 +735,14 @@ var Utils = {
    * @returns {Object|String|Number} - The value of the nested property, the default value if nested property is undefined. If the value is null, null will be returned.
    */
   getPropertyValue: function(object, propertyPath, defaultValue) {
-    var value = null;
-    var currentObject = object;
-    var currentProp = null;
+    let value = null;
+    let currentObject = object;
+    let currentProp = null;
 
     try {
-      var props = propertyPath.split('.');
+      let props = propertyPath.split('.');
 
-      for (var i = 0; i < props.length; i++) {
+      for (let i = 0; i < props.length; i++) {
         currentProp = props[i];
         currentObject = value = currentObject[currentProp];
       }
@@ -803,9 +800,9 @@ var Utils = {
    * @returns {Object} The element that has been identified as the icon, or null if none was found
    */
   getEventIconElement: function(domEvent, iconClass) {
-    var iconElement = null;
-    var classToMatch = iconClass || 'oo-icon';
-    var currentTarget = domEvent ? domEvent.currentTarget : null;
+    let iconElement = null;
+    let classToMatch = iconClass || 'oo-icon';
+    let currentTarget = domEvent ? domEvent.currentTarget : null;
 
     if (currentTarget) {
       // Check to see if the target itself is the icon, otherwise get
@@ -871,11 +868,11 @@ var Utils = {
     if (!orderedItems) {
       return [];
     }
-    var self = this;
-    var validItems = orderedItems.filter(function(item) {
+    let self = this;
+    let validItems = orderedItems.filter(function(item) {
       return self._isValid(item);
     });
-    var r = this._collapse(barWidth, validItems, responsiveUIMultiple);
+    let r = this._collapse(barWidth, validItems, responsiveUIMultiple);
     return r;
   },
 
@@ -890,24 +887,24 @@ var Utils = {
    * @returns {Object} object that contains URL and index of requested thumbnail
    */
   findThumbnail: function(thumbnails, hoverTime, duration, isVideoVr) {
-    var timeSlices = thumbnails.data.available_time_slices;
-    var width = thumbnails.data.available_widths[0]; // choosing the lowest size
+    let timeSlices = thumbnails.data.available_time_slices;
+    let width = thumbnails.data.available_widths[0]; // choosing the lowest size
     if (isVideoVr && width < CONSTANTS.THUMBNAIL.MAX_VR_THUMBNAIL_BG_WIDTH) {
       // it is necessary to take bigger image for showing part of the image
       // so choose not the lowest size but bigger one, the best width is 380
-      var index =
+      let index =
         thumbnails.data.available_widths.length - 1 >= CONSTANTS.THUMBNAIL.THUMBNAIL_VR_RATIO
           ? CONSTANTS.THUMBNAIL.THUMBNAIL_VR_RATIO
           : thumbnails.data.available_widths.length - 1;
       width = thumbnails.data.available_widths[index];
     }
 
-    var position = Math.floor(hoverTime / duration * timeSlices.length);
+    let position = Math.floor(hoverTime / duration * timeSlices.length);
     position = Math.min(position, timeSlices.length - 1);
     position = Math.max(position, 0);
 
-    var selectedTimeSlice = null;
-    var selectedPosition = position;
+    let selectedTimeSlice = null;
+    let selectedPosition = position;
 
     if (timeSlices[position] >= hoverTime) {
       selectedTimeSlice = timeSlices[0];
@@ -933,14 +930,14 @@ var Utils = {
       }
     }
 
-    var selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
-    var imageWidth = thumbnails.data.thumbnails[selectedTimeSlice][width].width;
-    var imageHeight = thumbnails.data.thumbnails[selectedTimeSlice][width].height;
+    let selectedThumbnail = thumbnails.data.thumbnails[selectedTimeSlice][width].url;
+    let imageWidth = thumbnails.data.thumbnails[selectedTimeSlice][width].width;
+    let imageHeight = thumbnails.data.thumbnails[selectedTimeSlice][width].height;
     return {
       url: selectedThumbnail,
       pos: selectedPosition,
       imageWidth: imageWidth,
-      imageHeight: imageHeight
+      imageHeight: imageHeight,
     };
   },
 
@@ -994,11 +991,11 @@ var Utils = {
       }
     }
 
-    var targetArray = optionsArgument.arraySwap ? source : target;
-    var sourceArray = optionsArgument.arraySwap ? target : source;
-    var self = this;
-    var uniqueSourceArray = sourceArray.slice(); // array used to keep track of objects that do not exist in target
-    var destination = targetArray.slice();
+    let targetArray = optionsArgument.arraySwap ? source : target;
+    let sourceArray = optionsArgument.arraySwap ? target : source;
+    let self = this;
+    let uniqueSourceArray = sourceArray.slice(); // array used to keep track of objects that do not exist in target
+    let destination = targetArray.slice();
 
     sourceArray.forEach(function(sourceItem, i) {
       if (typeof destination[i] === 'undefined') {
@@ -1009,8 +1006,8 @@ var Utils = {
           targetArray.forEach(function(targetItem, j) {
             // gracefully merge buttons by name
             if (sourceItem[optionsArgument.arrayUnionBy] === targetItem[optionsArgument.arrayUnionBy]) {
-              var targetObject = optionsArgument.arraySwap ? sourceItem : targetItem;
-              var sourceObject = optionsArgument.arraySwap ? targetItem : sourceItem;
+              let targetObject = optionsArgument.arraySwap ? sourceItem : targetItem;
+              let sourceObject = optionsArgument.arraySwap ? targetItem : sourceItem;
               destination[j] = DeepMerge(targetObject, sourceObject, optionsArgument);
 
               // prunes uniqueSourceArray to unique items not in target
@@ -1019,7 +1016,7 @@ var Utils = {
                 uniqueSourceArray &&
                 uniqueSourceArray.length
               ) {
-                for (var x in uniqueSourceArray) {
+                for (let x in uniqueSourceArray) {
                   if (
                     uniqueSourceArray[x][optionsArgument.arrayUnionBy] ===
                     sourceItem[optionsArgument.arrayUnionBy]
@@ -1042,9 +1039,9 @@ var Utils = {
     });
     // prepend uniqueSourceArray array of unique items to buttons after flexible space
     if (optionsArgument.buttonArrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
-      var flexibleSpaceIndex = null;
+      let flexibleSpaceIndex = null;
       // find flexibleSpace btn index
-      for (var y in destination) {
+      for (let y in destination) {
         if (destination[y][optionsArgument.arrayUnionBy] === 'flexibleSpace') {
           flexibleSpaceIndex = parseInt(y);
           break;
@@ -1054,7 +1051,7 @@ var Utils = {
       // to destination array after flexible space btn
       if (flexibleSpaceIndex) {
         flexibleSpaceIndex += 1; // after flexible space
-        for (var z in uniqueSourceArray) {
+        for (let z in uniqueSourceArray) {
           destination.splice(flexibleSpaceIndex, 0, uniqueSourceArray[z]);
         }
       } else {
@@ -1096,12 +1093,12 @@ var Utils = {
    * @returns {[boolean]} true if the OS can render the skin.
    */
   canRenderSkin: function() {
-    var result = !(OO.isIphone && OO.iosMajorVersion < 10);
+    let result = !(OO.isIphone && OO.iosMajorVersion < 10);
     return result;
   },
 
   _isValid: function(item) {
-    var valid =
+    let valid =
       (item && item.location === 'moreOptions') ||
       (item.location === 'controlBar' &&
         item.whenDoesNotFit &&
@@ -1111,12 +1108,12 @@ var Utils = {
   },
 
   _collapse: function(barWidth, orderedItems, responsiveUIMultiple) {
-    var r = { fit: orderedItems.slice(), overflow: [] };
-    var usedWidth = orderedItems.reduce(function(p, c, i, a) {
+    let r = { fit: orderedItems.slice(), overflow: [] };
+    let usedWidth = orderedItems.reduce(function(p, c, i, a) {
       return p + responsiveUIMultiple * c.minWidth;
     }, 0);
-    for (var i = orderedItems.length - 1; i >= 0; --i) {
-      var item = orderedItems[i];
+    for (let i = orderedItems.length - 1; i >= 0; --i) {
+      let item = orderedItems[i];
       if (this._isOnlyInMoreOptions(item)) {
         usedWidth = this._collapseLastItemMatching(r, item, usedWidth);
       }
@@ -1128,17 +1125,17 @@ var Utils = {
   },
 
   _isOnlyInMoreOptions: function(item) {
-    var must = item.location === 'moreOptions';
+    let must = item.location === 'moreOptions';
     return must;
   },
 
   _isCollapsable: function(item) {
-    var collapsable = item.location === 'controlBar' && item.whenDoesNotFit && item.whenDoesNotFit !== 'keep';
+    let collapsable = item.location === 'controlBar' && item.whenDoesNotFit && item.whenDoesNotFit !== 'keep';
     return collapsable;
   },
 
   _collapseLastItemMatching: function(results, item, usedWidth) {
-    var i = results.fit.lastIndexOf(item);
+    let i = results.fit.lastIndexOf(item);
     if (i > -1) {
       results.fit.splice(i, 1);
       results.overflow.unshift(item);
@@ -1150,7 +1147,7 @@ var Utils = {
   },
 
   _isMergeableObject: function(val) {
-    var nonNullObject = val && typeof val === 'object';
+    let nonNullObject = val && typeof val === 'object';
 
     return (
       nonNullObject &&
@@ -1164,7 +1161,7 @@ var Utils = {
   },
 
   _cloneIfNecessary: function(value, optionsArgument) {
-    var clone = optionsArgument && optionsArgument.clone === true;
+    let clone = optionsArgument && optionsArgument.clone === true;
     return clone && this._isMergeableObject(value)
       ? DeepMerge(this._emptyTarget(value), value, optionsArgument)
       : value;
@@ -1176,8 +1173,8 @@ var Utils = {
    * @returns {object} - coordinates x, y
    */
   getCoords: function(e) {
-    var coords = {};
-    var isMobileTouhes = (OO.isIos || OO.isAndroid) && e.touches && !!e.touches.length;
+    let coords = {};
+    let isMobileTouhes = (OO.isIos || OO.isAndroid) && e.touches && !!e.touches.length;
 
     if (isMobileTouhes) {
       coords.x = e.touches[0].pageX;
@@ -1199,7 +1196,7 @@ var Utils = {
    * "landscape-secondary" (landscape upside down)
    */
   getOrientationType: function() {
-    var orientationType = window.screen.orientation;
+    let orientationType = window.screen.orientation;
     if (orientationType && orientationType !== null && typeof orientationType === 'object') {
       orientationType = orientationType.type;
     } else {
@@ -1213,12 +1210,12 @@ var Utils = {
    * @returns {boolean} - true if "landscape-primary" orientation was set, returns false in otherwise
    */
   setLandscapeScreenOrientation: function() {
-    var orientationType = this.getOrientationType();
+    let orientationType = this.getOrientationType();
     if (
       orientationType &&
       (orientationType === 'portrait-secondary' || orientationType === 'portrait-primary')
     ) {
-      var landscapeOrientation = 'landscape-primary';
+      let landscapeOrientation = 'landscape-primary';
       if (screen.orientation && screen.orientation.lock) {
         // chrome browser
         screen.orientation.lock(landscapeOrientation);
@@ -1246,8 +1243,8 @@ var Utils = {
    * @returns {*|number} The client width of the element. Returns false if the element does not exist
    */
   getClientWidth: function(element) {
-    //getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
-    //but we can mock getBoundingClientRect.
+    // getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
+    // but we can mock getBoundingClientRect.
     return element && (element.clientWidth || element.getBoundingClientRect().width);
   },
 
@@ -1258,8 +1255,8 @@ var Utils = {
    * @returns {*|number} The client height of the element. Returns false if the element does not exist
    */
   getClientHeight: function(element) {
-    //getBoundingClientRect().height returns the unrounded clientHeight. However, jsdom won't allow us to set clientHeight,
-    //but we can mock getBoundingClientRect.
+    // getBoundingClientRect().height returns the unrounded clientHeight. However, jsdom won't allow us to set clientHeight,
+    // but we can mock getBoundingClientRect.
     return element && (element.clientHeight || element.getBoundingClientRect().height);
   },
 
@@ -1271,9 +1268,9 @@ var Utils = {
    *                   buttonTooltip - the button tooltip to display
    */
   getPlayButtonDetails: (playerState) => {
-    var playIcon;
-    var playPauseAriaLabel;
-    var playBtnTooltip;
+    let playIcon;
+    let playPauseAriaLabel;
+    let playBtnTooltip;
     if (playerState === CONSTANTS.STATE.PLAYING) {
       playIcon = 'pause';
       playPauseAriaLabel = CONSTANTS.ARIA_LABELS.PAUSE;
@@ -1290,9 +1287,9 @@ var Utils = {
     return {
       icon: playIcon,
       ariaLabel: playPauseAriaLabel,
-      buttonTooltip: playBtnTooltip
+      buttonTooltip: playBtnTooltip,
     };
-  }
+  },
 };
 
 module.exports = Utils;
