@@ -10,11 +10,11 @@ jest
 var $ = require('jquery');
 var _ = require('underscore');
 var sinon = require('sinon');
-var skinJson = require('../config/skin.json');
-var CONSTANTS = require('../js/constants/constants');
 const DeepMerge = require('deepmerge');
 
-var Html5Skin;
+var skinJson = require('../config/skin.json');
+var CONSTANTS = require('../js/constants/constants');
+const initPlugin = require('../js/controller');
 
 var elementId = 'adrfgyi';
 var videoId = 'ag5dfdto oon2cncj714i';
@@ -26,10 +26,12 @@ videoElement.src =
   'http://cf.c.ooyala.com/RmZW4zcDo6KqkTIhn1LnowEZyUYn5Tb2/DOcJ-FxaFrRg4gtDEwOmY1OjA4MTtU7o?_=hihx01nww4iqldo893sor';
 
 // Mock OO environment needed for skin plugin initialization
-OO = {
+const OOBase = {
   playerParams: {
     core_version: 4
   },
+  isAndroid: false,
+  isIos: false,
   publicApi: {},
   EVENTS: {
     PLAY: 'play',
@@ -41,7 +43,8 @@ OO = {
     },
     SET_CURRENT_AUDIO: 'setCurrentAudio',
     SET_PLAYBACK_SPEED: 'setPlaybackSpeed',
-    SKIN_UI_LANGUAGE: 'skinUiLanguage'
+    SKIN_UI_LANGUAGE: 'skinUiLanguage',
+    UI_READY: 'uiReady'
   },
   CONSTANTS: {
     PLAYER_TYPE: {
@@ -61,26 +64,20 @@ OO = {
   init: function() {},
   handleVrMobileOrientation: function() {},
   log: function() {},
-  setItem: function() {},
-  getItem: function() {},
-  plugin: function(module, callback) {
-    var plugin = callback(OO, _, $);
-    plugin.call(OO, OO.mb, 0);
-    // Save Html5Skin class in local var
-    Html5Skin = plugin;
-  },
+  setItem: jest.fn(),
+  getItem: jest.fn(),
   mb: {
-    subscribe: function() {},
-    unsubscribe: function() {},
-    publish: function() {},
-    addDependent: function() {}
+    subscribe: jest.fn(),
+    unsubscribe: jest.fn(),
+    publish: jest.fn(),
+    addDependent: jest.fn()
   }
 };
-// Requiring this will automatically initialize the plugin and set the Html5Skin var
-require('../js/controller');
 
 describe('Controller', function() {
   let controller;
+  let Html5Skin;
+
   const mockDomElement = {
     classList: {
       add: function() {},
@@ -96,6 +93,11 @@ describe('Controller', function() {
   };
 
   beforeEach(function() {
+    OO = DeepMerge({}, OOBase);
+    const plugin = initPlugin(OO, _, $);
+    plugin.call(OO, OO.mb, 0);
+    Html5Skin = plugin;
+
     // setup document body for valid DOM elements
     document.body.innerHTML =
       '<div id=' + elementId + '>' + '  <div class="oo-player-skin">' + videoElement + '</div>' + '</div>';
@@ -126,6 +128,10 @@ describe('Controller', function() {
         skinConfig: JSON.parse(JSON.stringify(skinJson))
       }
     };
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   describe('Closed Captions', function() {
@@ -177,11 +183,10 @@ describe('Controller', function() {
     });
 
     it('should set closed captions with "isGoingFullScreen" flag before going fullscreen on iOS', function() {
-      const spyPublish = jest.spyOn(OO.mb, 'publish');
       controller.state.closedCaptionOptions.enabled = true;
       controller.toggleIOSNativeFullscreen();
-      expect(spyPublish.mock.calls.length).toBe(1);
-      expect(spyPublish.mock.calls[0]).toEqual([
+      expect(OO.mb.publish.mock.calls.length).toBe(2);
+      expect(_.last(OO.mb.publish.mock.calls)).toEqual([
         OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE,
         controller.state.closedCaptionOptions.language,
         {
@@ -190,7 +195,6 @@ describe('Controller', function() {
           isGoingFullScreen: true
         }
       ]);
-      spyPublish.mockRestore();
     });
 
     it('should enable captions on CHANGE_CLOSED_CAPTION_LANGUAGE event when forceEnabled is true', function() {
@@ -286,6 +290,7 @@ describe('Controller', function() {
       jest.runAllTimers();
       expect(controller.state.buffering).toBe(true);
       jest.clearAllTimers();
+      jest.useRealTimers();
     });
 
     it('should reset buffering state if it hasn\'t been cleared by the time PLAYHEAD_TIME_CHANGED is fired', function() {
@@ -1045,13 +1050,12 @@ describe('Controller', function() {
     it('Calling of setCurrentAudio should save audioTrack to storage', function() {
       var localStorage = {};
 
-      OO.setItem = function(key, item) {
+      OO.setItem.mockImplementation(function(key, item) {
         localStorage[key] = item;
-      };
-
-      OO.getItem = function(key) {
+      });
+      OO.getItem.mockImplementation(function(key) {
         return JSON.parse(localStorage[key]);
-      };
+      });
 
       var track = { id: '1', lang: 'eng', label: 'eng' };
       controller.setCurrentAudio(track);
@@ -1062,23 +1066,19 @@ describe('Controller', function() {
     it('should save stringified audioTrack to storage', function() {
       var localStorage = {};
 
-      OO.setItem = function(key, item) {
+      OO.setItem.mockImplementation(function(key, item) {
         localStorage[key] = item;
-      };
-
-      OO.getItem = function(key) {
+      });
+      OO.getItem.mockImplementation(function(key) {
         return JSON.parse(localStorage[key]);
-      };
-
-      var setItemSpy = sinon.spy(OO, 'setItem');
+      });
 
       var track = { id: '1', lang: 'eng', label: 'eng' };
       controller.setCurrentAudio(track);
 
       var stringifiedTrack = JSON.stringify(track);
 
-      expect(setItemSpy.calledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack)).toBeTruthy();
-      setItemSpy.restore();
+      expect(OO.setItem).toBeCalledWith(OO.CONSTANTS.SELECTED_AUDIO, stringifiedTrack);
     });
 
     it('should check if the icon exists if hideMultiAudioIcon is false', function() {
@@ -1292,21 +1292,11 @@ describe('Controller', function() {
   });
 
   describe('Playback Speed', function() {
-    var spyPublish;
-
-    beforeEach(function() {
-      spyPublish = jest.spyOn(OO.mb, 'publish');
-    });
-
-    afterEach(function() {
-      spyPublish.mockRestore();
-    });
-
     it('should publish OO.EVENTS.SET_PLAYBACK_SPEED when setPlaybackSpeed() is called', function() {
       const playbackSpeed = 2;
       controller.setPlaybackSpeed(playbackSpeed);
-      expect(spyPublish.mock.calls.length).toBe(1);
-      expect(spyPublish.mock.calls[0]).toEqual([OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed]);
+      expect(OO.mb.publish.mock.calls.length).toBe(1);
+      expect(OO.mb.publish.mock.calls[0]).toEqual([OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed]);
     });
 
     it('should store sanitized playback speed on PLAYBACK_SPEED_CHANGED', function() {
@@ -1404,7 +1394,6 @@ describe('Controller', function() {
     });
 
     afterEach(function() {
-      OO.isAndroid = false;
       spyPublish.restore();
     });
 
@@ -1544,18 +1533,27 @@ describe('Controller', function() {
       expect(controller.state.mainVideoInnerWrapper.hasClass('oo-video-player')).toBe(false);
     });
 
-    it('does not pause the video if toggleScreen was provided a value of true for doNotPause', () => {
-      let spy = sinon.spy(controller.mb, 'publish');
+    it('pauses the video on toggleScreen', () => {
+      const spy = sinon.spy(controller.mb, 'publish');
       controller.createPluginElements();
 
-      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, false);
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
+      controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN);
       expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(true);
 
       spy.resetHistory();
+      spy.restore();
+    });
 
+    it('does not pause the video if toggleScreen was provided a value of true for doNotPause', () => {
+      const spy = sinon.spy(controller.mb, 'publish');
+      controller.createPluginElements();
+
+      controller.state.playerState = CONSTANTS.STATE.PLAYING;
       controller.toggleScreen(CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN, true);
       expect(spy.calledWith(OO.EVENTS.PAUSE)).toBe(false);
 
+      spy.resetHistory();
       spy.restore();
     });
 

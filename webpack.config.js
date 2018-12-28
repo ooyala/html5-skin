@@ -7,7 +7,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
-    'html5-skin': ['./js/controller.js', './scss/html5-skin.scss']
+    'html5-skin': ['./js/index.js', './scss/html5-skin.scss']
   },
   output: {
     path: path.resolve(__dirname, './build'),
