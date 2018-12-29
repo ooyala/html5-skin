@@ -1,10 +1,10 @@
-let React = require('react');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
-let Logo = createReactClass({
-  render: function() {
-    let content = this.props.clickUrl ? (
+const Logo = createReactClass({
+  render() {
+    const content = this.props.clickUrl ? (
       <a href={this.props.clickUrl} target={this.props.target}>
         <img width={this.props.width} height={this.props.height} src={this.props.imageUrl} />
       </a>

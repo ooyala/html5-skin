@@ -1,33 +1,33 @@
 /** ******************************************************************
   COUNT DOWN CLOCK
-*********************************************************************/
+******************************************************************** */
 /**
  *
  *
  * @class CountDownClock
  * @constructor
  */
-let React = require('react');
+const React = require('react');
 
-let ReactDOM = require('react-dom');
+const ReactDOM = require('react-dom');
 
-let ClassNames = require('classnames');
+const ClassNames = require('classnames');
 
-let Utils = require('./utils');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('./utils');
 
-let CONSTANTS = require('../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const CONSTANTS = require('../constants/constants');
 
-let CountDownClock = createReactClass({
-  getInitialState: function() {
+const CountDownClock = createReactClass({
+  getInitialState() {
     // canvas, interval, and context are changing based on time instead of user interaction
     this.canvas = null;
     this.context = null;
     this.interval = null;
     let tmpFraction = 0;
     let tmpRemainSeconds = 0;
-    let upNextTimeToShow = parseInt(this.props.controller.state.upNextInfo.timeToShow);
+    const upNextTimeToShow = parseInt(this.props.controller.state.upNextInfo.timeToShow);
 
     if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       tmpFraction = 2 / this.props.timeToShow;
@@ -45,7 +45,7 @@ let CountDownClock = createReactClass({
     };
   },
 
-  handleClick: function(event) {
+  handleClick(event) {
     if (event.type === 'touchend' || !this.isMobile) {
       // since mobile would fire both click and touched events,
       // we need to make sure only one actually does the work
@@ -57,26 +57,26 @@ let CountDownClock = createReactClass({
     }
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     this.updateClockSize();
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.setupCountDownTimer();
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     clearInterval(this.interval);
   },
 
-  setupCountDownTimer: function() {
+  setupCountDownTimer() {
     this.setupCanvas();
     this.drawBackground();
     this.drawTimer();
     this.startTimer();
   },
 
-  setupCanvas: function() {
+  setupCanvas() {
     this.canvas = ReactDOM.findDOMNode(this);
     this.context = this.canvas.getContext('2d');
     this.context.textAlign = 'center';
@@ -84,7 +84,7 @@ let CountDownClock = createReactClass({
     this.context.font = 'regular 12px Arial';
   },
 
-  drawBackground: function() {
+  drawBackground() {
     this.context.beginPath();
     this.context.globalAlpha = 1;
     this.context.fillStyle = 'gray';
@@ -107,12 +107,11 @@ let CountDownClock = createReactClass({
     this.context.fill();
   },
 
-  updateClockSize: function() {
+  updateClockSize() {
     if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       var clockWidth = 75;
     } else {
-      var clockWidth =
-        this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id ? 25 : 36;
+      var clockWidth = this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id ? 25 : 36;
     }
     this.setState({
       clockRadius: parseInt(clockWidth, 10) / 2,
@@ -120,13 +119,13 @@ let CountDownClock = createReactClass({
     });
   },
 
-  drawTimer: function() {
+  drawTimer() {
     let decimals;
-    let percent = this.state.fraction * this.state.remainSeconds + 1.5;
+    const percent = this.state.fraction * this.state.remainSeconds + 1.5;
     this.context.fillStyle = 'white';
     if (
-      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN ||
-      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN
+      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN
+      || this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN
     ) {
       this.context.fillText(
         this.state.remainSeconds.toFixed(decimals),
@@ -155,11 +154,11 @@ let CountDownClock = createReactClass({
     this.context.fill();
   },
 
-  startTimer: function() {
+  startTimer() {
     this.interval = setInterval(this.tick, this.state.counterInterval * 1000);
   },
 
-  tick: function() {
+  tick() {
     if (this.props.controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
       if (this.state.remainSeconds < 1) {
         this.setState({ remainSeconds: 0 });
@@ -170,8 +169,8 @@ let CountDownClock = createReactClass({
         this.updateCanvas();
       }
     } else if (
-      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN ||
-      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN
+      this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN
+      || this.props.controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN
     ) {
       if (this.state.remainSeconds < 1 || this.props.playerState === CONSTANTS.STATE.END) {
         this.setState({ remainSeconds: 0 });
@@ -184,21 +183,21 @@ let CountDownClock = createReactClass({
     }
   },
 
-  updateCanvas: function() {
+  updateCanvas() {
     this.clearCanvas();
     this.drawTimer();
   },
 
-  clearCanvas: function() {
+  clearCanvas() {
     this.context = this.canvas.getContext('2d');
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();
   },
 
-  startDiscoveryVideo: function() {
-    let asset = this.props.discoveryData.relatedVideos[0];
-    let customData = { 'source': CONSTANTS.SCREEN.UP_NEXT_SCREEN, 'autoplay': false };
-    let eventData = {
+  startDiscoveryVideo() {
+    const asset = this.props.discoveryData.relatedVideos[0];
+    const customData = { source: CONSTANTS.SCREEN.UP_NEXT_SCREEN, autoplay: false };
+    const eventData = {
       clickedVideo: asset,
       custom: this.props.discoveryData.custom,
       metadata: Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData),
@@ -206,11 +205,11 @@ let CountDownClock = createReactClass({
     this.props.controller.sendDiscoveryClickEvent(eventData, false);
   },
 
-  startUpNextVideo: function() {
+  startUpNextVideo() {
     OO.log('startUpNext');
-    let asset = this.props.upNextInfo.upNextData;
-    let customData = { 'source': CONSTANTS.SCREEN.UP_NEXT_SCREEN, 'autoplay': true };
-    let eventData = {
+    const asset = this.props.upNextInfo.upNextData;
+    const customData = { source: CONSTANTS.SCREEN.UP_NEXT_SCREEN, autoplay: true };
+    const eventData = {
       clickedVideo: asset,
       custom: customData,
       metadata: Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData),
@@ -218,8 +217,8 @@ let CountDownClock = createReactClass({
     this.props.controller.sendDiscoveryClickEvent(eventData, true);
   },
 
-  render: function() {
-    let canvasClassName = ClassNames({
+  render() {
+    const canvasClassName = ClassNames({
       'oo-countdown-clock': true,
       'oo-up-next-count-down': this.props.controller.state.screenToShow !== CONSTANTS.SCREEN.DISCOVERY_SCREEN,
       'oo-discovery-count-down':

@@ -4,12 +4,12 @@
  * @mixin AccessibilityMixin
  * @requires this.props.controller.state.accessibilityControlsEnabled
  */
-let AccessibilityMixin = {
-  componentDidMount: function() {
+const AccessibilityMixin = {
+  componentDidMount() {
     this.props.controller.state.accessibilityControlsEnabled = false;
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 };

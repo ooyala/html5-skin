@@ -1,7 +1,7 @@
-let CONSTANTS = require('./../constants/constants');
-let Utils = require('./utils');
+const CONSTANTS = require('./../constants/constants');
+const Utils = require('./utils');
 
-let AccessibilityControls = function(controller) {
+const AccessibilityControls = function(controller) {
   this.controller = controller;
   this.vrRotationAllowed = true; // flag for checking repeat of keyDown
   this.keyDirectionMap = {};
@@ -35,18 +35,18 @@ AccessibilityControls.prototype = {
     TIME_THRESHOLD: 500,
   },
 
-  cleanUp: function() {
+  cleanUp() {
     document.removeEventListener('keydown', this.keyEventDown);
     document.removeEventListener('keyup', this.keyEventUp);
   },
 
-  keyEventDown: function(e) {
+  keyEventDown(e) {
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
 
-    let targetTagName = this.getTargetTagName(e);
-    let charCode = e.which || e.keyCode;
+    const targetTagName = this.getTargetTagName(e);
+    const charCode = e.which || e.keyCode;
     if (this.controller.videoVr) {
       this.moveVrToDirection(e, charCode, true, targetTagName); // start rotate 360
     }
@@ -66,7 +66,7 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
         if (this.areArrowKeysAllowed()) {
           e.preventDefault();
-          let increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
+          const increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
         }
         break;
@@ -74,10 +74,10 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
         if (this.areArrowKeysAllowed()) {
           e.preventDefault();
-          let forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
-          let skinConfig = Utils.getPropertyValue(this.controller, 'skin.props.skinConfig');
-          let skipTimes = Utils.getSkipTimes(skinConfig);
-          let delta = forward ? skipTimes.forward : skipTimes.backward;
+          const forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
+          const skinConfig = Utils.getPropertyValue(this.controller, 'skin.props.skinConfig');
+          const skipTimes = Utils.getSkipTimes(skinConfig);
+          const delta = forward ? skipTimes.forward : skipTimes.backward;
 
           this.seekBy(delta, forward, true);
         }
@@ -95,7 +95,7 @@ AccessibilityControls.prototype = {
    * @private
    * @returns {Boolean} True if arrow key shortcuts are allowed, false otherwise.
    */
-  areArrowKeysAllowed: function() {
+  areArrowKeysAllowed() {
     let activeElementRole = '';
     if (document.activeElement) {
       activeElementRole = document.activeElement.getAttribute('role');
@@ -117,13 +117,13 @@ AccessibilityControls.prototype = {
    * @private
    * @param {Event} e - event
    */
-  keyEventUp: function(e) {
+  keyEventUp(e) {
     if (!(this.controller.state.accessibilityControlsEnabled || this.controller.state.isClickedOutside)) {
       return;
     }
     if (this.controller.videoVr) {
-      let targetTagName = this.getTargetTagName(e);
-      let charCode = e.which || e.keyCode;
+      const targetTagName = this.getTargetTagName(e);
+      const charCode = e.which || e.keyCode;
       this.moveVrToDirection(e, charCode, false, targetTagName); // stop rotate 360
     }
   },
@@ -134,7 +134,7 @@ AccessibilityControls.prototype = {
    * @param {Event} e - event
    * @returns {string} name of the target tag
    */
-  getTargetTagName: function(e) {
+  getTargetTagName(e) {
     let targetTagName = '';
     if (e.target && typeof e.target.tagName === 'string') {
       targetTagName = e.target.tagName.toLowerCase();
@@ -151,8 +151,8 @@ AccessibilityControls.prototype = {
    * @param {string} targetTagName - name of the clicked tag
    * @returns {boolean} true if moved
    */
-  moveVrToDirection: function(e, charCode, isKeyDown, targetTagName) {
-    let keyDirectionMap = this.keyDirectionMap;
+  moveVrToDirection(e, charCode, isKeyDown, targetTagName) {
+    const keyDirectionMap = this.keyDirectionMap;
     if (!(this.controller.videoVr || keyDirectionMap[charCode] || targetTagName !== 'button')) {
       return false;
     }
@@ -207,13 +207,13 @@ AccessibilityControls.prototype = {
    * @param {Number} percent A value from 0 to 100 that indicates how much to increase or decrease the volume.
    * @param {Boolean} increase True for volume increase, false for descrease.
    */
-  changeVolumeBy: function(percent, increase) {
-    let delta = Utils.constrainToRange(percent, 0, 100);
+  changeVolumeBy(percent, increase) {
+    const delta = Utils.constrainToRange(percent, 0, 100);
 
     if (delta) {
       let volume = 0;
-      let currentVolume = Utils.ensureNumber(this.controller.state.volumeState.volume, 0);
-      let currentVolumePercent = currentVolume * 100;
+      const currentVolume = Utils.ensureNumber(this.controller.state.volumeState.volume, 0);
+      const currentVolumePercent = currentVolume * 100;
 
       if (increase) {
         volume = Utils.constrainToRange(currentVolumePercent + delta, 0, 100) / 100;
@@ -231,7 +231,7 @@ AccessibilityControls.prototype = {
    * @private
    * @returns {Boolean} True if seeking is possible, false otherwise.
    */
-  canSeek: function() {
+  canSeek() {
     let seekingEnabled = false;
     switch (this.controller.state.screenToShow) {
       case CONSTANTS.SCREEN.PLAYING_SCREEN:
@@ -261,12 +261,12 @@ AccessibilityControls.prototype = {
    * @param {Boolean} forward True to seek forward, false to seek backward.
    * @param {Boolean} useConstantRate Determines whether or not the seeking rate is kept constant when the method is called repeatedly.
    */
-  seekBy: function(seconds, forward, useConstantRate) {
+  seekBy(seconds, forward, useConstantRate) {
     if (!this.canSeek()) {
       return;
     }
-    let shiftSeconds = Utils.ensureNumber(seconds, 1);
-    let shiftSign = forward ? 1 : -1; // Positive 1 for fast forward, negative for rewind
+    const shiftSeconds = Utils.ensureNumber(seconds, 1);
+    const shiftSign = forward ? 1 : -1; // Positive 1 for fast forward, negative for rewind
     let seekRate = 1;
 
     if (!useConstantRate) {
@@ -274,7 +274,7 @@ AccessibilityControls.prototype = {
     }
 
     // Calculate the new playhead
-    let delta = shiftSeconds * shiftSign * seekRate;
+    const delta = shiftSeconds * shiftSign * seekRate;
     let seekTo = Utils.ensureNumber(this.controller.skin.state.currentPlayhead, 0) + delta;
     seekTo = Utils.constrainToRange(seekTo, 0, this.controller.skin.state.duration);
 
@@ -290,9 +290,9 @@ AccessibilityControls.prototype = {
    * @public
    * @returns {Number} A number between 1 and this.SEEK_RATE.MAXIMUM which represents the current seeking rate.
    */
-  getSeekRate: function() {
-    let currentTime = Date.now();
-    let timeSinceLastSeek = currentTime - this.state.lastKeyDownTime;
+  getSeekRate() {
+    const currentTime = Date.now();
+    const timeSinceLastSeek = currentTime - this.state.lastKeyDownTime;
 
     if (timeSinceLastSeek < this.SEEK_RATE.TIME_THRESHOLD) {
       // Increasing seek rate to go faster if key is pressed often

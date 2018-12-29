@@ -1,13 +1,13 @@
-let React = require('react');
-let ReactDOM = require('react-dom');
-let CONSTANTS = require('../../constants/constants');
-let createReactClass = require('create-react-class');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const createReactClass = require('create-react-class');
+const CONSTANTS = require('../../constants/constants');
 
-let AccessibleMenu = function(ComposedComponent, options) {
-  let _options = options || {};
+const AccessibleMenu = function(ComposedComponent, options) {
+  const _options = options || {};
 
   return createReactClass({
-    componentDidMount: function() {
+    componentDidMount() {
       this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent);
       this.applyOptions();
 
@@ -16,7 +16,7 @@ let AccessibleMenu = function(ComposedComponent, options) {
       }
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount() {
       if (this.menuDomElement) {
         this.menuDomElement.removeEventListener('keydown', this.onKeyDown);
       }
@@ -27,7 +27,7 @@ let AccessibleMenu = function(ComposedComponent, options) {
      * Should be called only once after componentDidMount.
      * @private
      */
-    applyOptions: function() {
+    applyOptions() {
       // If specified, use a child element instead of component's main element
       if (_options.selector && this.menuDomElement) {
         this.menuDomElement = this.menuDomElement.querySelector(_options.selector);
@@ -52,7 +52,7 @@ let AccessibleMenu = function(ComposedComponent, options) {
      * cue to make sure that the roving tab index state is up to date.
      * @private
      */
-    composedComponentDidUpdate: function() {
+    composedComponentDidUpdate() {
       // Call component's original handler if existent
       if (typeof this.composedComponentDidUpdateHandler === 'function') {
         this.composedComponentDidUpdateHandler.apply(this.composedComponent, arguments);
@@ -65,11 +65,11 @@ let AccessibleMenu = function(ComposedComponent, options) {
      * @private
      * @param {event} event The keyboard event object.
      */
-    onKeyDown: function(event) {
+    onKeyDown(event) {
       if (
-        !event.target ||
-        !event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR) ||
-        event.target.getAttribute('role') === CONSTANTS.ARIA_ROLES.SLIDER
+        !event.target
+        || !event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
+        || event.target.getAttribute('role') === CONSTANTS.ARIA_ROLES.SLIDER
       ) {
         return;
       }
@@ -97,12 +97,12 @@ let AccessibleMenu = function(ComposedComponent, options) {
      * @private
      * @returns {NodeList} An ordered list of elements that comprise a menu.
      */
-    getMenuItemList: function() {
+    getMenuItemList() {
       let menuItemList = [];
 
       if (this.menuDomElement) {
         menuItemList = this.menuDomElement.querySelectorAll(
-          '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:not(.oo-hidden)'
+          `[${CONSTANTS.KEYBD_FOCUS_ID_ATTR}]:not(.oo-hidden)`
         );
       }
       return menuItemList;
@@ -114,15 +114,15 @@ let AccessibleMenu = function(ComposedComponent, options) {
      * @param {Element} menuItem The menuItem element whose sibling we want to focus on.
      * @param {Boolean} useNextSibling Chooses the next sibling when true and the previous when false.
      */
-    focusOnMenuItemSibling: function(menuItem, useNextSibling) {
-      let menuItemList = this.getMenuItemList();
+    focusOnMenuItemSibling(menuItem, useNextSibling) {
+      const menuItemList = this.getMenuItemList();
       if (!menuItemList.length) {
         return;
       }
       // Since these elements aren't actually next to each other in the DOM, their position
       // relative to one another is implied from their tab order, which should be the same as
       // the one returned by querySelectorAll as long as tabindex is set to 0 (which should be the case).
-      let siblingIndex = this.getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling);
+      const siblingIndex = this.getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling);
       var menuItem = menuItemList[siblingIndex];
 
       if (menuItem && typeof menuItem.focus === 'function') {
@@ -141,11 +141,11 @@ let AccessibleMenu = function(ComposedComponent, options) {
      * @param {Boolean} useNextSibling Chooses the sibling next to menuItem when true and the previous one when false.
      * @returns {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
      */
-    getMenuItemSiblingIndex: function(menuItemList, menuItem, useNextSibling) {
+    getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling) {
       if (!menuItemList || !menuItemList.length) {
         return -1;
       }
-      let menuItemIndex = Array.prototype.indexOf.call(menuItemList, menuItem);
+      const menuItemIndex = Array.prototype.indexOf.call(menuItemList, menuItem);
       let siblingIndex = useNextSibling ? menuItemIndex + 1 : menuItemIndex - 1;
       // Note that the code below will have the intended result even if
       // menuItemIndex is -1
@@ -165,16 +165,16 @@ let AccessibleMenu = function(ComposedComponent, options) {
      * Reference: https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
      * @private
      */
-    applyRovingTabIndex: function() {
+    applyRovingTabIndex() {
       let menuItem;
       let hasSelectedItems = false;
-      let menuItemList = this.getMenuItemList();
+      const menuItemList = this.getMenuItemList();
 
       for (let i = 0; i < menuItemList.length; i++) {
         menuItem = menuItemList[i];
         if (
-          menuItem.getAttribute('aria-checked') === 'true' ||
-          menuItem.getAttribute('aria-selected') === 'true'
+          menuItem.getAttribute('aria-checked') === 'true'
+          || menuItem.getAttribute('aria-selected') === 'true'
         ) {
           menuItem.setAttribute('tabindex', 0);
           hasSelectedItems = true;
@@ -188,7 +188,7 @@ let AccessibleMenu = function(ComposedComponent, options) {
       }
     },
 
-    render: function() {
+    render() {
       return (
         <ComposedComponent
           ref={function(c) {

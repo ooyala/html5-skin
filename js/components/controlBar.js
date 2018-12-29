@@ -1,77 +1,77 @@
 /** ******************************************************************
   CONTROL BAR
-*********************************************************************/
-let React = require('react');
+******************************************************************** */
+const React = require('react');
 
-let CONSTANTS = require('../constants/constants');
+const ClassNames = require('classnames');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../constants/constants');
 
-let ClassNames = require('classnames');
 
-let ScrubberBar = require('./scrubberBar');
+const ScrubberBar = require('./scrubberBar');
 
-let Utils = require('./utils');
+const Utils = require('./utils');
 
-let Popover = require('../views/popover');
+const Popover = require('../views/popover');
 
-let AccessibleButton = require('./accessibleButton');
+const AccessibleButton = require('./accessibleButton');
 
-let ControlButton = require('./controlButton');
+const ControlButton = require('./controlButton');
 
-let PlaybackSpeedButton = require('./playbackSpeedButton');
+const PlaybackSpeedButton = require('./playbackSpeedButton');
 
-let VolumeControls = require('./volumeControls');
+const VolumeControls = require('./volumeControls');
 
-let VideoQualityPanel = require('./videoQualityPanel');
+const VideoQualityPanel = require('./videoQualityPanel');
 
-let PlaybackSpeedPanel = require('./playbackSpeedPanel');
+const PlaybackSpeedPanel = require('./playbackSpeedPanel');
 
-let ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover');
+const ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover');
 
-let ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
+const ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 
-let preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
+const preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
 
-let Logo = require('./logo');
+const Logo = require('./logo');
 
-let Icon = require('./icon');
+const Icon = require('./icon');
 
-let Tooltip = require('./tooltip');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const Tooltip = require('./tooltip');
 
 const MACROS = require('../constants/macros');
 const SkipControls = require('../components/skipControls');
 
-let ControlBar = createReactClass({
-  getInitialState: function() {
+const ControlBar = createReactClass({
+  getInitialState() {
     this.isMobile = this.props.controller.state.isMobile;
     this.isPhone = Utils.getUserDevice() === 'phone';
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(this.props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = null;
     if (
-      this.props.controller &&
-      this.props.controller.videoVrSource &&
-      this.props.controller.videoVrSource.vr
+      this.props.controller
+      && this.props.controller.videoVrSource
+      && this.props.controller.videoVrSource.vr
     ) {
       this.vr = this.props.controller.videoVrSource.vr;
     }
     return {};
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     window.addEventListener('orientationchange', this.closeOtherPopovers);
     window.addEventListener('orientationchange', this.setLandscapeScreenOrientation, false);
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     // if responsive breakpoint changes
     if (nextProps.responsiveView !== this.props.responsiveView) {
       this.responsiveUIMultiple = this.getResponsiveUIMultiple(nextProps.responsiveView);
     }
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.props.controller.cancelTimer();
     this.closeOtherPopovers();
     if (Utils.isAndroid()) {
@@ -81,12 +81,12 @@ let ControlBar = createReactClass({
     window.removeEventListener('orientationchange', this.setLandscapeScreenOrientation);
   },
 
-  getResponsiveUIMultiple: function(responsiveView) {
-    let multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
+  getResponsiveUIMultiple(responsiveView) {
+    const multiplier = this.props.skinConfig.responsive.breakpoints[responsiveView].multiplier;
     return multiplier;
   },
 
-  handleControlBarMouseUp: function(evt) {
+  handleControlBarMouseUp(evt) {
     if (evt.type === 'touchend' || !this.isMobile) {
       evt.stopPropagation(); // W3C
       this.props.controller.state.accessibilityControlsEnabled = true;
@@ -94,7 +94,7 @@ let ControlBar = createReactClass({
     }
   },
 
-  handleFullscreenClick: function(evt) {
+  handleFullscreenClick(evt) {
     // On mobile, we get a following click event that fires after the Video
     // has gone full screen, clicking on a different UI element. So we prevent
     // the following click.
@@ -109,7 +109,7 @@ let ControlBar = createReactClass({
     }
   },
 
-  handleStereoVrClick: function(evt) {
+  handleStereoVrClick(evt) {
     if (this.vr) {
       evt.stopPropagation();
       evt.cancelBubble = true;
@@ -122,8 +122,8 @@ let ControlBar = createReactClass({
         // depends on the switching type
 
         if (
-          this.props.controller.state.isFullScreenSupported ||
-          this.props.controller.state.isVideoFullScreenSupported
+          this.props.controller.state.isFullScreenSupported
+          || this.props.controller.state.isVideoFullScreenSupported
         ) {
           fullscreen = this.props.controller.state.fullscreen;
         } else {
@@ -148,7 +148,7 @@ let ControlBar = createReactClass({
    * @description set landscape orientation if it is possible
    * @private
    */
-  setLandscapeScreenOrientation: function() {
+  setLandscapeScreenOrientation() {
     if (this.props.controller && this.props.controller.checkDeviceOrientation) {
       if (Utils.setLandscapeScreenOrientation) {
         Utils.setLandscapeScreenOrientation();
@@ -160,7 +160,7 @@ let ControlBar = createReactClass({
    * @description set possibility to use all orientations
    * @private
    */
-  unlockScreenOrientation: function() {
+  unlockScreenOrientation() {
     if (screen.orientation && screen.orientation.unlock) {
       screen.orientation.unlock();
     } else if (screen.unlockOrientation) {
@@ -172,13 +172,13 @@ let ControlBar = createReactClass({
     }
   },
 
-  toggleStereoVr: function() {
+  toggleStereoVr() {
     if (this.props.controller && typeof this.props.controller.toggleStereoVr === 'function') {
       this.props.controller.toggleStereoVr();
     }
   },
 
-  handleLiveClick: function(evt) {
+  handleLiveClick(evt) {
     evt.stopPropagation();
     evt.cancelBubble = true;
     evt.preventDefault();
@@ -186,29 +186,27 @@ let ControlBar = createReactClass({
     this.props.controller.seek(this.props.duration);
   },
 
-  handleVolumeIconClick: function(evt) {
+  handleVolumeIconClick(evt) {
     if (this.props.clickToVolumeScreen) {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.VOLUME_SCREEN, true);
-    } else {
-      if (this.isMobile) {
-        this.props.controller.startHideControlBarTimer();
-        evt.stopPropagation(); // W3C
-        if (!this.props.controller.state.volumeState.volumeSliderVisible) {
-          this.props.controller.showVolumeSliderBar();
-        } else {
-          this.props.controller.handleMuteClick();
-        }
+    } else if (this.isMobile) {
+      this.props.controller.startHideControlBarTimer();
+      evt.stopPropagation(); // W3C
+      if (!this.props.controller.state.volumeState.volumeSliderVisible) {
+        this.props.controller.showVolumeSliderBar();
       } else {
         this.props.controller.handleMuteClick();
       }
+    } else {
+      this.props.controller.handleMuteClick();
     }
   },
 
-  handlePlayClick: function() {
+  handlePlayClick() {
     this.props.controller.togglePlayPause();
   },
 
-  handleShareClick: function() {
+  handleShareClick() {
     this.props.controller.toggleShareScreen();
   },
 
@@ -218,14 +216,14 @@ let ControlBar = createReactClass({
    * @private
    * @param {String} menuOptionsId A string that identifies the menu options object of the menu we want to toggle
    */
-  handleMenuToggleClick: function(menuOptionsId) {
+  handleMenuToggleClick(menuOptionsId) {
     this.configureMenuAutofocus(menuOptionsId);
 
     if (
-      this.props.controller.state.isMobile ||
-      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id
+      this.props.controller.state.isMobile
+      || this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.xs.id
     ) {
-      let screenToToggle = CONSTANTS.MENU_OPTIONS_SCREENS[menuOptionsId];
+      const screenToToggle = CONSTANTS.MENU_OPTIONS_SCREENS[menuOptionsId];
       this.props.controller.toggleScreen(screenToToggle);
     } else {
       this.togglePopover(menuOptionsId);
@@ -233,14 +231,14 @@ let ControlBar = createReactClass({
     }
   },
 
-  handleMultiAudioClick: function() {
+  handleMultiAudioClick() {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
     if (
-      this.props.skinConfig.responsive &&
-      this.props.skinConfig.responsive.breakpoints &&
-      this.props.skinConfig.responsive.breakpoints.lg &&
-      this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id
+      this.props.skinConfig.responsive
+      && this.props.skinConfig.responsive.breakpoints
+      && this.props.skinConfig.responsive.breakpoints.lg
+      && this.props.responsiveView === this.props.skinConfig.responsive.breakpoints.lg.id
     ) {
       this.togglePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
       this.closeOtherPopovers(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
@@ -249,9 +247,9 @@ let ControlBar = createReactClass({
     }
   },
 
-  configureMenuAutofocus: function(menu) {
-    let menuOptions = this.props.controller.state[menu] || {};
-    let menuToggleButton = this.getToggleButtons(menu);
+  configureMenuAutofocus(menu) {
+    const menuOptions = this.props.controller.state[menu] || {};
+    const menuToggleButton = this.getToggleButtons(menu);
 
     if (menuOptions.showPopover) {
       // Reset autoFocus property when closing the menu
@@ -270,7 +268,7 @@ let ControlBar = createReactClass({
    * @returns {Object} - if toggleButtons (object) has key = popoverName it returns the value,
    * otherwise it returns empty object
    */
-  getToggleButtons: function(popoverName) {
+  getToggleButtons(popoverName) {
     if (this.props.controller && this.props.controller.toggleButtons) {
       return this.props.controller.toggleButtons[popoverName];
     }
@@ -283,7 +281,7 @@ let ControlBar = createReactClass({
    * @param {HTMLElement} menu - an accessible button
    * @private
    */
-  setToggleButtons: function(popoverName, menu) {
+  setToggleButtons(popoverName, menu) {
     if (this.props.controller && this.props.controller.toggleButtons) {
       this.props.controller.toggleButtons[popoverName] = menu;
     }
@@ -295,7 +293,7 @@ let ControlBar = createReactClass({
    * @param {Object} [params] - params for closePopover function
    * @private
    */
-  closePopover: function(menu, params) {
+  closePopover(menu, params) {
     if (this.props.controller && typeof this.props.controller.closePopover === 'function') {
       this.props.controller.closePopover(menu, params);
     }
@@ -306,44 +304,44 @@ let ControlBar = createReactClass({
    * @param {string} popoverName - the name of the popover that does not need to be closed
    * @private
    */
-  closeOtherPopovers: function(popoverName) {
+  closeOtherPopovers(popoverName) {
     if (this.props.controller && typeof this.props.controller.closeOtherPopovers === 'function') {
       this.props.controller.closeOtherPopovers(popoverName);
     }
   },
 
-  togglePopover: function(menu) {
-    let menuOptions = this.props.controller.state[menu];
-    let menuToggleButton = this.getToggleButtons(menu);
+  togglePopover(menu) {
+    const menuOptions = this.props.controller.state[menu];
+    const menuToggleButton = this.getToggleButtons(menu);
     // Reset button flag that tracks keyboard interaction
     if (
-      menuToggleButton &&
-      menuOptions &&
-      menuOptions.showPopover
+      menuToggleButton
+      && menuOptions
+      && menuOptions.showPopover
     ) {
       menuToggleButton.wasTriggeredWithKeyboard(false);
     }
     this.props.controller.togglePopover(menu);
   },
 
-  handleDiscoveryClick: function() {
+  handleDiscoveryClick() {
     this.props.controller.toggleDiscoveryScreen();
   },
 
-  handleMoreOptionsClick: function() {
+  handleMoreOptionsClick() {
     this.props.controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   },
 
-  populateControlBar: function() {
-    let playButtonDetails = Utils.getPlayButtonDetails(this.props.playerState);
-    let playIcon = playButtonDetails.icon;
-    let playPauseAriaLabel = playButtonDetails.ariaLabel;
-    let playButtonTooltip = playButtonDetails.buttonTooltip;
+  populateControlBar() {
+    const playButtonDetails = Utils.getPlayButtonDetails(this.props.playerState);
+    const playIcon = playButtonDetails.icon;
+    const playPauseAriaLabel = playButtonDetails.ariaLabel;
+    const playButtonTooltip = playButtonDetails.buttonTooltip;
 
     let volumeIcon;
     let volumeAriaLabel;
-    let mutedInUi = this.props.controller.state.volumeState.muted ||
-      this.props.controller.state.volumeState.volume === 0;
+    const mutedInUi = this.props.controller.state.volumeState.muted
+      || this.props.controller.state.volumeState.volume === 0;
     if (mutedInUi) {
       volumeIcon = 'volumeOff';
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
@@ -374,66 +372,66 @@ let ControlBar = createReactClass({
     }
 
     // TODO - Replace time display logic with Utils.getTimeDisplayValues()
-    let isLiveStream = this.props.isLiveStream;
-    let durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
-    let timeShift = this.props.currentPlayhead - this.props.duration;
+    const isLiveStream = this.props.isLiveStream;
+    const durationSetting = { color: this.props.skinConfig.controlBar.iconStyle.inactive.color };
+    const timeShift = this.props.currentPlayhead - this.props.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
-    let isLiveNow = Math.abs(timeShift) < 1;
-    let liveClick = isLiveNow ? null : this.handleLiveClick;
-    let totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{this.props.totalTime}</span>;
+    const isLiveNow = Math.abs(timeShift) < 1;
+    const liveClick = isLiveNow ? null : this.handleLiveClick;
+    const totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{this.props.totalTime}</span>;
 
     // TODO: Update when implementing localization
-    let liveText = Utils.getLocalizedString(
+    const liveText = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.LIVE,
       this.props.localizableStrings
     );
 
-    let liveClass = ClassNames({
+    const liveClass = ClassNames({
       'oo-control-bar-item oo-live oo-live-indicator': true,
       'oo-live-nonclickable': isLiveNow,
     });
 
-    let qualityClass = ClassNames({
+    const qualityClass = ClassNames({
       'oo-quality': true,
       'oo-selected': this.props.controller.state.videoQualityOptions.showPopover,
     });
 
-    let captionClass = ClassNames({
+    const captionClass = ClassNames({
       'oo-closed-caption': true,
       'oo-selected': this.props.controller.state.closedCaptionOptions.showPopover,
     });
 
-    let playbackSpeedClass = ClassNames({
+    const playbackSpeedClass = ClassNames({
       'oo-selected': this.props.controller.state.playbackSpeedOptions.showPopover,
     });
 
-    let multiAudioClass = ClassNames({
+    const multiAudioClass = ClassNames({
       'oo-multiaudio': true,
       'oo-selected': this.props.controller.state.multiAudioOptions.showPopover,
     });
 
-    let selectedStyle = {};
-    selectedStyle['color'] = this.props.skinConfig.general.accentColor
+    const selectedStyle = {};
+    selectedStyle.color = this.props.skinConfig.general.accentColor
       ? this.props.skinConfig.general.accentColor
       : null;
 
     // Map of tooltip aligments, which vary depending of the button's order within
     // the control bar. This is populated below.
-    let tooltipAlignments = {};
+    const tooltipAlignments = {};
     // Props that need to be passed to all control bar buttons
-    let commonButtonProps = {
+    const commonButtonProps = {
       language: this.props.language,
       localizableStrings: this.props.localizableStrings,
       responsiveView: this.props.responsiveView,
       skinConfig: this.props.skinConfig,
       controller: this.props.controller,
-      getTooltipAlignment: function(key) {
+      getTooltipAlignment(key) {
         return tooltipAlignments[key] || CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
       },
     };
 
-    let controlItemTemplates = {
+    const controlItemTemplates = {
       playPause: (
         <ControlButton
           {...commonButtonProps}
@@ -443,8 +441,8 @@ let ControlBar = createReactClass({
           ariaLabel={playPauseAriaLabel}
           icon={playIcon}
           tooltip={playButtonTooltip}
-          onClick={this.handlePlayClick}>
-        </ControlButton>
+          onClick={this.handlePlayClick}
+        />
       ),
 
       live: (
@@ -463,8 +461,8 @@ let ControlBar = createReactClass({
             ariaLabel={volumeAriaLabel}
             icon={volumeIcon}
             tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
-            onClick={this.handleVolumeIconClick}>
-          </ControlButton>
+            onClick={this.handleVolumeIconClick}
+          />
           {!this.props.hideVolumeControls && <VolumeControls {...this.props} />}
         </div>
       ),
@@ -473,8 +471,10 @@ let ControlBar = createReactClass({
         <a
           key={CONSTANTS.CONTROL_BAR_KEYS.TIME_DURATION}
           className="oo-time-duration oo-control-bar-duration"
-          style={durationSetting}>
-          <span>{this.props.playheadTime}</span>{totalTimeContent}
+          style={durationSetting}
+        >
+          <span>{this.props.playheadTime}</span>
+          {totalTimeContent}
         </a>
       ),
 
@@ -491,11 +491,11 @@ let ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
           className="oo-more-options"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-          ariaHidden={true}
+          ariaHidden
           icon="ellipsis"
           tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
-          onClick={this.handleMoreOptionsClick}>
-        </ControlButton>
+          onClick={this.handleMoreOptionsClick}
+        />
       ),
 
       quality: (
@@ -507,21 +507,23 @@ let ControlBar = createReactClass({
             className={qualityClass}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
             ariaLabel={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
-            ariaHasPopup={true}
+            ariaHasPopup
             ariaExpanded={this.props.controller.state.videoQualityOptions.showPopover ? true : null}
             icon="quality"
             tooltip={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
-            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}>
-          </ControlButton>
+            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+          />
           {this.props.controller.state.videoQualityOptions.showPopover && (
             <Popover
               autoFocus={this.props.controller.state.videoQualityOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}>
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+            >
               <VideoQualityPanel
                 {...this.props}
                 onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
-                isPopover={true} />
+                isPopover
+              />
             </Popover>
           )}
         </div>
@@ -533,11 +535,11 @@ let ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
           className="oo-discovery"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
-          ariaHidden={true}
+          ariaHidden
           icon="discovery"
           tooltip={CONSTANTS.SKIN_TEXT.DISCOVER}
-          onClick={this.handleDiscoveryClick}>
-        </ControlButton>
+          onClick={this.handleDiscoveryClick}
+        />
       ),
 
       closedCaption: (
@@ -549,21 +551,23 @@ let ControlBar = createReactClass({
             className={captionClass}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
             ariaLabel={CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS}
-            ariaHasPopup={true}
+            ariaHasPopup
             ariaExpanded={this.props.controller.state.closedCaptionOptions.showPopover ? true : null}
             icon="cc"
             tooltip={CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS}
-            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}>
-          </ControlButton>
+            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+          />
           {this.props.controller.state.closedCaptionOptions.showPopover && (
             <Popover
               popoverClassName="oo-popover oo-popover-pull-right"
               autoFocus={this.props.controller.state.closedCaptionOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}>
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+            >
               <ClosedCaptionPopover
                 {...this.props}
-                togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)} />
+                togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+              />
             </Popover>
           )}
         </div>
@@ -580,8 +584,9 @@ let ControlBar = createReactClass({
           <div
             key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
             tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
-            className="oo-cast oo-control-bar-item">
-            <google-cast-launcher class="oo-icon"/>
+            className="oo-cast oo-control-bar-item"
+          >
+            <google-cast-launcher class="oo-icon" />
           </div>
         );
       }()),
@@ -591,8 +596,8 @@ let ControlBar = createReactClass({
         let multiAudioList = [];
 
         if (
-          this.props.controller.state.closedCaptionOptions.availableLanguages &&
-          this.props.controller.state.closedCaptionOptions.availableLanguages.languages
+          this.props.controller.state.closedCaptionOptions.availableLanguages
+          && this.props.controller.state.closedCaptionOptions.availableLanguages.languages
         ) {
           closedCaptionsList = this.props.controller.state.closedCaptionOptions.availableLanguages.languages;
         }
@@ -614,25 +619,29 @@ let ControlBar = createReactClass({
               className={multiAudioClass}
               focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
               ariaLabel={CONSTANTS.ARIA_LABELS.MULTI_AUDIO}
-              ariaHasPopup={true}
+              ariaHasPopup
               ariaExpanded={this.props.controller.state.multiAudioOptions.showPopover ? true : null}
               icon="audioAndCC"
               tooltip={CONSTANTS.SKIN_TEXT.AUDIO}
-              onClick={this.handleMultiAudioClick}>
-            </ControlButton>
-            {this.props.controller.state.multiAudioOptions.showPopover &&
+              onClick={this.handleMultiAudioClick}
+            />
+            {this.props.controller.state.multiAudioOptions.showPopover
+              && (
               <Popover
                 popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
                 autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
                 closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
+                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+              >
                 <ClosedCaptionMultiAudioMenu
                   language={this.props.language}
                   localizableStrings={this.props.localizableStrings}
-                  menuClassName={'oo-cc-ma-menu--popover'}
+                  menuClassName="oo-cc-ma-menu--popover"
                   togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
-                  {...this.props} />
+                  {...this.props}
+                />
               </Popover>
+              )
             }
           </div>
         );
@@ -641,7 +650,8 @@ let ControlBar = createReactClass({
       playbackSpeed: (
         <div
           key={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
-          className="oo-popover-button-container">
+          className="oo-popover-button-container"
+        >
 
           <PlaybackSpeedButton
             {...commonButtonProps}
@@ -649,25 +659,29 @@ let ControlBar = createReactClass({
             className={playbackSpeedClass}
             style={this.props.controller.state.playbackSpeedOptions.showPopover ? selectedStyle : null}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
-            ariaHasPopup={true}
+            ariaHasPopup
             ariaExpanded={this.props.controller.state.playbackSpeedOptions.showPopover ? true : null}
             tooltip={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
-            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
-          </PlaybackSpeedButton>
+            onClick={this.handleMenuToggleClick.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+          />
 
-          {this.props.controller.state.playbackSpeedOptions.showPopover &&
+          {this.props.controller.state.playbackSpeedOptions.showPopover
+            && (
             <Popover
               autoFocus={this.props.controller.state.playbackSpeedOptions.autoFocus}
               closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+            >
               <PlaybackSpeedPanel
-                isPopover={true}
+                isPopover
                 language={this.props.language}
                 localizableStrings={this.props.localizableStrings}
                 controller={this.props.controller}
                 skinConfig={this.props.skinConfig}
-                onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}/>
+                onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+              />
             </Popover>
+            )
           }
 
         </div>
@@ -679,11 +693,11 @@ let ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
           className="oo-share"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
-          ariaHidden={true}
+          ariaHidden
           icon="share"
           tooltip={CONSTANTS.SKIN_TEXT.SHARE}
-          onClick={this.handleShareClick}>
-        </ControlButton>
+          onClick={this.handleShareClick}
+        />
       ),
 
       stereoscopic: !!(this.vr && this.isPhone) && (
@@ -694,8 +708,8 @@ let ControlBar = createReactClass({
           focusId={CONSTANTS.CONTROL_BAR_KEYS.STEREOSCOPIC}
           ariaLabel={stereoAriaLabel}
           icon={stereoIcon}
-          onClick={this.handleStereoVrClick}>
-        </ControlButton>
+          onClick={this.handleStereoVrClick}
+        />
       ),
 
       fullscreen: (
@@ -711,8 +725,8 @@ let ControlBar = createReactClass({
               ? CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN
               : CONSTANTS.SKIN_TEXT.FULL_SCREEN
           }
-          onClick={this.handleFullscreenClick}>
-        </ControlButton>
+          onClick={this.handleFullscreenClick}
+        />
       ),
 
       logo: (
@@ -726,7 +740,8 @@ let ControlBar = createReactClass({
               ? this.props.skinConfig.controlBar.logo.width
               : null
           }
-          height={this.props.skinConfig.controlBar.logo.height} />
+          height={this.props.skinConfig.controlBar.logo.height}
+        />
       ),
 
       skipControls: (
@@ -737,7 +752,7 @@ let ControlBar = createReactClass({
             'skipControls.controlBarSkipControls',
             {}
           )}
-          forceShowButtons={true}
+          forceShowButtons
           className="oo-absolute-centered oo-control-bar-item"
           config={this.props.controller.state.skipControls}
           language={this.props.language}
@@ -749,11 +764,12 @@ let ControlBar = createReactClass({
           a11yControls={this.props.controller.accessibilityControls}
           isInactive={!this.props.controller.state.controlBarVisible}
           isInBackground={this.props.controller.state.scrubberBar.isHovering}
-          onFocus={this.handleFocus} />
+          onFocus={this.handleFocus}
+        />
       ),
     };
 
-    let controlBarItems = [];
+    const controlBarItems = [];
     let defaultItems;
 
     if (this.props.controlBarItems) {
@@ -773,12 +789,11 @@ let ControlBar = createReactClass({
       if (defaultItems[j].name === 'volume') {
         volumeItem = defaultItems[j];
 
-        let extraSpaceVolumeSlider =
-          (volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible) ||
-          (volumeItem && Utils.isIos())
-            ? parseInt(volumeItem.minWidth)
-            : 0;
-        let extraSpaceVolumeBar = this.isMobile ? 0 : parseInt(volumeItem.minWidth) / 2;
+        const extraSpaceVolumeSlider = (volumeItem && this.isMobile && !this.props.controller.state.volumeState.volumeSliderVisible)
+          || (volumeItem && Utils.isIos())
+          ? parseInt(volumeItem.minWidth)
+          : 0;
+        const extraSpaceVolumeBar = this.isMobile ? 0 : parseInt(volumeItem.minWidth) / 2;
         extraSpaceVolume = extraSpaceVolumeSlider + extraSpaceVolumeBar;
 
         break;
@@ -786,11 +801,11 @@ let ControlBar = createReactClass({
     }
 
     // if no hours, add extra space to control bar width:
-    let hourInSec = 3600;
-    let hours = parseInt(this.props.duration / hourInSec, 10);
-    let extraSpaceDuration = hours > 0 ? 0 : 45;
+    const hourInSec = 3600;
+    const hours = parseInt(this.props.duration / hourInSec, 10);
+    const extraSpaceDuration = hours > 0 ? 0 : 45;
 
-    let controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
+    const controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
     for (var k = 0; k < defaultItems.length; k++) {
       // filter out unrecognized button names
@@ -804,11 +819,11 @@ let ControlBar = createReactClass({
       }
 
       if (
-        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED &&
-        (
-          this.props.isLiveStream ||
-          this.props.controller.videoVr ||
-          this.props.controller.state.isOoyalaAds
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED
+        && (
+          this.props.isLiveStream
+          || this.props.controller.videoVr
+          || this.props.controller.state.isOoyalaAds
         )
       ) {
         continue;
@@ -816,20 +831,20 @@ let ControlBar = createReactClass({
 
       // do not show share button if not share options are available
       if (defaultItems[k].name === 'share') {
-        let shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent', []);
-        let socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
-        let onlySocialTab = shareContent.length === 1 && shareContent[0] === 'social';
+        const shareContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.shareContent', []);
+        const socialContent = Utils.getPropertyValue(this.props.skinConfig, 'shareScreen.socialContent', []);
+        const onlySocialTab = shareContent.length === 1 && shareContent[0] === 'social';
         // skip if no tabs were specified or if only the social tab is present but no social buttons are specified
         if (
-          this.props.controller.state.isOoyalaAds ||
-          !shareContent.length ||
-          (onlySocialTab && !socialContent.length)
+          this.props.controller.state.isOoyalaAds
+          || !shareContent.length
+          || (onlySocialTab && !socialContent.length)
         ) {
           continue;
         }
       }
 
-      let availableLanguages = Utils.getPropertyValue(
+      const availableLanguages = Utils.getPropertyValue(
         this.props.controller,
         'state.closedCaptionOptions.availableLanguages.languages',
         []
@@ -837,10 +852,10 @@ let ControlBar = createReactClass({
 
       // do not show CC button if no CC available
       if (
-        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION &&
-        (
-          !availableLanguages.length ||
-          this.props.controller.state.isOoyalaAds
+        defaultItems[k].name === CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION
+        && (
+          !availableLanguages.length
+          || this.props.controller.state.isOoyalaAds
         )
       ) {
         continue;
@@ -848,17 +863,17 @@ let ControlBar = createReactClass({
 
       // do not show quality button if no bitrates available
       if (
-        (this.props.controller.state.isOoyalaAds ||
-          !this.props.controller.state.videoQualityOptions.availableBitrates) &&
-        defaultItems[k].name === 'quality'
+        (this.props.controller.state.isOoyalaAds
+          || !this.props.controller.state.videoQualityOptions.availableBitrates)
+        && defaultItems[k].name === 'quality'
       ) {
         continue;
       }
 
       // do not show discovery button if no related videos available
       if (
-        (this.props.controller.state.isOoyalaAds || !this.props.controller.state.discoveryData) &&
-        defaultItems[k].name === 'discovery'
+        (this.props.controller.state.isOoyalaAds || !this.props.controller.state.discoveryData)
+        && defaultItems[k].name === 'discovery'
       ) {
         continue;
       }
@@ -874,8 +889,8 @@ let ControlBar = createReactClass({
 
       // not sure what to do when there are multi streams
       if (
-        defaultItems[k].name === 'live' &&
-        (typeof this.props.isLiveStream === 'undefined' || !this.props.isLiveStream)
+        defaultItems[k].name === 'live'
+        && (typeof this.props.isLiveStream === 'undefined' || !this.props.isLiveStream)
       ) {
         continue;
       }
@@ -891,24 +906,24 @@ let ControlBar = createReactClass({
       controlBarItems.push(defaultItems[k]);
     }
 
-    let collapsedResult = Utils.collapse(
-      this.props.componentWidth +
-      this.responsiveUIMultiple * (extraSpaceDuration + extraSpaceVolume - controlBarLeftRightPadding),
+    const collapsedResult = Utils.collapse(
+      this.props.componentWidth
+      + this.responsiveUIMultiple * (extraSpaceDuration + extraSpaceVolume - controlBarLeftRightPadding),
       controlBarItems,
       this.responsiveUIMultiple
     );
-    let collapsedControlBarItems = collapsedResult.fit || {};
-    let collapsedMoreOptionsItems = collapsedResult.overflow || {};
+    const collapsedControlBarItems = collapsedResult.fit || {};
+    const collapsedMoreOptionsItems = collapsedResult.overflow || {};
     this.moreOptionsItems = collapsedMoreOptionsItems;
 
-    let finalControlBarItems = [];
-    let lastItem = (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)
+    const finalControlBarItems = [];
+    const lastItem = (this.props.controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)
       ? collapsedControlBarItems.length - 2
       : collapsedControlBarItems.length - 1;
     for (var k = 0; k < collapsedControlBarItems.length; k++) {
-      if (collapsedControlBarItems[k].name === 'moreOptions' &&
-        (this.props.controller.state.isOoyalaAds ||
-        collapsedMoreOptionsItems.length === 0)
+      if (collapsedControlBarItems[k].name === 'moreOptions'
+        && (this.props.controller.state.isOoyalaAds
+        || collapsedMoreOptionsItems.length === 0)
       ) {
         continue;
       }
@@ -919,28 +934,28 @@ let ControlBar = createReactClass({
         alignment = CONSTANTS.TOOLTIP_ALIGNMENT.LEFT;
       }
       tooltipAlignments[collapsedControlBarItems[k].name] = alignment;
-      let item = controlItemTemplates[collapsedControlBarItems[k].name];
+      const item = controlItemTemplates[collapsedControlBarItems[k].name];
       finalControlBarItems.push(item);
     }
 
     return finalControlBarItems;
   },
 
-  render: function() {
-    let controlBarClass = ClassNames({
+  render() {
+    const controlBarClass = ClassNames({
       'oo-control-bar': true,
       'oo-control-bar-hidden': !this.props.controlBarVisible,
       'oo-animating-control-bar': this.props.animatingControlBar,
     });
 
-    let controlBarItems = this.populateControlBar();
-    let controlBarStyle = {};
+    const controlBarItems = this.populateControlBar();
+    const controlBarStyle = {};
 
     if (this.props.height) {
       controlBarStyle.height = this.props.height;
     }
 
-    let wrapperClass = ClassNames('oo-control-bar-items-wrapper', {
+    const wrapperClass = ClassNames('oo-control-bar-items-wrapper', {
       'oo-flex-row-parent': this.props.audioOnly,
       'oo-flex-end': this.props.audioOnly && Utils.isIos(),
     });
@@ -952,7 +967,8 @@ let ControlBar = createReactClass({
         onFocus={this.props.onFocus}
         onBlur={this.props.onBlur}
         onMouseUp={this.handleControlBarMouseUp}
-        onTouchEnd={this.handleControlBarMouseUp}>
+        onTouchEnd={this.handleControlBarMouseUp}
+      >
         {!this.props.hideScrubberBar ? <ScrubberBar {...this.props} /> : null}
 
         <div className={wrapperClass}>

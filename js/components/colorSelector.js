@@ -1,17 +1,17 @@
-let React = require('react');
+const React = require('react');
 
-let ClassNames = require('classnames');
+const ClassNames = require('classnames');
 
-let AccessibleButton = require('./accessibleButton');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const AccessibleButton = require('./accessibleButton');
 
-let AccessibleMenu = require('./higher-order/accessibleMenu');
+const AccessibleMenu = require('./higher-order/accessibleMenu');
 
-let CONSTANTS = require('../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const CONSTANTS = require('../constants/constants');
 
 let ColorSelector = createReactClass({
-  setClassname: function(item) {
+  setClassname(item) {
     return ClassNames({
       'oo-item': true,
       'oo-item-selected': this.props.selectedColor === item && this.props.enabled,
@@ -19,22 +19,22 @@ let ColorSelector = createReactClass({
     });
   },
 
-  handleColorSelection: function(color) {
+  handleColorSelection(color) {
     this.props.onColorChange(color);
   },
 
-  render: function() {
-    let colorItems = [];
+  render() {
+    const colorItems = [];
     for (let i = 0; i < this.props.colors.length; i++) {
       // accent color
-      let isSelected = this.props.selectedColor === this.props.colors[i];
+      const isSelected = this.props.selectedColor === this.props.colors[i];
       let activeColorStyle = {};
       if (this.props.enabled && isSelected && this.props.skinConfig.general.accentColor) {
         let selectedColorStyle = 'solid ';
         selectedColorStyle += this.props.skinConfig.general.accentColor;
         activeColorStyle = { border: selectedColorStyle };
       }
-      let ariaLabel = this.props.ariaLabel + ' ' + this.props.colors[i];
+      const ariaLabel = `${this.props.ariaLabel} ${this.props.colors[i]}`;
 
       colorItems.push(
         <div
@@ -44,7 +44,7 @@ let ColorSelector = createReactClass({
           role={CONSTANTS.ARIA_ROLES.PRESENTATION}
         >
           <AccessibleButton
-            className={'oo-color-item oo-color-item-' + this.props.colors[i]}
+            className={`oo-color-item oo-color-item-${this.props.colors[i]}`}
             ariaLabel={ariaLabel}
             ariaChecked={isSelected}
             role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}

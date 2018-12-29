@@ -1,21 +1,21 @@
-let React = require('react');
-let CustomScrollArea = require('../customScrollArea');
-let Icon = require('../icon');
-let AccessibleButton = require('../accessibleButton');
-let AccessibleMenu = require('../higher-order/accessibleMenu');
-let classnames = require('classnames');
-let CONSTANTS = require('../../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const classnames = require('classnames');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const CustomScrollArea = require('../customScrollArea');
+const Icon = require('../icon');
+const AccessibleButton = require('../accessibleButton');
+const AccessibleMenu = require('../higher-order/accessibleMenu');
+const CONSTANTS = require('../../constants/constants');
 
 let Tab = createReactClass({
-  handleClick: function(id) {
+  handleClick(id) {
     if (typeof this.props.handleClick === 'function') {
       this.props.handleClick(id);
     }
   },
 
-  render: function() {
+  render() {
     return (
       <div className={classnames('oo-cc-ma-menu__coll', this.props.tabClassName)}>
         <div className="oo-cc-ma-menu__header">{this.props.header}</div>
@@ -39,7 +39,7 @@ let Tab = createReactClass({
                 >
                   <AccessibleButton
                     key={item.id}
-                    className={'oo-multi-audio-btn'}
+                    className="oo-multi-audio-btn"
                     focusId={CONSTANTS.FOCUS_IDS.MULTI_AUDIO + index}
                     role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
                     ariaLabel={item.label}

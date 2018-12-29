@@ -1,13 +1,13 @@
 import { DirectionControlVr } from './directionControlVr';
 
-let React = require('react');
-let Icon = require('../components/icon');
-let classnames = require('classnames');
-let _ = require('underscore');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const classnames = require('classnames');
+const _ = require('underscore');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Icon = require('../components/icon');
 
-let ViewControlsVr = createReactClass({
+const ViewControlsVr = createReactClass({
   /**
    * @method ViewControlsVr#handleVrViewControlsClick
    * @public
@@ -15,7 +15,7 @@ let ViewControlsVr = createReactClass({
    * @param {boolean} isRotated - true - if need to rotate; false - stop rotation
    * @param {string} direction - direction for rotation: "left", "right", "up", "down"
    */
-  handleVrViewControlsClick: function(event, isRotated, direction) {
+  handleVrViewControlsClick(event, isRotated, direction) {
     if (event.type === 'touchend' || !this.props.controller.state.isMobile) {
       event.stopPropagation(); // W3C
       this.props.controller.state.accessibilityControlsEnabled = true;
@@ -28,18 +28,16 @@ let ViewControlsVr = createReactClass({
    * @method ViewControlsVr#_setupIconSymbol
    * @private
    */
-  _setupIconSymbol: function() {
-    let desktopContent = this.props.skinConfig.buttons.desktopContent;
-    this.icon = _.find(desktopContent, function(el) {
-      return el.location === 'mainView';
-    });
+  _setupIconSymbol() {
+    const desktopContent = this.props.skinConfig.buttons.desktopContent;
+    this.icon = _.find(desktopContent, el => el.location === 'mainView');
   },
 
   /**
    * @method ViewControlsVr#_setupBackgroundSymbol
    * @private
    */
-  _setupBackgroundSymbol: function() {
+  _setupBackgroundSymbol() {
     if (this.icon) {
       if (this.icon.name === 'arrowsBlack') {
         this.backgroundIcon = 'circleArrowsBlack';
@@ -49,7 +47,7 @@ let ViewControlsVr = createReactClass({
     }
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     // if we have vr mode, and the device !== mobile, we need to add control element to the screen of the player.
     // control element is covered with icon from fonts
     this.isMobile = false;
@@ -66,9 +64,9 @@ let ViewControlsVr = createReactClass({
       if (!(this.props.controller.state.isPlayingAd || this.isMobile)) {
         if (
           !(
-            this.props.skinConfig &&
-            this.props.skinConfig.buttons &&
-            _.isArray(this.props.skinConfig.buttons.desktopContent)
+            this.props.skinConfig
+            && this.props.skinConfig.buttons
+            && _.isArray(this.props.skinConfig.buttons.desktopContent)
           )
         ) {
           return;
@@ -80,8 +78,8 @@ let ViewControlsVr = createReactClass({
     }
   },
 
-  render: function() {
-    let isShowing = !!(this.icon && this.icon.name);
+  render() {
+    const isShowing = !!(this.icon && this.icon.name);
 
     return !isShowing ? null : (
       <div

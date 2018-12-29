@@ -1,55 +1,55 @@
-let React = require('react');
+const React = require('react');
 
-let ClassNames = require('classnames');
+const ClassNames = require('classnames');
 
-let Utils = require('../utils');
+const createReactClass = require('create-react-class');
+const Utils = require('../utils');
 
-let CONSTANTS = require('../../constants/constants');
+const CONSTANTS = require('../../constants/constants');
 
-let SelectionContainer = require('./selectionContainer');
+const SelectionContainer = require('./selectionContainer');
 
-let Slider = require('../slider');
-let createReactClass = require('create-react-class');
+const Slider = require('../slider');
 
-let CaptionOpacityTab = createReactClass({
-  changeTextOpacity: function(value) {
+const CaptionOpacityTab = createReactClass({
+  changeTextOpacity(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
     this.props.controller.onClosedCaptionChange('textOpacity', value);
   },
 
-  changeBackgroundOpacity: function(value) {
+  changeBackgroundOpacity(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
     this.props.controller.onClosedCaptionChange('backgroundOpacity', value);
   },
 
-  changeWindowOpacity: function(value) {
+  changeWindowOpacity(value) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
     this.props.controller.onClosedCaptionChange('windowOpacity', value);
   },
 
-  percentString: function(number) {
+  percentString(number) {
     // if (number == 0) return "Transparent";
-    return (number * 100).toString() + '%';
+    return `${(number * 100).toString()}%`;
   },
 
-  render: function() {
-    let textOpacityTitle = Utils.getLocalizedString(
+  render() {
+    const textOpacityTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_OPACITY,
       this.props.localizableStrings
     );
-    let backgroundOpacityTitle = Utils.getLocalizedString(
+    const backgroundOpacityTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.BACKGROUND_OPACITY,
       this.props.localizableStrings
     );
-    let windowOpacityTitle = Utils.getLocalizedString(
+    const windowOpacityTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.WINDOW_OPACITY,
       this.props.localizableStrings
@@ -74,7 +74,7 @@ let CaptionOpacityTab = createReactClass({
               minValue={0}
               maxValue={1}
               step={0.1}
-              usePercentageForAria={true}
+              usePercentageForAria
               ariaLabel={textOpacityTitle}
               settingName={textOpacityTitle}
             />
@@ -92,7 +92,7 @@ let CaptionOpacityTab = createReactClass({
               minValue={0}
               maxValue={1}
               step={0.1}
-              usePercentageForAria={true}
+              usePercentageForAria
               ariaLabel={backgroundOpacityTitle}
               settingName={backgroundOpacityTitle}
             />
@@ -110,7 +110,7 @@ let CaptionOpacityTab = createReactClass({
               minValue={0}
               maxValue={1}
               step={0.1}
-              usePercentageForAria={true}
+              usePercentageForAria
               ariaLabel={windowOpacityTitle}
               settingName={windowOpacityTitle}
             />

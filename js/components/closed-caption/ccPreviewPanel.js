@@ -1,17 +1,17 @@
-let React = require('react');
+const React = require('react');
 
-let Utils = require('../utils');
+const ClassNames = require('classnames');
+const createReactClass = require('create-react-class');
+const Utils = require('../utils');
 
-let CONSTANTS = require('../../constants/constants');
+const CONSTANTS = require('../../constants/constants');
 
-let ClassNames = require('classnames');
 
-let TextTrack = require('../textTrackPanel');
-let createReactClass = require('create-react-class');
+const TextTrack = require('../textTrackPanel');
 
-let CCPreviewPanel = createReactClass({
-  render: function() {
-    let closedCaptionPreviewTitle = Utils.getLocalizedString(
+const CCPreviewPanel = createReactClass({
+  render() {
+    const closedCaptionPreviewTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.CLOSED_CAPTION_PREVIEW,
       this.props.localizableStrings
@@ -29,11 +29,11 @@ let CCPreviewPanel = createReactClass({
       );
     }
 
-    let previewCaptionClassName = ClassNames({
+    const previewCaptionClassName = ClassNames({
       'oo-preview-caption': true,
       'oo-disabled': !this.props.closedCaptionOptions.enabled,
     });
-    let previewTextClassName = ClassNames({
+    const previewTextClassName = ClassNames({
       'oo-preview-text': true,
       'oo-disabled': !this.props.closedCaptionOptions.enabled,
     });

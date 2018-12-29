@@ -1,6 +1,6 @@
-let CONSTANTS = require('../../constants/constants');
-let Utils = require('../utils');
-let _ = require('underscore');
+const _ = require('underscore');
+const CONSTANTS = require('../../constants/constants');
+const Utils = require('../utils');
 
 /**
  * Gets display label by checking
@@ -15,7 +15,7 @@ function getDisplayLabel(audioTrack) {
 
   if (audioTrack && audioTrack.label) {
     // special case for DASH where label is per default equal to lang
-    let isLabelNeeded = audioTrack.lang !== audioTrack.label;
+    const isLabelNeeded = audioTrack.lang !== audioTrack.label;
 
     if (isLabelNeeded) {
       displayLabel = audioTrack.label;
@@ -35,19 +35,17 @@ function getDisplayLabel(audioTrack) {
 function getDisplayLanguage(languagesList, languageCode) {
   let displayLanguage = '';
   if (
-    !!Utils.isValidString(languageCode) &&
-    languagesList &&
-    _.isArray(languagesList) &&
-    languagesList.length
+    !!Utils.isValidString(languageCode)
+    && languagesList
+    && _.isArray(languagesList)
+    && languagesList.length
   ) {
-    let matchingLanguage = _.find(languagesList, function(language) {
-      return (
-        language['2T'] === languageCode ||
-        language['1'] === languageCode ||
-        language['2B'] === languageCode ||
-        language['3'] === languageCode
-      );
-    });
+    const matchingLanguage = _.find(languagesList, language => (
+      language['2T'] === languageCode
+        || language['1'] === languageCode
+        || language['2B'] === languageCode
+        || language['3'] === languageCode
+    ));
     if (matchingLanguage) {
       displayLanguage = matchingLanguage.local;
     }
@@ -68,22 +66,21 @@ function getDisplayLanguage(languagesList, languageCode) {
 function getDisplayTitle(trackParam) {
   // set default function params
   let displayLanguage = trackParam.language || '';
-  let displayLabel = trackParam.label || '';
-  let noLanguageText = trackParam.noLanguageText || CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
-  let langCode = trackParam.langCode;
+  const displayLabel = trackParam.label || '';
+  const noLanguageText = trackParam.noLanguageText || CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
+  const langCode = trackParam.langCode;
 
   if (!displayLanguage.length && !displayLabel.length) {
     return noLanguageText;
-  } else if (displayLanguage.length && !displayLabel.length) {
+  } if (displayLanguage.length && !displayLabel.length) {
     return displayLanguage;
-  } else if (!displayLanguage.length && displayLabel.length) {
+  } if (!displayLanguage.length && displayLabel.length) {
     return displayLabel;
-  } else {
-    if (langCode === CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE) {
-      displayLanguage = '';
-    }
-    return displayLanguage.concat(' ', displayLabel).trim();
   }
+  if (langCode === CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE) {
+    displayLanguage = '';
+  }
+  return displayLanguage.concat(' ', displayLabel).trim();
 }
 
 /**
@@ -97,7 +94,7 @@ function getDisplayTitle(trackParam) {
  * @returns {String} localized special audio track name or original name or empty string
  */
 function getLocalizedSpecialLanguage(langCode, userLanguage, localizableStrings, languageMap) {
-  let phrase = languageMap ? languageMap[langCode] : '';
+  const phrase = languageMap ? languageMap[langCode] : '';
   let localizedLanguage = Utils.getLocalizedString(
     userLanguage,
     phrase,
@@ -116,7 +113,7 @@ function getLocalizedSpecialLanguage(langCode, userLanguage, localizableStrings,
  * @returns {boolean} - true if language code is one of specials, false otherwise
  */
 function isSpecialLanguage(langCode, languageMap) {
-  let isSpecialLanguage = languageMap ? !!languageMap[langCode] : false;
+  const isSpecialLanguage = languageMap ? !!languageMap[langCode] : false;
   return isSpecialLanguage;
 }
 
@@ -133,18 +130,18 @@ function transformTracksList(tracksList, noLanguageText) {
   let transformedTracksList = [];
   // first we group by language to know if we have distinct tracks
   if (tracksList && tracksList.length) {
-    let groupedTracks = _.groupBy(tracksList, 'language');
-    let groupedKeys = _.keys(groupedTracks);
+    const groupedTracks = _.groupBy(tracksList, 'language');
+    const groupedKeys = _.keys(groupedTracks);
 
     // if all languages are distinct - discard labels
     if (groupedKeys.length === tracksList.length) {
-      transformedTracksList = tracksList.map(function(audioTrack) {
-        let trackDisplayTitle = getDisplayTitle({
+      transformedTracksList = tracksList.map((audioTrack) => {
+        const trackDisplayTitle = getDisplayTitle({
           language: audioTrack.language,
           langCode: audioTrack.lang,
-          noLanguageText: noLanguageText,
+          noLanguageText,
         });
-        let transformedTrack = {
+        const transformedTrack = {
           id: audioTrack.id,
           label: trackDisplayTitle,
           enabled: audioTrack.enabled,
@@ -153,20 +150,20 @@ function transformTracksList(tracksList, noLanguageText) {
         return transformedTrack;
       });
     } else {
-      let uniqueTracks = groupedKeys.map(function(key) {
+      const uniqueTracks = groupedKeys.map((key) => {
         // if there are multiple tracks with the same language code
         if (groupedTracks[key].length > 1) {
           // get each list of duplicating tracks
-          return groupedTracks[key].map(function(audioTrack) {
+          return groupedTracks[key].map((audioTrack) => {
             // get display title based on language and label
-            let trackDisplayTitle = getDisplayTitle({
+            const trackDisplayTitle = getDisplayTitle({
               language: audioTrack.language,
               label: audioTrack.label,
               langCode: audioTrack.lang,
-              noLanguageText: noLanguageText,
+              noLanguageText,
             });
 
-            let transformedTrack = {
+            const transformedTrack = {
               enabled: audioTrack.enabled,
               label: trackDisplayTitle,
               id: audioTrack.id,
@@ -174,22 +171,21 @@ function transformTracksList(tracksList, noLanguageText) {
 
             return transformedTrack;
           });
-        } else {
-          // this track is distinct
-          let audioTrack = _.head(groupedTracks[key]);
-          let trackDisplayTitle = getDisplayTitle({
-            language: audioTrack.language,
-            langCode: audioTrack.lang,
-            noLanguageText: noLanguageText,
-          });
-          let transformedTrack = {
-            enabled: audioTrack.enabled,
-            label: trackDisplayTitle,
-            id: audioTrack.id,
-          };
-
-          return transformedTrack;
         }
+        // this track is distinct
+        const audioTrack = _.head(groupedTracks[key]);
+        const trackDisplayTitle = getDisplayTitle({
+          language: audioTrack.language,
+          langCode: audioTrack.lang,
+          noLanguageText,
+        });
+        const transformedTrack = {
+          enabled: audioTrack.enabled,
+          label: trackDisplayTitle,
+          id: audioTrack.id,
+        };
+
+        return transformedTrack;
       });
 
       transformedTracksList = _.flatten(uniqueTracks);
@@ -208,8 +204,8 @@ function getUniqueTracks(audioTracksList) {
   let uniqueTracksList = [];
 
   if (audioTracksList && audioTracksList.length && Array.isArray(audioTracksList)) {
-    let groupedTracks = _.groupBy(audioTracksList, 'label');
-    let uniqueKeys = _.keys(groupedTracks);
+    const groupedTracks = _.groupBy(audioTracksList, 'label');
+    const uniqueKeys = _.keys(groupedTracks);
 
     // if all keys are unique - return non-modified tracks
     if (uniqueKeys.length === audioTracksList.length) {
@@ -220,14 +216,14 @@ function getUniqueTracks(audioTracksList) {
       * and value is tracks with the same name so we need to iterate over keys
       * and flatten it afterwards
       */
-      let uniqueTracks = uniqueKeys.map(function(key) {
+      const uniqueTracks = uniqueKeys.map((key) => {
         if (groupedTracks[key].length > 1) {
-          return groupedTracks[key].map(function(audioTrack, index) {
+          return groupedTracks[key].map((audioTrack, index) => {
             // modify zero-based index of array to get user-friendly index
-            let trackIndex = index ? ' ' + index : '';
-            let audioTrackLabel = audioTrack.label.concat(trackIndex);
+            const trackIndex = index ? ` ${index}` : '';
+            const audioTrackLabel = audioTrack.label.concat(trackIndex);
             // add track index
-            let uniqueTrack = {
+            const uniqueTrack = {
               enabled: audioTrack.enabled,
               label: audioTrackLabel,
               id: audioTrack.id,
@@ -235,9 +231,8 @@ function getUniqueTracks(audioTracksList) {
 
             return uniqueTrack;
           });
-        } else {
-          return _.head(groupedTracks[key]);
         }
+        return _.head(groupedTracks[key]);
       });
 
       uniqueTracksList = _.flatten(uniqueTracks);
@@ -248,11 +243,11 @@ function getUniqueTracks(audioTracksList) {
 }
 
 module.exports = {
-  getDisplayLabel: getDisplayLabel,
-  getDisplayLanguage: getDisplayLanguage,
-  getDisplayTitle: getDisplayTitle,
-  transformTracksList: transformTracksList,
-  getUniqueTracks: getUniqueTracks,
-  getLocalizedSpecialLanguage: getLocalizedSpecialLanguage,
-  isSpecialLanguage: isSpecialLanguage,
+  getDisplayLabel,
+  getDisplayLanguage,
+  getDisplayTitle,
+  transformTracksList,
+  getUniqueTracks,
+  getLocalizedSpecialLanguage,
+  isSpecialLanguage,
 };

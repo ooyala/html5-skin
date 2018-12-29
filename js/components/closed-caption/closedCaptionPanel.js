@@ -1,72 +1,72 @@
 /** ******************************************************************
   CLOSED CAPTION PANEL
-*********************************************************************/
+******************************************************************** */
 /**
  * Closed caption settings screen.
  *
  * @class ClosedCaptionPanel
  * @constructor
  */
-let React = require('react');
+const React = require('react');
 
-let Utils = require('../utils');
+const Utils = require('../utils');
 
-let CONSTANTS = require('../../constants/constants');
+const CONSTANTS = require('../../constants/constants');
 
-let LanguageTab = require('./languageTab');
+const LanguageTab = require('./languageTab');
 
-let ColorSelectionTab = require('./colorSelectionTab');
+const ColorSelectionTab = require('./colorSelectionTab');
 
-let CaptionOpacityTab = require('./captionOpacityTab');
+const CaptionOpacityTab = require('./captionOpacityTab');
 
-let FontTypeTab = require('./fontTypeTab');
+const FontTypeTab = require('./fontTypeTab');
 
-let FontSizeTab = require('./fontSizeTab');
+const FontSizeTab = require('./fontSizeTab');
 
-let TextEnhancementsTab = require('./textEnhancementsTab');
+const TextEnhancementsTab = require('./textEnhancementsTab');
 
-let CCPreviewPanel = require('./ccPreviewPanel');
+const CCPreviewPanel = require('./ccPreviewPanel');
 
-let Tabs = require('../tabs');
+const Tabs = require('../tabs');
 
-let Tab = Tabs.Panel;
-let createReactClass = require('create-react-class');
+const Tab = Tabs.Panel;
+const createReactClass = require('create-react-class');
 
 // The scroll buttons are not needed until the player's width is below a specific amount. This varies by language.
-let tabMenuOverflowMap = {
+const tabMenuOverflowMap = {
   en: 730,
   es: 995,
   zh: 610,
 };
 
-let ClosedCaptionPanel = createReactClass({
-  render: function() {
-    let languageTabTitle = Utils.getLocalizedString(
+const ClosedCaptionPanel = createReactClass({
+  render() {
+    const languageTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.LANGUAGE_TAB_TITLE,
       this.props.localizableStrings
     );
-    let colorSelectionTabTitle = Utils.getLocalizedString(
+    const colorSelectionTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.COLOR_SELECTION_TAB_TITLE,
       this.props.localizableStrings
     );
-    let captionOpacityTabTitle = Utils.getLocalizedString(
+    const captionOpacityTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.CAPTION_OPACITY_TAB_TITLE,
       this.props.localizableStrings
     );
-    let fontTypeTabTitle = Utils.getLocalizedString(
+    const fontTypeTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.FONT_TYPE_TAB_TITLE,
       this.props.localizableStrings
     );
-    let fontSizeTabTitle = Utils.getLocalizedString(
+    const fontSizeTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.FONT_SIZE_TAB_TITLE,
       this.props.localizableStrings
     );
-    let textEnhancementsTabTitle = Utils.getLocalizedString(
+    const textEnhancementsTabTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENTS_TAB_TITLE,
       this.props.localizableStrings

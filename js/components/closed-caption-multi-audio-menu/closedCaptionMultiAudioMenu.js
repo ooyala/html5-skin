@@ -1,16 +1,16 @@
-let React = require('react');
-let classnames = require('classnames');
-let _ = require('underscore');
+const React = require('react');
+const classnames = require('classnames');
+const _ = require('underscore');
 
-let Utils = require('../utils');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('../utils');
 
-let CONSTANTS = require('../../constants/constants');
-let Tab = require('./tab');
-let MultiAudioTab = require('./multiAudioTab');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const CONSTANTS = require('../../constants/constants');
+const Tab = require('./tab');
+const MultiAudioTab = require('./multiAudioTab');
 
-let ClosedCaptionMultiAudioMenu = createReactClass({
+const ClosedCaptionMultiAudioMenu = createReactClass({
   /**
    *
    * @param {Array} languageList - list of available languages
@@ -18,12 +18,12 @@ let ClosedCaptionMultiAudioMenu = createReactClass({
    * @returns {Array<{id: String, label: String, enabled: Boolean}>} an array of languages info objects
    * @private
    */
-  getClosedCaptions: function(languageList, language) {
-    let closedCaptionList = [];
+  getClosedCaptions(languageList, language) {
+    const closedCaptionList = [];
     if (Array.isArray(languageList)) {
       for (let index = 0; index < languageList.length; index++) {
-        let isSelectedCc = languageList[index] === language;
-        let cc = {
+        const isSelectedCc = languageList[index] === language;
+        const cc = {
           id: languageList[index],
           label: languageList[index],
           enabled: isSelectedCc,
@@ -38,7 +38,7 @@ let ClosedCaptionMultiAudioMenu = createReactClass({
    * when clicking on an item from an cc list, set the corresponding cc value
    * @param {string} id - id of clicked element
    */
-  handleClosedCaptionClick: function(id) {
+  handleClosedCaptionClick(id) {
     if (this.props.controller && typeof this.props.controller.onClosedCaptionChange === 'function') {
       this.props.controller.onClosedCaptionChange('language', id);
     }
@@ -48,20 +48,18 @@ let ClosedCaptionMultiAudioMenu = createReactClass({
    * when clicking on an item from an audio list, set the corresponding audio value
    * @param {string} id - id of clicked element
    */
-  handleMultiAudioClick: function(id) {
+  handleMultiAudioClick(id) {
     if (
-      this.props.controller &&
-      typeof this.props.controller.setCurrentAudio === 'function' &&
-      this.props.controller.state &&
-      this.props.controller.state.multiAudio &&
-      this.props.controller.state.multiAudio.tracks
+      this.props.controller
+      && typeof this.props.controller.setCurrentAudio === 'function'
+      && this.props.controller.state
+      && this.props.controller.state.multiAudio
+      && this.props.controller.state.multiAudio.tracks
     ) {
-      let tracks = this.props.controller.state.multiAudio.tracks;
+      const tracks = this.props.controller.state.multiAudio.tracks;
 
       // find selected track in a list of available tracks
-      let selectedAudioTrack = _.find(tracks, function(track) {
-        return track.id === id;
-      });
+      const selectedAudioTrack = _.find(tracks, track => track.id === id);
       this.props.controller.setCurrentAudio(selectedAudioTrack);
     }
     if (this.props.togglePopoverAction && typeof this.props.togglePopoverAction === 'function') {
@@ -71,15 +69,15 @@ let ClosedCaptionMultiAudioMenu = createReactClass({
     }
   },
 
-  render: function() {
+  render() {
     let multiAudioCol = null;
     let closedCaptionsCol = null;
     if (
-      this.props.controller &&
-      this.props.controller.state &&
-      this.props.controller.state.multiAudio &&
-      this.props.controller.state.multiAudio.tracks &&
-      this.props.controller.state.multiAudio.tracks.length > 0
+      this.props.controller
+      && this.props.controller.state
+      && this.props.controller.state.multiAudio
+      && this.props.controller.state.multiAudio.tracks
+      && this.props.controller.state.multiAudio.tracks.length > 0
     ) {
       multiAudioCol = (
         <MultiAudioTab
@@ -98,14 +96,14 @@ let ClosedCaptionMultiAudioMenu = createReactClass({
       );
     }
     if (
-      this.props.controller &&
-      this.props.controller.state &&
-      this.props.controller.state.closedCaptionOptions &&
-      this.props.controller.state.closedCaptionOptions.availableLanguages &&
-      this.props.controller.state.closedCaptionOptions.availableLanguages.languages &&
-      this.props.controller.state.closedCaptionOptions.availableLanguages.languages.length > 0
+      this.props.controller
+      && this.props.controller.state
+      && this.props.controller.state.closedCaptionOptions
+      && this.props.controller.state.closedCaptionOptions.availableLanguages
+      && this.props.controller.state.closedCaptionOptions.availableLanguages.languages
+      && this.props.controller.state.closedCaptionOptions.availableLanguages.languages.length > 0
     ) {
-      let closedCaptionList = this.getClosedCaptions(
+      const closedCaptionList = this.getClosedCaptions(
         this.props.controller.state.closedCaptionOptions.availableLanguages.languages,
         this.props.controller.state.closedCaptionOptions.language
       );

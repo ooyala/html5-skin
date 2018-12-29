@@ -1,16 +1,16 @@
-let React = require('react');
+const React = require('react');
 
-let Utils = require('../utils');
+const createReactClass = require('create-react-class');
+const Utils = require('../utils');
 
-let CONSTANTS = require('../../constants/constants');
+const CONSTANTS = require('../../constants/constants');
 
-let SelectionContainer = require('./selectionContainer');
+const SelectionContainer = require('./selectionContainer');
 
-let ColorSelector = require('../colorSelector');
-let createReactClass = require('create-react-class');
+const ColorSelector = require('../colorSelector');
 
-let ColorSelectionTab = createReactClass({
-  getInitialState: function() {
+const ColorSelectionTab = createReactClass({
+  getInitialState() {
     return {
       selectedTextColor: this.props.closedCaptionOptions.textColor,
       selectedWindowColor: this.props.closedCaptionOptions.windowColor,
@@ -21,7 +21,7 @@ let ColorSelectionTab = createReactClass({
     };
   },
 
-  changeTextColor: function(color) {
+  changeTextColor(color) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -31,7 +31,7 @@ let ColorSelectionTab = createReactClass({
     });
   },
 
-  changeWindowColor: function(color) {
+  changeWindowColor(color) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -41,7 +41,7 @@ let ColorSelectionTab = createReactClass({
     });
   },
 
-  changeBackgroundColor: function(color) {
+  changeBackgroundColor(color) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -51,35 +51,35 @@ let ColorSelectionTab = createReactClass({
     });
   },
 
-  render: function() {
-    let textColorTitle = Utils.getLocalizedString(
+  render() {
+    const textColorTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_COLOR,
       this.props.localizableStrings
     );
-    let textColorSelection = Utils.getLocalizedString(
+    const textColorSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textColor.toUpperCase()],
       this.props.localizableStrings
     );
 
-    let backgroundColorTitle = Utils.getLocalizedString(
+    const backgroundColorTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.BACKGROUND_COLOR,
       this.props.localizableStrings
     );
-    let backgroundColorSelection = Utils.getLocalizedString(
+    const backgroundColorSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.backgroundColor.toUpperCase()],
       this.props.localizableStrings
     );
 
-    let windowColorTitle = Utils.getLocalizedString(
+    const windowColorTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.WINDOW_COLOR,
       this.props.localizableStrings
     );
-    let windowColorSelection = Utils.getLocalizedString(
+    const windowColorSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.windowColor.toUpperCase()],
       this.props.localizableStrings

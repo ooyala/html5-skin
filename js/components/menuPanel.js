@@ -1,9 +1,9 @@
 const React = require('react');
+const classNames = require('classnames');
+const PropTypes = require('prop-types');
 const CustomScrollArea = require('./customScrollArea');
 const AccessibleMenu = require('./higher-order/accessibleMenu');
 const MenuPanelItem = require('./menuPanelItem');
-const classNames = require('classnames');
-const PropTypes = require('prop-types');
 const Utils = require('./utils');
 const CONSTANTS = require('../constants/constants');
 
@@ -61,7 +61,8 @@ class MenuPanel extends React.Component {
         focusId={CONSTANTS.FOCUS_IDS.MENU_ITEM + item.value}
         accentColor={accentColor}
         skinConfig={skinConfig}
-        onClick={this.onMenuItemClick} />
+        onClick={this.onMenuItemClick}
+      />
     );
   }
 
@@ -92,16 +93,15 @@ class MenuPanel extends React.Component {
 
         <CustomScrollArea
           className={classNames('oo-menu-panel-content', contentClassName)}
-          speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}>
+          speed={isPopover ? CONSTANTS.UI.POPOVER_SCROLL_RATE : 1}
+        >
 
-          {title &&
-            <div className="oo-menu-panel-title">{title}</div>
+          {title
+            && <div className="oo-menu-panel-title">{title}</div>
           }
 
           <ul className="oo-menu-panel-list" role={CONSTANTS.ARIA_ROLES.MENU}>
-            {menuItems.map(menuItem =>
-              this.renderMenuItem(menuItem, selectedValue, accentColor)
-            )}
+            {menuItems.map(menuItem => this.renderMenuItem(menuItem, selectedValue, accentColor))}
           </ul>
 
         </CustomScrollArea>

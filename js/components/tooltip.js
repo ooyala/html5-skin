@@ -1,39 +1,39 @@
-let React = require('react');
-let ReactDOM = require('react-dom');
-let deepmerge = require('deepmerge');
-let Utils = require('./utils');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
-let CONSTANTS = require('../constants/constants');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const deepmerge = require('deepmerge');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('./utils');
+const CONSTANTS = require('../constants/constants');
 
-let verticalOffset = 80;
+const verticalOffset = 80;
 function getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
-  let verticalAlignment = verticalOffset * responsivenessMultiplier;
-  let alignmentStyle = {
+  const verticalAlignment = verticalOffset * responsivenessMultiplier;
+  const alignmentStyle = {
     left: {
       left: 0,
-      transform: 'translate(0,' + verticalAlignment + '%)',
-      WebkitTransform: 'translate(0,' + verticalAlignment + '%)',
+      transform: `translate(0,${verticalAlignment}%)`,
+      WebkitTransform: `translate(0,${verticalAlignment}%)`,
     },
     center: {
       left: '50%',
-      transform: 'translate(-50%,' + verticalAlignment + '%)',
-      WebkitTransform: 'translate(-50%,' + verticalAlignment + '%)',
+      transform: `translate(-50%,${verticalAlignment}%)`,
+      WebkitTransform: `translate(-50%,${verticalAlignment}%)`,
     },
     right: {
       right: 0,
-      transform: 'translate(0,' + verticalAlignment + '%)',
-      WebkitTransform: 'translate(0,' + verticalAlignment + '%)',
+      transform: `translate(0,${verticalAlignment}%)`,
+      WebkitTransform: `translate(0,${verticalAlignment}%)`,
     },
   };
 
-  let style = {
+  const style = {
     position: 'absolute',
     color: 'white',
     fontFamily: '"Roboto Condensed", sans-serif',
     opacity: visible ? '0.75' : '0',
     fontWeight: 'normal',
-    bottom: bottom,
+    bottom,
     transition: '1s',
     visibility: visible ? 'visible' : 'hidden',
   };
@@ -54,7 +54,7 @@ function getBoxStyle(responsivenessMultiplier) {
   };
 }
 
-let pointerAlignment = {
+const pointerAlignment = {
   left: '10%',
   center: '45%',
   right: '85%',
@@ -69,8 +69,8 @@ function getPointerStyle(alignment) {
   };
 }
 
-let Tooltip = createReactClass({
-  componentDidMount: function() {
+const Tooltip = createReactClass({
+  componentDidMount() {
     this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement;
     if (this.parentElement) {
       this.parentElement.addEventListener('mouseover', this.onMouseOver);
@@ -78,23 +78,23 @@ let Tooltip = createReactClass({
     }
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if (this.parentElement) {
       this.parentElement.removeEventListener('mouseover', this.onMouseOver);
       this.parentElement.removeEventListener('mouseleave', this.onMouseLeave);
     }
   },
 
-  getAlignment: function() {
+  getAlignment() {
     if (typeof this.props.getAlignment === 'function') {
       return this.props.getAlignment(this.props.parentKey) || CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
     }
     return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
   },
 
-  render: function() {
+  render() {
     if (this.props.enabled) {
-      let alignment = this.getAlignment();
+      const alignment = this.getAlignment();
 
       return (
         <div className="oo-tooltip-container" style={{ position: 'relative' }}>
@@ -105,7 +105,8 @@ let Tooltip = createReactClass({
               this.state.visible,
               this.props.responsivenessMultiplier,
               alignment
-            )}>
+            )}
+          >
             <div style={getBoxStyle(this.props.responsivenessMultiplier)}>
               {Utils.getLocalizedString(
                 this.props.language,
@@ -117,20 +118,19 @@ let Tooltip = createReactClass({
           </div>
         </div>
       );
-    } else {
-      return null;
     }
+    return null;
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return { visible: false };
   },
 
-  onMouseOver: function() {
+  onMouseOver() {
     this.setState({ visible: true });
   },
 
-  onMouseLeave: function() {
+  onMouseLeave() {
     this.setState({ visible: false });
   },
 });

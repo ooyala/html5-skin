@@ -1,16 +1,16 @@
-let React = require('react');
-let ReactDOM = require('react-dom');
-let ClassNames = require('classnames');
-let Slider = require('./slider');
-let Utils = require('./utils');
-let MACROS = require('../constants/macros');
-let CONSTANTS = require('../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const ReactDOM = require('react-dom');
+const ClassNames = require('classnames');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Slider = require('./slider');
+const Utils = require('./utils');
+const MACROS = require('../constants/macros');
+const CONSTANTS = require('../constants/constants');
 
-let VolumeControls = createReactClass({
-  volumeChange: function(vol) {
-    let newVol = Utils.ensureNumber(vol, 1);
+const VolumeControls = createReactClass({
+  volumeChange(vol) {
+    const newVol = Utils.ensureNumber(vol, 1);
     this.props.controller.setVolume(newVol);
     // unmute when volume is changed when muted
     if (newVol !== 0) {
@@ -18,7 +18,7 @@ let VolumeControls = createReactClass({
     }
   },
 
-  handleVolumeClick: function(event) {
+  handleVolumeClick(event) {
     let clickedBarVolume = Utils.getPropertyValue(event, 'currentTarget.dataset.volume');
     // For unit tests, since Jest doesn't currently support dataset and it also doesn't
     // allow overriding currentTarget. The right property to use here is currentTarget.
@@ -33,12 +33,12 @@ let VolumeControls = createReactClass({
     }
   },
 
-  handleVolumeSliderChange: function(value) {
-    let newVolume = parseFloat(value);
+  handleVolumeSliderChange(value) {
+    const newVolume = parseFloat(value);
     this.volumeChange(newVolume);
   },
 
-  handleVolumeCtrlsKeyDown: function(evt) {
+  handleVolumeCtrlsKeyDown(evt) {
     switch (evt.key) {
       case CONSTANTS.KEY_VALUES.ARROW_UP:
       case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
@@ -69,7 +69,7 @@ let VolumeControls = createReactClass({
     }
   },
 
-  handleVolumeCtrlsMouseDown: function(event) {
+  handleVolumeCtrlsMouseDown(event) {
     // Prevent focus highlight from flashing when clicking on
     // the volume controls since the CSS workaround doesn't work on IE.
     if (Utils.isIE()) {
@@ -82,7 +82,7 @@ let VolumeControls = createReactClass({
    *
    * @returns {String} A string that represents the volume as a percentage from 0 to 100.
    */
-  getVolumePercent: function() {
+  getVolumePercent() {
     return (this.props.controller.state.volumeState.volume * 100).toFixed(0);
   },
 
@@ -91,7 +91,7 @@ let VolumeControls = createReactClass({
    *
    * @returns {String} The current volume in a screen reader friendly format (i.e. 20% volume).
    */
-  getAriaValueText: function() {
+  getAriaValueText() {
     if (this.props.controller.state.volumeState.muted) {
       return CONSTANTS.ARIA_LABELS.MUTED;
     }
@@ -102,20 +102,19 @@ let VolumeControls = createReactClass({
    * Builds the volume bar controls that are shown on desktop.
    * @returns {ReactElement} - volumeBar react element
    */
-  renderVolumeBars: function() {
-    let volumeBars = [];
+  renderVolumeBars() {
+    const volumeBars = [];
 
     for (let i = 0; i < 10; i++) {
       // Create each volume tick separately
-      let barVolume = (i + 1) / 10;
-      let turnedOn =
-        this.props.controller.state.volumeState.volume >= barVolume &&
-        !this.props.controller.state.volumeState.muted;
-      let volumeClass = ClassNames({
+      const barVolume = (i + 1) / 10;
+      const turnedOn = this.props.controller.state.volumeState.volume >= barVolume
+        && !this.props.controller.state.volumeState.muted;
+      const volumeClass = ClassNames({
         'oo-volume-bar': true,
         'oo-on': turnedOn,
       });
-      let barStyle = {
+      const barStyle = {
         backgroundColor: this.props.skinConfig.controlBar.volumeControl.color
           ? this.props.skinConfig.controlBar.volumeControl.color
           : this.props.skinConfig.general.accentColor,
@@ -135,8 +134,8 @@ let VolumeControls = createReactClass({
       );
     }
 
-    let volumePercent = this.getVolumePercent();
-    let ariaValueText = this.getAriaValueText();
+    const volumePercent = this.getVolumePercent();
+    const ariaValueText = this.getAriaValueText();
 
     return (
       <span
@@ -162,8 +161,8 @@ let VolumeControls = createReactClass({
    * Renders the volume slider that is shown on mobile web.
    * @returns {React.Element} volume slider element
    */
-  renderVolumeSlider: function() {
-    let volume = this.props.controller.state.volumeState.muted
+  renderVolumeSlider() {
+    const volume = this.props.controller.state.volumeState.muted
       ? 0
       : parseFloat(this.props.controller.state.volumeState.volume);
     return (
@@ -176,7 +175,7 @@ let VolumeControls = createReactClass({
           minValue={0}
           maxValue={1}
           step={0.1}
-          usePercentageForAria={true}
+          usePercentageForAria
           ariaLabel={CONSTANTS.ARIA_LABELS.VOLUME_SLIDER}
           settingName={CONSTANTS.ARIA_LABELS.VOLUME_SLIDER}
           focusId={CONSTANTS.FOCUS_IDS.VOLUME_SLIDER}
@@ -186,18 +185,16 @@ let VolumeControls = createReactClass({
     );
   },
 
-  render: function() {
+  render() {
     if (this.props.controller.state.audioOnly) {
       return this.renderVolumeSlider();
-    } else if (this.props.controller.state.isMobile) {
+    } if (this.props.controller.state.isMobile) {
       if (this.props.controller.state.volumeState.volumeSliderVisible) {
         return this.renderVolumeSlider();
-      } else {
-        return null;
       }
-    } else {
-      return this.renderVolumeBars();
+      return null;
     }
+    return this.renderVolumeBars();
   },
 });
 

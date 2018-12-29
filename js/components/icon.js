@@ -1,10 +1,10 @@
-let React = require('react');
-let Utils = require('./utils');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('./utils');
 
-let Icon = createReactClass({
-  shouldComponentUpdate: function(nextProps) {
+const Icon = createReactClass({
+  shouldComponentUpdate(nextProps) {
     let updateComponent = false;
     if (this.props && (this.props.icon !== nextProps.icon || this.props.className !== nextProps.className || this.props.style !== nextProps.style)) {
       updateComponent = true;
@@ -12,12 +12,12 @@ let Icon = createReactClass({
     return updateComponent;
   },
 
-  render: function() {
+  render() {
     let fontFamilyName = '';
     if (this.props.skinConfig.icons && this.props.skinConfig.icons[this.props.icon]) {
       fontFamilyName = this.props.skinConfig.icons[this.props.icon].fontFamilyName;
     }
-    let iconStyle = Utils.extend(
+    const iconStyle = Utils.extend(
       { fontFamily: fontFamilyName },
       this.props.style
     );
@@ -34,11 +34,12 @@ let Icon = createReactClass({
 
     return (
       <span
-        className={fontStyleClass + ' ' + this.props.className}
+        className={`${fontStyleClass} ${this.props.className}`}
         style={iconStyle}
         onMouseOver={this.props.onMouseOver}
         onMouseOut={this.props.onMouseOut}
-        onClick={this.props.onClick}>
+        onClick={this.props.onClick}
+      >
         {fontString}
       </span>
     );

@@ -1,49 +1,49 @@
-let React = require('react');
+const React = require('react');
 
-let Utils = require('./../utils');
+const ClassNames = require('classnames');
+const createReactClass = require('create-react-class');
+const Utils = require('./../utils');
 
-let AccessibleButton = require('../accessibleButton');
+const AccessibleButton = require('../accessibleButton');
 
-let CONSTANTS = require('../../constants/constants');
+const CONSTANTS = require('../../constants/constants');
 
-let ClassNames = require('classnames');
-let createReactClass = require('create-react-class');
 
-let OnOffSwitch = createReactClass({
-  handleOnOffSwitch: function() {
+const OnOffSwitch = createReactClass({
+  handleOnOffSwitch() {
     this.props.controller.toggleClosedCaptionEnabled();
   },
 
-  render: function() {
-    let switchThumbClassName = ClassNames({
+  render() {
+    const switchThumbClassName = ClassNames({
       'oo-switch-thumb': true,
       'oo-switch-thumb-on': this.props.closedCaptionOptions.enabled,
       'oo-switch-thumb-off': !this.props.closedCaptionOptions.enabled,
     });
-    let switchBodyClassName = ClassNames({
+    const switchBodyClassName = ClassNames({
       'oo-switch-body': true,
       'oo-switch-body-off': !this.props.closedCaptionOptions.enabled,
     });
-    let onCaptionClassName = ClassNames({
+    const onCaptionClassName = ClassNames({
       'oo-switch-captions oo-switch-captions-on': true,
       'oo-switch-captions-active': this.props.closedCaptionOptions.enabled,
     });
-    let offCaptionClassName = ClassNames({
+    const offCaptionClassName = ClassNames({
       'oo-switch-captions oo-switch-captions-off': true,
       'oo-switch-captions-active': !this.props.closedCaptionOptions.enabled,
     });
-    let ccOnStyle = {
+    const ccOnStyle = {
       backgroundColor:
         this.props.closedCaptionOptions.enabled && this.props.skinConfig.general.accentColor
           ? this.props.skinConfig.general.accentColor
           : null,
     };
-    let offString = Utils.getLocalizedString(
+    const offString = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.OFF,
       this.props.localizableStrings
     );
-    let onString = Utils.getLocalizedString(
+    const onString = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.ON,
       this.props.localizableStrings

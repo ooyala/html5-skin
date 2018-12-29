@@ -1,10 +1,12 @@
 /** ******************************************************************
   RENDERER PLACEHOLDER
-*********************************************************************/
+******************************************************************** */
 import { PlayingScreen, PlayingScreenWithAutoHide } from './views/playingScreen';
 import { PauseScreen, PauseScreenWithAutoHide } from './views/pauseScreen';
 
 const React = require('react');
+const createReactClass = require('create-react-class');
+const ClassNames = require('classnames');
 const Utils = require('./components/utils');
 const CONSTANTS = require('./constants/constants');
 const Spinner = require('./components/spinner');
@@ -13,20 +15,17 @@ const ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPan
 const DiscoveryPanel = require('./components/discoveryPanel');
 const VideoQualityPanel = require('./components/videoQualityPanel');
 const PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
-const ClosedCaptionMultiAudioMenu =
-  require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
+const ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 const SharePanel = require('./components/sharePanel');
 const VolumePanel = require('./components/volumePanel');
 const MoreOptionsPanel = require('./components/moreOptionsPanel');
-const AdScreen = require('./views/adScreen');
+import AdScreen from './views/adScreen';
 const EndScreen = require('./views/endScreen');
 const StartScreen = require('./views/startScreen');
 const ErrorScreen = require('./views/errorScreen');
 const ContentScreen = require('./views/contentScreen');
 const ResponsiveManagerMixin = require('./mixins/responsiveManagerMixin');
-const createReactClass = require('create-react-class');
 const AudioOnlyScreen = require('./views/audioOnlyScreen');
-const ClassNames = require('classnames');
 
 const Skin = createReactClass({
   mixins: [ResponsiveManagerMixin],
@@ -36,11 +35,11 @@ const Skin = createReactClass({
    * @private
    * @param {HTMLElement} domElement A reference to the component's DOM element
    */
-  storeRef: function(domElement) {
+  storeRef(domElement) {
     this.domElement = domElement;
   },
 
-  getInitialState: function() {
+  getInitialState() {
     this.overlayRenderingEventSent = false;
     return {
       totalTime: '00:00',
@@ -54,7 +53,7 @@ const Skin = createReactClass({
     };
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     // Notify AMC the correct overlay rendering info
     if (this.state.screenToShow !== null && !this.overlayRenderingEventSent) {
       const responsiveUIMultiple = this.props.skinConfig.responsive.breakpoints[this.state.responsiveId]
@@ -65,27 +64,27 @@ const Skin = createReactClass({
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     window.addEventListener('mouseup', this.handleClickOutsidePlayer);
     document.addEventListener('keydown', this.onKeyDown);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.removeEventListener('mouseup', this.handleClickOutsidePlayer);
     document.removeEventListener('keydown', this.onKeyDown);
   },
 
-  handleClickOutsidePlayer: function() {
+  handleClickOutsidePlayer() {
     this.props.controller.state.accessibilityControlsEnabled = false;
     this.props.controller.state.isClickedOutside = true;
   },
 
-  switchComponent: function(args) {
+  switchComponent(args) {
     const newState = args || {};
     this.setState(newState);
   },
 
-  updatePlayhead: function(newPlayhead, newDuration, newBuffered, adPlayhead) {
+  updatePlayhead(newPlayhead, newDuration, newBuffered, adPlayhead) {
     return new Promise((resolve) => {
       this.setState(function(prevState) {
         const duration = Utils.ensureNumber(newDuration, prevState.duration);
@@ -109,7 +108,7 @@ const Skin = createReactClass({
    * @param {number} duration - time to format HH:mm
    * @returns {string} The total time of the video in (HH:)MM:SS format
    */
-  getTotalTime: function(duration) {
+  getTotalTime(duration) {
     let totalTime = '00:00';
     const ensureNumberDuration = Utils.ensureNumber(duration) ? Utils.ensureNumber(duration) : 0;
     totalTime = Utils.formatSeconds(ensureNumberDuration);
@@ -122,14 +121,14 @@ const Skin = createReactClass({
    * @private
    * @returns {string} The current playhead time in (HH:)MM:SS format or null if the current playhead is invalid or timeshift is 0
    */
-  getPlayheadTime: function() {
+  getPlayheadTime() {
     let playheadTime = isFinite(parseInt(this.state.currentPlayhead))
       ? Utils.formatSeconds(parseInt(this.state.currentPlayhead))
       : null;
-    let isLiveStream = this.state.isLiveStream;
-    let timeShift = this.state.currentPlayhead - this.state.duration;
+    const isLiveStream = this.state.isLiveStream;
+    const timeShift = this.state.currentPlayhead - this.state.duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
-    let isLiveNow = Math.abs(timeShift) < 1;
+    const isLiveNow = Math.abs(timeShift) < 1;
     playheadTime = isLiveStream
       ? (isLiveNow ? null : Utils.formatSeconds(timeShift))
       : playheadTime;
@@ -144,7 +143,7 @@ const Skin = createReactClass({
    * @public
    * @param {MouseEvent} event - event
    */
-  handleVrPlayerMouseDown: function(event) {
+  handleVrPlayerMouseDown(event) {
     // continue only if video is vr and non in stereo mode
     if (!this.props.controller || this.props.controller.isVrStereo || !this.props.controller.videoVr) {
       return;
@@ -170,7 +169,7 @@ const Skin = createReactClass({
    * @public
    * @param {MouseEvent} event - event
    */
-  handleVrPlayerMouseMove: function(event) {
+  handleVrPlayerMouseMove(event) {
     if (this.props.controller && this.props.controller.isVrStereo) {
       return;
     }
@@ -197,13 +196,13 @@ const Skin = createReactClass({
    * @public
    * @param {MouseEvent} event - mouse or touch event
    */
-  handleVrPlayerMouseUp: function(event) {
+  handleVrPlayerMouseUp(event) {
     // continue only if video is vr and non in stereo mode
     if (!this.props.controller || !this.props.controller.videoVr || this.props.controller.isVrStereo) {
       return;
     }
 
-    let isTouchEnd = typeof event === 'object' && event.type === 'touchend';
+    const isTouchEnd = typeof event === 'object' && event.type === 'touchend';
     // do not continue if the event is 'touchend'
     if (!isTouchEnd && typeof this.props.controller.checkVrDirection === 'function') {
       this.setState({
@@ -218,7 +217,7 @@ const Skin = createReactClass({
    * @public
    * @description set isVrMouseMove to false for click event
    */
-  handleVrPlayerClick: function() {
+  handleVrPlayerClick() {
     this.setState({
       isVrMouseMove: false,
     });
@@ -228,7 +227,7 @@ const Skin = createReactClass({
    * @public
    * @description set accessibilityControlsEnabled to true for focus event
    */
-  handleVrPlayerFocus: function() {
+  handleVrPlayerFocus() {
     this.props.controller.state.accessibilityControlsEnabled = true;
   },
 
@@ -240,7 +239,7 @@ const Skin = createReactClass({
    * @param {number} _pageY - y coordinate
    * @returns {[number, number, number]} array with yaw, roll, pitch
    */
-  getDirectionParams: function(_pageX, _pageY) {
+  getDirectionParams(_pageX, _pageY) {
     let yaw = this.getVrViewingDirectionParamValue('yaw');
     let pitch = this.getVrViewingDirectionParamValue('pitch');
     if (this.state.componentWidth && this.state.componentHeight) {
@@ -264,13 +263,13 @@ const Skin = createReactClass({
    * @param {string} paramName - one of "yaw" or "pitch"
    * @returns {number} value of vrViewingDirection param
    */
-  getVrViewingDirectionParamValue: function(paramName) {
+  getVrViewingDirectionParamValue(paramName) {
     let vrViewingDirectionValue = 0;
     if (
-      this.props.controller &&
-      this.props.controller.state &&
-      this.props.controller.state.vrViewingDirection &&
-      typeof this.props.controller.state.vrViewingDirection[paramName] === 'number'
+      this.props.controller
+      && this.props.controller.state
+      && this.props.controller.state.vrViewingDirection
+      && typeof this.props.controller.state.vrViewingDirection[paramName] === 'number'
     ) {
       vrViewingDirectionValue = this.props.controller.state.vrViewingDirection[paramName];
     }
@@ -285,19 +284,19 @@ const Skin = createReactClass({
    * @private
    * @param {Event} evt Keydown event object.
    */
-  onKeyDown: function(evt) {
+  onKeyDown(evt) {
     if (
-      !evt.target ||
-      !this.domElement ||
-      !this.props.controller.state.fullscreen ||
-      evt.key !== CONSTANTS.KEY_VALUES.TAB
+      !evt.target
+      || !this.domElement
+      || !this.props.controller.state.fullscreen
+      || evt.key !== CONSTANTS.KEY_VALUES.TAB
     ) {
       return;
     }
     // Focusable elements on the player (this.domElement) are expected to have the
     // data-focus-id attribute, this is a convention used throughout this project.
-    const selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + ']:enabled';
-    let focusableElements = this.domElement.querySelectorAll(selector);
+    const selector = `[${CONSTANTS.KEYBD_FOCUS_ID_ATTR}]:enabled`;
+    const focusableElements = this.domElement.querySelectorAll(selector);
 
     if (focusableElements.length) {
       const firstFocusableElement = focusableElements[0];
@@ -338,7 +337,7 @@ const Skin = createReactClass({
    * when touchend is called on selected screen
    * @public
    */
-  handleTouchEndOnWindow: function() {
+  handleTouchEndOnWindow() {
     if (this.props.controller.videoVr) { // only for vr on mobile
       this.setState({
         isVrMouseDown: false,
@@ -358,7 +357,7 @@ const Skin = createReactClass({
    * @public
    * @param {Object} event - event object
    */
-  handleTouchEndOnPlayer: function(event) {
+  handleTouchEndOnPlayer(event) {
     if (this.props.controller.state.controlBarVisible) {
       let shouldToggle = false;
       if (!this.props.controller.videoVr || !this.state.isVrMouseMove) {
@@ -376,17 +375,17 @@ const Skin = createReactClass({
    * @param {boolean} useVrViewingDirection - true if function 'getVrViewingDirection' is needed to be used
    * from the plugin, false - if function 'getCurrentDirection' will be used
    */
-  updateVrDirection: function(useVrViewingDirection) {
+  updateVrDirection(useVrViewingDirection) {
     if (
-      typeof this.props.controller.checkVrDirection === 'function' &&
-      typeof this.props.controller.setControllerVrViewingDirection === 'function'
+      typeof this.props.controller.checkVrDirection === 'function'
+      && typeof this.props.controller.setControllerVrViewingDirection === 'function'
     ) {
       this.props.controller.checkVrDirection(useVrViewingDirection);
       this.props.controller.setControllerVrViewingDirection();
     }
   },
 
-  render: function() {
+  render() {
     let screen;
     const isReceiver = this.props.controller.state.cast.isReceiver;
 
@@ -447,7 +446,7 @@ const Skin = createReactClass({
                 {...this.props}
                 componentWidth={this.state.componentWidth}
                 contentTree={this.state.contentTree}
-                isInitializing={true}
+                isInitializing
               />
             );
             break;
@@ -471,7 +470,7 @@ const Skin = createReactClass({
                 componentWidth={this.state.componentWidth}
                 contentTree={this.state.contentTree}
                 isInitializing={false}
-                showSpinner={true}
+                showSpinner
               />
             );
             break;
@@ -630,7 +629,9 @@ const Skin = createReactClass({
               >
                 <DiscoveryPanel
                   {...this.props}
-                  videosPerPage={{ xs: 2, sm: 4, md: 6, lg: 8 }}
+                  videosPerPage={{
+                    xs: 2, sm: 4, md: 6, lg: 8,
+                  }}
                   forceCountDownTimer={this.state.forceCountDownTimerOnEndScreen}
                   discoveryData={this.state.discoveryData}
                   playerState={this.state.playerState}
@@ -646,7 +647,8 @@ const Skin = createReactClass({
                 <MoreOptionsPanel
                   {...this.props}
                   responsiveView={this.state.responsiveId}
-                  fullscreen={this.state.fullscreen} />
+                  fullscreen={this.state.fullscreen}
+                />
               </ContentScreen>
             );
             break;
@@ -662,11 +664,14 @@ const Skin = createReactClass({
                 element={
                   <OnOffSwitch {...this.props} ariaLabel={CONSTANTS.ARIA_LABELS.TOGGLE_CLOSED_CAPTIONS} />
                 }
-                icon="cc">
+                icon="cc"
+              >
                 <ClosedCaptionPanel
                   {...this.props}
                   closedCaptionOptions={this.props.closedCaptionOptions}
-                  dataItemsPerPage={{ xs: 1, sm: 4, md: 8, lg: 8 }}
+                  dataItemsPerPage={{
+                    xs: 1, sm: 4, md: 8, lg: 8,
+                  }}
                   responsiveView={this.state.responsiveId}
                   componentWidth={this.state.componentWidth}
                 />
@@ -680,12 +685,14 @@ const Skin = createReactClass({
                 screenClassName="oo-menu-content-screen"
                 screen={CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN}
                 titleText={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
-                autoFocus={this.state.videoQualityOptions.autoFocus}>
+                autoFocus={this.state.videoQualityOptions.autoFocus}
+              >
                 <VideoQualityPanel
                   {...this.props}
                   fullscreen={this.state.fullscreen}
                   videoQualityOptions={this.state.videoQualityOptions}
-                  responsiveView={this.state.responsiveId} />
+                  responsiveView={this.state.responsiveId}
+                />
               </ContentScreen>
             );
             break;
@@ -696,14 +703,16 @@ const Skin = createReactClass({
                 screenClassName="oo-menu-content-screen"
                 screen={CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN}
                 titleText={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
-                autoFocus={this.state.playbackSpeedOptions.autoFocus} >
+                autoFocus={this.state.playbackSpeedOptions.autoFocus}
+              >
                 <PlaybackSpeedPanel
                   language={this.props.language}
                   localizableStrings={this.props.localizableStrings}
                   controller={this.props.controller}
                   skinConfig={this.props.skinConfig}
                   fullscreen={this.state.fullscreen}
-                  responsiveView={this.state.responsiveId} />
+                  responsiveView={this.state.responsiveId}
+                />
               </ContentScreen>
             );
             break;
@@ -712,11 +721,14 @@ const Skin = createReactClass({
               <ContentScreen
                 {...this.props}
                 cssClass="oo-close-button oo-close-button--ma"
-                dataItemsPerPage={{ xs: 1, sm: 4, md: 8, lg: 8 }}
+                dataItemsPerPage={{
+                  xs: 1, sm: 4, md: 8, lg: 8,
+                }}
                 screen={CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN}
                 screenClassName="oo-cc-ma-container"
                 autoFocus={this.state.multiAudioOptions.autoFocus}
-                icon="cc">
+                icon="cc"
+              >
                 <ClosedCaptionMultiAudioMenu {...this.props} />
               </ContentScreen>
             );
@@ -730,14 +742,15 @@ const Skin = createReactClass({
       }
     }
 
-    let className = ClassNames(this.state.responsiveClass, 'oo-responsive', {
+    const className = ClassNames(this.state.responsiveClass, 'oo-responsive', {
       'oo-audio-only': this.props.controller.state.audioOnly,
     });
 
     return (
       <div
         ref={this.storeRef}
-        className={className}>
+        className={className}
+      >
         {screen}
       </div>
     );
@@ -769,7 +782,7 @@ Skin.defaultProps = {
       adVideoDuration: 0,
       errorCode: 404,
     },
-    publishOverlayRenderingEvent: function() {},
+    publishOverlayRenderingEvent() {},
   },
 };
 

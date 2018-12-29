@@ -1,52 +1,53 @@
-let React = require('react');
+const React = require('react');
 
-let Icon = require('./icon');
 
-let ClassNames = require('classnames');
+const ClassNames = require('classnames');
 
-let CONSTANTS = require('../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../constants/constants');
+const Icon = require('./icon');
 
-let UnmuteIcon = createReactClass({
-  getInitialState: function() {
+const UnmuteIcon = createReactClass({
+  getInitialState() {
     return {
       collapseTime: 2000,
     };
   },
 
-  unmuteClick: function(event) {
+  unmuteClick(event) {
     // Clicking on this button shouldn't trigger clicks on parent components
     event.stopPropagation();
     this.props.controller.handleMuteClick();
   },
 
-  onMouseUp: function(event) {
+  onMouseUp(event) {
     // The AdScreen currently uses the mouseup event to handle ad clickthroughs,
     // otherwise stopping propagation on the click event should've been enough
     event.stopPropagation();
   },
 
-  componentDidMount: function() {
-    let expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
+  componentDidMount() {
+    const expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
     if (expanded) {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(
-        function() {
+        () => {
           this.props.controller.state.volumeState.unmuteIconCollapsed = true;
           this.setState({});
-        }.bind(this),
+        },
         this.state.collapseTime
       );
     }
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     clearTimeout(this.timeout);
   },
 
-  render: function() {
-    let volumeIcon, volumeAriaLabel;
+  render() {
+    let volumeIcon; let
+      volumeAriaLabel;
     if (this.props.controller.state.volumeState.muted) {
       volumeIcon = 'volumeOff';
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.UNMUTE;
@@ -55,9 +56,9 @@ let UnmuteIcon = createReactClass({
       volumeAriaLabel = CONSTANTS.ARIA_LABELS.MUTE;
     }
 
-    let expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
+    const expanded = !this.props.controller.state.volumeState.unmuteIconCollapsed;
 
-    let myClass = ClassNames({
+    const myClass = ClassNames({
       'oo-unmute': true,
       'oo-expanded': expanded,
     });

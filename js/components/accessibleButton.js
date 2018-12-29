@@ -1,38 +1,38 @@
-let React = require('react');
-let ClassNames = require('classnames');
-let Utils = require('./utils');
-let CONSTANTS = require('../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const ClassNames = require('classnames');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('./utils');
+const CONSTANTS = require('../constants/constants');
 
-let AccessibleButton = createReactClass({
-  getInitialState: function() {
+const AccessibleButton = createReactClass({
+  getInitialState() {
     this.triggeredWithKeyboard = false;
     return {};
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     if (this.props.autoFocus) {
       this.focus();
     }
   },
 
-  componentDidUpdate: function(prevProps) {
-    let prevAutoFocus = prevProps ? prevProps.autoFocus : false;
+  componentDidUpdate(prevProps) {
+    const prevAutoFocus = prevProps ? prevProps.autoFocus : false;
 
     if (!prevAutoFocus && this.props.autoFocus) {
       this.focus();
     }
   },
 
-  wasTriggeredWithKeyboard: function(triggeredWithKeyboard) {
+  wasTriggeredWithKeyboard(triggeredWithKeyboard) {
     if (typeof triggeredWithKeyboard !== 'undefined') {
       this.triggeredWithKeyboard = !!triggeredWithKeyboard;
     }
     return this.triggeredWithKeyboard;
   },
 
-  focus: function() {
+  focus() {
     if (this.domElement && typeof this.domElement.focus === 'function') {
       this.domElement.focus();
     }
@@ -43,7 +43,7 @@ let AccessibleButton = createReactClass({
    * @private
    * @param {type} event The keydown event object.
    */
-  onKeyDown: function(event) {
+  onKeyDown(event) {
     switch (event.key) {
       case CONSTANTS.KEY_VALUES.SPACE:
       case CONSTANTS.KEY_VALUES.ENTER:
@@ -71,7 +71,7 @@ let AccessibleButton = createReactClass({
    * @private
    * @param {event} event The mouseup event object
    */
-  onMouseUp: function(event) {
+  onMouseUp(event) {
     Utils.blurOnMouseUp(event);
 
     if (typeof this.props.onMouseUp === 'function') {
@@ -79,7 +79,7 @@ let AccessibleButton = createReactClass({
     }
   },
 
-  render: function() {
+  render() {
     return (
       <button
         ref={function(e) {
@@ -107,7 +107,8 @@ let AccessibleButton = createReactClass({
         onMouseEnter={this.props.onMouseEnter}
         onMouseLeave={this.props.onMouseLeave}
         onFocus={this.props.onFocus}
-        onClick={this.props.onClick}>
+        onClick={this.props.onClick}
+      >
         {this.props.children}
       </button>
     );
@@ -145,7 +146,7 @@ AccessibleButton.defaultProps = Object.create(
   {
     focusId: {
       enumerable: true,
-      get: function() {
+      get() {
         return Math.random().toString(36).substr(2, 10);
       },
     },

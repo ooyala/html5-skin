@@ -1,40 +1,40 @@
 /** ******************************************************************
  MORE OPTIONS PANEL
- *********************************************************************/
+ ******************************************************************** */
 /**
  * @class MoreOptionsPanel
  * @constructor
  */
-let React = require('react');
-let Utils = require('./utils');
-let CONSTANTS = require('../constants/constants');
-let ClassNames = require('classnames');
-let AnimateMixin = require('../mixins/animateMixin');
-let Icon = require('../components/icon');
-let ControlButton = require('./controlButton');
-let PlaybackSpeedButton = require('./playbackSpeedButton');
-let createReactClass = require('create-react-class');
+const React = require('react');
+const ClassNames = require('classnames');
+const createReactClass = require('create-react-class');
+const Utils = require('./utils');
+const CONSTANTS = require('../constants/constants');
+const AnimateMixin = require('../mixins/animateMixin');
+const Icon = require('../components/icon');
+const ControlButton = require('./controlButton');
+const PlaybackSpeedButton = require('./playbackSpeedButton');
 
-let MoreOptionsPanel = createReactClass({
+const MoreOptionsPanel = createReactClass({
   mixins: [AnimateMixin],
 
-  handleShareClick: function() {
+  handleShareClick() {
     this.props.controller.toggleShareScreen();
   },
 
-  handleQualityClick: function() {
+  handleQualityClick() {
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
   },
 
-  handleDiscoveryClick: function() {
+  handleDiscoveryClick() {
     this.props.controller.toggleDiscoveryScreen();
   },
 
-  handleClosedCaptionClick: function() {
+  handleClosedCaptionClick() {
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
   },
 
-  handleMultiAudioClick: function() {
+  handleMultiAudioClick() {
     if (this.props.controller && typeof this.props.controller.toggleScreen === 'function') {
       this.props.controller.toggleScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
     }
@@ -44,36 +44,36 @@ let MoreOptionsPanel = createReactClass({
    * Opens the Playback Speed menu in screen mode when the playback speed button is clicked.
    * @private
    */
-  handlePlaybackSpeedClick: function() {
+  handlePlaybackSpeedClick() {
     this.props.controller.toggleScreen(CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN);
   },
 
-  buildMoreOptionsButtonList: function() {
-    let commonButtonProps = {
+  buildMoreOptionsButtonList() {
+    const commonButtonProps = {
       language: this.props.language,
       localizableStrings: this.props.localizableStrings,
       responsiveView: this.props.responsiveView,
       skinConfig: this.props.skinConfig,
       controller: this.props.controller,
       style: {
-        fontSize: this.props.skinConfig.moreOptionsScreen.iconSize + 'px',
+        fontSize: `${this.props.skinConfig.moreOptionsScreen.iconSize}px`,
       },
-      getTooltipAlignment: function(key) {
+      getTooltipAlignment(key) {
         return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
       },
     };
 
-    let optionsItemsTemplates = {};
+    const optionsItemsTemplates = {};
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.QUALITY] = (
       <ControlButton
         {...commonButtonProps}
         key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
         className="oo-quality"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
-        ariaHidden={true}
+        ariaHidden
         icon="quality"
-        onClick={this.handleQualityClick}>
-      </ControlButton>
+        onClick={this.handleQualityClick}
+      />
     );
 
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY] = (
@@ -82,10 +82,10 @@ let MoreOptionsPanel = createReactClass({
         key={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
         className="oo-discovery"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
-        ariaHidden={true}
+        ariaHidden
         icon="discovery"
-        onClick={this.handleDiscoveryClick}>
-      </ControlButton>
+        onClick={this.handleDiscoveryClick}
+      />
     );
 
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC] = (
@@ -94,10 +94,10 @@ let MoreOptionsPanel = createReactClass({
         key={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
         className="oo-multiaudio"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
-        ariaHidden={true}
+        ariaHidden
         icon="audioAndCC"
-        onClick={this.handleMultiAudioClick}>
-      </ControlButton>
+        onClick={this.handleMultiAudioClick}
+      />
     );
 
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION] = (
@@ -106,10 +106,10 @@ let MoreOptionsPanel = createReactClass({
         key={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
         className="oo-closed-caption"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
-        ariaHidden={true}
+        ariaHidden
         icon="cc"
-        onClick={this.handleClosedCaptionClick}>
-      </ControlButton>
+        onClick={this.handleClosedCaptionClick}
+      />
     );
 
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED] = (
@@ -117,9 +117,9 @@ let MoreOptionsPanel = createReactClass({
         {...commonButtonProps}
         key={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
         focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
-        ariaHidden={true}
-        onClick={this.handlePlaybackSpeedClick}>
-      </PlaybackSpeedButton>
+        ariaHidden
+        onClick={this.handlePlaybackSpeedClick}
+      />
     );
 
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.SHARE] = (
@@ -128,14 +128,14 @@ let MoreOptionsPanel = createReactClass({
         key={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
         className="oo-share"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.SHARE}
-        ariaHidden={true}
+        ariaHidden
         icon="share"
-        onClick={this.handleShareClick}>
-      </ControlButton>
+        onClick={this.handleShareClick}
+      />
     );
 
-    let items = this.props.controller.state.moreOptionsItems;
-    let moreOptionsItems = [];
+    const items = this.props.controller.state.moreOptionsItems;
+    const moreOptionsItems = [];
 
     for (let i = 0; i < items.length; i++) {
       moreOptionsItems.push(optionsItemsTemplates[items[i].name]);
@@ -144,13 +144,13 @@ let MoreOptionsPanel = createReactClass({
     return moreOptionsItems;
   },
 
-  render: function() {
-    let moreOptionsItemsClass = ClassNames({
+  render() {
+    const moreOptionsItemsClass = ClassNames({
       'oo-more-options-items': true,
       'oo-animate-more-options': this.state.animate,
     });
 
-    let moreOptionsItems = this.buildMoreOptionsButtonList();
+    const moreOptionsItems = this.buildMoreOptionsButtonList();
 
     return (
       <div className="oo-content-panel oo-more-options-panel">

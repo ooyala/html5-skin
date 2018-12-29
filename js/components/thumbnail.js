@@ -3,28 +3,28 @@
  *
  * @module Thumbnail
  */
-let React = require('react');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
 
-let Thumbnail = createReactClass({
-  componentDidMount: function() {
+const Thumbnail = createReactClass({
+  componentDidMount() {
     this.props.onRef(this);
   },
 
-  shouldComponentUpdate: function(nextProps) {
-    let updateHoverPositon = nextProps.hoverPosition !== this.props.hoverPosition;
-    let updateFullscreen = nextProps.fullscreen !== this.props.fullscreen && this.props.videoVr;
-    let updateVrViewDirection = nextProps.vrViewingDirection !== this.props.vrViewingDirection;
-    let updateImageWidth = nextProps.imageWidth !== this.props.imageWidth;
+  shouldComponentUpdate(nextProps) {
+    const updateHoverPositon = nextProps.hoverPosition !== this.props.hoverPosition;
+    const updateFullscreen = nextProps.fullscreen !== this.props.fullscreen && this.props.videoVr;
+    const updateVrViewDirection = nextProps.vrViewingDirection !== this.props.vrViewingDirection;
+    const updateImageWidth = nextProps.imageWidth !== this.props.imageWidth;
     return updateHoverPositon || updateFullscreen || updateVrViewDirection || updateImageWidth;
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.props.onRef(undefined);
   },
 
-  render: function() {
+  render() {
     let thumbnailClassName = 'oo-thumbnail';
 
     if (this.props.videoVr) {

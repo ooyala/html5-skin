@@ -1,37 +1,37 @@
 /** ******************************************************************
   AD OVERLAY
-*********************************************************************/
-let React = require('react');
+******************************************************************** */
+const React = require('react');
 
-let ClassNames = require('classnames');
+const ClassNames = require('classnames');
 
-let CloseButton = require('./closeButton');
+const createReactClass = require('create-react-class');
+const CloseButton = require('./closeButton');
 
-let CONSTANTS = require('../constants/constants');
-let createReactClass = require('create-react-class');
+const CONSTANTS = require('../constants/constants');
 
-let AdOverlay = createReactClass({
-  closeOverlay: function() {
+const AdOverlay = createReactClass({
+  closeOverlay() {
     this.props.controller.closeNonlinearAd();
     this.props.controller.onSkipAdClicked();
   },
 
-  handleOverlayClick: function() {
+  handleOverlayClick() {
     this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.OVERLAY);
   },
 
-  overlayLoaded: function() {
+  overlayLoaded() {
     if (this.props.overlay && this.props.showOverlay) {
       this.props.controller.onAdOverlayLoaded();
     }
   },
 
-  render: function() {
-    let adOverlayClass = ClassNames({
+  render() {
+    const adOverlayClass = ClassNames({
       'oo-ad-overlay': true,
       'oo-hidden': !this.props.overlay && this.props.showOverlay,
     });
-    let closeButtonClass = ClassNames({
+    const closeButtonClass = ClassNames({
       'oo-ad-overlay-close-button': true,
       'oo-hidden': !this.props.showOverlayCloseButton,
     });
@@ -45,7 +45,7 @@ let AdOverlay = createReactClass({
           {...this.props}
           cssClass={closeButtonClass}
           closeAction={this.closeOverlay}
-          className={'oo-ad-overlay-close-button-icon'}
+          className="oo-ad-overlay-close-button-icon"
           ref="adOverlayCloseButton"
         />
       </div>

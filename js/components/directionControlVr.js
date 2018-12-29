@@ -12,7 +12,7 @@ class DirectionControlVr extends React.Component {
       isTouched: false,
     };
     this.rotateVrVideo = this.rotateVrVideo.bind(this);
-  };
+  }
 
   /**
    * Rotate the image in the specified direction or stop the rotation if the user has stopped clicking on the item
@@ -27,14 +27,14 @@ class DirectionControlVr extends React.Component {
         isTouched: isRotated,
       });
     }
-  };
+  }
 
   render() {
     const baseDirectionClass = 'oo-vr-icon--move';
-    const directionClass = baseDirectionClass + '--' + this.props.dir;
+    const directionClass = `${baseDirectionClass}--${this.props.dir}`;
     let touchedDirectionClass = '';
     if (this.state.isTouched) {
-      touchedDirectionClass = directionClass + '--touched';
+      touchedDirectionClass = `${directionClass}--touched`;
     }
     return (
       <div
@@ -53,7 +53,7 @@ class DirectionControlVr extends React.Component {
       />
     );
   }
-};
+}
 
 DirectionControlVr.propTypes = {
   handleVrViewControlsClick: PropTypes.func,

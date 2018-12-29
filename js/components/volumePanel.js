@@ -16,8 +16,8 @@ class VolumePanel extends React.Component {
       <div className="oo-absolute-centered oo-volume-panel">
         <ControlBar
           {...this.props}
-          hideScrubberBar={true}
-          controlBarVisible={true}
+          hideScrubberBar
+          controlBarVisible
           playerState={this.props.playerState}
           isLiveStream={this.props.isLiveStream}
           a11yControls={this.props.a11yControls}
@@ -28,7 +28,9 @@ class VolumePanel extends React.Component {
           buffered={this.props.buffered}
           responsiveView={this.props.responsiveId}
           componentWidth={this.props.componentWidth}
-          controlBarItems={[{ 'name': 'volume', 'location': 'controlBar', 'whenDoesNotFit': 'keep', 'minWidth': 200 }]}
+          controlBarItems={[{
+            name: 'volume', location: 'controlBar', whenDoesNotFit: 'keep', minWidth: 200,
+          }]}
         />
       </div>
     );

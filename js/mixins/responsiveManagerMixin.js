@@ -4,7 +4,7 @@ import debounce from 'lodash.debounce';
 import Utils from '../components/utils';
 
 const ResponsiveManagerMixin = {
-  getInitialState: function() {
+  getInitialState() {
     return {
       componentWidth: null,
       componentHeight: null,
@@ -13,18 +13,19 @@ const ResponsiveManagerMixin = {
     };
   },
 
-  componentDidMount: function() {
-    window.addEventListener('resize', debounce(this.onResize, 150));
-    window.addEventListener('webkitfullscreenchange', debounce(this.onResize, 150));
+  componentDidMount() {
+    const debounceTimeout = 150;
+    window.addEventListener('resize', debounce(this.onResize, debounceTimeout));
+    window.addEventListener('webkitfullscreenchange', debounce(this.onResize, debounceTimeout));
     this.generateResponsiveData();
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('webkitfullscreenchange', this.onResize);
   },
 
-  onResize: function() {
+  onResize() {
     this.generateResponsiveData();
   },
 
@@ -34,7 +35,7 @@ const ResponsiveManagerMixin = {
    * @returns {number} - default height of the element
    * If we do not have width of mainVideoContainer it returns 0
    */
-  getDefaultElementHeight: function(componentWidth) {
+  getDefaultElementHeight(componentWidth) {
     const ratioCoef = 0.5625; // y - coefficient for default aspect ratio 16:9
     let componentHeight = 0;
     if (componentWidth && Utils.ensureNumber(componentWidth)) {
@@ -43,7 +44,7 @@ const ResponsiveManagerMixin = {
     return componentHeight;
   },
 
-  generateResponsiveData: function() {
+  generateResponsiveData() {
     let componentWidth = 0;
     let componentHeight = 0;
     const dom = ReactDOM.findDOMNode(this);
@@ -61,7 +62,7 @@ const ResponsiveManagerMixin = {
       }
     }
     const breakpoints = this.props.skinConfig.responsive.breakpoints;
-    let breakpointData = {
+    const breakpointData = {
       classes: {},
       ids: {},
     };
@@ -78,18 +79,13 @@ const ResponsiveManagerMixin = {
         if (breakpoints.hasOwnProperty(key)) {
           // min width only, 1st breakpoint
           if (breakpoints[key].minWidth && !breakpoints[key].maxWidth) {
-            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-              componentWidth >= breakpoints[key].minWidth;
-          }
+            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = componentWidth >= breakpoints[key].minWidth;
           // min and max, middle breakpoints
-          else if (breakpoints[key].minWidth && breakpoints[key].maxWidth) {
-            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-              componentWidth >= breakpoints[key].minWidth && componentWidth <= breakpoints[key].maxWidth;
-          }
+          } else if (breakpoints[key].minWidth && breakpoints[key].maxWidth) {
+            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = componentWidth >= breakpoints[key].minWidth && componentWidth <= breakpoints[key].maxWidth;
           // max width only, last breakpoint
-          else if (breakpoints[key].maxWidth && !breakpoints[key].minWidth) {
-            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] =
-              componentWidth <= breakpoints[key].maxWidth;
+          } else if (breakpoints[key].maxWidth && !breakpoints[key].minWidth) {
+            breakpointData.classes[breakpoints[key].name] = breakpointData.ids[breakpoints[key].id] = componentWidth <= breakpoints[key].maxWidth;
           }
         }
       }
@@ -97,8 +93,8 @@ const ResponsiveManagerMixin = {
 
     // set responsive data to state
     this.setState({
-      componentWidth: componentWidth,
-      componentHeight: componentHeight,
+      componentWidth,
+      componentHeight,
       responsiveClass: ClassNames(breakpointData.classes),
       responsiveId: ClassNames(breakpointData.ids),
     });

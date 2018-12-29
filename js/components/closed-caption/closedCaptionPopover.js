@@ -1,20 +1,20 @@
-let React = require('react');
+const React = require('react');
 
-let CONSTANTS = require('../../constants/constants');
+const createReactClass = require('create-react-class');
+const CONSTANTS = require('../../constants/constants');
 
-let Utils = require('../utils');
+const Utils = require('../utils');
 
-let AccessibleMenu = require('../higher-order/accessibleMenu');
+const AccessibleMenu = require('../higher-order/accessibleMenu');
 
-let AccessibleButton = require('../accessibleButton');
+const AccessibleButton = require('../accessibleButton');
 
-let OnOffSwitch = require('./onOffSwitch');
+const OnOffSwitch = require('./onOffSwitch');
 
-let CloseButton = require('../closeButton');
-let createReactClass = require('create-react-class');
+const CloseButton = require('../closeButton');
 
 let ClosedCaptionPopover = createReactClass({
-  handleMoreCaptions: function() {
+  handleMoreCaptions() {
     if (this.moreOptionsBtn) {
       // When the Closed Captions screen is closed it will go straight to the control bar without
       // showing this popover. Make sure CC button gets focus when that happens if it was originally
@@ -29,14 +29,14 @@ let ClosedCaptionPopover = createReactClass({
     this.handleClose();
   },
 
-  handleClose: function() {
+  handleClose() {
     this.props.togglePopoverAction({
       restoreToggleButtonFocus: true,
     });
   },
 
-  render: function() {
-    let captionBtnText = Utils.getLocalizedString(
+  render() {
+    const captionBtnText = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.CC_OPTIONS,
       this.props.localizableStrings

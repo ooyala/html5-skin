@@ -1,8 +1,8 @@
 const React = require('react');
-const AccessibleButton = require('./accessibleButton');
-const Icon = require('./icon');
 const classNames = require('classnames');
 const PropTypes = require('prop-types');
+const AccessibleButton = require('./accessibleButton');
+const Icon = require('./icon');
 const CONSTANTS = require('../constants/constants');
 
 /**
@@ -34,7 +34,8 @@ const MenuPanelItem = ({
   return (
     <li
       className={itemClassName}
-      role={CONSTANTS.ARIA_ROLES.PRESENTATION}>
+      role={CONSTANTS.ARIA_ROLES.PRESENTATION}
+    >
       <AccessibleButton
         className={itemButtonClassName}
         style={buttonStyle}
@@ -42,12 +43,16 @@ const MenuPanelItem = ({
         role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
         ariaLabel={ariaLabel}
         ariaChecked={isSelected}
-        onClick={() => onClick(itemValue)}>
+        onClick={() => onClick(itemValue)}
+      >
 
-        {isSelected &&
+        {isSelected
+          && (
           <Icon
             skinConfig={skinConfig}
-            icon="selected" />
+            icon="selected"
+          />
+          )
         }
 
         <span className="oo-menu-btn-label">{itemLabel}</span>

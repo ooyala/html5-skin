@@ -1,6 +1,6 @@
 const React = require('react');
-const MenuPanel = require('./menuPanel');
 const PropTypes = require('prop-types');
+const MenuPanel = require('./menuPanel');
 const Utils = require('./utils');
 const CONSTANTS = require('../constants/constants');
 const MACROS = require('../constants/macros');
@@ -41,9 +41,7 @@ class PlaybackSpeedPanel extends React.Component {
         CONSTANTS.PLAYBACK_SPEED.DEFAULT_OPTIONS
       );
       // Constrain to min and max values and ensure at most 2 decimals
-      this.playbackSpeedOptions = this.playbackSpeedOptions.map(option =>
-        Utils.sanitizePlaybackSpeed(option)
-      );
+      this.playbackSpeedOptions = this.playbackSpeedOptions.map(option => Utils.sanitizePlaybackSpeed(option));
       // Remove duplicates
       this.playbackSpeedOptions = Utils.dedupeArray(this.playbackSpeedOptions);
       // Sort in ascending order
@@ -62,7 +60,7 @@ class PlaybackSpeedPanel extends React.Component {
     const { language, localizableStrings } = this.props;
     const playbackSpeedOptions = this.getPlaybackSpeedOptions();
 
-    const menuItems = playbackSpeedOptions.map(option => {
+    const menuItems = playbackSpeedOptions.map((option) => {
       let itemLabel;
       let ariaLabel;
 
@@ -81,7 +79,7 @@ class PlaybackSpeedPanel extends React.Component {
       const menuItem = {
         value: option,
         label: itemLabel,
-        ariaLabel: ariaLabel,
+        ariaLabel,
       };
       return menuItem;
     });
@@ -119,10 +117,11 @@ class PlaybackSpeedPanel extends React.Component {
         skinConfig={skinConfig}
         menuItems={menuItems}
         onMenuItemClick={this.onMenuItemClick}
-        onClose={onClose} />
+        onClose={onClose}
+      />
     );
   }
-};
+}
 
 PlaybackSpeedPanel.propTypes = {
   isPopover: PropTypes.bool,

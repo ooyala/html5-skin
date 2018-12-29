@@ -18,7 +18,11 @@ class CastPanel extends React.Component {
 
     return (
       <div className={castPanelClass}>
-        <p>{connectedText} <span>{this.props.device}</span></p>
+        <p>
+          {connectedText}
+          {' '}
+          <span>{this.props.device}</span>
+        </p>
       </div>
     );
   }
@@ -33,7 +37,7 @@ CastPanel.propTypes = {
 CastPanel.defaultProps = {
   device: '',
   language: 'en',
-  localizableStrings: { 'en': {} },
+  localizableStrings: { en: {} },
 };
 
 module.exports = CastPanel;

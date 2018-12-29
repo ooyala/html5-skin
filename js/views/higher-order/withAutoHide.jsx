@@ -1,13 +1,14 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const CONSTANTS = require('../../constants/constants');
+import React from 'react';
+import CONSTANTS from '../../constants/constants';
+/* eslint-disable react/destructuring-assignment */
+/* global document */
 
 /**
  * Wraps a component within a div that handles auto-hide functionality based on mouse, touch, or keyboard usage.
- * @param ComposedComponent The component to wrap and add auto-hide functionality to
+ * @param {Object} ComposedComponent The component to wrap and add auto-hide functionality to
  * @returns {class} The enhanced component with auto-hide functionality
  */
-const withAutoHide = function(ComposedComponent) {
+function withAutoHide(ComposedComponent) {
   return class extends React.Component {
     constructor(props) {
       super(props);
@@ -29,8 +30,38 @@ const withAutoHide = function(ComposedComponent) {
       document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
       document.addEventListener('touchmove', this.handlePlayerMouseMove, false);
       // for mobile or desktop fullscreen, hide control bar after 3 seconds
-      if (this.props.controller.state.isMobile || this.props.fullscreen || this.props.controller.state.browserSupportsTouch) {
+      if (this.props.controller.state.isMobile
+        || this.props.fullscreen
+        || this.props.controller.state.browserSupportsTouch) {
         this.startHideControlBarTimer();
+      }
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if (nextProps.componentWidth !== this.props.componentWidth) {
+        this.handleResize();
+      }
+    }
+
+    /**
+     * Launch show/hide controlBar logic on fullscreen or chromecast logic
+     * @param {Object} nextProps - next props object
+     */
+    componentWillUpdate(nextProps) {
+      if (!nextProps) {
+        return;
+      }
+      if (!this.props.fullscreen && nextProps.fullscreen) {
+        this.startHideControlBarTimer();
+      }
+      if (this.props.fullscreen && !nextProps.fullscreen && this.props.controller.state.isMobile) {
+        this.props.controller.showControlBar();
+        this.startHideControlBarTimer();
+      }
+
+      if (nextProps.controller.state.cast.connected) {
+        this.props.controller.showControlBar();
+        this.cancelHideControlBarTimer();
       }
     }
 
@@ -40,35 +71,11 @@ const withAutoHide = function(ComposedComponent) {
       this.cancelHideControlBarTimer();
     }
 
-    componentWillReceiveProps(nextProps) {
-      if (nextProps.componentWidth !== this.props.componentWidth) {
-        this.handleResize(nextProps);
-      }
-    }
-
-    componentWillUpdate(nextProps) {
-      if (nextProps) {
-        if (!this.props.fullscreen && nextProps.fullscreen) {
-          this.startHideControlBarTimer();
-        }
-        if (this.props.fullscreen && !nextProps.fullscreen && this.props.controller.state.isMobile) {
-          this.props.controller.showControlBar();
-          this.startHideControlBarTimer();
-        }
-
-        if (nextProps.controller.state.cast.connected) {
-          this.props.controller.showControlBar();
-          this.cancelHideControlBarTimer();
-        }
-      }
-    }
-
     /**
      * Handles the touchEnd event on the Auto Hide Screen.
-     * @private
      * @param {Event} event The touchEnd event object
      */
-    handleTouchEnd(event) {
+    handleTouchEnd = (event) => {
       if (!this.props.controller.state.controlBarVisible) {
         this.showControlBar(event);
         // TODO: Address an existing issue where we don't cancel the timer upon touching control buttons
@@ -78,9 +85,8 @@ const withAutoHide = function(ComposedComponent) {
 
     /**
      * Handles the mouseMove and touchMove events.
-     * @private
      */
-    handlePlayerMouseMove() {
+    handlePlayerMouseMove = () => {
       if (!this.props.controller.state.isMobile && this.props.fullscreen) {
         this.showControlBar();
         this.startHideControlBarTimer();
@@ -89,44 +95,38 @@ const withAutoHide = function(ComposedComponent) {
 
     /**
      * Handles when the player resizes.
-     * @private
      */
-    handleResize() {
+    handleResize = () => {
       this.startHideControlBarTimer();
     }
 
     /**
-     * Handles when a keyboard key is pressed.
-     * @private
-     * @param event The keyDown event object
+     * Show control bar when any of the following keys are pressed:
+     * Tab: Focus on next control
+     * Space/Enter: Press active control
+     * Arrow keys: Either seek forward/back, volume up/down or interact with focused slider
+     * @param {Object} event The keyDown event object
      */
-    handleKeyDown(event) {
-      // Show control bar when any of the following keys are pressed:
-      // - Tab: Focus on next control
-      // - Space/Enter: Press active control
-      // - Arrow keys: Either seek forward/back, volume up/down or interact with focused slider
-      switch (event.key) {
-        case CONSTANTS.KEY_VALUES.TAB:
-        case CONSTANTS.KEY_VALUES.SPACE:
-        case CONSTANTS.KEY_VALUES.ENTER:
-        case CONSTANTS.KEY_VALUES.ARROW_UP:
-        case CONSTANTS.KEY_VALUES.ARROW_RIGHT:
-        case CONSTANTS.KEY_VALUES.ARROW_DOWN:
-        case CONSTANTS.KEY_VALUES.ARROW_LEFT:
-          this.showControlBar();
-          this.startHideControlBarTimer();
-          break;
-        default:
-          break;
+    handleKeyDown = (event) => {
+      const keysForAction = [
+        CONSTANTS.KEY_VALUES.TAB,
+        CONSTANTS.KEY_VALUES.SPACE,
+        CONSTANTS.KEY_VALUES.ENTER,
+        CONSTANTS.KEY_VALUES.ARROW_UP,
+        CONSTANTS.KEY_VALUES.ARROW_RIGHT,
+        CONSTANTS.KEY_VALUES.ARROW_DOWN,
+        CONSTANTS.KEY_VALUES.ARROW_LEFT,
+      ];
+      if (keysForAction.indexOf(event.key) !== -1) {
+        this.showControlBar();
+        this.startHideControlBarTimer();
       }
     }
 
     /**
      * Handles the mouseout event.
-     * @private
-     * @param event The mouseout event object
      */
-    handleMouseOut(event) {
+    handleMouseOut = () => {
       if (!this.props.controller.state.isMobile) {
         this.hideControlBar();
       }
@@ -137,7 +137,7 @@ const withAutoHide = function(ComposedComponent) {
      * @private
      * @param {Event} event The mouseover event object
      */
-    handleMouseOver(event) {
+    handleMouseOver = () => {
       this.showControlBar();
     }
 
@@ -145,9 +145,9 @@ const withAutoHide = function(ComposedComponent) {
      * Shows the control bar if not mobile or if mobile and was triggered
      * by a touchend event.
      * @public
-     * @param event The event object from the event that triggered this
+     * @param {Object} event The event object from the event that triggered this
      */
-    showControlBar(event) {
+    showControlBar = (event) => {
       if (!this.props.controller.state.isMobile || (event && event.type === 'touchend')) {
         this.props.controller.showControlBar();
         this.autoHideRef.current.style.cursor = 'auto';
@@ -158,7 +158,7 @@ const withAutoHide = function(ComposedComponent) {
      * Hides the control bar if the auto hide configuration is enabled.
      * @public
      */
-    hideControlBar() {
+    hideControlBar = () => {
       if (this.props.skinConfig.controlBar.autoHide === true) {
         this.props.controller.hideControlBar();
         this.autoHideRef.current.style.cursor = 'none';
@@ -169,7 +169,7 @@ const withAutoHide = function(ComposedComponent) {
      * Starts the timer to hide the control bar.
      * @public
      */
-    startHideControlBarTimer() {
+    startHideControlBarTimer = () => {
       this.props.controller.startHideControlBarTimer();
     }
 
@@ -177,13 +177,13 @@ const withAutoHide = function(ComposedComponent) {
      * Cancels the timer that hides the control bar.
      * @public
      */
-    cancelHideControlBarTimer() {
+    cancelHideControlBarTimer = () => {
       this.props.controller.cancelTimer();
     }
 
     render() {
       return (
-        <div
+        <div // eslint-disable-line
           ref={this.autoHideRef}
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseOut}
@@ -201,6 +201,6 @@ const withAutoHide = function(ComposedComponent) {
       );
     }
   };
-};
+}
 
 module.exports = withAutoHide;

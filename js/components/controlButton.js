@@ -1,10 +1,10 @@
 const React = require('react');
 const classNames = require('classnames');
+const PropTypes = require('prop-types');
 const AccessibleButton = require('./accessibleButton');
 const Icon = require('./icon');
 const Tooltip = require('./tooltip');
 const Utils = require('./utils');
-const PropTypes = require('prop-types');
 const CONSTANTS = require('../constants/constants');
 
 /**
@@ -23,11 +23,12 @@ class NonAccessibleButton extends React.Component {
         aria-hidden={this.props.ariaHidden}
         onMouseEnter={this.props.onMouseEnter}
         onMouseLeave={this.props.onMouseLeave}
-        onClick={this.props.onClick}>
+        onClick={this.props.onClick}
+      >
         {this.props.children}
       </a>
     );
-  };
+  }
 }
 
 /**
@@ -101,8 +102,8 @@ class ControlButton extends React.Component {
    */
   highlight(event) {
     if (
-      event.currentTarget.disabled ||
-      this.props.controller.state.isMobile
+      event.currentTarget.disabled
+      || this.props.controller.state.isMobile
     ) {
       return;
     }
@@ -211,9 +212,8 @@ class ControlButton extends React.Component {
   getTooltipAlignment(key) {
     if (typeof this.props.getTooltipAlignment === 'function') {
       return this.props.getTooltipAlignment(key);
-    } else {
-      return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
     }
+    return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
   }
 
   /**
@@ -262,18 +262,23 @@ class ControlButton extends React.Component {
         ref={this.storeRef}
         className={className}
         onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}>
+        onMouseLeave={this.onMouseLeave}
+      >
 
-        {this.props.icon &&
+        {this.props.icon
+          && (
           <Icon
             icon={this.props.icon}
             skinConfig={this.props.skinConfig}
-            style={iconStyles} />
+            style={iconStyles}
+          />
+          )
         }
 
         {this.props.children}
 
-        {this.props.tooltip &&
+        {this.props.tooltip
+          && (
           <Tooltip
             enabled={areTooltipsEnabled}
             text={this.props.tooltip}
@@ -282,7 +287,9 @@ class ControlButton extends React.Component {
             bottom={responsiveUiMultiplier * tooltipVerticalOffset}
             language={this.props.language}
             localizableStrings={this.props.localizableStrings}
-            getAlignment={this.getTooltipAlignment}/>
+            getAlignment={this.getTooltipAlignment}
+          />
+          )
         }
 
       </Component>

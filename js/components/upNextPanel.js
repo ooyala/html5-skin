@@ -1,32 +1,32 @@
 /** ******************************************************************
   UP NEXT PANEL
-*********************************************************************/
+******************************************************************** */
 /**
  * The screen used while the video is playing.
  *
  * @class UpNextPanel
  * @constructor
  */
-let React = require('react');
+const React = require('react');
 
-let CONSTANTS = require('./../constants/constants');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('./../constants/constants');
 
-let Utils = require('./utils');
+const Utils = require('./utils');
 
-let CloseButton = require('./closeButton');
+const CloseButton = require('./closeButton');
 
-let CountDownClock = require('./countDownClock');
+const CountDownClock = require('./countDownClock');
 
-let Icon = require('../components/icon');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const Icon = require('../components/icon');
 
-let UpNextPanel = createReactClass({
-  closeUpNextPanel: function() {
+const UpNextPanel = createReactClass({
+  closeUpNextPanel() {
     this.props.controller.upNextDismissButtonClicked();
   },
 
-  handleStartUpNextClick: function(event) {
+  handleStartUpNextClick(event) {
     event.preventDefault();
     // Use the same way as sending out the click event on discovery content
     const asset = this.props.upNextInfo.upNextData;
@@ -43,15 +43,15 @@ let UpNextPanel = createReactClass({
     this.props.controller.sendDiscoveryClickEvent(eventData, false);
   },
 
-  render: function() {
-    let upNextString = Utils.getLocalizedString(
+  render() {
+    const upNextString = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.UP_NEXT,
       this.props.localizableStrings
     );
-    let thumbnailStyle = {};
+    const thumbnailStyle = {};
     if (Utils.isValidString(this.props.upNextInfo.upNextData.preview_image_url)) {
-      thumbnailStyle.backgroundImage = 'url(\'' + this.props.upNextInfo.upNextData.preview_image_url + '\')';
+      thumbnailStyle.backgroundImage = `url('${this.props.upNextInfo.upNextData.preview_image_url}')`;
     }
 
     return (
@@ -69,7 +69,9 @@ let UpNextPanel = createReactClass({
             />
 
             <div className="oo-up-next-title-text oo-text-truncate">
-              {upNextString}:{' '}
+              {upNextString}
+:
+              {' '}
               <span dangerouslySetInnerHTML={Utils.createMarkup(this.props.upNextInfo.upNextData.name)} />
             </div>
           </div>
@@ -116,8 +118,8 @@ UpNextPanel.defaultProps = {
     upNextData: {},
   },
   controller: {
-    upNextDismissButtonClicked: function() {},
-    sendDiscoveryClickEvent: function(a, b) {},
+    upNextDismissButtonClicked() {},
+    sendDiscoveryClickEvent(a, b) {},
   },
 };
 

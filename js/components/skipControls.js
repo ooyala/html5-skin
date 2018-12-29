@@ -1,11 +1,11 @@
 const React = require('react');
 const classNames = require('classnames');
+const PropTypes = require('prop-types');
 const ControlButton = require('./controlButton');
 const HoldControlButton = require('./holdControlButton');
 const Icon = require('./icon');
 const Utils = require('./utils');
 const preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
-const PropTypes = require('prop-types');
 const CONSTANTS = require('../constants/constants');
 const MACROS = require('../constants/macros');
 
@@ -170,8 +170,8 @@ class SkipControls extends React.Component {
         icon="previous"
         ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
         disabled={!this.props.config.hasPreviousVideos}
-        onClick={this.onPreviousVideo}>
-      </ControlButton>
+        onClick={this.onPreviousVideo}
+      />
     );
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD] = (
@@ -184,7 +184,8 @@ class SkipControls extends React.Component {
         icon="replay"
         ariaLabel={skipBackwardAriaLabel}
         disabled={!duration}
-        onClick={this.onSkipBackward}>
+        onClick={this.onSkipBackward}
+      >
         <span className="oo-btn-counter">{skipTimes.backward}</span>
       </HoldControlButton>
     );
@@ -199,7 +200,8 @@ class SkipControls extends React.Component {
         icon="forward"
         ariaLabel={skipForwardAriaLabel}
         disabled={this.isAtVideoEdge() || !duration}
-        onClick={this.onSkipForward}>
+        onClick={this.onSkipForward}
+      >
         <span className="oo-btn-counter">{skipTimes.forward}</span>
       </HoldControlButton>
     );
@@ -214,8 +216,8 @@ class SkipControls extends React.Component {
         icon="next"
         ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
         disabled={!this.props.config.hasNextVideos}
-        onClick={this.onNextVideo}>
-      </ControlButton>
+        onClick={this.onNextVideo}
+      />
     );
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PLAY_PAUSE] = (
@@ -226,8 +228,8 @@ class SkipControls extends React.Component {
         focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAY_PAUSE}
         ariaLabel={playButtonDetails.ariaLabel}
         icon={playButtonDetails.icon}
-        onClick={this.onPlayPauseClick}>
-      </ControlButton>
+        onClick={this.onPlayPauseClick}
+      />
     );
 
     return buttonTemplate;
@@ -247,12 +249,12 @@ class SkipControls extends React.Component {
     const duration = Utils.getPropertyValue(controller, 'state.duration');
 
     const isPrevNextButton = (
-      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO ||
-      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO
+      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO
+      || buttonId === CONSTANTS.SKIP_CTRLS_KEYS.NEXT_VIDEO
     );
     const isSkipButton = (
-      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD ||
-      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
+      buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_BACKWARD
+      || buttonId === CONSTANTS.SKIP_CTRLS_KEYS.SKIP_FORWARD
     );
 
     if (
@@ -262,9 +264,9 @@ class SkipControls extends React.Component {
     }
 
     const isDisabled = !this.props.forceShowButtons && (
-      (isSkipButton && !duration) ||
-      (isPrevNextButton && isSingleVideo) ||
-      !(buttonConfig && buttonConfig.enabled)
+      (isSkipButton && !duration)
+      || (isPrevNextButton && isSingleVideo)
+      || !(buttonConfig && buttonConfig.enabled)
     );
     return !isDisabled;
   }
@@ -285,7 +287,7 @@ class SkipControls extends React.Component {
         {}
       );
     // Find the ids and indexes of all enabled buttons
-    for (let buttonId in buttonConfig) {
+    for (const buttonId in buttonConfig) {
       const button = buttonConfig[buttonId];
 
       if (this.shouldDisplayButton(buttonId, button)) {
@@ -296,9 +298,7 @@ class SkipControls extends React.Component {
       }
     }
     // Sort by index in ascending order
-    buttons.sort(function(a, b) {
-      return a.index - b.index;
-    });
+    buttons.sort((a, b) => a.index - b.index);
     return buttons;
   }
 
@@ -321,10 +321,9 @@ class SkipControls extends React.Component {
         className={className}
         onMouseEnter={this.onMouseEnter}
         onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}>
-        {buttons.map(function(button) {
-          return buttonTemplate[button.id];
-        })}
+        onBlur={this.props.onBlur}
+      >
+        {buttons.map(button => buttonTemplate[button.id])}
       </div>
     );
   }

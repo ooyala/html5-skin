@@ -1,116 +1,128 @@
-/** ******************************************************************
-  END SCREEN
-*********************************************************************/
-let React = require('react');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ClassNames from 'classnames';
+import ControlBar from '../components/controlBar';
+import Watermark from '../components/watermark';
+import Icon from '../components/icon';
+import CastPanel from '../components/castPanel';
+import CONSTANTS from '../constants/constants';
+import Utils from '../components/utils';
+/* eslint-disable react/destructuring-assignment */
 
-let ReactDOM = require('react-dom');
-
-let ClassNames = require('classnames');
-
-let CONSTANTS = require('../constants/constants');
-
-let ControlBar = require('../components/controlBar');
-
-let Watermark = require('../components/watermark');
-
-let Icon = require('../components/icon');
-
-let ResizeMixin = require('../mixins/resizeMixin');
-
-let Utils = require('../components/utils');
-let createReactClass = require('create-react-class');
-
-const CastPanel = require('../components/castPanel');
-
-let EndScreen = createReactClass({
-  mixins: [ResizeMixin],
-
-  getInitialState: function() {
-    return {
+/**
+ * The screen to be displayed when asset has finished playing
+ */
+class EndScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       controlBarVisible: true,
       descriptionText: this.props.contentTree.description,
     };
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.handleResize();
-  },
+  }
 
-  handleResize: function() {
-    if (ReactDOM.findDOMNode(this.refs.description)) {
+  /**
+   * Launch handle resize if width changed
+   * @param {Object} nextProps - next props object
+   */
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.componentWidth !== this.props.componentWidth) {
+      this.handleResize();
+    }
+  }
+
+  /**
+   * Proceed the view after the width has been changed
+   */
+  handleResize = () => {
+    if (ReactDOM.findDOMNode(this.refs.description)) { // eslint-disable-line
       this.setState({
         descriptionText: Utils.truncateTextToWidth(
-          ReactDOM.findDOMNode(this.refs.description),
+          ReactDOM.findDOMNode(this.refs.description), // eslint-disable-line
           this.props.contentTree.description
         ),
       });
     }
-  },
+  }
 
-  handleClick: function(event) {
-    // pause or play the video if the skin is clicked
+  /**
+   * Зause or play the video if the skin is clicked
+   * @param {Object} event - object
+   */
+  handleClick = (event) => {
     event.preventDefault();
     this.props.controller.state.accessibilityControlsEnabled = true;
     this.props.controller.togglePlayPause();
-  },
+  }
 
-  render: function() {
-    let actionIconStyle = {
+  render() {
+    const actionIconStyle = {
       color: this.props.skinConfig.endScreen.replayIconStyle.color,
       opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity,
     };
 
     if (this.props.controller.state.cast.connected) {
-      actionIconStyle['fontSize'] = '125px';
+      actionIconStyle.fontSize = '125px';
     }
 
-    let titleStyle = {
+    const titleStyle = {
       color: this.props.skinConfig.startScreen.titleFont.color,
     };
-    let descriptionStyle = {
+    const descriptionStyle = {
       color: this.props.skinConfig.startScreen.descriptionFont.color,
     };
 
-    let actionIconClass = ClassNames({
+    const actionIconClass = ClassNames({
       'oo-action-icon': true,
       'oo-hidden': !this.props.skinConfig.endScreen.showReplayButton,
     });
 
-    let infoPanelPosition = Utils.getPropertyValue(this.props.skinConfig, 'endScreen.infoPanelPosition');
-
-    if (infoPanelPosition) {
-      var infoPanelClass = ClassNames({
+    const infoPanelPosition = Utils.getPropertyValue(this.props.skinConfig, 'endScreen.infoPanelPosition');
+    const infoPanelClass = infoPanelPosition
+      ? ClassNames({
         'oo-state-screen-info': true,
         'oo-info-panel-top': infoPanelPosition.toLowerCase().indexOf('top') > -1,
         'oo-info-panel-bottom': infoPanelPosition.toLowerCase().indexOf('bottom') > -1,
         'oo-info-panel-left': infoPanelPosition.toLowerCase().indexOf('left') > -1,
         'oo-info-panel-right': infoPanelPosition.toLowerCase().indexOf('right') > -1,
-      });
-      var titleClass = ClassNames({
+      })
+      : undefined;
+    const titleClass = infoPanelPosition
+      ? ClassNames({
         'oo-state-screen-title': true,
         'oo-text-truncate': true,
         'oo-pull-right': infoPanelPosition.toLowerCase().indexOf('right') > -1,
         'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showTitle'),
-      });
-      var descriptionClass = ClassNames({
+      })
+      : undefined;
+    const descriptionClass = infoPanelPosition
+      ? ClassNames({
         'oo-state-screen-description': true,
         'oo-pull-right': infoPanelPosition.toLowerCase().indexOf('right') > -1,
         'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showDescription'),
-      });
-    }
+      })
+      : undefined;
 
     // Shows the information of the chromecast device just below the replay icon
     const castPanelClass = ClassNames({
       'oo-info-panel-cast-bottom': true,
     });
 
-    let titleMetadata = (
+    const titleMetadata = (
       <div className={titleClass} style={titleStyle}>
         {this.props.contentTree.title}
       </div>
     );
-    let descriptionMetadata = (
-      <div className={descriptionClass} ref="description" style={descriptionStyle}>
+    const descriptionMetadata = (
+      <div
+        className={descriptionClass}
+        ref="description" // eslint-disable-line
+        style={descriptionStyle}
+      >
         {this.state.descriptionText}
       </div>
     );
@@ -119,7 +131,10 @@ let EndScreen = createReactClass({
       <div className="oo-state-screen oo-end-screen">
         <div className="oo-underlay-gradient" />
 
-        <a className="oo-state-screen-selectable" onClick={this.handleClick} />
+        <a // eslint-disable-line
+          className="oo-state-screen-selectable"
+          onClick={this.handleClick}
+        />
 
         <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible} />
 
@@ -140,20 +155,22 @@ let EndScreen = createReactClass({
         </button>
 
         {
-          this.props.controller.state.cast.connected &&
+          this.props.controller.state.cast.connected
+          && (
           <CastPanel
             language={this.props.language}
             localizableStrings={this.props.localizableStrings}
             device={this.props.controller.state.cast.device}
             className={castPanelClass}
           />
+          )
         }
 
         <div className="oo-interactive-container">
           <ControlBar
             {...this.props}
             height={this.props.skinConfig.controlBar.height}
-            animatingControlBar={true}
+            animatingControlBar
             controlBarVisible={this.state.controlBarVisible}
             playerState={this.props.playerState}
             isLiveStream={this.props.isLiveStream}
@@ -161,6 +178,6 @@ let EndScreen = createReactClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 module.exports = EndScreen;

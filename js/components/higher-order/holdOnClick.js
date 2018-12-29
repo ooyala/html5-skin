@@ -91,10 +91,10 @@ const holdOnClick = function(ComposedComponent) {
     holdClick() {
       clearTimeout(this.repeatTimer);
 
-      this.repeatTimer = setTimeout(function() {
+      this.repeatTimer = setTimeout(() => {
         this.props.onClick();
         this.holdClick();
-      }.bind(this), CLICK_HOLD_FREQUENCY);
+      }, CLICK_HOLD_FREQUENCY);
     }
 
     /**
@@ -116,7 +116,8 @@ const holdOnClick = function(ComposedComponent) {
           onKeyDown={this.onKeyDown}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.releaseClick}
-          onMouseLeave={this.releaseClick}>
+          onMouseLeave={this.releaseClick}
+        >
           {this.props.children}
         </ComposedComponent>
       );

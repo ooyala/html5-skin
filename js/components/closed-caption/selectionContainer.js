@@ -1,15 +1,17 @@
-let React = require('react');
-let CONSTANTS = require('../../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../../constants/constants');
 
-let SelectionContainer = createReactClass({
-  render: function() {
+const SelectionContainer = createReactClass({
+  render() {
     return (
-      <div className={'oo-selection-container' + (this.props.className ? ' ' + this.props.className : '')}>
+      <div className={`oo-selection-container${this.props.className ? ` ${this.props.className}` : ''}`}>
         <div className="oo-selection-inner-wrapper">
           <div className="oo-selection-container-title">
-            {this.props.title}:{' '}
+            {this.props.title}
+:
+            {' '}
             <span className="oo-selection-container-selection-text">{this.props.selectionText}</span>
           </div>
           <div

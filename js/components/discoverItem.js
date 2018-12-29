@@ -1,18 +1,18 @@
-let React = require('react');
+const React = require('react');
 
-let Utils = require('./utils');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('./utils');
 
-let DiscoverItem = createReactClass({
-  getInitialState: function() {
+const DiscoverItem = createReactClass({
+  getInitialState() {
     return {
       imgError: false,
     };
   },
 
-  componentWillMount: function() {
-    let img = new Image();
+  componentWillMount() {
+    const img = new Image();
     img.src = this.props.src;
 
     // check if error occurs while loading img
@@ -23,17 +23,17 @@ let DiscoverItem = createReactClass({
     }.bind(this);
   },
 
-  render: function() {
+  render() {
     // handle img error, return null
     if (this.state.imgError) {
       return null;
     }
 
-    let thumbnailStyle = {
-      backgroundImage: 'url(\'' + this.props.src + '\')',
+    const thumbnailStyle = {
+      backgroundImage: `url('${this.props.src}')`,
     };
 
-    let itemTitleStyle = {
+    const itemTitleStyle = {
       color: Utils.getPropertyValue(this.props.skinConfig, 'discoveryScreen.contentTitle.font.color'),
       fontFamily: Utils.getPropertyValue(
         this.props.skinConfig,

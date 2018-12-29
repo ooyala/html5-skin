@@ -1,28 +1,22 @@
-let React = require('react');
-
-let ClassNames = require('classnames');
-
-let Utils = require('../utils');
-
-let AccessibleButton = require('../accessibleButton');
-
-let AccessibleMenu = require('../higher-order/accessibleMenu');
-
-let CONSTANTS = require('../../constants/constants');
-
-let SelectionContainer = require('./selectionContainer');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+import React from 'react';
+import ClassNames from 'classnames';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import Utils from '../utils';
+import AccessibleButton from '../accessibleButton';
+import AccessibleMenu from '../higher-order/accessibleMenu';
+import CONSTANTS from '../../constants/constants';
+import SelectionContainer from './selectionContainer';
 
 let TextEnhancementsTab = createReactClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
       selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement,
       textEnhancements: ['Uniform', 'Depressed', 'Raised', 'Shadow'],
     };
   },
 
-  changeTextEnhancement: function(textEnhancement) {
+  changeTextEnhancement(textEnhancement) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -32,44 +26,44 @@ let TextEnhancementsTab = createReactClass({
     });
   },
 
-  setClassname: function(item, elementType) {
+  setClassname(item, elementType) {
     return ClassNames({
       'oo-text-enhancement-letter': elementType === 'letter',
       'oo-text-enhancement-label': elementType === 'label',
       'oo-text-enhancement-selected':
         this.props.closedCaptionOptions.textEnhancement === item && this.props.closedCaptionOptions.enabled,
       'oo-text-enhancement-label-selected':
-        this.props.closedCaptionOptions.textEnhancement === item &&
-        this.props.closedCaptionOptions.enabled &&
-        elementType === 'label',
+        this.props.closedCaptionOptions.textEnhancement === item
+        && this.props.closedCaptionOptions.enabled
+        && elementType === 'label',
       'oo-disabled': !this.props.closedCaptionOptions.enabled,
     });
   },
 
-  render: function() {
-    let textEnhancementTitle = Utils.getLocalizedString(
+  render() {
+    const textEnhancementTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENT,
       this.props.localizableStrings
     );
-    let textEnhancementSelection = Utils.getLocalizedString(
+    const textEnhancementSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textEnhancement.toUpperCase()],
       this.props.localizableStrings
     );
-    let textEnhancementItems = [];
+    const textEnhancementItems = [];
     for (let i = 0; i < this.state.textEnhancements.length; i++) {
       // accent color
-      let isSelected = this.props.closedCaptionOptions.textEnhancement === this.state.textEnhancements[i];
+      const isSelected = this.props.closedCaptionOptions.textEnhancement === this.state.textEnhancements[i];
       let selectedTextEnhancementStyle = {};
       if (
-        this.props.closedCaptionOptions.enabled &&
-        this.props.skinConfig.general.accentColor &&
-        isSelected
+        this.props.closedCaptionOptions.enabled
+        && this.props.skinConfig.general.accentColor
+        && isSelected
       ) {
         selectedTextEnhancementStyle = { color: this.props.skinConfig.general.accentColor };
       }
-      let itemLabel = Utils.getLocalizedString(
+      const itemLabel = Utils.getLocalizedString(
         this.props.language,
         CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
         this.props.localizableStrings
@@ -86,9 +80,9 @@ let TextEnhancementsTab = createReactClass({
         >
           <span
             className={
-              this.setClassname(this.state.textEnhancements[i], 'letter') +
-              ' oo-text-enhancement-letter-' +
-              this.state.textEnhancements[i]
+              `${this.setClassname(this.state.textEnhancements[i], 'letter')
+              } oo-text-enhancement-letter-${
+                this.state.textEnhancements[i]}`
             }
             style={selectedTextEnhancementStyle}
           >

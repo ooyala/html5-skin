@@ -1,28 +1,28 @@
-let React = require('react');
+const React = require('react');
 
-let ClassNames = require('classnames');
+const ClassNames = require('classnames');
 
-let Utils = require('../utils');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('../utils');
 
-let AccessibleButton = require('../accessibleButton');
+const AccessibleButton = require('../accessibleButton');
 
-let AccessibleMenu = require('../higher-order/accessibleMenu');
+const AccessibleMenu = require('../higher-order/accessibleMenu');
 
-let CONSTANTS = require('../../constants/constants');
+const CONSTANTS = require('../../constants/constants');
 
-let SelectionContainer = require('./selectionContainer');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const SelectionContainer = require('./selectionContainer');
 
 let FontSizeTab = createReactClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
       selectedFontSize: this.props.closedCaptionOptions.fontSize,
       fontSizes: ['Small', 'Medium', 'Large', 'Extra Large'],
     };
   },
 
-  changeFontSize: function(fontSize) {
+  changeFontSize(fontSize) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -32,44 +32,44 @@ let FontSizeTab = createReactClass({
     });
   },
 
-  setClassname: function(item, elementType) {
+  setClassname(item, elementType) {
     return ClassNames({
       'oo-font-size-letter': elementType === 'letter',
       'oo-font-size-label': elementType === 'label',
       'oo-font-size-selected':
         this.props.closedCaptionOptions.fontSize === item && this.props.closedCaptionOptions.enabled,
       'oo-font-size-label-selected':
-        this.props.closedCaptionOptions.fontSize === item &&
-        this.props.closedCaptionOptions.enabled &&
-        elementType === 'label',
+        this.props.closedCaptionOptions.fontSize === item
+        && this.props.closedCaptionOptions.enabled
+        && elementType === 'label',
       'oo-disabled': !this.props.closedCaptionOptions.enabled,
     });
   },
 
-  render: function() {
-    let fontSizeTitle = Utils.getLocalizedString(
+  render() {
+    const fontSizeTitle = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT.FONT_SIZE,
       this.props.localizableStrings
     );
-    let fontSizeSelection = Utils.getLocalizedString(
+    const fontSizeSelection = Utils.getLocalizedString(
       this.props.language,
       CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.fontSize.toUpperCase().replace(' ', '_')],
       this.props.localizableStrings
     );
-    let fontItems = [];
+    const fontItems = [];
     for (let i = 0; i < this.state.fontSizes.length; i++) {
       // accent color
-      let isSelected = this.props.closedCaptionOptions.fontSize === this.state.fontSizes[i];
+      const isSelected = this.props.closedCaptionOptions.fontSize === this.state.fontSizes[i];
       let selectedFontSizeStyle = {};
       if (
-        this.props.closedCaptionOptions.enabled &&
-        this.props.skinConfig.general.accentColor &&
-        isSelected
+        this.props.closedCaptionOptions.enabled
+        && this.props.skinConfig.general.accentColor
+        && isSelected
       ) {
         selectedFontSizeStyle = { color: this.props.skinConfig.general.accentColor };
       }
-      let itemLabel = Utils.getLocalizedString(
+      const itemLabel = Utils.getLocalizedString(
         this.props.language,
         CONSTANTS.SKIN_TEXT[this.state.fontSizes[i].toUpperCase().replace(' ', '_')],
         this.props.localizableStrings
@@ -86,9 +86,9 @@ let FontSizeTab = createReactClass({
         >
           <span
             className={
-              this.setClassname(this.state.fontSizes[i], 'letter') +
-              ' oo-font-size-letter-' +
-              this.state.fontSizes[i].replace(' ', '-')
+              `${this.setClassname(this.state.fontSizes[i], 'letter')
+              } oo-font-size-letter-${
+                this.state.fontSizes[i].replace(' ', '-')}`
             }
             style={selectedFontSizeStyle}
           >

@@ -1,15 +1,14 @@
-let React = require('react');
+const React = require('react');
 
-let DataSelector = require('../dataSelector');
 
-let CONSTANTS = require('../../constants/constants');
+const values = require('lodash.values');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../../constants/constants');
+const DataSelector = require('../dataSelector');
 
-let values = require('lodash.values');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
-
-let LanguageTab = createReactClass({
-  getInitialState: function() {
+const LanguageTab = createReactClass({
+  getInitialState() {
     return {
       selectedLanguage: this.props.closedCaptionOptions.availableLanguages.locale[
         this.props.closedCaptionOptions.language
@@ -17,12 +16,11 @@ let LanguageTab = createReactClass({
     };
   },
 
-  changeLanguage: function(language) {
-    let availableLanguages = this.props.closedCaptionOptions.availableLanguages;
-    let invertedLocale = {};
+  changeLanguage(language) {
+    const availableLanguages = this.props.closedCaptionOptions.availableLanguages;
+    const invertedLocale = {};
     for (let i = 0; i < availableLanguages.languages.length; i++) {
-      invertedLocale[availableLanguages.locale[availableLanguages.languages[i]]] =
-        availableLanguages.languages[i];
+      invertedLocale[availableLanguages.locale[availableLanguages.languages[i]]] = availableLanguages.languages[i];
     }
 
     if (!this.props.closedCaptionOptions.enabled) {
@@ -35,7 +33,7 @@ let LanguageTab = createReactClass({
     });
   },
 
-  render: function() {
+  render() {
     return (
       <div className="oo-language-tab">
         <DataSelector

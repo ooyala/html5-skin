@@ -1,79 +1,79 @@
 // taken from https://github.com/pedronauck/react-simpletabs
 
-let React = require('react');
+const React = require('react');
 
-let AccessibleButton = require('./accessibleButton');
+const ClassNames = require('classnames');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const AccessibleButton = require('./accessibleButton');
 
-let AccessibleMenu = require('./higher-order/accessibleMenu');
+const AccessibleMenu = require('./higher-order/accessibleMenu');
 
-let CONSTANTS = require('../constants/constants');
+const CONSTANTS = require('../constants/constants');
 
-let Utils = require('./utils');
+const Utils = require('./utils');
 
-let ClassNames = require('classnames');
 
-let Icon = require('./icon');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const Icon = require('./icon');
 
 let Tabs = createReactClass({
-  highlight: function(evt) {
+  highlight(evt) {
     if (this.props.skinConfig.general.accentColor) {
       evt.target.style.color = this.props.skinConfig.general.accentColor;
     }
   },
 
-  removeHighlight: function(evt) {
+  removeHighlight(evt) {
     if (this.props.skinConfig.general.accentColor) {
       evt.target.style.color = '';
     }
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       tabActive: this.props.tabActive,
     };
   },
 
-  componentDidMount: function() {
-    let index = this.state.tabActive;
-    let selectedPanel = this.refs['tab-panel'];
-    let selectedMenu = this.refs['tab-menu-' + index];
+  componentDidMount() {
+    const index = this.state.tabActive;
+    const selectedPanel = this.refs['tab-panel'];
+    const selectedMenu = this.refs[`tab-menu-${index}`];
 
     if (this.props.onMount) {
       this.props.onMount(index, selectedPanel, selectedMenu);
     }
   },
 
-  componentWillReceiveProps: function(newProps) {
+  componentWillReceiveProps(newProps) {
     if (newProps.tabActive && newProps.tabActive !== this.props.tabActive) {
       this.setState({ tabActive: newProps.tabActive });
     }
   },
 
-  setActive: function(index, e) {
+  setActive(index, e) {
     e.preventDefault();
 
-    let onAfterChange = this.props.onAfterChange;
-    let onBeforeChange = this.props.onBeforeChange;
-    let selectedPanel = this.refs['tab-panel'];
-    let selectedTabMenu = this.refs['tab-menu-' + index];
+    const onAfterChange = this.props.onAfterChange;
+    const onBeforeChange = this.props.onBeforeChange;
+    const selectedPanel = this.refs['tab-panel'];
+    const selectedTabMenu = this.refs[`tab-menu-${index}`];
 
     if (onBeforeChange) {
-      let cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
+      const cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
       if (cancel === false) {
         return;
       }
     }
 
-    this.setState({ tabActive: index }, function() {
+    this.setState({ tabActive: index }, () => {
       if (onAfterChange) {
         onAfterChange(index, selectedPanel, selectedTabMenu);
       }
     });
   },
 
-  getMenuItems: function() {
+  getMenuItems() {
     if (!this.props.children) {
       throw new Error('Tabs must contain at least one Tabs.Panel');
     }
@@ -82,22 +82,18 @@ let Tabs = createReactClass({
       this.props.children = [this.props.children];
     }
 
-    let menuItems = this.props.children
-      .map(function(panel) {
-        return typeof panel === 'function' ? panel() : panel;
-      })
-      .filter(function(panel) {
-        return panel;
-      })
+    const menuItems = this.props.children
+      .map(panel => (typeof panel === 'function' ? panel() : panel))
+      .filter(panel => panel)
       .map(
-        function(panel, index) {
-          let tabIndex = index + 1;
-          let ref = 'tab-menu-' + tabIndex;
-          let title = panel.props.title;
+        (panel, index) => {
+          const tabIndex = index + 1;
+          const ref = `tab-menu-${tabIndex}`;
+          const title = panel.props.title;
           let activeTabStyle = {};
-          let isSelected = this.state.tabActive === tabIndex;
+          const isSelected = this.state.tabActive === tabIndex;
 
-          let classes = ClassNames('tabs-menu-item', 'tabs-menu-item-' + index, {
+          const classes = ClassNames('tabs-menu-item', `tabs-menu-item-${index}`, {
             'is-active': isSelected,
           });
 
@@ -125,7 +121,7 @@ let Tabs = createReactClass({
               </AccessibleButton>
             </li>
           );
-        }.bind(this)
+        }
       );
 
     return (
@@ -147,9 +143,9 @@ let Tabs = createReactClass({
     );
   },
 
-  getSelectedPanel: function() {
-    let index = this.state.tabActive - 1;
-    let panel = this.props.children[index];
+  getSelectedPanel() {
+    const index = this.state.tabActive - 1;
+    const panel = this.props.children[index];
 
     return (
       <div ref="tab-panel" className="tab-panel" role={CONSTANTS.ARIA_ROLES.TAB_PANEL}>
@@ -158,21 +154,21 @@ let Tabs = createReactClass({
     );
   },
 
-  handleLeftChevronClick: function(event) {
+  handleLeftChevronClick(event) {
     event.preventDefault();
     if (this.tabsNavigationElement) {
       this.tabsNavigationElement.scrollLeft -= 30;
     }
   },
 
-  handleRightChevronClick: function(event) {
+  handleRightChevronClick(event) {
     event.preventDefault();
     if (this.tabsNavigationElement) {
       this.tabsNavigationElement.scrollLeft += 30;
     }
   },
 
-  onMenuItemFocus: function(event) {
+  onMenuItemFocus(event) {
     if (event.currentTarget) {
       this.scrollIntoViewIfNeeded(event.currentTarget);
     }
@@ -184,7 +180,7 @@ let Tabs = createReactClass({
    * @private
    * @param {HTMLElement} menuItem The menu item which we want to make sure is visible.
    */
-  scrollIntoViewIfNeeded: function(menuItem) {
+  scrollIntoViewIfNeeded(menuItem) {
     if (!this.tabsNavigationElement || !menuItem || typeof menuItem.clientWidth === 'undefined') {
       return;
     }
@@ -194,11 +190,11 @@ let Tabs = createReactClass({
     if (menuItem.offsetLeft < this.tabsNavigationElement.scrollLeft) {
       this.tabsNavigationElement.scrollLeft = menuItem.offsetLeft;
     } else {
-      let menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
+      const menuItemRightEdge = menuItem.offsetLeft + menuItem.clientWidth;
       // getBoundingClientRect().width returns the unrounded clientWidth. However, jsdom won't allow us to set clientWidth,
       // but we can mock getBoundingClientRect.
-      let tabsNavigationElementClientWidth = this.tabsNavigationElement.clientWidth || this.tabsNavigationElement.getBoundingClientRect().width;
-      let maxVisiblePoint = this.tabsNavigationElement.scrollLeft + tabsNavigationElementClientWidth;
+      const tabsNavigationElementClientWidth = this.tabsNavigationElement.clientWidth || this.tabsNavigationElement.getBoundingClientRect().width;
+      const maxVisiblePoint = this.tabsNavigationElement.scrollLeft + tabsNavigationElementClientWidth;
       // Element overflows from the currently visible navigation area. Adjust the
       // navigation's scroll value so that the whole menu item fits inside the visible area.
       if (menuItemRightEdge > maxVisiblePoint) {
@@ -207,14 +203,14 @@ let Tabs = createReactClass({
     }
   },
 
-  render: function() {
-    let className = ClassNames('tabs', this.props.className);
+  render() {
+    const className = ClassNames('tabs', this.props.className);
 
-    let leftScrollButton = ClassNames({
+    const leftScrollButton = ClassNames({
       'oo-left-tab-button': true,
       'oo-left-tab-button-active': this.props.showScrollButtons,
     });
-    let rightScrollButton = ClassNames({
+    const rightScrollButton = ClassNames({
       'oo-right-tab-button': true,
       'oo-right-tab-button-active': this.props.showScrollButtons,
     });
@@ -272,7 +268,7 @@ Tabs.Panel = createReactClass({
     children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired,
   },
 
-  render: function() {
+  render() {
     return <span>{this.props.children}</span>;
   },
 });

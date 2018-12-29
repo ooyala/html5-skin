@@ -8,22 +8,22 @@
  * @this component using AnimateMixin
  */
 
-let AnimateMixin = {
-  getInitialState: function() {
+const AnimateMixin = {
+  getInitialState() {
     return {
       animate: false,
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.animateTimer = setTimeout(this.startAnimation, 1);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     clearTimeout(this.animateTimer);
   },
 
-  startAnimation: function() {
+  startAnimation() {
     this.setState({
       animate: true,
     });

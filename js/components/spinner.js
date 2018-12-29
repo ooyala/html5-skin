@@ -1,8 +1,8 @@
-let React = require('react');
-let createReactClass = require('create-react-class');
+const React = require('react');
+const createReactClass = require('create-react-class');
 
-let Spinner = createReactClass({
-  render: function() {
+const Spinner = createReactClass({
+  render() {
     return (
       <div className="oo-spinner-screen">
         <div className="oo-spinner-wrapper">

@@ -7,8 +7,11 @@
  * @this component using ResizeMixin
  */
 
-let ResizeMixin = {
-  componentWillReceiveProps: function(nextProps) {
+const ResizeMixin = {
+  componentWillReceiveProps: (nextProps) => {
+    if (!this) {
+      return;
+    }
     if (nextProps.componentWidth !== this.props.componentWidth) {
       this.handleResize(nextProps);
     }

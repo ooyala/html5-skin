@@ -3,32 +3,32 @@
  *
  * @module VideoQualityPanel
  */
-let React = require('react');
-let MenuPanel = require('./menuPanel');
-let classNames = require('classnames');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
-let Utils = require('../components/utils');
-let CONSTANTS = require('../constants/constants');
-let MACROS = require('../constants/macros');
+const React = require('react');
+const classNames = require('classnames');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const MenuPanel = require('./menuPanel');
+const Utils = require('../components/utils');
+const CONSTANTS = require('../constants/constants');
+const MACROS = require('../constants/macros');
 
-let VideoQualityPanel = createReactClass({
+const VideoQualityPanel = createReactClass({
 
   ref: React.createRef(),
 
-  getInitialState: function() {
-    let selectedValue = Utils.getPropertyValue(
+  getInitialState() {
+    const selectedValue = Utils.getPropertyValue(
       this.props,
       'videoQualityOptions.selectedBitrate.id',
       CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY
     );
 
     return {
-      selectedValue: selectedValue,
+      selectedValue,
     };
   },
 
-  onMenuItemClick: function(itemValue) {
+  onMenuItemClick(itemValue) {
     this.props.controller.sendVideoQualityChangeEvent({
       id: itemValue,
     });
@@ -37,25 +37,24 @@ let VideoQualityPanel = createReactClass({
     });
   },
 
-  getBitrateButtons: function() {
-    let bitrateButtons = [];
-    let availableBitrates = this.props.videoQualityOptions.availableBitrates;
+  getBitrateButtons() {
+    const bitrateButtons = [];
+    const availableBitrates = this.props.videoQualityOptions.availableBitrates;
     let label = '';
     let availableResolution = null;
     let availableBitrate = null;
-    let qualityTextFormat =
-      this.props.skinConfig.controlBar &&
-      this.props.skinConfig.controlBar.qualitySelection &&
-      this.props.skinConfig.controlBar.qualitySelection.format
-        ? this.props.skinConfig.controlBar.qualitySelection.format
-        : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
-    let showResolution = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION) >= 0;
-    let showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
+    const qualityTextFormat = this.props.skinConfig.controlBar
+      && this.props.skinConfig.controlBar.qualitySelection
+      && this.props.skinConfig.controlBar.qualitySelection.format
+      ? this.props.skinConfig.controlBar.qualitySelection.format
+      : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
+    const showResolution = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION) >= 0;
+    const showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
     let qualityText = null;
     let ariaLabel = null;
     let i = 0;
-    let resolutions = {};
-    let buttonCount = 0;
+    const resolutions = {};
+    const buttonCount = 0;
 
     if (showResolution) {
       // Group into buckets so we can assign quality tiers
@@ -68,11 +67,9 @@ let VideoQualityPanel = createReactClass({
         }
       }
       // sort by ascending bitrate
-      for (let res in resolutions) {
+      for (const res in resolutions) {
         if (resolutions.hasOwnProperty(res)) {
-          resolutions[res].sort(function(a, b) {
-            return a.bitrate - b.bitrate;
-          });
+          resolutions[res].sort((a, b) => a.bitrate - b.bitrate);
         }
       }
     }
@@ -103,7 +100,7 @@ let VideoQualityPanel = createReactClass({
             availableBitrate = Math.round(availableBitrate / 10) / 100;
             suffix = 'mbps';
           }
-          availableBitrate += ' ' + suffix;
+          availableBitrate += ` ${suffix}`;
         } else {
           availableBitrate = availableBitrates[i].bitrate;
         }
@@ -125,7 +122,7 @@ let VideoQualityPanel = createReactClass({
             break;
           case CONSTANTS.QUALITY_SELECTION.TEXT.RESOLUTION_ONLY:
             if (resolutions[availableResolution] && resolutions[availableResolution].length > 1) {
-              let sameResolutionLength = resolutions[availableResolution].length;
+              const sameResolutionLength = resolutions[availableResolution].length;
               let tiering = null;
               if (sameResolutionLength === 2) {
                 tiering = CONSTANTS.RESOLUTION_TIER.TWO;
@@ -134,9 +131,9 @@ let VideoQualityPanel = createReactClass({
               }
               if (tiering) {
                 // We want to use top 3 resolutions if we are using 3 resolution tiers
-                let resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
-                let extraResolutionLength = resolutions[availableResolution].length - tiering.length;
-                let trueResolutionIndex = resolutionIndex - extraResolutionLength;
+                const resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
+                const extraResolutionLength = resolutions[availableResolution].length - tiering.length;
+                const trueResolutionIndex = resolutionIndex - extraResolutionLength;
                 if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
                   qualityText = CONSTANTS.QUALITY_SELECTION.TEXT.TIERED_RESOLUTION_ONLY;
                   label = qualityText
@@ -158,8 +155,8 @@ let VideoQualityPanel = createReactClass({
         if (label) {
           bitrateButtons.push({
             value: availableBitrates[i].id,
-            label: label,
-            ariaLabel: ariaLabel,
+            label,
+            ariaLabel,
           });
         }
       }
@@ -167,16 +164,16 @@ let VideoQualityPanel = createReactClass({
     return bitrateButtons;
   },
 
-  render: function() {
-    let menuItems = this.getBitrateButtons();
+  render() {
+    const menuItems = this.getBitrateButtons();
 
-    let title = Utils.getLocalizedString(
+    const title = Utils.getLocalizedString(
       this.props.language,
       this.props.isPopover ? CONSTANTS.SKIN_TEXT.VIDEO_QUALITY : '',
       this.props.localizableStrings
     );
 
-    let className = classNames({
+    const className = classNames({
       'oo-content-panel oo-quality-panel': !this.props.isPopover,
       'oo-quality-popover': this.props.isPopover,
     });
@@ -193,7 +190,8 @@ let VideoQualityPanel = createReactClass({
         skinConfig={this.props.skinConfig}
         menuItems={menuItems}
         onMenuItemClick={this.onMenuItemClick}
-        onClose={this.props.onClose} />
+        onClose={this.props.onClose}
+      />
     );
   },
 });

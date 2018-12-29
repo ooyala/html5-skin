@@ -1,16 +1,17 @@
 /** ******************************************************************
  CONTROLLER
- *********************************************************************/
-let React = require('react');
-let ReactDOM = require('react-dom');
-let Utils = require('./components/utils');
-let CONSTANTS = require('./constants/constants');
-let AccessibilityControls = require('./components/accessibilityControls');
-let DeepMerge = require('deepmerge');
-let Fullscreen = require('screenfull');
-let Skin = require('./skin');
-let SkinJSON = require('../config/skin');
-let Localization = {
+ ******************************************************************** */
+const React = require('react');
+const ReactDOM = require('react-dom');
+const DeepMerge = require('deepmerge');
+const Fullscreen = require('screenfull');
+const Utils = require('./components/utils');
+const CONSTANTS = require('./constants/constants');
+const AccessibilityControls = require('./components/accessibilityControls');
+const Skin = require('./skin');
+const SkinJSON = require('../config/skin');
+
+const Localization = {
   languageFiles: {
     en: require('../config/languageFiles/en.json'),
     es: require('../config/languageFiles/es.json'),
@@ -22,7 +23,7 @@ let Localization = {
 
 module.exports = function(OO, _, $, W) {
   // Check if the player is at least v4. If not, the skin cannot load.
-  let UNSUPPORTED_PLAYER_VERSION = 3;
+  const UNSUPPORTED_PLAYER_VERSION = 3;
 
   if (!OO.playerParams.core_version || OO.playerParams.core_version <= UNSUPPORTED_PLAYER_VERSION) {
     console.error('Html5Skin requires at least player version 4.');
@@ -34,7 +35,7 @@ module.exports = function(OO, _, $, W) {
     OO.publicApi.VERSION.skin = { releaseVersion: '<SKIN_VERSION>', rev: '<SKIN_REV>' };
   }
 
-  let Html5Skin = function(mb, id) {
+  const Html5Skin = function(mb, id) {
     this.mb = mb;
     this.id = id;
     this.accessibilityControls = null;
@@ -215,7 +216,7 @@ module.exports = function(OO, _, $, W) {
   };
 
   Html5Skin.prototype = {
-    init: function() {
+    init() {
       // player events
       this.mb.subscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi', _.bind(this.onPlayerCreated, this));
       this.mb.subscribe(
@@ -271,7 +272,7 @@ module.exports = function(OO, _, $, W) {
       this.state.isPlaybackReadySubscribed = true;
     },
 
-    subscribeBasicPlaybackEvents: function() {
+    subscribeBasicPlaybackEvents() {
       if (!this.state.isSubscribed) {
         this.mb.subscribe(
           OO.EVENTS.SEND_QUALITY_CHANGE,
@@ -382,7 +383,7 @@ module.exports = function(OO, _, $, W) {
       this.state.isSubscribed = true;
     },
 
-    externalPluginSubscription: function() {
+    externalPluginSubscription() {
       if (OO.EVENTS.DISCOVERY_API) {
         this.mb.subscribe(
           OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED,
@@ -392,19 +393,19 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onHAWillFailover: function() {
+    onHAWillFailover() {
       this.state.failoverInProgress = true;
       this.state.pauseAnimationDisabled = true;
       this.renderSkin();
     },
 
-    onHAFailoverComplete: function() {
+    onHAFailoverComplete() {
       this.state.failoverInProgress = false;
       this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       this.renderSkin();
     },
 
-    onHAFailoverError: function() {
+    onHAFailoverError() {
       this.state.failoverInProgress = false;
       // this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.renderSkin();
@@ -413,13 +414,13 @@ module.exports = function(OO, _, $, W) {
     /* --------------------------------------------------------------------
      event listeners from core player -> regulate skin STATE
      --------------------------------------------------------------------- */
-    onPlayerCreated: function(event, elementId, params, settings) {
+    onPlayerCreated(event, elementId, params, settings) {
       // subscribe to plugin events
       this.externalPluginSubscription();
 
       // set state variables
-      this.state.mainVideoContainer = $('#' + elementId);
-      this.state.mainVideoInnerWrapper = $('#' + elementId + ' .innerWrapper');
+      this.state.mainVideoContainer = $(`#${elementId}`);
+      this.state.mainVideoInnerWrapper = $(`#${elementId} .innerWrapper`);
       this.state.playerParam = params;
       this.state.persistentSettings = settings;
       this.state.elementId = elementId;
@@ -446,7 +447,7 @@ module.exports = function(OO, _, $, W) {
       if (params.skin && params.skin.config) {
         $.getJSON(
           params.skin.config,
-          function(data) {
+          (data) => {
             this.state.customSkinJSON = data;
             this.loadConfigData(
               this.state.playerParam,
@@ -454,7 +455,7 @@ module.exports = function(OO, _, $, W) {
               data,
               this.state.skinMetaData
             );
-          }.bind(this)
+          }
         );
       } else {
         this.loadConfigData(
@@ -469,22 +470,22 @@ module.exports = function(OO, _, $, W) {
       this.state.screenToShow = CONSTANTS.SCREEN.INITIAL_SCREEN;
     },
 
-    isChromecastEnabled: function(params) {
-      let chromecastConfig = params.chromecast;
-      let appId = Utils.getPropertyValue(chromecastConfig, 'appId', '');
+    isChromecastEnabled(params) {
+      const chromecastConfig = params.chromecast;
+      const appId = Utils.getPropertyValue(chromecastConfig, 'appId', '');
       if (typeof appId === 'string' && appId !== '' && Utils.getPropertyValue(chromecastConfig, 'enable', false)) {
         return true;
       }
       return false;
     },
 
-    onChromecastStartCast: function(event, deviceName) {
+    onChromecastStartCast(event, deviceName) {
       OO.log('Chromecast Skin:', event, deviceName);
       this.state.pauseAnimationDisabled = true;
       this.renderSkin({ cast: { connected: true, device: deviceName } });
     },
 
-    onChromecastEndCast: function(event) {
+    onChromecastEndCast(event) {
       OO.log('Chromecast Skin:', event);
       this.state.pauseAnimationDisabled = false;
       this.renderSkin({ cast: { connected: false, device: '' } });
@@ -494,13 +495,13 @@ module.exports = function(OO, _, $, W) {
      * Set style "touch-action: none" only for video 360 on mobile devices
      * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
      */
-    setInlineStyles: function() {
+    setInlineStyles() {
       if (this.videoVr && this.state.isMobile) {
         this.state.mainVideoInnerWrapper.attr('style', 'touch-action: none');
       }
     },
 
-    onSetVideoVr: function(event, params) {
+    onSetVideoVr(event, params) {
       this.videoVr = true;
       this.setInlineStyles();
       if (params) {
@@ -516,24 +517,24 @@ module.exports = function(OO, _, $, W) {
      * if need to check value for device orientation set this.checkDeviceOrientation = true
      * @param {object} event The event object
      */
-    handleVrMobileOrientation: function(event) {
+    handleVrMobileOrientation(event) {
       if (!this.vrMobileOrientationChecked || this.checkDeviceOrientation) {
         const beta = event.beta;
         const gamma = event.gamma;
-        const yaw = this.state.vrViewingDirection['yaw'];
-        let pitch = this.state.vrViewingDirection['pitch'];
+        const yaw = this.state.vrViewingDirection.yaw;
+        let pitch = this.state.vrViewingDirection.pitch;
         let dir = beta;
-        let orientationType = Utils.getOrientationType();
+        const orientationType = Utils.getOrientationType();
         if (
-          orientationType &&
-          (orientationType === 'landscape-secondary' || orientationType === 'landscape-primary')
+          orientationType
+          && (orientationType === 'landscape-secondary' || orientationType === 'landscape-primary')
         ) {
           dir = gamma;
         }
         if (dir !== undefined && dir !== null && Utils.ensureNumber(dir, 0)) {
           const halfAngle = 90; // in degrees
           pitch += -halfAngle + Math.abs(Math.round(dir));
-          let params = [yaw, 0, pitch];
+          const params = [yaw, 0, pitch];
           this.setVrViewingDirection(event, yaw, 0, pitch);
           this.onTouchMove(params);
         }
@@ -541,7 +542,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onClearVideoType: function(event, params) {
+    onClearVideoType(event, params) {
       this.videoVr = false;
       this.videoVrSource = null;
       this.vrMobileOrientationChecked = false;
@@ -550,8 +551,8 @@ module.exports = function(OO, _, $, W) {
     /**
      * Pass into onTouchMove current controller state values for vrViewingDirection
      */
-    setControllerVrViewingDirection: function() {
-      let vrViewingDirectionList = [
+    setControllerVrViewingDirection() {
+      const vrViewingDirectionList = [
         this.state.vrViewingDirection.yaw,
         this.state.vrViewingDirection.roll,
         this.state.vrViewingDirection.pitch,
@@ -559,7 +560,7 @@ module.exports = function(OO, _, $, W) {
       this.onTouchMove(vrViewingDirectionList);
     },
 
-    onVcVideoElementCreated: function(event, params) {
+    onVcVideoElementCreated(event, params) {
       let videoElement = params.videoElement;
       videoElement = this.findMainVideoElement(videoElement);
 
@@ -596,13 +597,13 @@ module.exports = function(OO, _, $, W) {
     },
 
     // functions dependent on video metadata
-    metaDataLoaded: function() {
+    metaDataLoaded() {
       this.enableIosFullScreen();
     },
 
-    onPlayerDestroy: function(event) {
-      let elementId = this.state.elementId;
-      let mountNode = document.querySelector('#' + elementId + ' .oo-player-skin');
+    onPlayerDestroy(event) {
+      const elementId = this.state.elementId;
+      const mountNode = document.querySelector(`#${elementId} .oo-player-skin`);
       // remove mounted Skin component
       if (mountNode) {
         ReactDOM.unmountComponentAtNode(mountNode);
@@ -613,7 +614,7 @@ module.exports = function(OO, _, $, W) {
       this.mb = null;
     },
 
-    cleanUpEventListeners: function() {
+    cleanUpEventListeners() {
       this.accessibilityControls.cleanUp();
     },
 
@@ -623,7 +624,7 @@ module.exports = function(OO, _, $, W) {
      * @param {string} event The event's name.
      * @param {string} embedCode The video embed code that will be set.
      */
-    onSetEmbedCode: function(event, embedCode) {
+    onSetEmbedCode(event, embedCode) {
       // If a video has played and we're setting a new embed code it means that we
       // will be transitioning to a new video. We make sure to display the loading screen.
       if (this.state.initialPlayHasOccurred && this.state.assetId !== embedCode) {
@@ -633,7 +634,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onEmbedCodeChangedAfterOoyalaAd: function(event, embedCode, options) {
+    onEmbedCodeChangedAfterOoyalaAd(event, embedCode, options) {
       if (options) {
         this.state.playerParam = DeepMerge(this.state.playerParam, options);
       }
@@ -641,7 +642,7 @@ module.exports = function(OO, _, $, W) {
       this.state.afterOoyalaAd = true;
     },
 
-    onEmbedCodeChanged: function(event, embedCode, options) {
+    onEmbedCodeChanged(event, embedCode, options) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.videoQualityOptions.selectedBitrate = null;
       this.state.closedCaptionOptions.availableLanguages = null;
@@ -673,21 +674,21 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onAuthorizationFetched: function(event, authorization) {
+    onAuthorizationFetched(event, authorization) {
       this.state.isLiveStream = authorization.streams[0].is_live_stream;
     },
 
-    onContentTreeFetched: function(event, contentTree) {
+    onContentTreeFetched(event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
-      let duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
+      const duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
       if (this.skin) {
         this.skin.updatePlayhead(null, duration)
           .catch(() => { OO.log('onContentTreeFetched: Could not set new state for skin'); });
       }
     },
 
-    onSkinMetaDataFetched: function(event, skinMetaData) {
+    onSkinMetaDataFetched(event, skinMetaData) {
       this.state.skinMetaData = skinMetaData;
       this.loadConfigData(
         this.state.playerParam,
@@ -697,18 +698,18 @@ module.exports = function(OO, _, $, W) {
       );
     },
 
-    onAttributesFetched: function(event, attributes) {
+    onAttributesFetched(event, attributes) {
       this.state.attributes = attributes;
       // This is the first point at which we know whether the video is anamorphic or not,
       // apply fix if necessary
       this.trySetAnamorphicFixState(true);
     },
 
-    onThumbnailsFetched: function(event, thumbnails) {
+    onThumbnailsFetched(event, thumbnails) {
       this.state.thumbnails = thumbnails;
     },
 
-    onAssetChanged: function(event, asset) {
+    onAssetChanged(event, asset) {
       this.state.videoQualityOptions.availableBitrates = null;
       this.state.closedCaptionOptions.availableLanguages = null;
       this.state.closedCaptionsInfoCache = {};
@@ -720,7 +721,7 @@ module.exports = function(OO, _, $, W) {
 
       this.state.isLiveStream = asset.content.streams[0].is_live_stream;
 
-      let contentTree = {};
+      const contentTree = {};
       contentTree.title = asset.content.title;
       contentTree.description = asset.content.description;
       contentTree.duration = asset.content.duration;
@@ -732,7 +733,7 @@ module.exports = function(OO, _, $, W) {
       this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
     },
 
-    onAssetUpdated: function(event, asset) {
+    onAssetUpdated(event, asset) {
       this.resetUpNextInfo(true);
 
       this.state.isLiveStream = asset.content.streams[0].is_live_stream;
@@ -745,15 +746,15 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin({ contentTree: this.state.contentTree });
     },
 
-    isPlaying: function() {
+    isPlaying() {
       return (
-        this.state.currentVideoId &&
-        this.state.playerState !== CONSTANTS.STATE.START &&
-        this.state.playerState !== CONSTANTS.STATE.ERROR
+        this.state.currentVideoId
+        && this.state.playerState !== CONSTANTS.STATE.START
+        && this.state.playerState !== CONSTANTS.STATE.ERROR
       );
     },
 
-    onVolumeChanged: function(event, newVolume, videoId) {
+    onVolumeChanged(event, newVolume, videoId) {
       // ignore the volume change if it came from a source other than the currently playing video
       // but only if currently playing a video. This is to prevent desyncs between video volume
       // and the UI
@@ -768,7 +769,7 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onMuteStateChanged: function(event, muted, videoId, forAutoplay) {
+    onMuteStateChanged(event, muted, videoId, forAutoplay) {
       // ignore the volume change if it came from a source other than the currently playing video
       // but only if currently playing a video. This is to prevent desyncs between video volume
       // and the UI
@@ -793,19 +794,19 @@ module.exports = function(OO, _, $, W) {
      * @param {String} videoId The id of the video whose playback speed change
      * @param {Number} playbackSpeed A number that represents the new playback rate
      */
-    onPlaybackSpeedChanged: function(eventName, videoId, playbackSpeed) {
+    onPlaybackSpeedChanged(eventName, videoId, playbackSpeed) {
       // Note that we don't constrain to min/max values in this case since
       // the new speed is already set, but we make sure that the value we get can
       // be displayed in a user-friendly way
       playbackSpeed = Utils.sanitizePlaybackSpeed(playbackSpeed, true);
       // Add speed to options if it's not one of the predefined values
-      let playbackSpeedOptions = Utils.getPropertyValue(
+      const playbackSpeedOptions = Utils.getPropertyValue(
         this.skin,
         'props.skinConfig.playbackSpeed.options'
       );
       if (
-        playbackSpeedOptions &&
-        playbackSpeedOptions.indexOf(playbackSpeed) < 0
+        playbackSpeedOptions
+        && playbackSpeedOptions.indexOf(playbackSpeed) < 0
       ) {
         playbackSpeedOptions.push(playbackSpeed);
       }
@@ -814,7 +815,7 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    resetUpNextInfo: function(purge) {
+    resetUpNextInfo(purge) {
       if (purge) {
         this.state.upNextInfo.upNextData = null;
       }
@@ -822,7 +823,7 @@ module.exports = function(OO, _, $, W) {
       this.state.upNextInfo.countDownCancelled = false;
     },
 
-    onPlayheadTimeChanged: function(event, currentPlayhead, duration, buffered, startEnd, videoId) {
+    onPlayheadTimeChanged(event, currentPlayhead, duration, buffered, startEnd, videoId) {
       if (videoId === OO.VIDEO.MAIN) {
         this.state.mainVideoPlayhead = currentPlayhead;
         this.state.mainVideoDuration = duration;
@@ -844,11 +845,11 @@ module.exports = function(OO, _, $, W) {
 
       // lower skin z-index if Chrome auto-pauses flash content
       if (
-        !this.state.autoPauseDisabled &&
-        Utils.isChrome() &&
-        this.state.mainVideoMediaType === CONSTANTS.MEDIA_TYPE.FLASH
+        !this.state.autoPauseDisabled
+        && Utils.isChrome()
+        && this.state.mainVideoMediaType === CONSTANTS.MEDIA_TYPE.FLASH
       ) {
-        let skinElement = $('#' + this.state.elementId + ' .oo-player-skin');
+        const skinElement = $(`#${this.state.elementId} .oo-player-skin`);
         if (currentPlayhead === 0 && this.state.playerState === CONSTANTS.STATE.PLAYING) {
           skinElement.addClass('oo-z-index-auto');
         } else {
@@ -866,13 +867,13 @@ module.exports = function(OO, _, $, W) {
             this.showUpNextScreenWhenReady(currentPlayhead, duration);
           }
         } else if (
-          this.state.playerState === CONSTANTS.STATE.PLAYING &&
-          this.state.screenToShow !== CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN
+          this.state.playerState === CONSTANTS.STATE.PLAYING
+          && this.state.screenToShow !== CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN
         ) {
           this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
         } else if (
-          this.state.playerState === CONSTANTS.STATE.PAUSE &&
-          this.state.screenToShow !== CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN
+          this.state.playerState === CONSTANTS.STATE.PAUSE
+          && this.state.screenToShow !== CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN
         ) {
           this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
         }
@@ -884,7 +885,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    showUpNextScreenWhenReady: function(currentPlayhead, duration) {
+    showUpNextScreenWhenReady(currentPlayhead, duration) {
       let timeToShow = this.skin.props.skinConfig.upNext.timeToShow;
 
       if (timeToShow < 1) {
@@ -895,23 +896,23 @@ module.exports = function(OO, _, $, W) {
       this.state.upNextInfo.timeToShow = timeToShow;
 
       if (
-        this.state.mainVideoPlayhead !== 0 &&
-        currentPlayhead !== 0 &&
-        duration !== 0 &&
-        duration - currentPlayhead <= timeToShow &&
-        !this.state.upNextInfo.countDownCancelled &&
-        this.state.isPlayingAd !== true &&
-        this.state.upNextInfo.upNextData !== null &&
-        (this.state.playerState === CONSTANTS.STATE.PLAYING ||
-          this.state.playerState === CONSTANTS.STATE.PAUSE)
+        this.state.mainVideoPlayhead !== 0
+        && currentPlayhead !== 0
+        && duration !== 0
+        && duration - currentPlayhead <= timeToShow
+        && !this.state.upNextInfo.countDownCancelled
+        && this.state.isPlayingAd !== true
+        && this.state.upNextInfo.upNextData !== null
+        && (this.state.playerState === CONSTANTS.STATE.PLAYING
+          || this.state.playerState === CONSTANTS.STATE.PAUSE)
       ) {
         // Trigger discovery event only the first time we
         // switch from hidden to showing
         if (!this.state.upNextInfo.showing) {
-          let upNextEmbedCode = Utils.getPropertyValue(this.state.upNextInfo, 'upNextData.embed_code');
+          const upNextEmbedCode = Utils.getPropertyValue(this.state.upNextInfo, 'upNextData.embed_code');
           this.sendDiscoveryDisplayEventRelatedVideos('endScreen', upNextEmbedCode);
           this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
-          let customData = { 'playheadPercent': currentPlayhead / duration };
+          const customData = { playheadPercent: currentPlayhead / duration };
           this.sendDiscoveryDisplayEvent(1, 1, CONSTANTS.UI_TAG.UP_NEXT, this.state.upNextInfo.upNextData, customData);
         }
         this.state.upNextInfo.showing = true;
@@ -920,7 +921,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onInitialPlay: function() {
+    onInitialPlay() {
       this.state.isInitialPlay = true;
       this.state.initialPlayHasOccurred = true;
       // TODO: Why do we start a hide-control-bar timer here?
@@ -930,16 +931,16 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onVcPlay: function(event, source) {
+    onVcPlay(event, source) {
       if (this.state.cast.isReceiver) {
         this.hideControlBar();
       }
 
       this.state.currentVideoId = source;
-      if (this.state.adWasPaused &&
-        this.state.currentAdsInfo &&
-        this.state.currentAdsInfo.currentAdItem &&
-        this.state.currentAdsInfo.currentAdItem.ssai) {
+      if (this.state.adWasPaused
+        && this.state.currentAdsInfo
+        && this.state.currentAdsInfo.currentAdItem
+        && this.state.currentAdsInfo.currentAdItem.ssai) {
         this.state.adPauseDuration = Date.now() - this.state.adPausedTime;
         // we calculate new ad end time, based on the time that the ad was paused.
         this.state.adEndTime = this.state.adEndTime + this.state.adPauseDuration; // milliseconds
@@ -948,7 +949,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPlaying: function(event, source) {
+    onPlaying(event, source) {
       if (source === OO.VIDEO.MAIN) {
         // set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {
@@ -975,7 +976,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPause: function(event, source, pauseReason) {
+    onPause(event, source, pauseReason) {
       if (this.state.failoverInProgress) {
         return;
       }
@@ -994,7 +995,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPaused: function(event, videoId) {
+    onPaused(event, videoId) {
       if (this.state.failoverInProgress) {
         return;
       }
@@ -1003,20 +1004,20 @@ module.exports = function(OO, _, $, W) {
         return;
       }
       if (
-        videoId === OO.VIDEO.MAIN &&
-        this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN &&
-        this.state.screenToShow !== CONSTANTS.SCREEN.LOADING_SCREEN
+        videoId === OO.VIDEO.MAIN
+        && this.state.screenToShow !== CONSTANTS.SCREEN.AD_SCREEN
+        && this.state.screenToShow !== CONSTANTS.SCREEN.LOADING_SCREEN
       ) {
-        let PLAYHEAD_STARTING_TIME = 0.01;
+        const PLAYHEAD_STARTING_TIME = 0.01;
         if (this.state.duration - this.state.mainVideoPlayhead < PLAYHEAD_STARTING_TIME) {
           // when video ends, we get paused event before played event
           this.state.pauseAnimationDisabled = true;
         }
         if (
-          this.state.pauseAnimationDisabled == false &&
-          this.state.discoveryData &&
-          this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === 'discovery' &&
-          !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
+          this.state.pauseAnimationDisabled == false
+          && this.state.discoveryData
+          && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === 'discovery'
+          && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
         ) {
           OO.log('Should display DISCOVERY_SCREEN on pause');
           this.sendDiscoveryDisplayEventRelatedVideos('pauseScreen');
@@ -1041,9 +1042,9 @@ module.exports = function(OO, _, $, W) {
         // must be unpaused to resume
         this.state.config.adScreen.showControlBar = true;
         this.state.adPauseAnimationDisabled = false;
-        if (this.state.currentAdsInfo &&
-          this.state.currentAdsInfo.currentAdItem &&
-          this.state.currentAdsInfo.currentAdItem.ssai) {
+        if (this.state.currentAdsInfo
+          && this.state.currentAdsInfo.currentAdItem
+          && this.state.currentAdsInfo.currentAdItem.ssai) {
           this.state.adWasPaused = true;
           this.state.adPausedTime = Date.now(); // milliseconds
         }
@@ -1056,8 +1057,8 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPlayed: function() {
-      let duration = this.state.mainVideoDuration;
+    onPlayed() {
+      const duration = this.state.mainVideoDuration;
       this.state.duration = duration;
       this.state.playerState = CONSTANTS.STATE.END;
 
@@ -1080,9 +1081,9 @@ module.exports = function(OO, _, $, W) {
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       } else if (
-        this.state.discoveryData &&
-        this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'discovery' &&
-        !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
+        this.state.discoveryData
+        && this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'discovery'
+        && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
       ) {
         OO.log('Should display DISCOVERY_SCREEN on end');
         this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
@@ -1105,26 +1106,26 @@ module.exports = function(OO, _, $, W) {
       this.skin.updatePlayhead(duration, duration, duration);
     },
 
-    onVcPlayed: function(event, source) {
+    onVcPlayed(event, source) {
       this.onBuffered();
       if (source === OO.VIDEO.MAIN) {
-        let language = '';
-        let mode = 'disabled';
+        const language = '';
+        const mode = 'disabled';
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
-          mode: mode,
+          mode,
           isFullScreen: this.state.fullscreen,
         });
         this.state.mainVideoDuration = this.state.duration;
       }
     },
 
-    onTouchMove: function(params) {
+    onTouchMove(params) {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.TOUCH_MOVE, this.focusedElement, params);
       }
     },
 
-    onEndMove: function() {
+    onEndMove() {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.END_VR_MOVE, this.focusedElement);
       }
@@ -1135,17 +1136,17 @@ module.exports = function(OO, _, $, W) {
      * @param {boolean} useVrViewingDirection flag says to use function 'getVrViewingDirection' from the plugin
      * @fires OO.EVENTS.CHECK_VR_DIRECTION
      */
-    checkVrDirection: function(useVrViewingDirection) {
+    checkVrDirection(useVrViewingDirection) {
       if (this.videoVr) {
         this.mb.publish(OO.EVENTS.CHECK_VR_DIRECTION, this.focusedElement, useVrViewingDirection);
       }
     },
 
-    setVrViewingDirection: function(event, yaw, roll, pitch) {
-      this.state.vrViewingDirection = { yaw: yaw, roll: roll, pitch: pitch };
+    setVrViewingDirection(event, yaw, roll, pitch) {
+      this.state.vrViewingDirection = { yaw, roll, pitch };
     },
 
-    recreatingUI: function(event, elementId, params, settings) {
+    recreatingUI(event, elementId, params, settings) {
       if (!$('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append('<div class=\'oo-player-skin\'></div>');
       }
@@ -1165,7 +1166,7 @@ module.exports = function(OO, _, $, W) {
      * @param {Array} multiAudio.tracks - list of objects with data for each audio
      * @param {Array} multiAudio.languageList - list of objects with all languages
      */
-    onMultiAudioFetched: function(event, multiAudio) {
+    onMultiAudioFetched(event, multiAudio) {
       if (!this.state.hideMultiAudioIcon) {
         // if param hideMultiAudioIcon is set to false
         if (typeof multiAudio !== 'undefined') {
@@ -1187,7 +1188,7 @@ module.exports = function(OO, _, $, W) {
      * @param {Object} multiAudio - audio which fetched for the current video
      * @param {Array} multiAudio.tracks - list of objects with data for each audio
      */
-    onMultiAudioChanged: function(event, multiAudio) {
+    onMultiAudioChanged(event, multiAudio) {
       if (!this.state.hideMultiAudioIcon) {
         if (this.containsMultiAudio(multiAudio)) {
           this.state.multiAudio = multiAudio;
@@ -1204,8 +1205,8 @@ module.exports = function(OO, _, $, W) {
      * @param {Object} multiAudio The multiAudio object that is fetched from the current video
      * @returns {boolean} True if the provided object contains more than one track, false otherwise
      */
-    containsMultiAudio: function(multiAudio) {
-      let hasMoreThanOneTrack = !!(multiAudio && multiAudio.tracks && multiAudio.tracks.length > 1);
+    containsMultiAudio(multiAudio) {
+      const hasMoreThanOneTrack = !!(multiAudio && multiAudio.tracks && multiAudio.tracks.length > 1);
       return hasMoreThanOneTrack;
     },
 
@@ -1214,15 +1215,15 @@ module.exports = function(OO, _, $, W) {
      * @fires OO.EVENTS.SET_CURRENT_AUDIO
      * @param {{id: String, label: String, lang: String}} currentTrack  - current active audio track
      */
-    setCurrentAudio: function(currentTrack) {
+    setCurrentAudio(currentTrack) {
       // user selected track should be saved to localstorage
-      let currentAudioTrack = JSON.stringify(currentTrack);
+      const currentAudioTrack = JSON.stringify(currentTrack);
       OO.setItem(OO.CONSTANTS.SELECTED_AUDIO, currentAudioTrack);
 
       this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, this.state.currentVideoId, currentTrack);
     },
 
-    onSeek: function(_, time) {
+    onSeek(_, time) {
       if (this.state.cast.isReceiver) {
         this.skin.updatePlayhead(time).then(() => {
           if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
@@ -1232,7 +1233,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onSeeked: function() {
+    onSeeked() {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
         OO.log('popping queued update');
@@ -1252,7 +1253,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPlaybackReady: function(event, timeSincePlayerCreated, params) {
+    onPlaybackReady(event, timeSincePlayerCreated, params) {
       if (this.state.failoverInProgress) {
         return;
       }
@@ -1287,7 +1288,7 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {Event} event - message bus event
      */
-    onBuffering: function(event) {
+    onBuffering(event) {
       if (this.state.isInitialPlay === false && this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
         this.setBufferingState(false);
       } else {
@@ -1300,7 +1301,7 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {Event} event - message bus event
      */
-    onBuffered: function(event) {
+    onBuffered(event) {
       this.setBufferingState(false);
     },
 
@@ -1309,7 +1310,7 @@ module.exports = function(OO, _, $, W) {
      * time specified in BUFFERING_SPINNER_DELAY has elapsed.
      * @private
      */
-    startBufferingTimer: function() {
+    startBufferingTimer() {
       this.stopBufferingTimer();
       let bufferingSpinnerDelay = Utils.getPropertyValue(
         this.skin.props.skinConfig,
@@ -1322,9 +1323,9 @@ module.exports = function(OO, _, $, W) {
       );
 
       this.state.bufferingTimer = setTimeout(
-        function() {
+        () => {
           this.setBufferingState(true);
-        }.bind(this),
+        },
         bufferingSpinnerDelay
       );
     },
@@ -1334,7 +1335,7 @@ module.exports = function(OO, _, $, W) {
      * stalling (buffering) ends, playback resumes, etc.
      * @private
      */
-    stopBufferingTimer: function() {
+    stopBufferingTimer() {
       clearTimeout(this.state.bufferingTimer);
       this.state.bufferingTimer = null;
     },
@@ -1348,8 +1349,8 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {Boolean} value Must pass true if the player is in buffering state, false otherwise
      */
-    setBufferingState: function(value) {
-      let buffering = !!value;
+    setBufferingState(value) {
+      const buffering = !!value;
       // Always make sure buffering timer is disabled when buffering has stopped.
       // This will have no effect if timer hasn't been started.
       if (!buffering) {
@@ -1362,15 +1363,15 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onReplay: function(event) {
+    onReplay(event) {
       this.resetUpNextInfo(false);
     },
 
-    onAssetDimensionsReceived: function(event, params) {
+    onAssetDimensionsReceived(event, params) {
       if (
-        params.videoId === OO.VIDEO.MAIN &&
-        (this.skin.props.skinConfig.responsive.aspectRatio === 'auto' ||
-          !this.skin.props.skinConfig.responsive.aspectRatio)
+        params.videoId === OO.VIDEO.MAIN
+        && (this.skin.props.skinConfig.responsive.aspectRatio === 'auto'
+          || !this.skin.props.skinConfig.responsive.aspectRatio)
       ) {
         this.state.mainVideoAspectRatio = this.calculateAspectRatio(params.width, params.height);
         // Do not set aspect ratio if content is not playing. The aspect ratio will be set
@@ -1383,10 +1384,10 @@ module.exports = function(OO, _, $, W) {
 
     /** ******************************************************************
       ADS RELATED EVENTS
-    *********************************************************************/
+    ******************************************************************** */
 
-    onAdsPlayed: function(event) {
-      OO.log('onAdsPlayed is called from event = ' + event);
+    onAdsPlayed(event) {
+      OO.log(`onAdsPlayed is called from event = ${event}`);
       if (this.state.playerState === CONSTANTS.STATE.END) {
         this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
       } else {
@@ -1412,8 +1413,8 @@ module.exports = function(OO, _, $, W) {
       ).catch(() => { OO.log('onAdsPlayed: Could not set new state for skin'); });
     },
 
-    onWillPlayAds: function(event) {
-      OO.log('onWillPlayAds is called from event = ' + event);
+    onWillPlayAds(event) {
+      OO.log(`onWillPlayAds is called from event = ${event}`);
       this.state.isPlayingAd = true;
       // Anamorphic videos fix should not be active during ad playback
       this.trySetAnamorphicFixState(false);
@@ -1437,14 +1438,14 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onAdPodStarted: function(event, numberOfAds) {
-      OO.log('onAdPodStarted is called from event = ' + event + ' with ' + numberOfAds + ' ads');
+    onAdPodStarted(event, numberOfAds) {
+      OO.log(`onAdPodStarted is called from event = ${event} with ${numberOfAds} ads`);
       this.state.currentAdsInfo.numberOfAds = numberOfAds;
       this.renderSkin();
     },
 
-    onWillPlaySingleAd: function(event, adItem) {
-      OO.log('onWillPlaySingleAd is called with adItem = ' + adItem);
+    onWillPlaySingleAd(event, adItem) {
+      OO.log(`onWillPlaySingleAd is called with adItem = ${adItem}`);
       if (adItem !== null) {
         this.state.adVideoDuration = adItem.duration * 1000;
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
@@ -1462,19 +1463,19 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onSingleAdPlayed: function(event) {
+    onSingleAdPlayed(event) {
       OO.log('onSingleAdPlayed is called');
       this.state.isPlayingAd = false;
       this.state.adVideoDuration = 0;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
     },
 
-    onShowAdSkipButton: function(event) {
+    onShowAdSkipButton(event) {
       this.state.currentAdsInfo.skipAdButtonEnabled = true;
       this.renderSkin();
     },
 
-    onShowAdControls: function(event, showAdControls, autoHide) {
+    onShowAdControls(event, showAdControls, autoHide) {
       this.state.showAdControls = showAdControls;
       this.state.forceControlBarVisible = false;
       if (showAdControls && this.state.config.adScreen.showControlBar) {
@@ -1491,12 +1492,12 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onShowAdMarquee: function(event, showAdMarquee) {
+    onShowAdMarquee(event, showAdMarquee) {
       this.state.showAdMarquee = showAdMarquee;
       this.renderSkin();
     },
 
-    onSkipAdClicked: function() {
+    onSkipAdClicked() {
       OO.log('onSkipAdClicked is called');
       this.skin.updatePlayhead(
         this.state.mainVideoPlayhead,
@@ -1508,28 +1509,28 @@ module.exports = function(OO, _, $, W) {
       }).catch(() => { OO.log('onSkipAdClicked: Could not set new state for skin'); });
     },
 
-    onAdsClicked: function(source) {
+    onAdsClicked(source) {
       OO.log('on ads clicked is called', source);
-      this.mb.publish(OO.EVENTS.ADS_CLICKED, { source: source });
+      this.mb.publish(OO.EVENTS.ADS_CLICKED, { source });
     },
 
-    publishOverlayRenderingEvent: function(marginHeight) {
-      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, { marginHeight: marginHeight });
+    publishOverlayRenderingEvent(marginHeight) {
+      this.mb.publish(OO.EVENTS.OVERLAY_RENDERING, { marginHeight });
     },
 
-    onPlayNonlinearAd: function(event, adInfo) {
+    onPlayNonlinearAd(event, adInfo) {
       if (adInfo.url) {
         this.state.adOverlayUrl = adInfo.url;
         this.state.showAdOverlay = true;
       }
       this.state.pluginsElement.addClass('oo-overlay-showing');
-      let skinElement = $('#' + this.state.elementId + ' .oo-player-skin');
-      let elementWidth = skinElement.width();
-      let elementHeight = skinElement.height();
-      let newCSS = {};
+      const skinElement = $(`#${this.state.elementId} .oo-player-skin`);
+      const elementWidth = skinElement.width();
+      const elementHeight = skinElement.height();
+      const newCSS = {};
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
         var padding = adInfo.ad.paddingHeight ? adInfo.ad.paddingHeight : 0;
-        newCSS.height = adInfo.ad.height + padding + 'px';
+        newCSS.height = `${adInfo.ad.height + padding}px`;
         newCSS.top = 'auto';
       } else {
         newCSS.top = 0;
@@ -1537,7 +1538,7 @@ module.exports = function(OO, _, $, W) {
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
         var padding = adInfo.ad.paddingWidth ? adInfo.ad.paddingWidth : 0;
-        newCSS.width = adInfo.ad.width + padding + 'px';
+        newCSS.width = `${adInfo.ad.width + padding}px`;
         newCSS.left = '50%';
         newCSS.transform = 'translateX(-50%)';
       }
@@ -1545,11 +1546,11 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onAdOverlayLoaded: function() {
+    onAdOverlayLoaded() {
       this.mb.publish(OO.EVENTS.NONLINEAR_AD_DISPLAYED);
     },
 
-    onVideoElementFocus: function(event, source) {
+    onVideoElementFocus(event, source) {
       // Switching to another element, clear buffering state which applies to current element
       if (this.focusedElement !== source) {
         this.setBufferingState(false);
@@ -1565,7 +1566,7 @@ module.exports = function(OO, _, $, W) {
       this.state.currentVideoId = source;
     },
 
-    closeNonlinearAd: function(event) {
+    closeNonlinearAd(event) {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
       this.state.showAdOverlayCloseButton = false;
@@ -1582,19 +1583,19 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    hideNonlinearAd: function(event) {
+    hideNonlinearAd(event) {
       this.state.showAdOverlay = false;
       this.state.pluginsElement.removeClass('oo-overlay-showing');
       this.renderSkin();
     },
 
-    showNonlinearAd: function(event) {
+    showNonlinearAd(event) {
       this.state.showAdOverlay = true;
       this.state.pluginsElement.addClass('oo-overlay-showing');
       this.renderSkin();
     },
 
-    showNonlinearAdCloseButton: function(event) {
+    showNonlinearAdCloseButton(event) {
       this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
     },
@@ -1605,13 +1606,13 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @returns {Number} remainingTime
      */
-    getAdRemainingTime: function() {
+    getAdRemainingTime() {
       let remainingTime = 0;
 
-      let isLive = this.state.currentAdsInfo.currentAdItem
+      const isLive = this.state.currentAdsInfo.currentAdItem
         ? this.state.currentAdsInfo.currentAdItem.isLive
         : false;
-      let isSSAI = this.state.currentAdsInfo.currentAdItem
+      const isSSAI = this.state.currentAdsInfo.currentAdItem
         ? this.state.currentAdsInfo.currentAdItem.ssai
         : false;
 
@@ -1632,18 +1633,18 @@ module.exports = function(OO, _, $, W) {
 
     /** ******************************************************************
      MAIN VIDEO RELATED EVENTS
-     *********************************************************************/
+     ******************************************************************** */
 
     // merge and load config data
-    loadConfigData: function(params, settings, data, skinMetaData) {
-      let localSettings = Utils.sanitizeConfigData(settings);
-      let inlinePageParams = Utils.sanitizeConfigData(Utils.getPropertyValue(params, 'skin.inline'));
-      let customSkinJSON = Utils.sanitizeConfigData(data);
-      let metaDataSettings = Utils.sanitizeConfigData(skinMetaData);
-      let buttonArrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
+    loadConfigData(params, settings, data, skinMetaData) {
+      const localSettings = Utils.sanitizeConfigData(settings);
+      const inlinePageParams = Utils.sanitizeConfigData(Utils.getPropertyValue(params, 'skin.inline'));
+      const customSkinJSON = Utils.sanitizeConfigData(data);
+      const metaDataSettings = Utils.sanitizeConfigData(skinMetaData);
+      const buttonArrayFusion = params.buttonMerge ? params.buttonMerge : 'replace';
 
       // override data in skin config with possible local storage settings, inline data input by user, and CMS settings in backlot/themebuilder
-      let mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {
+      const mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {
         arrayMerge: Utils.arrayDeepMerge.bind(Utils),
         arrayUnionBy: 'name',
         buttonArrayFusion: 'prepend',
@@ -1651,12 +1652,12 @@ module.exports = function(OO, _, $, W) {
       this.state.config = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {
         arrayMerge: Utils.arrayDeepMerge.bind(Utils),
         arrayUnionBy: 'name',
-        buttonArrayFusion: buttonArrayFusion,
+        buttonArrayFusion,
       });
       this.state.closedCaptionOptions = this.state.config.closedCaptionOptions;
 
       // remove 'url' from the list until the tab is worked on
-      let shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
+      const shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
       if (shareContent) {
         for (let i = 0; i < shareContent.length; i++) {
           if (shareContent[i] === 'url') {
@@ -1668,9 +1669,9 @@ module.exports = function(OO, _, $, W) {
 
       // load config language json if exist
       if (this.state.config.localization.availableLanguageFile) {
-        this.state.config.localization.availableLanguageFile.forEach(function(languageObj) {
+        this.state.config.localization.availableLanguageFile.forEach((languageObj) => {
           if (languageObj.languageFile) {
-            $.getJSON(languageObj.languageFile, function(data) {
+            $.getJSON(languageObj.languageFile, (data) => {
               Localization.languageFiles[languageObj.language] = data;
             });
           }
@@ -1683,7 +1684,7 @@ module.exports = function(OO, _, $, W) {
         this.state.config.discoveryScreen.countDownTime
       );
 
-      let uiLanguage = Utils.getLanguageToUse(this.state.config);
+      const uiLanguage = Utils.getLanguageToUse(this.state.config);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
@@ -1700,7 +1701,7 @@ module.exports = function(OO, _, $, W) {
           closedCaptionOptions: this.state.closedCaptionOptions,
           pauseAnimationDisabled: this.state.pauseAnimationDisabled,
         }),
-        document.querySelector('#' + this.state.elementId + ' .oo-player-skin')
+        document.querySelector(`#${this.state.elementId} .oo-player-skin`)
       );
 
       this.state.configLoaded = true;
@@ -1712,7 +1713,7 @@ module.exports = function(OO, _, $, W) {
         // If height was not provided for an audio only player, set a height of 138px.
         // Note that our debug page that QA uses does not currently set a height
         // 138px was the value recommended by Fernando. See JIRA ticket PLAYER-4170
-        let containerHeight = this.state.mainVideoContainer.height();
+        const containerHeight = this.state.mainVideoContainer.height();
         if (!containerHeight) {
           this.state.mainVideoContainer.height(CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT);
         }
@@ -1724,15 +1725,15 @@ module.exports = function(OO, _, $, W) {
       this.createPluginElements();
 
       if (
-        typeof this.state.config.closedCaptionOptions === 'object' &&
-        this.state.config.closedCaptionOptions.language !== undefined
+        typeof this.state.config.closedCaptionOptions === 'object'
+        && this.state.config.closedCaptionOptions.language !== undefined
       ) {
         this.setCaptionDirection(this.state.config.closedCaptionOptions.language);
       }
     },
 
     // create plugin container elements
-    createPluginElements: function() {
+    createPluginElements() {
       this.state.config.adScreen = this.state.config.adScreen || {};
       // if playerControlsOverAds is true then we need to override the setting
       // for showing the control bar during ads.
@@ -1746,15 +1747,15 @@ module.exports = function(OO, _, $, W) {
       if (!this.state.config || !this.state.config.adScreen || !this.state.config.adScreen.showControlBar) {
         fullClass = ' oo-full';
       }
-      $('#' + this.state.elementId + ' .oo-player-skin').append(
-        '<div class=\'oo-player-skin-plugins' +
-          fullClass +
-          '\'></div><div class=\'oo-player-skin-plugins-click-layer' +
-          fullClass +
-          '\'></div>'
+      $(`#${this.state.elementId} .oo-player-skin`).append(
+        `<div class='oo-player-skin-plugins${
+          fullClass
+        }'></div><div class='oo-player-skin-plugins-click-layer${
+          fullClass
+        }'></div>`
       );
-      this.state.pluginsElement = $('#' + this.state.elementId + ' .oo-player-skin-plugins');
-      this.state.pluginsClickElement = $('#' + this.state.elementId + ' .oo-player-skin-plugins-click-layer');
+      this.state.pluginsElement = $(`#${this.state.elementId} .oo-player-skin-plugins`);
+      this.state.pluginsClickElement = $(`#${this.state.elementId} .oo-player-skin-plugins-click-layer`);
 
       // if playerControlsOverAds is true, then we need to set the size of the
       // elements to be the full size of the player and not end where the control bar begins.
@@ -1764,16 +1765,16 @@ module.exports = function(OO, _, $, W) {
       }
 
       this.state.pluginsElement.mouseover(
-        function() {
+        () => {
           this.showControlBar();
           this.renderSkin();
           this.startHideControlBarTimer();
-        }.bind(this)
+        }
       );
       this.state.pluginsElement.mouseout(
-        function() {
+        () => {
           this.hideControlBar();
-        }.bind(this)
+        }
       );
 
       // PLAYER-4041: It seems like 'click' events started when a div's pointerEvents is initially 'none' but is changed to
@@ -1781,23 +1782,22 @@ module.exports = function(OO, _, $, W) {
       // 'touchend' and 'touchcancel' on Android and iOs.
       if (OO.isAndroid || OO.isIos) {
         this.state.pluginsClickElement.on('touchend touchcancel',
-          this.resumePlaybackAfterClickthrough.bind(this)
-        );
+          this.resumePlaybackAfterClickthrough.bind(this));
       } else {
         this.state.pluginsClickElement.click(this.resumePlaybackAfterClickthrough.bind(this));
       }
 
       this.state.pluginsClickElement.mouseover(
-        function() {
+        () => {
           this.showControlBar();
           this.renderSkin();
           this.startHideControlBarTimer();
-        }.bind(this)
+        }
       );
       this.state.pluginsClickElement.mouseout(
-        function() {
+        () => {
           this.hideControlBar();
-        }.bind(this)
+        }
       );
       this.mb.publish(OO.EVENTS.UI_READY, {
         videoWrapperClass: 'innerWrapper',
@@ -1810,14 +1810,14 @@ module.exports = function(OO, _, $, W) {
      * was handled by the player.
      * @private
      */
-    resumePlaybackAfterClickthrough: function() {
+    resumePlaybackAfterClickthrough() {
       this.state.pluginsClickElement.removeClass('oo-showing');
       this.mb.publish(OO.EVENTS.PLAY);
     },
 
-    onBitrateInfoAvailable: function(event, bitrates) {
+    onBitrateInfoAvailable(event, bitrates) {
       if (bitrates && bitrates.bitrates) {
-        let qualityFormat = Utils.getPropertyValue(
+        const qualityFormat = Utils.getPropertyValue(
           this.skin,
           'props.skinConfig.controlBar.qualitySelection.format'
         );
@@ -1838,7 +1838,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onClosedCaptionsInfoAvailable: function(event, info) {
+    onClosedCaptionsInfoAvailable(event, info) {
       if (!info || !info.videoId || !info.languages) {
         return;
       }
@@ -1848,7 +1848,7 @@ module.exports = function(OO, _, $, W) {
       this.setClosedCaptionsInfo(info.videoId);
     },
 
-    onClosedCaptionCueChanged: function(event, data) {
+    onClosedCaptionCueChanged(event, data) {
       if (data && data.length > 0) {
         this.state.closedCaptionOptions.cueText = data;
       } else {
@@ -1857,7 +1857,7 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onRelatedVideosFetched: function(event, relatedVideos) {
+    onRelatedVideosFetched(event, relatedVideos) {
       OO.log('onRelatedVideosFetched is called');
       if (relatedVideos.videos && relatedVideos.videos.length) {
         this.state.discoveryData = { relatedVideos: relatedVideos.videos };
@@ -1872,7 +1872,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     // check if fullscreen is supported natively, set flag, add event listener for change
-    enableFullScreen: function() {
+    enableFullScreen() {
       if (Fullscreen.enabled) {
         this.state.isFullScreenSupported = true;
         document.addEventListener(Fullscreen.raw.fullscreenchange, this.onFullscreenChanged.bind(this));
@@ -1881,7 +1881,7 @@ module.exports = function(OO, _, $, W) {
 
     // iOS webkitSupportsFullscreen property is not valid until metadata has loaded
     // https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/ControllingMediaWithJavaScript/ControllingMediaWithJavaScript.html#//apple_ref/doc/uid/TP40009523-CH3-SW13
-    enableIosFullScreen: function() {
+    enableIosFullScreen() {
       if (!this.state.isFullScreenSupported) {
         if (this.state.mainVideoElement.webkitSupportsFullscreen) {
           this.state.isVideoFullScreenSupported = true;
@@ -1898,7 +1898,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     // called when event listener triggered
-    onFullscreenChanged: function() {
+    onFullscreenChanged() {
       if (this.state.isFullScreenSupported) {
         this.state.fullscreen = Fullscreen.isFullscreen;
       } else {
@@ -1919,9 +1919,9 @@ module.exports = function(OO, _, $, W) {
      * @param {string} popoverOptionsName - the name of the popover that does not need to be closed
      * @public
      */
-    closeOtherPopovers: function(popoverOptionsName) {
-      for (let menuName in CONSTANTS.MENU_OPTIONS) {
-        let currentOptionsName = CONSTANTS.MENU_OPTIONS[menuName];
+    closeOtherPopovers(popoverOptionsName) {
+      for (const menuName in CONSTANTS.MENU_OPTIONS) {
+        const currentOptionsName = CONSTANTS.MENU_OPTIONS[menuName];
 
         if (currentOptionsName !== popoverOptionsName) {
           this.closePopover(currentOptionsName);
@@ -1935,18 +1935,18 @@ module.exports = function(OO, _, $, W) {
      * @param {Object} [params] - params for the function
      * @public
      */
-    closePopover: function(menu, params) {
+    closePopover(menu, params) {
       params = params || {};
-      let menuOptions = this.state[menu];
-      let menuToggleButton = this.toggleButtons[menu];
+      const menuOptions = this.state[menu];
+      const menuToggleButton = this.toggleButtons[menu];
 
       if (menuOptions && menuOptions.showPopover) {
         // Re-focus on toggle button when closing the menu popover if the latter
         // was originally opened with a key press.
         if (
-          params.restoreToggleButtonFocus &&
-          menuToggleButton &&
-          menuToggleButton.wasTriggeredWithKeyboard()
+          params.restoreToggleButtonFocus
+          && menuToggleButton
+          && menuToggleButton.wasTriggeredWithKeyboard()
         ) {
           menuToggleButton.focus();
         }
@@ -1958,7 +1958,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     // called when user selects fullscreen icon
-    toggleFullscreen: function() {
+    toggleFullscreen() {
       // full support, any element
       if (this.state.isFullScreenSupported) {
         Fullscreen.toggle(this.state.mainVideoInnerWrapper.get(0));
@@ -1982,7 +1982,7 @@ module.exports = function(OO, _, $, W) {
      * Toggle fullscreen for video element only (iOS)
      * @private
      */
-    toggleIOSNativeFullscreen: function() {
+    toggleIOSNativeFullscreen() {
       if (this.state.fullscreen) {
         this.state.mainVideoElement.webkitExitFullscreen();
       } else {
@@ -2002,7 +2002,7 @@ module.exports = function(OO, _, $, W) {
      * Toggle fullscreen if native fullscreen is not supported (pseudo fullscreen)
      * @private
      */
-    togglePseudoFullscreenMode: function() {
+    togglePseudoFullscreenMode() {
       if (this.state.isFullWindow) {
         this.exitFullWindow();
       } else {
@@ -2012,7 +2012,7 @@ module.exports = function(OO, _, $, W) {
 
     // if fullscreen is not supported natively, "full window" style
     // is applied to video wrapper to fill browser window
-    enterFullWindow: function() {
+    enterFullWindow() {
       this.state.isFullWindow = this.state.fullscreen = true;
 
       // add listener for esc key
@@ -2024,7 +2024,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     // remove "full window" style and event listener
-    exitFullWindow: function() {
+    exitFullWindow() {
       this.state.isFullWindow = this.state.fullscreen = false;
 
       // remove event listener
@@ -2036,16 +2036,15 @@ module.exports = function(OO, _, $, W) {
     },
 
     // iOS event fires when a video enters full-screen mode
-    webkitBeginFullscreen: function() {
+    webkitBeginFullscreen() {
       this.state.fullscreen = true;
     },
 
     // iOS event fires when a video exits full-screen mode
-    webkitEndFullscreen: function() {
+    webkitEndFullscreen() {
       this.state.fullscreen = false;
-      let showUpNext =
-        this.skin.props.skinConfig.upNext.showUpNext ||
-        this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen;
+      const showUpNext = this.skin.props.skinConfig.upNext.showUpNext
+        || this.skin.props.skinConfig.discoveryScreen.showCountDownTimerOnEndScreen;
 
       // [PLAYER-212]
       // We can't show UI such as the "Up Next" countdown on fullscreen iOS. If a countdown
@@ -2062,14 +2061,14 @@ module.exports = function(OO, _, $, W) {
     },
 
     // exit full window on ESC key
-    exitFullWindowOnEscKey: function(event) {
+    exitFullWindowOnEscKey(event) {
       if (event.keyCode === CONSTANTS.KEYCODES.ESCAPE_KEY) {
         event.preventDefault();
         this.exitFullWindow();
       }
     },
 
-    onErrorEvent: function(event, errorCode) {
+    onErrorEvent(event, errorCode) {
       this.unsubscribeBasicPlaybackEvents();
       this.setBufferingState(false);
 
@@ -2080,7 +2079,7 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    unsubscribeFromMessageBus: function() {
+    unsubscribeFromMessageBus() {
       // basic playback events
       this.unsubscribeBasicPlaybackEvents();
 
@@ -2101,7 +2100,7 @@ module.exports = function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi');
     },
 
-    unsubscribeBasicPlaybackEvents: function() {
+    unsubscribeBasicPlaybackEvents() {
       this.mb.unsubscribe(OO.EVENTS.INITIAL_PLAY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAY, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.VC_PLAYED, 'customerUi');
@@ -2158,7 +2157,7 @@ module.exports = function(OO, _, $, W) {
     /* --------------------------------------------------------------------
      Skin state -> control skin
      --------------------------------------------------------------------- */
-    renderSkin: function(args) {
+    renderSkin(args) {
       if (this.state.configLoaded) {
         if (args) {
           this.state = DeepMerge(this.state, args);
@@ -2170,7 +2169,7 @@ module.exports = function(OO, _, $, W) {
     /* --------------------------------------------------------------------
      skin UI-action -> publish event to core player
      --------------------------------------------------------------------- */
-    toggleDiscoveryScreen: function() {
+    toggleDiscoveryScreen() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.PLAYING:
           this.pausedCallback = function() {
@@ -2214,20 +2213,20 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    toggleMute: function(muted, fromUser) {
+    toggleMute(muted, fromUser) {
       this.mb.publish(OO.EVENTS.CHANGE_MUTE_STATE, muted, null, fromUser);
     },
 
-    toggleStereoVr: function() {
+    toggleStereoVr() {
       this.isVrStereo = !this.isVrStereo;
       this.mb.publish(OO.EVENTS.TOGGLE_STEREO_VR);
     },
 
-    moveVrToDirection: function(rotate, direction) {
+    moveVrToDirection(rotate, direction) {
       this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
-    togglePlayPause: function() {
+    togglePlayPause() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           if (!this.state.isInitialPlay) {
@@ -2254,7 +2253,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    seek: function(seconds) {
+    seek(seconds) {
       if (this.state.playerState === CONSTANTS.STATE.END) {
         this.endSeeking();
         this.mb.publish(OO.EVENTS.REPLAY, seconds);
@@ -2263,36 +2262,34 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onLiveClick: function() {
+    onLiveClick() {
       this.mb.publish(OO.EVENTS.LIVE_BUTTON_CLICKED);
     },
 
-    setVolume: function(volume) {
+    setVolume(volume) {
       this.mb.publish(OO.EVENTS.CHANGE_VOLUME, volume);
     },
 
-    handleMuteClick: function() {
+    handleMuteClick() {
       this.toggleMute(!this.state.volumeState.muted, true);
     },
 
-    toggleShareScreen: function() {
+    toggleShareScreen() {
       if (this.state.screenToShow === CONSTANTS.SCREEN.SHARE_SCREEN) {
         this.closeScreen();
-      } else {
-        if (
-          this.state.playerState === CONSTANTS.STATE.PLAYING
-        ) {
-          this.pausedCallback = function() {
-            this.state.pluginsElement.addClass('oo-overlay-blur');
-            this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
-            this.renderSkin();
-          }.bind(this);
-          this.mb.publish(OO.EVENTS.PAUSE);
-        } else {
-          this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+      } else if (
+        this.state.playerState === CONSTANTS.STATE.PLAYING
+      ) {
+        this.pausedCallback = function() {
           this.state.pluginsElement.addClass('oo-overlay-blur');
+          this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
           this.renderSkin();
-        }
+        }.bind(this);
+        this.mb.publish(OO.EVENTS.PAUSE);
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
+        this.state.pluginsElement.addClass('oo-overlay-blur');
+        this.renderSkin();
       }
     },
 
@@ -2302,35 +2299,33 @@ module.exports = function(OO, _, $, W) {
      * @param screen The screen to toggle
      * @param {boolean} doNotPause Set to true to avoid pausing when toggling the screen
      */
-    toggleScreen: function(screen, doNotPause = false) {
+    toggleScreen(screen, doNotPause = false) {
       this.isNewVrVideo = false;
       if (this.state.screenToShow === screen) {
         this.closeScreen();
-      } else {
-        if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-          this.pausedCallback = function() {
-            this.state.pluginsElement.addClass('oo-overlay-blur');
-            this.state.screenToShow = screen;
-            this.renderSkin();
-          }.bind(this);
-          if (doNotPause) {
-            this.pausedCallback();
-            this.pausedCallback = null;
-          } else {
-            this.mb.publish(OO.EVENTS.PAUSE);
-          }
-        } else {
-          this.state.screenToShow = screen;
+      } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
+        this.pausedCallback = function() {
           this.state.pluginsElement.addClass('oo-overlay-blur');
+          this.state.screenToShow = screen;
           this.renderSkin();
+        }.bind(this);
+        if (doNotPause) {
+          this.pausedCallback();
+          this.pausedCallback = null;
+        } else {
+          this.mb.publish(OO.EVENTS.PAUSE);
         }
+      } else {
+        this.state.screenToShow = screen;
+        this.state.pluginsElement.addClass('oo-overlay-blur');
+        this.renderSkin();
       }
     },
 
     /**
      * The function handles a click on multiAudio icon
      */
-    toggleMultiAudioScreen: function() {
+    toggleMultiAudioScreen() {
       if (this.state.screenToShow === CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN) {
         if (this.state.playerState === CONSTANTS.STATE.END) {
           this.state.screenToShow = CONSTANTS.SCREEN.END_SCREEN;
@@ -2352,7 +2347,7 @@ module.exports = function(OO, _, $, W) {
      * @param {type} eventName The name of the event
      * @param {type} params The event's parameters
      */
-    onPositionInPlaylistDetermined: function(eventName, params) {
+    onPositionInPlaylistDetermined(eventName, params) {
       params = params || {};
       this.state.skipControls.hasPreviousVideos = !!params.hasPreviousVideos;
       this.state.skipControls.hasNextVideos = !!params.hasNextVideos;
@@ -2364,7 +2359,7 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {boolean} isHovering True if the control bar is hovered, false otherwise
      */
-    setScrubberBarHoverState: function(isHovering) {
+    setScrubberBarHoverState(isHovering) {
       if (this.state.scrubberBar.isHovering !== isHovering) {
         this.state.scrubberBar.isHovering = isHovering;
         this.renderSkin();
@@ -2377,15 +2372,15 @@ module.exports = function(OO, _, $, W) {
      * button is clicked repeatedly in quick succession.
      * @private
      */
-    rewindOrRequestPreviousVideo: function() {
-      let currentTimestamp = Utils.getCurrentTimestamp();
-      let timeElapsed = currentTimestamp - this.state.skipControls.requestPreviousTimestamp;
+    rewindOrRequestPreviousVideo() {
+      const currentTimestamp = Utils.getCurrentTimestamp();
+      const timeElapsed = currentTimestamp - this.state.skipControls.requestPreviousTimestamp;
       // Button has been clicked once more in a short amount of time, playhead
       // is below a certain threshold, or player is stalled after seeking, request previous video.
       if (
-        this.state.seeking ||
-        timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_THRESHOLD ||
-        this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD
+        this.state.seeking
+        || timeElapsed < CONSTANTS.UI.REQUEST_PREVIOUS_TIME_THRESHOLD
+        || this.state.mainVideoPlayhead < CONSTANTS.UI.REQUEST_PREVIOUS_PLAYHEAD_THRESHOLD
       ) {
         this.mb.publish(OO.EVENTS.REQUEST_PREVIOUS_VIDEO);
       } else {
@@ -2399,7 +2394,7 @@ module.exports = function(OO, _, $, W) {
      * Requests the next video from either the Playlists or Discovery plugins.
      * @private
      */
-    requestNextVideo: function() {
+    requestNextVideo() {
       this.mb.publish(OO.EVENTS.REQUEST_NEXT_VIDEO);
     },
 
@@ -2408,7 +2403,7 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {Number} playbackSpeed A number representing the rate by which playback should advance
      */
-    setPlaybackSpeed: function(playbackSpeed) {
+    setPlaybackSpeed(playbackSpeed) {
       this.mb.publish(OO.EVENTS.SET_PLAYBACK_SPEED, playbackSpeed);
     },
 
@@ -2417,11 +2412,11 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {String} focusedControl The value of the focusId property of the currently focused control or null if no control is focused
      */
-    setFocusedControl: function(focusedControl) {
+    setFocusedControl(focusedControl) {
       this.state.focusedControl = focusedControl;
     },
 
-    sendDiscoveryClickEvent: function(selectedContentData, isAutoUpNext) {
+    sendDiscoveryClickEvent(selectedContentData, isAutoUpNext) {
       this.state.pluginsElement.removeClass('oo-overlay-blur');
       if (isAutoUpNext) {
         this.state.upNextInfo.delayedContentData = selectedContentData;
@@ -2444,12 +2439,12 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    sendDiscoveryDisplayEvent: function(assetPosition, pageSize, uiTag, asset, customData) {
+    sendDiscoveryDisplayEvent(assetPosition, pageSize, uiTag, asset, customData) {
       customData.source = this.state.discoverySource;
       // With "Up Next" panel we only pass the data of the asset
       // that is currently shown
       if (asset.embed_code) {
-        let eventData = {
+        const eventData = {
           metadata: Utils.getDiscoveryEventData(assetPosition, pageSize, uiTag, asset, customData),
         };
         this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
@@ -2461,28 +2456,26 @@ module.exports = function(OO, _, $, W) {
      * the discovery display event to contain a single list of all displayed
      * discovery assets in one event as "relatedVideos".
      */
-    sendDiscoveryDisplayEventRelatedVideos: function(screenName, embedCode) {
-      let relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, 'relatedVideos', []);
+    sendDiscoveryDisplayEventRelatedVideos(screenName, embedCode) {
+      const relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, 'relatedVideos', []);
       let relatedVideos = relatedVideosData;
 
       // With "Up Next" panel we only pass the data of the asset
       // that is currently shown
       if (embedCode) {
-        let eventAsset = _.find(relatedVideosData, function(relatedVideo) {
-          return relatedVideo.embed_code === embedCode;
-        });
+        const eventAsset = _.find(relatedVideosData, relatedVideo => relatedVideo.embed_code === embedCode);
         relatedVideos = eventAsset ? [eventAsset] : [];
       }
 
-      let eventData = {
-        relatedVideos: relatedVideos,
+      const eventData = {
+        relatedVideos,
         custom: { source: screenName },
       };
       this.mb.publish(OO.EVENTS.DISCOVERY_API.SEND_DISPLAY_EVENT, eventData);
     },
 
-    togglePopover: function(menu) {
-      let menuOptions = this.state[menu];
+    togglePopover(menu) {
+      const menuOptions = this.state[menu];
 
       if (menuOptions) {
         menuOptions.showPopover = !menuOptions.showPopover;
@@ -2490,7 +2483,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    receiveVideoQualityChangeEvent: function(event, targetBitrate) {
+    receiveVideoQualityChangeEvent(event, targetBitrate) {
       this.state.videoQualityOptions.selectedBitrate = {
         id: targetBitrate,
       };
@@ -2506,15 +2499,15 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    sendVideoQualityChangeEvent: function(selectedContentData) {
+    sendVideoQualityChangeEvent(selectedContentData) {
       this.state.videoQualityOptions.selectedBitrate = {
         id: selectedContentData.id,
       };
       this.mb.publish(OO.EVENTS.SET_TARGET_BITRATE, selectedContentData.id);
     },
 
-    setClosedCaptionsInfo: function(videoId) {
-      let closedCaptionsInfo = this.state.closedCaptionsInfoCache[videoId];
+    setClosedCaptionsInfo(videoId) {
+      const closedCaptionsInfo = this.state.closedCaptionsInfoCache[videoId];
       if (!closedCaptionsInfo) {
         return;
       }
@@ -2534,23 +2527,23 @@ module.exports = function(OO, _, $, W) {
      *  - isGoingFullScreen: {Boolean} Determines whether or not the player is about
      * to enter fullscreen mode when this operation is requested.
      */
-    setClosedCaptionsLanguage: function(params) {
+    setClosedCaptionsLanguage(params) {
       var params = params || {};
-      let availableLanguages = this.state.closedCaptionOptions.availableLanguages;
+      const availableLanguages = this.state.closedCaptionOptions.availableLanguages;
       // if saved language not in available languages, set to first available language
       if (
-        availableLanguages &&
-        (this.state.closedCaptionOptions.language === null ||
-          !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))
+        availableLanguages
+        && (this.state.closedCaptionOptions.language === null
+          || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))
       ) {
         this.state.closedCaptionOptions.language = availableLanguages.languages[0];
       }
-      let language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : '';
-      let mode = this.state.closedCaptionOptions.enabled
+      const language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : '';
+      const mode = this.state.closedCaptionOptions.enabled
         ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN
         : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
       this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, language, {
-        mode: mode,
+        mode,
         isFullScreen: this.state.fullscreen,
         isGoingFullScreen: !!params.isGoingFullScreen,
       });
@@ -2560,7 +2553,7 @@ module.exports = function(OO, _, $, W) {
      * @description Close an extra screen
      * @private
      */
-    closeScreen: function() {
+    closeScreen() {
       this.state.pluginsElement.removeClass('oo-overlay-blur');
       this.state.pauseAnimationDisabled = true;
       if (this.state.playerState === CONSTANTS.STATE.PAUSE) {
@@ -2584,14 +2577,14 @@ module.exports = function(OO, _, $, W) {
      * @param {Object} params An object with additional options for this operation
      *  - forceEnabled: {Boolean} If true this will ensure that captions are also turned on after the new language is set
      */
-    onChangeClosedCaptionLanguage: function(event, language, params = {}) {
+    onChangeClosedCaptionLanguage(event, language, params = {}) {
       if (language === CONSTANTS.CLOSED_CAPTIONS.NO_LANGUAGE) {
         if (this.state.closedCaptionOptions.enabled) {
           this.toggleClosedCaptionEnabled();
         }
         return;
       }
-      let availableLanguages = this.state.closedCaptionOptions.availableLanguages;
+      const availableLanguages = this.state.closedCaptionOptions.availableLanguages;
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
@@ -2603,15 +2596,14 @@ module.exports = function(OO, _, $, W) {
           this.state.persistentSettings.closedCaptionOptions.enabled = true;
         }
 
-        this.state.closedCaptionOptions.language =
-          this.state.persistentSettings.closedCaptionOptions.language = language;
-        let captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
-        let mode = this.state.closedCaptionOptions.enabled
+        this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
+        const captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
+        const mode = this.state.closedCaptionOptions.enabled
           ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN
           : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
         // publish set closed caption event
         this.mb.publish(OO.EVENTS.SET_CLOSED_CAPTIONS_LANGUAGE, captionLanguage, {
-          mode: mode,
+          mode,
           isFullScreen: this.state.fullscreen,
         });
         // update skin, save new closed caption language
@@ -2623,7 +2615,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onClosedCaptionChange: function(name, value) {
+    onClosedCaptionChange(name, value) {
       this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[
         name
       ] = value;
@@ -2642,12 +2634,12 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {String} languageCode - ISO-639 language code
      */
-    setCaptionDirection: function(languageCode) {
+    setCaptionDirection(languageCode) {
       if (
-        typeof languageCode === 'string' &&
-        languageCode.length === 2 &&
-        this.state.config.languageDirections !== null &&
-        typeof this.state.config.languageDirections === 'object'
+        typeof languageCode === 'string'
+        && languageCode.length === 2
+        && this.state.config.languageDirections !== null
+        && typeof this.state.config.languageDirections === 'object'
       ) {
         if (this.state.config.languageDirections[languageCode]) {
           this.captionDirection = this.state.config.languageDirections[languageCode];
@@ -2664,13 +2656,13 @@ module.exports = function(OO, _, $, W) {
      * Note that currently the oo-anamorphic class has effect only on Firefox.
      * @param {boolen} enabled A value that determines whether to enable or disable the anamorphic videos CSS fix.
      */
-    trySetAnamorphicFixState: function(enabled) {
+    trySetAnamorphicFixState(enabled) {
       if (!this.state || !this.state.mainVideoInnerWrapper) {
         return;
       }
 
       if (enabled) {
-        let isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
+        const isAnamorphic = Utils.getPropertyValue(this.state.attributes, 'provider.ots_stretch_to_output');
 
         // Only enable anamorphic videos fix if video actually requires it
         if (isAnamorphic === true || isAnamorphic === 'true') {
@@ -2683,22 +2675,22 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    toggleClosedCaptionEnabled: function() {
+    toggleClosedCaptionEnabled() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
-      this.state.persistentSettings.closedCaptionOptions['enabled'] = !!this.state.closedCaptionOptions
+      this.state.persistentSettings.closedCaptionOptions.enabled = !!this.state.closedCaptionOptions
         .enabled;
       this.setClosedCaptionsLanguage();
       this.renderSkin();
       this.mb.publish(OO.EVENTS.SAVE_PLAYER_SETTINGS, this.state.persistentSettings);
     },
 
-    upNextDismissButtonClicked: function() {
+    upNextDismissButtonClicked() {
       this.state.upNextInfo.countDownCancelled = true;
       this.state.upNextInfo.showing = false;
       this.renderSkin();
     },
 
-    toggleMoreOptionsScreen: function(moreOptionsItems) {
+    toggleMoreOptionsScreen(moreOptionsItems) {
       if (this.state.screenToShow === CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN) {
         this.closeMoreOptionsScreen();
       } else {
@@ -2706,7 +2698,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    closeMoreOptionsScreen: function() {
+    closeMoreOptionsScreen() {
       this.state.pauseAnimationDisabled = true;
       this.state.screenToShow = CONSTANTS.SCREEN.PAUSE_SCREEN;
       this.state.playerState = CONSTANTS.STATE.PAUSE;
@@ -2715,7 +2707,7 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    displayMoreOptionsScreen: function(moreOptionsItems) {
+    displayMoreOptionsScreen(moreOptionsItems) {
       if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
         this.pausedCallback = function() {
           this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
@@ -2731,19 +2723,19 @@ module.exports = function(OO, _, $, W) {
       this.state.moreOptionsItems = moreOptionsItems;
     },
 
-    enablePauseAnimation: function() {
+    enablePauseAnimation() {
       this.state.pauseAnimationDisabled = false;
     },
 
-    beginSeeking: function() {
+    beginSeeking() {
       this.state.seeking = true;
     },
 
-    endSeeking: function() {
+    endSeeking() {
       this.state.seeking = false;
     },
 
-    updateSeekingPlayhead: function(playhead) {
+    updateSeekingPlayhead(playhead) {
       playhead = Math.min(Math.max(0, playhead), this.skin.state.duration);
       this.skin.updatePlayhead(
         playhead,
@@ -2752,12 +2744,12 @@ module.exports = function(OO, _, $, W) {
       ).catch(() => { OO.log('updateSeekingPlayhead: Could not set new state for skin'); });
     },
 
-    hideVolumeSliderBar: function() {
+    hideVolumeSliderBar() {
       this.state.volumeState.volumeSliderVisible = false;
       this.renderSkin();
     },
 
-    showVolumeSliderBar: function() {
+    showVolumeSliderBar() {
       this.state.volumeState.volumeSliderVisible = true;
       if (Utils.isAndroid()) {
         this.startHideVolumeSliderTimer();
@@ -2765,45 +2757,45 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    startHideVolumeSliderTimer: function() {
+    startHideVolumeSliderTimer() {
       this.cancelTimer();
-      let timer = setTimeout(
-        function() {
+      const timer = setTimeout(
+        () => {
           if (this.state.volumeState.volumeSliderVisible === true) {
             this.hideVolumeSliderBar();
           }
-        }.bind(this),
+        },
         3000
       );
       this.state.timer = timer;
     },
 
-    startHideControlBarTimer: function() {
+    startHideControlBarTimer() {
       if (this.skin.props.skinConfig.controlBar.autoHide === true && !this.state.audioOnly) {
         this.cancelTimer();
-        let timer = setTimeout(
-          function() {
+        const timer = setTimeout(
+          () => {
             if (this.state.controlBarVisible === true) {
               this.hideControlBar();
             }
-          }.bind(this),
+          },
           3000
         );
         this.state.timer = timer;
       }
     },
 
-    showControlBar: function() {
-      let oldState = this.state.controlBarVisible;
+    showControlBar() {
+      const oldState = this.state.controlBarVisible;
       this.state.controlBarVisible = true;
       if (this.state.controlBarVisible !== oldState) {
         this.renderSkin();
       }
     },
 
-    hideControlBar: function() {
+    hideControlBar() {
       if (!this.state.audioOnly) {
-        let oldState = this.state.controlBarVisible;
+        const oldState = this.state.controlBarVisible;
         this.state.controlBarVisible = false;
         if (Utils.isAndroid()) {
           this.hideVolumeSliderBar();
@@ -2814,7 +2806,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    cancelTimer: function() {
+    cancelTimer() {
       if (this.state.timer !== null) {
         clearTimeout(this.state.timer);
         this.state.timer = null;
@@ -2822,11 +2814,11 @@ module.exports = function(OO, _, $, W) {
     },
 
     // use fixed aspect ratio number from skinConfig
-    updateAspectRatio: function() {
+    updateAspectRatio() {
       if (
-        this.skin &&
-        this.skin.props.skinConfig.responsive.aspectRatio &&
-        this.skin.props.skinConfig.responsive.aspectRatio !== 'auto'
+        this.skin
+        && this.skin.props.skinConfig.responsive.aspectRatio
+        && this.skin.props.skinConfig.responsive.aspectRatio !== 'auto'
       ) {
         if (this.skin.props.skinConfig.responsive.aspectRatio === 'fluid') {
           const container = this.state.mainVideoContainer[0].parentNode;
@@ -2841,20 +2833,20 @@ module.exports = function(OO, _, $, W) {
     },
 
     // returns original video aspect ratio
-    calculateAspectRatio: function(width, height) {
-      let aspectRatio = (height / width * 100).toFixed(2);
+    calculateAspectRatio(width, height) {
+      const aspectRatio = (height / width * 100).toFixed(2);
       return aspectRatio;
     },
 
     // set Main Video Element Wrapper padding-top to aspect ratio
-    setAspectRatio: function() {
+    setAspectRatio() {
       if (this.state.mainVideoAspectRatio > 0 && !this.state.audioOnly) {
-        this.state.mainVideoInnerWrapper.css('padding-top', this.state.mainVideoAspectRatio + '%');
+        this.state.mainVideoInnerWrapper.css('padding-top', `${this.state.mainVideoAspectRatio}%`);
       }
     },
 
     // find descendant video element
-    findMainVideoElement: function(element) {
+    findMainVideoElement(element) {
       let elements = [];
       // use actual element
       if (element[0]) {
@@ -2871,8 +2863,8 @@ module.exports = function(OO, _, $, W) {
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
         }
       } else if (
-        element.tagName &&
-        element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) !== -1
+        element.tagName
+        && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) !== -1
       ) {
         // find flash object
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
@@ -2891,14 +2883,14 @@ module.exports = function(OO, _, $, W) {
      * @protected
      * @method Html5Skin#addBlur
      */
-    addBlur: function() {
+    addBlur() {
       // [PLAYER-2220]: videoVr should not blur. This prevents a circular review on a pause.
       if (!this.videoVr && this.state.mainVideoElement && this.state.mainVideoElement.classList) {
         this.state.mainVideoElement.classList.add('oo-blur');
       }
     },
 
-    removeBlur: function() {
+    removeBlur() {
       if (this.state.mainVideoElement && this.state.mainVideoElement.classList) {
         this.state.mainVideoElement.classList.remove('oo-blur');
       }

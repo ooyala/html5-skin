@@ -1,8 +1,6 @@
-let MACROS = require('./macros');
-/** ******************************************************************
- CONSTANT
- *********************************************************************/
-let CONSTANTS = {
+const MACROS = require('./macros');
+
+const CONSTANTS = {
   STATE: {
     START: 'start',
     PLAYING: 'playing',
@@ -76,8 +74,8 @@ let CONSTANTS = {
     SEND: 'Send',
     ERROR_ACTION: 'RELOAD YOUR SCREEN OR TRY SELECTING A DIFFERENT VIDEO',
     UNKNOWN_ERROR:
-      'Something happened while we were trying to play your video! ' +
-      'Click replay or simply reload your page.',
+      'Something happened while we were trying to play your video! '
+      + 'Click replay or simply reload your page.',
     LANGUAGE_TAB_TITLE: 'Language',
     COLOR_SELECTION_TAB_TITLE: 'Color Selection',
     CAPTION_OPACITY_TAB_TITLE: 'Caption Opacity',
@@ -151,10 +149,10 @@ let CONSTANTS = {
     EXIT_FULLSCREEN: 'Exit Fullscreen',
     SEEK_SLIDER: 'Seek slider',
     VOLUME_SLIDER: 'Volume',
-    VOLUME_PERCENT: MACROS.VOLUME + '% volume',
-    TIME_DISPLAY: MACROS.CURRENT_TIME + ' of ' + MACROS.TOTAL_TIME,
+    VOLUME_PERCENT: `${MACROS.VOLUME}% volume`,
+    TIME_DISPLAY: `${MACROS.CURRENT_TIME} of ${MACROS.TOTAL_TIME}`,
     TIME_DISPLAY_LIVE: 'Live video',
-    TIME_DISPLAY_DVR: MACROS.CURRENT_TIME + ' of ' + MACROS.TOTAL_TIME + ' live video',
+    TIME_DISPLAY_DVR: `${MACROS.CURRENT_TIME} of ${MACROS.TOTAL_TIME} live video`,
     CLOSE: 'Close',
     TOGGLE_CLOSED_CAPTIONS: 'Toggle Closed Captions',
     CAPTION_OPTIONS: 'Closed Caption Options',
@@ -162,7 +160,7 @@ let CONSTANTS = {
     STEREO_OFF: 'Monoscopic',
     MORE_OPTIONS: 'More Options',
     PREVIOUS_OPTIONS: 'Previous Options',
-    SLIDER_VALUE_TEXT: MACROS.PERCENT + '% ' + MACROS.SETTING,
+    SLIDER_VALUE_TEXT: `${MACROS.PERCENT}% ${MACROS.SETTING}`,
     LANGUAGE_MENU: 'Language',
     CAPTION_OPACITY_MENU: 'Caption Opacity',
     TEXT_COLOR_MENU: 'Text Color',
@@ -175,9 +173,9 @@ let CONSTANTS = {
     MULTI_AUDIO_OPTIONS: 'Closed Multi Audio Options',
     PREVIOUS_VIDEO: 'Previous Video',
     NEXT_VIDEO: 'Next Video',
-    SKIP_BACKWARD: 'Rewind ' + MACROS.SECONDS + ' Seconds',
-    SKIP_FORWARD: 'Skip ' + MACROS.SECONDS + ' Seconds Forward',
-    PLAYBACK_SPEED: MACROS.RATE + 'x Playback Speed',
+    SKIP_BACKWARD: `Rewind ${MACROS.SECONDS} Seconds`,
+    SKIP_FORWARD: `Skip ${MACROS.SECONDS} Seconds Forward`,
+    PLAYBACK_SPEED: `${MACROS.RATE}x Playback Speed`,
     PLAYBACK_SPEED_OPTION: 'Speed',
     NORMAL_SPEED: 'Normal Speed',
     CHROMECAST: 'Chromecast',
@@ -249,10 +247,10 @@ let CONSTANTS = {
     UP_ARROW_KEY: 38,
     DOWN_ARROW_KEY: 40,
     ESCAPE_KEY: 27,
-    A: 65,
-    D: 68,
-    W: 87,
-    S: 83,
+    A: 65, // eslint-disable-line id-length
+    D: 68, // eslint-disable-line id-length
+    W: 87, // eslint-disable-line id-length
+    S: 83, // eslint-disable-line id-length
   },
 
   DIRECTIONS: {
@@ -301,7 +299,7 @@ let CONSTANTS = {
 
   PLAYBACK_SPEED: {
     DEFAULT_VALUE: 1, // Default playback rate
-    DEFAULT_OPTIONS: [ 0.5, 0.75, 1, 1.25, 1.5, 2 ], // Default options for playback speed menu
+    DEFAULT_OPTIONS: [0.5, 0.75, 1, 1.25, 1.5, 2], // eslint-disable-line no-magic-numbers
     MIN: 0.5,
     MAX: 2,
   },
@@ -390,9 +388,9 @@ let CONSTANTS = {
       BITRATE: 'bitrate',
     },
     TEXT: {
-      RESOLUTION_BITRATE: MACROS.RESOLUTION + 'p (' + MACROS.BITRATE + ')',
-      RESOLUTION_ONLY: MACROS.RESOLUTION + 'p',
-      TIERED_RESOLUTION_ONLY: MACROS.RESOLUTION + 'p (' + MACROS.RESOLUTION_TIER + ')',
+      RESOLUTION_BITRATE: `${MACROS.RESOLUTION}p (${MACROS.BITRATE})`,
+      RESOLUTION_ONLY: `${MACROS.RESOLUTION}p`,
+      TIERED_RESOLUTION_ONLY: `${MACROS.RESOLUTION}p (${MACROS.RESOLUTION_TIER})`,
       BITRATE_ONLY: MACROS.BITRATE,
     },
   },
@@ -468,16 +466,16 @@ let CONSTANTS = {
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_DEVICE_LIMIT_REACHED',
       title: 'AUTHORIZATION ERROR',
       description:
-        'Unable to access this content, as the maximum number of devices' +
-        ' has already been authorized. Error Code 29',
+        'Unable to access this content, as the maximum number of devices'
+        + ' has already been authorized. Error Code 29',
       action: 'Please remove one of your authorized devices to enable this device.',
     },
     non_registered_device: {
       name: 'OO.ERROR.API.SAS.ERROR.ERROR_NON_REGISTERED_DEVICE',
       title: 'AUTHORIZATION ERROR',
       description:
-        'Unable to register this device to this account, as the maximum' +
-        ' number of authorized devices has already been reached. Error Code 22',
+        'Unable to register this device to this account, as the maximum'
+        + ' number of authorized devices has already been reached. Error Code 22',
       action: 'Please remove one of your authorized devices to enable this device.',
     },
     drm_general_failure: {
@@ -563,8 +561,8 @@ let CONSTANTS = {
     unable_to_create_video_element: {
       name: 'OO.ERROR.VC.UNABLE_TO_CREATE_VIDEO_ELEMENT',
       description:
-        'Something happened while we were trying to play your video! ' +
-        'Click replay or simply reload your page.',
+        'Something happened while we were trying to play your video! '
+        + 'Click replay or simply reload your page.',
     },
   },
   THUMBNAIL: {

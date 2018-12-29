@@ -1,23 +1,28 @@
-/** ******************************************************************
-  ERROR SCREEN
-*********************************************************************/
-let React = require('react');
-let ClassNames = require('classnames');
-let CONSTANTS = require('../constants/constants');
-let Utils = require('../components/utils');
-let AccessibilityMixin = require('../mixins/accessibilityMixin');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+import React from 'react';
+import ClassNames from 'classnames';
+import PropTypes from 'prop-types';
+import CONSTANTS from '../constants/constants';
+import Utils from '../components/utils';
+/* eslint-disable react/destructuring-assignment */
 
-let ErrorScreen = createReactClass({
-  mixins: [AccessibilityMixin],
+/**
+ * Display errors in user friendly screen
+ */
+class ErrorScreen extends React.Component {
+  componentDidMount() {
+    this.props.controller.state.accessibilityControlsEnabled = false;
+  }
 
-  render: function() {
+  componentWillUnmount() {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  }
+
+  render() {
     let errorTitle;
     let errorDescription;
-    var errorAction;
-    if (CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)) {
-      var errorAction = CONSTANTS.SKIN_TEXT.ERROR_ACTION;
+    let errorAction;
+    if (CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)) { // eslint-disable-line
+      errorAction = CONSTANTS.SKIN_TEXT.ERROR_ACTION;
       if (CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].action) {
         errorAction = CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].action;
       }
@@ -34,16 +39,17 @@ let ErrorScreen = createReactClass({
         this.props.localizableStrings
       );
 
-      // / TODO - need to make countdown functionality display for all languages
-      let startTime = this.props.errorCode.flight_start_time;
+      // TODO - need to make countdown functionality display for all languages
+      const startTime = this.props.errorCode.flight_start_time;
       if (
-        this.props.errorCode.code === CONSTANTS.ERROR_CODE.FUTURE &&
-        this.props.language === CONSTANTS.LANGUAGE.ENGLISH &&
-        startTime !== null &&
-        !isNaN(startTime)
+        this.props.errorCode.code === CONSTANTS.ERROR_CODE.FUTURE
+        && this.props.language === CONSTANTS.LANGUAGE.ENGLISH
+        && startTime !== null
+        && !Number.isNaN(startTime)
       ) {
-        errorDescription =
-          'This video will be available in ' + Utils.getStartCountdown(startTime * 1000 - Date.now());
+        const second = 1000;
+        errorDescription = 'This video will be available in '
+          + `${Utils.getStartCountdown(startTime * second - Date.now())}`;
       }
       errorAction = Utils.getLocalizedString(this.props.language, errorAction, this.props.localizableStrings);
     } else {
@@ -56,7 +62,7 @@ let ErrorScreen = createReactClass({
       errorAction = null;
     }
 
-    let errorContentClass = ClassNames({
+    const errorContentClass = ClassNames({
       'oo-error-content': true,
       'oo-center-block': true,
     });
@@ -70,8 +76,8 @@ let ErrorScreen = createReactClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
 ErrorScreen.propTypes = {
   controller: PropTypes.shape({
@@ -81,17 +87,15 @@ ErrorScreen.propTypes = {
   }).isRequired,
   errorCode: PropTypes.shape({
     code: PropTypes.string,
+    flight_start_time: PropTypes.number,
   }).isRequired,
   language: PropTypes.string,
-  localizableStrings: PropTypes.object,
+  localizableStrings: PropTypes.object, // eslint-disable-line
 };
 
 ErrorScreen.defaultProps = {
-  controller: {
-    state: {
-      accessibilityControlsEnabled: true,
-    },
-  },
+  language: 'en',
+  localizableStrings: {},
 };
 
 module.exports = ErrorScreen;

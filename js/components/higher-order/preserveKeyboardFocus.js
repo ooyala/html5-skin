@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const CONSTANTS = require('../../constants/constants');
 const PropTypes = require('prop-types');
+const CONSTANTS = require('../../constants/constants');
 
 /**
  * Extends a Component with the ability to store its focused element id in the
@@ -45,7 +45,7 @@ const preserveKeyboardFocus = function(ComposedComponent) {
       if (!domElement || !this.props.controller.state.focusedControl) {
         return;
       }
-      const selector = '[' + CONSTANTS.KEYBD_FOCUS_ID_ATTR + '="' + this.props.controller.state.focusedControl + '"]';
+      const selector = `[${CONSTANTS.KEYBD_FOCUS_ID_ATTR}="${this.props.controller.state.focusedControl}"]`;
       const control = domElement.querySelector(selector);
 
       if (control && typeof control.focus === 'function') {
@@ -99,7 +99,8 @@ const preserveKeyboardFocus = function(ComposedComponent) {
           {...this.props}
           ref={this.composedComponentRef}
           onFocus={this.onFocus}
-          onBlur={this.onBlur}>
+          onBlur={this.onBlur}
+        >
           {this.props.children}
         </ComposedComponent>
       );

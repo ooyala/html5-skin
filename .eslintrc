@@ -1,10 +1,11 @@
 {
-  "extends": "standard",
+  "extends": "airbnb",
   "globals": {
     "_": false,
     "$": false,
     "OO": false
   },
+  "parser": "babel-eslint",
   "plugins": [
     "require-jsdoc-except"
   ],

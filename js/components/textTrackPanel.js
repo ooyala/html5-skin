@@ -3,15 +3,15 @@
  *
  * @module TextTrackPanel
  */
-let React = require('react');
-let Utils = require('./utils');
-let classNames = require('classnames');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const React = require('react');
+const classNames = require('classnames');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const Utils = require('./utils');
 
-let baseFontSize = 1.0;
+const baseFontSize = 1.0;
 
-let TextTrackPanel = createReactClass({
+const TextTrackPanel = createReactClass({
   colorMap: {
     White: '255,255,255',
     Blue: '0,0,255',
@@ -47,28 +47,28 @@ let TextTrackPanel = createReactClass({
 
   fontSizeMap: {
     Small: {
-      xs: baseFontSize * 0.8 + 'em',
-      sm: baseFontSize * 1.0 + 'em',
-      md: baseFontSize * 1.2 + 'em',
-      lg: baseFontSize * 1.4 + 'em',
+      xs: `${baseFontSize * 0.8}em`,
+      sm: `${baseFontSize * 1.0}em`,
+      md: `${baseFontSize * 1.2}em`,
+      lg: `${baseFontSize * 1.4}em`,
     },
     Medium: {
-      xs: baseFontSize * 1.2 + 'em',
-      sm: baseFontSize * 1.4 + 'em',
-      md: baseFontSize * 1.6 + 'em',
-      lg: baseFontSize * 1.8 + 'em',
+      xs: `${baseFontSize * 1.2}em`,
+      sm: `${baseFontSize * 1.4}em`,
+      md: `${baseFontSize * 1.6}em`,
+      lg: `${baseFontSize * 1.8}em`,
     },
     Large: {
-      xs: baseFontSize * 1.6 + 'em',
-      sm: baseFontSize * 1.8 + 'em',
-      md: baseFontSize * 2.0 + 'em',
-      lg: baseFontSize * 2.2 + 'em',
+      xs: `${baseFontSize * 1.6}em`,
+      sm: `${baseFontSize * 1.8}em`,
+      md: `${baseFontSize * 2.0}em`,
+      lg: `${baseFontSize * 2.2}em`,
     },
     'Extra Large': {
-      xs: baseFontSize * 2.0 + 'em',
-      sm: baseFontSize * 2.2 + 'em',
-      md: baseFontSize * 2.4 + 'em',
-      lg: baseFontSize * 2.6 + 'em',
+      xs: `${baseFontSize * 2.0}em`,
+      sm: `${baseFontSize * 2.2}em`,
+      md: `${baseFontSize * 2.4}em`,
+      lg: `${baseFontSize * 2.6}em`,
     },
   },
 
@@ -79,16 +79,16 @@ let TextTrackPanel = createReactClass({
     Shadow: '2px 2px 2px #1a1a1a',
   },
 
-  setWindowBackgroundStyle: function(color, opacity) {
+  setWindowBackgroundStyle(color, opacity) {
     if (color === 'Transparent') opacity = 0;
     return {
-      backgroundColor: 'rgba(' + this.colorMap[color] + ',' + opacity + ')',
+      backgroundColor: `rgba(${this.colorMap[color]},${opacity})`,
     };
   },
 
-  setTextStyle: function(color, opacity, fontType, fontSize, textEnhancement, direction) {
-    let styles = {
-      color: 'rgba(' + this.colorMap[color] + ',' + opacity + ')',
+  setTextStyle(color, opacity, fontType, fontSize, textEnhancement, direction) {
+    const styles = {
+      color: `rgba(${this.colorMap[color]},${opacity})`,
       fontFamily: this.fontTypeMap[fontType],
       fontVariant: this.fontVariantMap[fontType],
       fontSize: this.fontSizeMap[fontSize][this.props.responsiveView],
@@ -100,32 +100,32 @@ let TextTrackPanel = createReactClass({
     return styles;
   },
 
-  render: function() {
+  render() {
     if (!this.props.cueText) {
       return null;
     }
-    let className = classNames('oo-text-track-container', {
+    const className = classNames('oo-text-track-container', {
       'oo-in-background': this.props.isInBackground,
     });
 
     return (
       <div className={className}>
         <div
-          className={'oo-text-track-window'}
+          className="oo-text-track-window"
           style={this.setWindowBackgroundStyle(
             this.props.closedCaptionOptions.windowColor,
             this.props.closedCaptionOptions.windowOpacity
           )}
         >
           <div
-            className={'oo-text-track-background'}
+            className="oo-text-track-background"
             style={this.setWindowBackgroundStyle(
               this.props.closedCaptionOptions.backgroundColor,
               this.props.closedCaptionOptions.backgroundOpacity
             )}
           >
             <div
-              className={'oo-text-track'}
+              className="oo-text-track"
               dir="auto"
               style={this.setTextStyle(
                 this.props.closedCaptionOptions.textColor,

@@ -75,7 +75,7 @@ class CustomScrollArea extends React.Component {
 
       // Update state only if it's different from previous
       if (this.state.canScroll !== canScroll) {
-        this.setState({ canScroll: canScroll });
+        this.setState({ canScroll });
       }
     }
   }
@@ -90,8 +90,8 @@ class CustomScrollArea extends React.Component {
     // Avoid preventing default on child elements otherwise the scroll area
     // itself will not scroll
     if (
-      this.state.canScroll && // Only prevent default if area can actually be scrolled
-      this.domNode === event.currentTarget
+      this.state.canScroll // Only prevent default if area can actually be scrolled
+      && this.domNode === event.currentTarget
     ) {
       event.preventDefault();
     }
@@ -102,7 +102,8 @@ class CustomScrollArea extends React.Component {
       <ScrollArea
         {...this.props}
         ref={this.storeRef}
-        stopScrollPropagation={this.state.canScroll}>
+        stopScrollPropagation={this.state.canScroll}
+      >
         {this.props.children}
       </ScrollArea>
     );

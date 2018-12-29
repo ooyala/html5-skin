@@ -1,19 +1,19 @@
-let React = require('react');
+const React = require('react');
 
-let AccessibleButton = require('./accessibleButton');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const AccessibleButton = require('./accessibleButton');
 
-let Icon = require('../components/icon');
+const Icon = require('../components/icon');
 
-let CONSTANTS = require('../constants/constants');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const CONSTANTS = require('../constants/constants');
 
-let CloseButton = createReactClass({
-  render: function() {
+const CloseButton = createReactClass({
+  render() {
     return (
       <AccessibleButton
         className={this.props.cssClass}
-        focusId={CONSTANTS.FOCUS_IDS.CLOSE + '-' + Date.now()}
+        focusId={`${CONSTANTS.FOCUS_IDS.CLOSE}-${Date.now()}`}
         ariaLabel={CONSTANTS.ARIA_LABELS.CLOSE}
         role={this.props.role}
         onClick={this.props.closeAction}

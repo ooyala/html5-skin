@@ -1,24 +1,24 @@
-let React = require('react');
+const React = require('react');
 
-let ClassNames = require('classnames');
+const ClassNames = require('classnames');
 
-let MACROS = require('../constants/macros');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const MACROS = require('../constants/macros');
 
-let CONSTANTS = require('../constants/constants');
+const CONSTANTS = require('../constants/constants');
 
-let Utils = require('./utils');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const Utils = require('./utils');
 
-let Slider = createReactClass({
+const Slider = createReactClass({
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       isDragging: false,
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.handleSliderColoring(this.props);
 
     if (this.isIeFixRequired()) {
@@ -26,40 +26,40 @@ let Slider = createReactClass({
     }
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if (this.valueObserver && typeof this.valueObserver.disconnect === 'function') {
       this.valueObserver.disconnect();
     }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.props.value) {
       this.handleSliderColoring(nextProps);
     }
   },
 
-  handleSliderColoring: function(props) {
+  handleSliderColoring(props) {
     if (!Utils.isEdge()) {
-      let input = this.refs[this.props.itemRef];
-      let style = window.getComputedStyle(input, null);
+      const input = this.refs[this.props.itemRef];
+      const style = window.getComputedStyle(input, null);
 
-      let colorBeforeThumb = style.getPropertyValue('border-left-color');
-      let colorAfterThumb = style.getPropertyValue('border-right-color');
+      const colorBeforeThumb = style.getPropertyValue('border-left-color');
+      const colorAfterThumb = style.getPropertyValue('border-right-color');
 
-      let value = (props.value - props.minValue) / (props.maxValue - props.minValue);
+      const value = (props.value - props.minValue) / (props.maxValue - props.minValue);
       input.style.backgroundImage = [
         '-webkit-gradient(',
         'linear, ',
         'left top, ',
         'right top, ',
-        'color-stop(' + value + ', ' + colorBeforeThumb + '), ',
-        'color-stop(' + value + ', ' + colorAfterThumb + ')',
+        `color-stop(${value}, ${colorBeforeThumb}), `,
+        `color-stop(${value}, ${colorAfterThumb})`,
         ')',
       ].join('');
     }
   },
 
-  changeValue: function(event) {
+  changeValue(event) {
     if (!event.target) {
       return;
     }
@@ -84,7 +84,7 @@ let Slider = createReactClass({
    * @private
    * @returns {Boolean} True if the fix is required, false otherwise
    */
-  isIeFixRequired: function() {
+  isIeFixRequired() {
     return Utils.isIE();
   },
 
@@ -96,12 +96,12 @@ let Slider = createReactClass({
    * @param {Node} target The html element which we want to observe.
    * @returns {MutationObserver} The new mutation observer instance that was set up or undefined if setup failed.
    */
-  setUpValueObserver: function(target) {
+  setUpValueObserver(target) {
     if (!target || !window.MutationObserver) {
       return;
     }
-    let observer = new MutationObserver(this.triggerOnChangeForIe);
-    let observerConfig = {
+    const observer = new MutationObserver(this.triggerOnChangeForIe);
+    const observerConfig = {
       attributes: true,
       attributeFilter: ['value'],
     };
@@ -115,24 +115,24 @@ let Slider = createReactClass({
    * happens in order to let React update the UI.
    * @private
    */
-  triggerOnChangeForIe: function() {
-    let domElement = this.refs[this.props.itemRef];
+  triggerOnChangeForIe() {
+    const domElement = this.refs[this.props.itemRef];
 
     if (domElement) {
       // Note that we use the attribute's value, rather than the element's value
       // property, which seems to have the wrong value some times.
-      let newValue = Utils.ensureNumber(domElement.getAttribute('value'), 0);
+      const newValue = Utils.ensureNumber(domElement.getAttribute('value'), 0);
       this.props.onChange(newValue);
     }
   },
 
-  onMouseDown: function() {
+  onMouseDown() {
     this.setState({
       isDragging: true,
     });
   },
 
-  onMouseUp: function(event) {
+  onMouseUp(event) {
     Utils.blurOnMouseUp(event);
 
     this.setState({
@@ -140,7 +140,7 @@ let Slider = createReactClass({
     });
   },
 
-  onMouseMove: function(event) {
+  onMouseMove(event) {
     // IE11 doesn't update the value by itself when dragging the slider
     // with the mouse
     if (this.isIeFixRequired()) {
@@ -153,7 +153,7 @@ let Slider = createReactClass({
    * @private
    * @param {Event} event The keydown event object.
    */
-  onKeyDown: function(event) {
+  onKeyDown(event) {
     let value;
 
     switch (event.key) {
@@ -187,12 +187,12 @@ let Slider = createReactClass({
    * @param {Boolean} forward If true gets the value to the right of the current value or the one to the left otherwise.
    * @returns {Number} The next value to the left or right of the current value.
    */
-  getNextSliderValue: function(forward) {
+  getNextSliderValue(forward) {
     let value = 0;
-    let sign = forward ? 1 : -1;
-    let delta = Utils.ensureNumber(this.props.value) + Utils.ensureNumber(this.props.step, 1) * sign;
-    let min = Utils.ensureNumber(this.props.minValue, -Infinity);
-    let max = Utils.ensureNumber(this.props.maxValue, Infinity);
+    const sign = forward ? 1 : -1;
+    const delta = Utils.ensureNumber(this.props.value) + Utils.ensureNumber(this.props.step, 1) * sign;
+    const min = Utils.ensureNumber(this.props.minValue, -Infinity);
+    const max = Utils.ensureNumber(this.props.maxValue, Infinity);
     value = Utils.constrainToRange(delta, min, max);
     value = Utils.toFixedNumber(value, 2);
     return value;
@@ -205,14 +205,13 @@ let Slider = createReactClass({
    * @private
    * @returns {Object} An object with the following properties: valueMin, valueMax, valueNow, valueText.
    */
-  getAriaValues: function() {
-    let aria = {};
+  getAriaValues() {
+    const aria = {};
 
     if (this.props.usePercentageForAria) {
       aria.valueMin = 0;
       aria.valueMax = 100;
-      aria.valueNow =
-        Utils.ensureNumber(this.props.value, 0) * 100 / Utils.ensureNumber(this.props.maxValue, 1);
+      aria.valueNow = Utils.ensureNumber(this.props.value, 0) * 100 / Utils.ensureNumber(this.props.maxValue, 1);
       aria.valueText = CONSTANTS.ARIA_LABELS.SLIDER_VALUE_TEXT;
       aria.valueText = aria.valueText
         .replace(MACROS.PERCENT, aria.valueNow)
@@ -221,13 +220,13 @@ let Slider = createReactClass({
       aria.valueMin = this.props.minValue;
       aria.valueMax = this.props.maxValue;
       aria.valueNow = this.props.value;
-      aria.valueText = aria.valueNow + ' ' + this.props.settingName;
+      aria.valueText = `${aria.valueNow} ${this.props.settingName}`;
     }
     return aria;
   },
 
-  render: function() {
-    let aria = this.getAriaValues();
+  render() {
+    const aria = this.getAriaValues();
 
     const className = ClassNames('oo-slider', this.props.className, {
       'oo-dragging': this.state.isDragging,
@@ -279,7 +278,7 @@ Slider.defaultProps = Object.create(
   {
     focusId: {
       enumerable: true,
-      get: function() {
+      get() {
         return Math.random()
           .toString(36)
           .substr(2, 10);

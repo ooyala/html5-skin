@@ -1,13 +1,13 @@
-let React = require('react');
+const React = require('react');
 
-let CONSTANTS = require('../../constants/constants');
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
+const CONSTANTS = require('../../constants/constants');
 
-let DataSelector = require('../dataSelector');
-let createReactClass = require('create-react-class');
-let PropTypes = require('prop-types');
+const DataSelector = require('../dataSelector');
 
-let FontTypeTab = createReactClass({
-  getInitialState: function() {
+const FontTypeTab = createReactClass({
+  getInitialState() {
     return {
       selectedFontType: this.props.closedCaptionOptions.fontType,
       availableFontTypes: [
@@ -22,7 +22,7 @@ let FontTypeTab = createReactClass({
     };
   },
 
-  changeFontType: function(fontType) {
+  changeFontType(fontType) {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
@@ -32,7 +32,7 @@ let FontTypeTab = createReactClass({
     });
   },
 
-  render: function() {
+  render() {
     return (
       <div className="oo-font-type-tab">
         <DataSelector

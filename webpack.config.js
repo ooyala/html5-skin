@@ -4,23 +4,38 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+/* global __dirname */
 
 module.exports = {
   entry: {
-    'html5-skin': ['./js/index.js', './scss/html5-skin.scss']
+    'html5-skin': ['./js/index.js', './scss/html5-skin.scss'],
   },
   output: {
     path: path.resolve(__dirname, './build'),
     filename: '[name].min.js',
   },
+  resolve: { extensions: ['.js', '.jsx', '.json'] },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.jsx$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: [
+              '@babel/plugin-transform-react-jsx',
+              '@babel/plugin-proposal-class-properties',
+            ],
+          },
+        },
       },
       {
         test: /\.scss$/,
@@ -30,19 +45,18 @@ module.exports = {
             loader: 'css-loader',
             options: {
               sourceMap: true,
-              url: false
-            }
+              url: false,
+            },
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
-        ]
-
-      }
-    ]
+        ],
+      },
+    ],
   },
   optimization: {
     minimize: true,
@@ -51,29 +65,29 @@ module.exports = {
         cssProcessorOptions: {
           map: {
             inline: false,
-            annotation: true
-          }
-        }
+            annotation: true,
+          },
+        },
       }),
       new UglifyJsPlugin({
-        sourceMap: true
-      })
-    ]
+        sourceMap: true,
+      }),
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'index.html',
-      inject: 'head'
+      inject: 'head',
     }),
     new CopyWebpackPlugin([
       { from: 'assets/**/*' },
       { from: 'iframe.html' },
-      { from: 'amp_iframe.html'}
+      { from: 'amp_iframe.html' },
     ]),
     new MiniCssExtractPlugin({
       filename: 'html5-skin.min.css',
       publicPath: '/build',
-    })
+    }),
   ],
   devtool: 'source-map',
   devServer: {
@@ -81,7 +95,7 @@ module.exports = {
     compress: true,
     open: true,
     headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
+      'Access-Control-Allow-Origin': '*',
+    },
+  },
 };

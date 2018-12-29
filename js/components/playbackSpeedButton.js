@@ -1,7 +1,7 @@
 const React = require('react');
-const ControlButton = require('./controlButton');
 const classNames = require('classnames');
 const PropTypes = require('prop-types');
+const ControlButton = require('./controlButton');
 const Utils = require('./utils');
 const CONSTANTS = require('../constants/constants');
 const MACROS = require('../constants/macros');
@@ -19,8 +19,12 @@ class PlaybackSpeedButton extends React.Component {
       <ControlButton
         {...this.props}
         className={classNames('oo-playback-speed', this.props.className)}
-        ariaLabel={ariaLabel}>
-        <span className="oo-current-speed oo-icon">{currentSpeed}x</span>
+        ariaLabel={ariaLabel}
+      >
+        <span className="oo-current-speed oo-icon">
+          {currentSpeed}
+x
+        </span>
         {this.props.children}
       </ControlButton>
     );
