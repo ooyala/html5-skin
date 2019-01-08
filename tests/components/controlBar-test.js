@@ -768,7 +768,7 @@ describe('ControlBar', function() {
     optionsButton = wrapper.find('.oo-more-options').hostNodes();
     expect(optionsButton.length).toBe(1);
     buttons = wrapper.find('.oo-control-bar-item').hostNodes();
-    expect(buttons.length).toBe(3);
+    expect(buttons.length).toBe(4);
   });
 
   it('hides the more options button when ooyala ad is playing', function() {
@@ -806,7 +806,7 @@ describe('ControlBar', function() {
     var optionsButton = wrapper.find('.oo-more-options').hostNodes();
     expect(optionsButton.length).toBe(1);
     var buttons = wrapper.find('.oo-control-bar-item').hostNodes();
-    expect(buttons.length).toBe(3);
+    expect(buttons.length).toBe(4);
   });
 
   it('handles more options click', function() {

@@ -35,6 +35,10 @@ class PlaybackSpeedPanel extends React.Component {
   getPlaybackSpeedOptions() {
     // Only process speed options once per component mount
     if (!this.playbackSpeedOptions) {
+      if (this.props.skinConfig.playbackSpeed.length >= 1) {
+        // We take configured values from backlot
+        this.props.skinConfig.playbackSpeed.options = [... this.props.skinConfig.playbackSpeed];
+      }
       // Get configured values from skin
       this.playbackSpeedOptions = Utils.getPropertyValue(
         this.props.skinConfig,
