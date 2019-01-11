@@ -355,7 +355,7 @@ class PauseScreen extends React.Component {
         }
 
         {
-          this.props.controller.state.buffering || this.props.buffered === 0 ?
+          this.props.controller.state.buffering || !this.props.controller.state.cast.connected && this.props.buffered === 0 ?
             <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
            : null
         }
