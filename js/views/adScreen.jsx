@@ -105,7 +105,7 @@ class AdScreen extends React.Component {
    * Bubble up the click only for special conditions
    * @param {Object} event object
    */
-  handleClick(event) {
+  handleClick = (event) => {
     event.stopPropagation(); // W3C
     event.cancelBubble = true; /* IE specific */ // eslint-disable-line
 
@@ -119,7 +119,7 @@ class AdScreen extends React.Component {
    * Bubble up the click only for special conditions
    * @param {Object} event object
    */
-  handlePlayerClicked(event) {
+  handlePlayerClicked = (event) => {
     if (event.type === 'touchend' || !this.isMobile) {
       // since mobile would fire both click and touched events,
       // we need to make sure only one actually does the work
@@ -139,7 +139,7 @@ class AdScreen extends React.Component {
   /**
    * Update the state with controlBar visible
    */
-  showControlBar() {
+  showControlBar = () => {
     this.setState({ controlBarVisible: true });
     this.props.controller.showControlBar();
   }
@@ -148,7 +148,7 @@ class AdScreen extends React.Component {
    * Update the state with controlBar invisible
    * @param {Object} event object
    */
-  hideControlBar(event) {
+  hideControlBar = (event) => {
     if (this.props.skinConfig.controlBar.autoHide === true && !(this.isMobile && event)) {
       this.setState({ controlBarVisible: false });
       this.props.controller.hideControlBar();
@@ -159,7 +159,7 @@ class AdScreen extends React.Component {
    * Update the state with controlBar invisible
    * @param {Object} event object
    */
-  handleTouchEnd(event) {
+  handleTouchEnd = (event) => {
     // handleTouchEnd is used to verify controlBar visibility.
     if (!this.state.controlBarVisible && this.props.skinConfig.adScreen.showControlBar) {
       this.showControlBar();
@@ -177,7 +177,7 @@ class AdScreen extends React.Component {
    * Update the state with controlBar invisible
    * @param {Object} event object
    */
-  handlePlayerMouseMove() {
+  handlePlayerMouseMove = () => {
     if (this.props.playerState !== CONSTANTS.STATE.PAUSE && !this.isMobile && this.props.fullscreen) {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
@@ -188,7 +188,7 @@ class AdScreen extends React.Component {
    * Update the state with controlBar invisible
    * @param {Object} event object
    */
-  handleResize() {
+  handleResize = () => {
     if (this.isMounted()) { // eslint-disable-line
       this.props.controller.startHideControlBarTimer();
     }
@@ -197,7 +197,7 @@ class AdScreen extends React.Component {
   /**
    * Bubble up unmute clicked
    */
-  unmuteClick() {
+  unmuteClick = () => {
     this.props.controller.handleMuteClick();
   }
 

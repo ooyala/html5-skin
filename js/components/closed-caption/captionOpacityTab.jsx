@@ -1,42 +1,54 @@
-const React = require('react');
+import React from 'react';
+import PropTypes from 'prop-types';
+import Utils from '../utils';
+import CONSTANTS from '../../constants/constants';
+import SelectionContainer from './selectionContainer';
+import Slider from '../slider';
+/* eslint-disable react/destructuring-assignment */
 
-const ClassNames = require('classnames');
-
-const createReactClass = require('create-react-class');
-const Utils = require('../utils');
-
-const CONSTANTS = require('../../constants/constants');
-
-const SelectionContainer = require('./selectionContainer');
-
-const Slider = require('../slider');
-
-const CaptionOpacityTab = createReactClass({
-  changeTextOpacity(value) {
+/**
+ * view to manage caption opacity
+ */
+class CaptionOpacityTab extends React.Component {
+  /**
+   * handle user select text opacity
+   * @param {string} value - the text opacity value
+   */
+  changeTextOpacity = (value) => {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
     this.props.controller.onClosedCaptionChange('textOpacity', value);
-  },
+  }
 
-  changeBackgroundOpacity(value) {
+  /**
+   * handle user select background opacity
+   * @param {string} value - the background opacity value
+   */
+  changeBackgroundOpacity = (value) => {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
     this.props.controller.onClosedCaptionChange('backgroundOpacity', value);
-  },
+  }
 
-  changeWindowOpacity(value) {
+  /**
+   * handle user select window opacity
+   * @param {string} value – the window opacity value
+   */
+  changeWindowOpacity = (value) => {
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
     }
     this.props.controller.onClosedCaptionChange('windowOpacity', value);
-  },
+  }
 
-  percentString(number) {
-    // if (number == 0) return "Transparent";
-    return `${(number * 100).toString()}%`;
-  },
+  /**
+   * transform float to percent string
+   * @param {number} number - percent
+   * @returns {Object} React element
+   */
+  percentString = number => `${(number * 100).toString()}%`; // eslint-disable-line
 
   render() {
     const textOpacityTitle = Utils.getLocalizedString(
@@ -118,7 +130,28 @@ const CaptionOpacityTab = createReactClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
+
+CaptionOpacityTab.propTypes = {
+  language: PropTypes.string,
+  localizableStrings: PropTypes.shape({}),
+  closedCaptionOptions: PropTypes.shape({
+    enabled: PropTypes.bool,
+    textOpacity: PropTypes.number,
+    backgroundOpacity: PropTypes.number,
+    windowOpacity: PropTypes.number,
+  }),
+  controller: PropTypes.shape({
+    toggleClosedCaptionEnabled: PropTypes.func,
+    onClosedCaptionChange: PropTypes.func,
+  }).isRequired,
+};
+
+CaptionOpacityTab.defaultProps = {
+  language: 'en',
+  localizableStrings: {},
+  closedCaptionOptions: {},
+};
 
 module.exports = CaptionOpacityTab;

@@ -115,6 +115,7 @@ const AccessibleMenu = function(ComposedComponent, options) {
      * @param {Boolean} useNextSibling Chooses the next sibling when true and the previous when false.
      */
     focusOnMenuItemSibling(menuItem, useNextSibling) {
+      console.log('>>>>', menuItemList);
       const menuItemList = this.getMenuItemList();
       if (!menuItemList.length) {
         return;

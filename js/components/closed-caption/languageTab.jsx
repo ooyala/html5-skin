@@ -1,27 +1,33 @@
-const React = require('react');
+import React from 'react';
+import values from 'lodash.values';
+import PropTypes from 'prop-types';
+import CONSTANTS from '../../constants/constants';
+import DataSelector from '../dataSelector';
+/* eslint-disable react/destructuring-assignment */
 
-
-const values = require('lodash.values');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const CONSTANTS = require('../../constants/constants');
-const DataSelector = require('../dataSelector');
-
-const LanguageTab = createReactClass({
-  getInitialState() {
-    return {
-      selectedLanguage: this.props.closedCaptionOptions.availableLanguages.locale[
-        this.props.closedCaptionOptions.language
+/**
+ * Tab to manage languages
+ */
+class LanguageTab extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedLanguage: props.closedCaptionOptions.availableLanguages.locale[
+        props.closedCaptionOptions.language
       ],
     };
-  },
+  }
 
-  changeLanguage(language) {
-    const availableLanguages = this.props.closedCaptionOptions.availableLanguages;
+  /**
+   * Process changing language
+   * @param {string} language - two chars language key
+   */
+  changeLanguage = (language) => {
+    const { availableLanguages } = this.props.closedCaptionOptions;
     const invertedLocale = {};
-    for (let i = 0; i < availableLanguages.languages.length; i++) {
-      invertedLocale[availableLanguages.locale[availableLanguages.languages[i]]] = availableLanguages.languages[i];
-    }
+    availableLanguages.languages.forEach((current) => {
+      invertedLocale[availableLanguages.locale[current]] = current;
+    });
 
     if (!this.props.closedCaptionOptions.enabled) {
       this.props.controller.toggleClosedCaptionEnabled();
@@ -31,7 +37,7 @@ const LanguageTab = createReactClass({
     this.setState({
       selectedLanguage: language,
     });
-  },
+  }
 
   render() {
     return (
@@ -48,11 +54,12 @@ const LanguageTab = createReactClass({
         />
       </div>
     );
-  },
-});
+  }
+}
 
 LanguageTab.propTypes = {
   dataItemsPerPage: PropTypes.objectOf(PropTypes.number),
+  responsiveView: PropTypes.string,
 };
 
 LanguageTab.defaultProps = {

@@ -1,8 +1,5 @@
 jest.dontMock('../../js/views/errorScreen');
-jest.dontMock('../../js/mixins/accessibilityMixin');
 jest.dontMock('../../js/components/utils');
-jest.dontMock('../../js/constants/constants');
-jest.dontMock('../../js/mixins/accessibilityMixin');
 jest.dontMock('../../js/constants/constants');
 
 var React = require('react');
@@ -11,24 +8,21 @@ var ErrorScreen = require('../../js/views/errorScreen');
 
 describe('ErrorScreen', function() {
   it('test error screen with valid error code', function() {
-    var errorCode = {
-      code: 'network'
-    };
-    // Render error screen into DOM
-    var wrapper = Enzyme.mount(<ErrorScreen errorCode={errorCode} />);
+    const props = { controller: { state: {} }, errorCode: { code: 'network' } };
+    // Just check it mounts with no exceptions
+    Enzyme.mount(<ErrorScreen {...props} />);
   });
 
   it('test error screen with invalid error code', function() {
-    var errorCode = {
-      code: '404'
-    };
-    // Render error screen into DOM
-    var wrapper = Enzyme.mount(<ErrorScreen errorCode={errorCode} />);
+    const props = { controller: { state: {} }, errorCode: { code: '404' } };
+    // Just check it mounts with no exceptions
+    Enzyme.mount(<ErrorScreen {...props} />);
   });
 
   describe('when passing error codes into the component', function() {
     describe('and error code is drm_server_error', function() {
       var props = {
+        controller: { state: {} },
         errorCode: { code: 'drm_server_error' },
         language: 'en',
         localizableStrings: {
@@ -52,6 +46,7 @@ describe('ErrorScreen', function() {
 
     describe('and error code is non_registered_device', function() {
       var props = {
+        controller: { state: {} },
         errorCode: { code: 'non_registered_device' },
         language: 'en',
         localizableStrings: {
@@ -83,6 +78,7 @@ describe('ErrorScreen', function() {
 
     describe('and error code is device_limit_reached', function() {
       var props = {
+        controller: { state: {} },
         errorCode: { code: 'device_limit_reached' },
         language: 'en',
         localizableStrings: {

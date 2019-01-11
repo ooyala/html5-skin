@@ -1,6 +1,5 @@
 import React from 'react';
 import ClassNames from 'classnames';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import Utils from '../utils';
 import AccessibleButton from '../accessibleButton';
@@ -8,95 +7,118 @@ import AccessibleMenu from '../higher-order/accessibleMenu';
 import CONSTANTS from '../../constants/constants';
 import SelectionContainer from './selectionContainer';
 
-let TextEnhancementsTab = createReactClass({
-  getInitialState() {
-    return {
-      selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement,
+/**
+ * Manage text enhancements
+ */
+class TextEnhancementsTabProto extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement, // eslint-disable-line
       textEnhancements: ['Uniform', 'Depressed', 'Raised', 'Shadow'],
     };
-  },
+  }
 
-  changeTextEnhancement(textEnhancement) {
-    if (!this.props.closedCaptionOptions.enabled) {
-      this.props.controller.toggleClosedCaptionEnabled();
-    }
-    this.props.controller.onClosedCaptionChange('textEnhancement', textEnhancement);
-    this.setState({
-      selectedTextEnhancement: textEnhancement,
-    });
-  },
-
+  /**
+   * Update the classes of the element where the component is binded to
+   * @param {*} item - the item
+   * @param {*} elementType - the elementType
+   * @returns {Array} list of classnames to get rendered
+   */
   setClassname(item, elementType) {
+    const { closedCaptionOptions } = this.props;
     return ClassNames({
       'oo-text-enhancement-letter': elementType === 'letter',
       'oo-text-enhancement-label': elementType === 'label',
       'oo-text-enhancement-selected':
-        this.props.closedCaptionOptions.textEnhancement === item && this.props.closedCaptionOptions.enabled,
+        closedCaptionOptions.textEnhancement === item && closedCaptionOptions.enabled,
       'oo-text-enhancement-label-selected':
-        this.props.closedCaptionOptions.textEnhancement === item
-        && this.props.closedCaptionOptions.enabled
+        closedCaptionOptions.textEnhancement === item
+        && closedCaptionOptions.enabled
         && elementType === 'label',
-      'oo-disabled': !this.props.closedCaptionOptions.enabled,
+      'oo-disabled': !closedCaptionOptions.enabled,
     });
-  },
+  }
+
+  /**
+   * handle change of text enhancement by user
+   * @param {string} textEnhancement - the value of textEhancement
+   */
+  changeTextEnhancement = (textEnhancement) => {
+    const { closedCaptionOptions, controller } = this.props;
+    if (!closedCaptionOptions.enabled) {
+      controller.toggleClosedCaptionEnabled();
+    }
+    controller.onClosedCaptionChange('textEnhancement', textEnhancement);
+    this.setState({
+      selectedTextEnhancement: textEnhancement, // eslint-disable-line
+    });
+  }
 
   render() {
+    const {
+      closedCaptionOptions,
+      language,
+      localizableStrings,
+      skinConfig,
+    } = this.props;
+    const { textEnhancements } = this.state;
     const textEnhancementTitle = Utils.getLocalizedString(
-      this.props.language,
+      language,
       CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENT,
-      this.props.localizableStrings
+      localizableStrings
     );
     const textEnhancementSelection = Utils.getLocalizedString(
-      this.props.language,
-      CONSTANTS.SKIN_TEXT[this.props.closedCaptionOptions.textEnhancement.toUpperCase()],
-      this.props.localizableStrings
+      language,
+      CONSTANTS.SKIN_TEXT[closedCaptionOptions.textEnhancement.toUpperCase()],
+      localizableStrings
     );
     const textEnhancementItems = [];
-    for (let i = 0; i < this.state.textEnhancements.length; i++) {
+    textEnhancements.forEach((textEnhancement, index) => {
       // accent color
-      const isSelected = this.props.closedCaptionOptions.textEnhancement === this.state.textEnhancements[i];
+      const isSelected = closedCaptionOptions.textEnhancement === textEnhancement;
       let selectedTextEnhancementStyle = {};
       if (
-        this.props.closedCaptionOptions.enabled
-        && this.props.skinConfig.general.accentColor
+        closedCaptionOptions.enabled
+        && skinConfig.general.accentColor
         && isSelected
       ) {
-        selectedTextEnhancementStyle = { color: this.props.skinConfig.general.accentColor };
+        selectedTextEnhancementStyle = { color: skinConfig.general.accentColor };
       }
       const itemLabel = Utils.getLocalizedString(
-        this.props.language,
-        CONSTANTS.SKIN_TEXT[this.state.textEnhancements[i].toUpperCase()],
-        this.props.localizableStrings
+        language,
+        CONSTANTS.SKIN_TEXT[textEnhancement.toUpperCase()],
+        localizableStrings
       );
 
       textEnhancementItems.push(
         <AccessibleButton
-          key={i}
+          key={index} // eslint-disable-line
           className="oo-text-enhancements-container"
           ariaLabel={itemLabel}
           ariaChecked={isSelected}
           role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
-          onClick={this.changeTextEnhancement.bind(this, this.state.textEnhancements[i])}
+          onClick={() => this.changeTextEnhancement(textEnhancement)}
         >
           <span
             className={
-              `${this.setClassname(this.state.textEnhancements[i], 'letter')
+              `${this.setClassname(textEnhancement, 'letter')
               } oo-text-enhancement-letter-${
-                this.state.textEnhancements[i]}`
+                textEnhancement}`
             }
             style={selectedTextEnhancementStyle}
           >
             A
           </span>
           <span
-            className={this.setClassname(this.state.textEnhancements[i], 'label')}
+            className={this.setClassname(textEnhancement, 'label')}
             style={selectedTextEnhancementStyle}
           >
             {itemLabel}
           </span>
         </AccessibleButton>
       );
-    }
+    });
 
     return (
       <div className="oo-text-enhancements-tab">
@@ -112,18 +134,18 @@ let TextEnhancementsTab = createReactClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
-TextEnhancementsTab = AccessibleMenu(TextEnhancementsTab, { useRovingTabindex: true });
+const TextEnhancementsTab = AccessibleMenu(TextEnhancementsTabProto, { useRovingTabindex: true });
 
-TextEnhancementsTab.propTypes = {
+TextEnhancementsTabProto.propTypes = {
   language: PropTypes.string,
   localizableStrings: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
   controller: PropTypes.shape({
     toggleClosedCaptionEnabled: PropTypes.func.isRequired,
     onClosedCaptionChange: PropTypes.func.isRequired,
-  }),
+  }).isRequired,
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
       accentColor: PropTypes.string,
@@ -133,6 +155,13 @@ TextEnhancementsTab.propTypes = {
     textEnhancement: PropTypes.string,
     enabled: PropTypes.bool,
   }),
+};
+
+TextEnhancementsTabProto.defaultProps = {
+  language: 'en',
+  localizableStrings: {},
+  skinConfig: {},
+  closedCaptionOptions: {},
 };
 
 module.exports = TextEnhancementsTab;

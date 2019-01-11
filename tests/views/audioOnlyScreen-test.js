@@ -2,7 +2,6 @@ jest.dontMock('../../js/views/contentScreen');
 jest.dontMock('../../js/components/closeButton');
 jest.dontMock('../../js/components/accessibleButton');
 jest.dontMock('../../js/components/utils');
-jest.dontMock('../../js/mixins/accessibilityMixin');
 jest.dontMock('../../js/constants/constants');
 jest.dontMock('classnames');
 

@@ -28,7 +28,7 @@ class Popover extends React.Component {
    * @private
    * @param {event} event description
    */
-  onKeyDown(event) {
+  onKeyDown = (event) => {
     if (!this.props.closeActionEnabled || typeof this.props.closeAction !== 'function') {
       return;
     }
