@@ -632,43 +632,95 @@ var Utils = {
    *
    * @function getLanguageToUse
    * @param {Object} skinConfig - The skin configuration file to read languages from
-   * @returns {String} The ISO code of the language to use
+   * @returns {String} The ISO 639-1 code of the language to use or an empty string
    */
   getLanguageToUse: function(skinConfig) {
-    var localization = skinConfig.localization;
-    var language, availableLanguages;
+    let language = '';
+    if (skinConfig) {
+      const localization = skinConfig.localization;
 
-    // set lang to default lang in skin config
-    language = localization.defaultLanguage;
+      const userBrowserLanguage = this.getUserBrowserLanguage();
 
-    // if no default lang in skin config check browser lang settings
-    if (!language) {
-      if (window.navigator.languages) {
-        // A String, representing the language version of the browser.
-        // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
-        language = window.navigator.languages[0];
-      } else {
-        // window.navigator.browserLanguage: current operating system language
-        // window.navigator.userLanguage: operating system's natural language setting
-        // window.navigator.language: the preferred language of the user, usually the language of the browser UI
-        language =
-          window.navigator.browserLanguage || window.navigator.userLanguage || window.navigator.language;
-      }
-
-      // remove lang sub-code
-      var primaryLanguage = language.substr(0, 2);
-
-      // check available lang file for browser lang
-      for (var i = 0; i < localization.availableLanguageFile.length; i++) {
-        availableLanguages = localization.availableLanguageFile[i];
-        // if lang file available set lang to browser primary lang
-        if (primaryLanguage === availableLanguages.language) {
-          language = primaryLanguage;
+      if (userBrowserLanguage && localization) {
+        let isLanguageCodeInAvailablelLanguageFile = this.isLanguageCodeInAvailablelLanguageFile(
+          localization.availableLanguageFile, userBrowserLanguage
+        );
+        if (isLanguageCodeInAvailablelLanguageFile) {
+          language = userBrowserLanguage;
+        } else {
+          language = this.getDefaultLanguage(localization);
         }
+      } else {
+        language = this.getDefaultLanguage(localization);
       }
     }
 
     return language;
+  },
+
+  /**
+   *
+   * @param {Object} localization - location configuration object
+   * @param {String} localization.defaultLanguage - value for default language
+   * @returns {String} defaultLanguage - language code from file "skin.json" (
+   * before executing function "onSkinMetaDataFetched") or language code that was set
+   * in the page-level parameters (after executing function "onSkinMetaDataFetched")
+   */
+  getDefaultLanguage: function(localization) {
+    let defaultLanguage = '';
+    if ( (typeof localization === "object") && (localization !== null) ) {
+      defaultLanguage = localization.defaultLanguage ?
+        localization.defaultLanguage
+      : defaultLanguage;
+    }
+    return defaultLanguage;
+  },
+
+  /**
+   *
+   * @returns {String} two-digit value of an user's system language or an empty string
+   */
+  getUserBrowserLanguage: function() {
+    // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
+    let navigator = window.navigator;
+    let language;
+    if (navigator) {
+      language = (
+        navigator.language ||
+        // "language" property returns the language of the browser application in
+        // Firefox, Opera, Google Chrome and Safari
+        navigator.userLanguage ||
+        // "userLanguage" property returns the current Regional and Language settings
+        // of the operating system in
+        // Internet Explorer and the language of the browser application in Opera
+        navigator.systemLanguage
+        // "systemLanguage" property returns the language edition of the operating system in
+        // Internet Explorer
+      )
+    }
+    return language ? language.substr(0, 2).toLowerCase() : ''; // remove lang sub-code
+  },
+
+  /**
+   *
+   * @param {Array} availableLanguageList - array of objects of language code values
+   * with the key "language"
+   * @param languageCode - two-digit value of the language
+   * @returns {Boolean} "true" if the corresponding language code "languageCode" is
+   * in the array of available languages "availableLanguageList",
+   * otherwise "false"
+   */
+  isLanguageCodeInAvailablelLanguageFile: function(availableLanguageList, languageCode) {
+    if ( !(availableLanguageList && Array.isArray(availableLanguageList) && languageCode) ) {
+      return false;
+    }
+    for (let index = availableLanguageList.length - 1; index >= 0; index--) {
+      let availableLanguageCode = availableLanguageList[index].language;
+      if (languageCode === availableLanguageCode) {
+        return true;
+      }
+    }
+    return false;
   },
 
   /**
