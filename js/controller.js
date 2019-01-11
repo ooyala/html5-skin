@@ -2676,7 +2676,6 @@ module.exports = function(OO, _, $, W) {
     },
 
     toggleClosedCaptionEnabled() {
-      console.log('>>>>', this);
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.state.persistentSettings.closedCaptionOptions.enabled = !!this.state.closedCaptionOptions
         .enabled;

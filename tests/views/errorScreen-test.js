@@ -8,13 +8,13 @@ var ErrorScreen = require('../../js/views/errorScreen');
 
 describe('ErrorScreen', function() {
   it('test error screen with valid error code', function() {
-    const props = { controller: { state: {} }, errorCode: { code: 'network' } };
+    const props = { controller: { state: { accessibilityControlsEnabled: true } }, errorCode: { code: 'network' } };
     // Just check it mounts with no exceptions
     Enzyme.mount(<ErrorScreen {...props} />);
   });
 
   it('test error screen with invalid error code', function() {
-    const props = { controller: { state: {} }, errorCode: { code: '404' } };
+    const props = { controller: { state: { accessibilityControlsEnabled: true } }, errorCode: { code: '404' } };
     // Just check it mounts with no exceptions
     Enzyme.mount(<ErrorScreen {...props} />);
   });
@@ -22,7 +22,9 @@ describe('ErrorScreen', function() {
   describe('when passing error codes into the component', function() {
     describe('and error code is drm_server_error', function() {
       var props = {
-        controller: { state: {} },
+        controller: { state: {
+          accessibilityControlsEnabled: true,
+        } },
         errorCode: { code: 'drm_server_error' },
         language: 'en',
         localizableStrings: {
@@ -46,7 +48,7 @@ describe('ErrorScreen', function() {
 
     describe('and error code is non_registered_device', function() {
       var props = {
-        controller: { state: {} },
+        controller: { state: { accessibilityControlsEnabled: true } },
         errorCode: { code: 'non_registered_device' },
         language: 'en',
         localizableStrings: {
@@ -78,7 +80,7 @@ describe('ErrorScreen', function() {
 
     describe('and error code is device_limit_reached', function() {
       var props = {
-        controller: { state: {} },
+        controller: { state: { accessibilityControlsEnabled: true } },
         errorCode: { code: 'device_limit_reached' },
         language: 'en',
         localizableStrings: {

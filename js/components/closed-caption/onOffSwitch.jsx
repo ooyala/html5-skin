@@ -86,7 +86,9 @@ OnOffSwitch.propTypes = {
   localizableStrings: PropTypes.shape({}),
   ariaLabel: PropTypes.string,
   role: PropTypes.string,
-  controller: PropTypes.isRequired,
+  controller: PropTypes.shape({
+    toggleClosedCaptionEnabled: PropTypes.func,
+  }).isRequired,
 };
 
 OnOffSwitch.defaultProps = {

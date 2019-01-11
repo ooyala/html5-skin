@@ -57,7 +57,7 @@ class ContentScreen extends React.Component {
   /**
    * manage accessibility
    */
-  componentDidUnmount() {
+  componentWillUnmount() {
     this.props.controller.state.accessibilityControlsEnabled = true;
   }
 

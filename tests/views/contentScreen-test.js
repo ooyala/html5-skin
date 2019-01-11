@@ -13,22 +13,34 @@ var AccessibleButton = require('../../js/components/accessibleButton');
 var CONSTANTS = require('../../js/constants/constants');
 
 describe('ContentScreen', function() {
-  var ctrl;
+  let props;
 
   beforeEach(function() {
-    ctrl = {
-      toggleScreen: function() {},
-      toggleDiscoveryScreen: function() {},
-      state: {
-        accessibilityControlsEnabled: true
-      }
+    props = {
+      controller: {
+        toggleScreen: function() {},
+        toggleDiscoveryScreen: function() {},
+        state: {
+          accessibilityControlsEnabled: true
+        }
+      },
+      skinConfig: {
+        discoveryScreen: {
+          panelTitle: {
+            titleFont: {
+              color: 'red',
+              fontFamily: 'Arial',
+            },
+          },
+        },
+      },
     };
   });
 
   it('test content screen', function() {
 
     // Render content screen into DOM
-    var wrapper = Enzyme.mount(<ContentScreen />);
+    var wrapper = Enzyme.mount(<ContentScreen {...props} />);
 
     // test close btn
     var closeBtn = wrapper.find('.oo-close-button').hostNodes();
@@ -38,7 +50,7 @@ describe('ContentScreen', function() {
   it('test content screen for Discovery Screen', function() {
 
     // Render content screen into DOM
-    var wrapper = Enzyme.mount(<ContentScreen controller={ctrl} screen={CONSTANTS.SCREEN.DISCOVERY_SCREEN} />);
+    var wrapper = Enzyme.mount(<ContentScreen {...props} screen={CONSTANTS.SCREEN.DISCOVERY_SCREEN} />);
 
     // test close btn
     var closeBtn = wrapper.find('.oo-close-button').hostNodes();
@@ -47,17 +59,17 @@ describe('ContentScreen', function() {
 
   it('should toggle screen when ESC key is pressed', function() {
     var toggleScreenCalled = false;
-    ctrl.toggleScreen = function() {
+    props.controller.toggleScreen = function() {
       toggleScreenCalled = true;
     };
-    var wrapper = Enzyme.mount(<ContentScreen controller={ctrl} />);
+    var wrapper = Enzyme.mount(<ContentScreen {...props} />);
     wrapper.simulate('keyDown', { key: CONSTANTS.KEY_VALUES.ESCAPE });
     expect(toggleScreenCalled).toBe(true);
   });
 
   it('should auto focus on first accessible element when specified', function() {
     var wrapper = Enzyme.mount(
-      <ContentScreen autoFocus={true} controller={ctrl}>
+      <ContentScreen autoFocus={true} {...props}>
         <AccessibleButton ariaLabel="fancy"></AccessibleButton>
         <AccessibleButton ariaLabel="pants"></AccessibleButton>
       </ContentScreen>
