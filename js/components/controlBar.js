@@ -595,6 +595,15 @@ var ControlBar = createReactClass({
         )
       }.bind(this)(),
 
+      airPlay: (
+        <div
+          key={'air'}
+          tooltip="air"
+          className="oo-cast-air oo-control-bar-item">
+            <img class="oo-icon" src="assets/images/airplay-icon.png"></img>
+        </div>
+      ),
+
       audioAndCC: function() {
         var closedCaptionsList = [];
         var multiAudioList = [];
@@ -896,6 +905,10 @@ var ControlBar = createReactClass({
       }
 
       if (defaultItems[k].name === 'chromecast' && !this.props.controller.state.cast.showButton) {
+        continue;
+      }
+
+      if (defaultItems[k].name === 'airPlay' && !window.WebKitPlaybackTargetAvailabilityEvent) {
         continue;
       }
 
