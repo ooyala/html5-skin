@@ -714,13 +714,7 @@ var Utils = {
     if ( !(availableLanguageList && Array.isArray(availableLanguageList) && languageCode) ) {
       return false;
     }
-    for (let index = availableLanguageList.length - 1; index >= 0; index--) {
-      let availableLanguageCode = availableLanguageList[index].language;
-      if (languageCode === availableLanguageCode) {
-        return true;
-      }
-    }
-    return false;
+    return !!availableLanguageList.find(languageObj => languageObj.language === languageCode);
   },
 
   /**
