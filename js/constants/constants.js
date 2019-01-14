@@ -131,7 +131,8 @@ var CONSTANTS = {
     NO_LINGUISTIC_CONTENT: 'No linguistic content',
     UNCODED_LANGUAGES: 'Uncoded languages',
     MULTIPLE_LANGUAGES: 'Multiple languages',
-    CHROMECAST: 'Chromecast'
+    CHROMECAST: 'Chromecast',
+    AIRPLAY: 'Airplay'
   },
 
   ARIA_LABELS: {
@@ -200,7 +201,8 @@ var CONSTANTS = {
     FULLSCREEN: 'fullscreen',
     LOGO: 'logo',
     CHROMECAST: 'chromecast',
-    SKIP_CONTROLS: 'skipControls'
+    SKIP_CONTROLS: 'skipControls',
+    AIRPLAY: 'airPlay'
   },
 
   ARIA_ROLES: {
