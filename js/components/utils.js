@@ -635,27 +635,23 @@ var Utils = {
    * @returns {String} The ISO 639-1 code of the language to use or an empty string
    */
   getLanguageToUse: function(skinConfig) {
-    let language = '';
-    if (skinConfig) {
-      const localization = skinConfig.localization;
-
-      const userBrowserLanguage = this.getUserBrowserLanguage();
-
-      if (userBrowserLanguage && localization) {
-        let isLanguageCodeInAvailablelLanguageFile = this.isLanguageCodeInAvailablelLanguageFile(
-          localization.availableLanguageFile, userBrowserLanguage
-        );
-        if (isLanguageCodeInAvailablelLanguageFile) {
-          language = userBrowserLanguage;
-        } else {
-          language = this.getDefaultLanguage(localization);
-        }
-      } else {
-        language = this.getDefaultLanguage(localization);
-      }
+    if (!skinConfig) {
+      return '';
     }
 
-    return language;
+    const localization = skinConfig.localization;
+    const userBrowserLanguage = this.getUserBrowserLanguage();
+
+    const isLanguageCodeInAvailablelLanguageFile = !!localization &&
+      this.isLanguageCodeInAvailablelLanguageFile(
+      localization.availableLanguageFile, userBrowserLanguage
+    );
+
+    if (!userBrowserLanguage || !localization || !isLanguageCodeInAvailablelLanguageFile) {
+      return this.getDefaultLanguage(localization);
+    }
+
+    return userBrowserLanguage;
   },
 
   /**
@@ -714,7 +710,7 @@ var Utils = {
     if ( !(availableLanguageList && Array.isArray(availableLanguageList) && languageCode) ) {
       return false;
     }
-    return !!availableLanguageList.find(languageObj => languageObj.language === languageCode);
+    return availableLanguageList.some(languageObj => languageObj.language === languageCode);
   },
 
   /**
