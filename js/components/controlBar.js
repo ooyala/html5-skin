@@ -607,7 +607,7 @@ var ControlBar = createReactClass({
           className="oo-airplay"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
           ariaHidden={true}
-          icon="airplay"
+          icon="airPlay"
           tooltip={CONSTANTS.SKIN_TEXT.AIRPLAY}
           onClick={this.handleAirPlayClick}>
         </ControlButton>
@@ -917,7 +917,7 @@ var ControlBar = createReactClass({
         continue;
       }
 
-      if (defaultItems[k].name === 'airPlay' && window.WebKitPlaybackTargetAvailabilityEvent) {
+      if (defaultItems[k].name === 'airPlay' && !this.props.controller.isAirPlayAvailable) {
         continue;
       }
 
