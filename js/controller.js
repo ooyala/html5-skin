@@ -1464,6 +1464,7 @@ module.exports = function(OO, _, $, W) {
         this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration;
         this.skin.state.currentPlayhead = 0;
         this.removeBlur();
+        this.renderSkin();
       }
     },
 
@@ -1472,6 +1473,8 @@ module.exports = function(OO, _, $, W) {
       this.state.isPlayingAd = false;
       this.state.adVideoDuration = 0;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
+      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      this.renderSkin();
     },
 
     onShowAdSkipButton: function(event) {
