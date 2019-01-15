@@ -37,9 +37,7 @@ describe('Tab wrapper', function() {
       }
     ],
     skinConfig: {},
-    handleClick: function(id) {
-      clickedId = id;
-    }
+    handleClick: id => clickedId = id
   };
 
   afterEach(function() {

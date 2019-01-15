@@ -1,6 +1,8 @@
-const _ = require('underscore');
-const CONSTANTS = require('../../constants/constants');
-const Utils = require('../utils');
+import { groupBy } from 'underscore';
+
+import CONSTANTS from '../../constants/constants';
+import Utils from '../utils';
+
 
 /**
  * Gets display label by checking
@@ -37,10 +39,10 @@ function getDisplayLanguage(languagesList, languageCode) {
   if (
     !!Utils.isValidString(languageCode)
     && languagesList
-    && _.isArray(languagesList)
+    && Array.isArray(languagesList)
     && languagesList.length
   ) {
-    const matchingLanguage = _.find(languagesList, language => (
+    const matchingLanguage = languagesList.find(language => (
       language['2T'] === languageCode
         || language['1'] === languageCode
         || language['2B'] === languageCode
@@ -68,16 +70,17 @@ function getDisplayTitle(trackParam) {
   let displayLanguage = trackParam.language || '';
   const displayLabel = trackParam.label || '';
   const noLanguageText = trackParam.noLanguageText || CONSTANTS.SKIN_TEXT.UNDEFINED_LANGUAGE;
-  const langCode = trackParam.langCode;
 
   if (!displayLanguage.length && !displayLabel.length) {
     return noLanguageText;
-  } if (displayLanguage.length && !displayLabel.length) {
+  }
+  if (displayLanguage.length && !displayLabel.length) {
     return displayLanguage;
-  } if (!displayLanguage.length && displayLabel.length) {
+  }
+  if (!displayLanguage.length && displayLabel.length) {
     return displayLabel;
   }
-  if (langCode === CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE) {
+  if (trackParam.langCode === CONSTANTS.LANGUAGE.UNDEFINED_LANGUAGE) {
     displayLanguage = '';
   }
   return displayLanguage.concat(' ', displayLabel).trim();
@@ -113,8 +116,7 @@ function getLocalizedSpecialLanguage(langCode, userLanguage, localizableStrings,
  * @returns {boolean} - true if language code is one of specials, false otherwise
  */
 function isSpecialLanguage(langCode, languageMap) {
-  const isSpecialLanguage = languageMap ? !!languageMap[langCode] : false;
-  return isSpecialLanguage;
+  return languageMap ? !!languageMap[langCode] : false;
 }
 
 /**
@@ -130,8 +132,8 @@ function transformTracksList(tracksList, noLanguageText) {
   let transformedTracksList = [];
   // first we group by language to know if we have distinct tracks
   if (tracksList && tracksList.length) {
-    const groupedTracks = _.groupBy(tracksList, 'language');
-    const groupedKeys = _.keys(groupedTracks);
+    const groupedTracks = groupBy(tracksList, 'language');
+    const groupedKeys = Object.keys(groupedTracks);
 
     // if all languages are distinct - discard labels
     if (groupedKeys.length === tracksList.length) {
@@ -173,7 +175,7 @@ function transformTracksList(tracksList, noLanguageText) {
           });
         }
         // this track is distinct
-        const audioTrack = _.head(groupedTracks[key]);
+        const [audioTrack] = groupedTracks[key];
         const trackDisplayTitle = getDisplayTitle({
           language: audioTrack.language,
           langCode: audioTrack.lang,
@@ -188,7 +190,7 @@ function transformTracksList(tracksList, noLanguageText) {
         return transformedTrack;
       });
 
-      transformedTracksList = _.flatten(uniqueTracks);
+      transformedTracksList = uniqueTracks.reduce((memo, element) => memo.concat(element), []);
     }
   }
 
@@ -204,8 +206,8 @@ function getUniqueTracks(audioTracksList) {
   let uniqueTracksList = [];
 
   if (audioTracksList && audioTracksList.length && Array.isArray(audioTracksList)) {
-    const groupedTracks = _.groupBy(audioTracksList, 'label');
-    const uniqueKeys = _.keys(groupedTracks);
+    const groupedTracks = groupBy(audioTracksList, 'label');
+    const uniqueKeys = Object.keys(groupedTracks);
 
     // if all keys are unique - return non-modified tracks
     if (uniqueKeys.length === audioTracksList.length) {
@@ -232,10 +234,11 @@ function getUniqueTracks(audioTracksList) {
             return uniqueTrack;
           });
         }
-        return _.head(groupedTracks[key]);
+        const [head] = groupedTracks[key];
+        return head;
       });
 
-      uniqueTracksList = _.flatten(uniqueTracks);
+      uniqueTracksList = uniqueTracks.reduce((memo, element) => memo.concat(element), []);
     }
   }
 

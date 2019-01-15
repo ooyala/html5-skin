@@ -1,24 +1,38 @@
-const React = require('react');
-const classnames = require('classnames');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const CustomScrollArea = require('../customScrollArea');
-const Icon = require('../icon');
-const AccessibleButton = require('../accessibleButton');
-const AccessibleMenu = require('../higher-order/accessibleMenu');
-const CONSTANTS = require('../../constants/constants');
+import React from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import CustomScrollArea from '../customScrollArea';
+import Icon from '../icon';
+import AccessibleButton from '../accessibleButton';
+import AccessibleMenu from '../higher-order/accessibleMenu';
+import CONSTANTS from '../../constants/constants';
 
-let Tab = createReactClass({
+/**
+ * Manage tab
+ */
+class TabProto extends React.Component { // eslint-disable-line
+
+  /**
+   * Handle click on tab
+   * @param {number} id - the tab id
+   */
   handleClick(id) {
-    if (typeof this.props.handleClick === 'function') {
-      this.props.handleClick(id);
+    if (typeof this.props.handleClick === 'function') { // eslint-disable-line
+      this.props.handleClick(id); // eslint-disable-line
     }
-  },
+  }
 
   render() {
+    const {
+      tabClassName,
+      header,
+      itemsList,
+      skinConfig,
+    } = this.props;
+
     return (
-      <div className={classnames('oo-cc-ma-menu__coll', this.props.tabClassName)}>
-        <div className="oo-cc-ma-menu__header">{this.props.header}</div>
+      <div className={classnames('oo-cc-ma-menu__coll', tabClassName)}>
+        <div className="oo-cc-ma-menu__header">{header}</div>
         <CustomScrollArea
           className="oo-cc-ma-menu__scrollarea"
           speed={1}
@@ -28,10 +42,11 @@ let Tab = createReactClass({
             className="oo-cc-ma-menu__list"
             role={CONSTANTS.ARIA_ROLES.MENU}
           >
-            {this.props.itemsList.map(function(item, index) {
+            {itemsList.map((item, index) => {
+              const { id } = item;
               return (
                 <li
-                  key={item.id}
+                  key={id}
                   role={CONSTANTS.ARIA_ROLES.PRESENTATION}
                   className={classnames('oo-cc-ma-menu__element', {
                     'oo-cc-ma-menu__element--active': item.enabled,
@@ -44,10 +59,10 @@ let Tab = createReactClass({
                     role={CONSTANTS.ARIA_ROLES.MENU_ITEM_RADIO}
                     ariaLabel={item.label}
                     ariaChecked={item.enabled}
-                    onClick={this.handleClick.bind(this, item.id)}
+                    onClick={() => this.handleClick(id)}
                   >
                     <Icon
-                      skinConfig={this.props.skinConfig}
+                      skinConfig={skinConfig}
                       icon="selected"
                       className={classnames({ 'oo-icon-hidden': !item.enabled })}
                     />
@@ -57,17 +72,20 @@ let Tab = createReactClass({
                   </AccessibleButton>
                 </li>
               );
-            }, this)}
+            })
+            }
           </ul>
         </CustomScrollArea>
       </div>
     );
-  },
-});
+  }
+}
 
-Tab = AccessibleMenu(Tab, { useRovingTabindex: false });
+const Tab = AccessibleMenu(TabProto, { useRovingTabindex: false });
 
-Tab.defaultProps = {
+TabProto.defaultProps = {
+  tabClassName: '',
+  header: '',
   skinConfig: {
     responsive: {
       breakpoints: {
@@ -78,9 +96,10 @@ Tab.defaultProps = {
       },
     },
   },
+  handleClick: () => {},
 };
 
-Tab.propTypes = {
+TabProto.propTypes = {
   tabClassName: PropTypes.string,
   header: PropTypes.string,
   itemsList: PropTypes.arrayOf(
@@ -90,7 +109,7 @@ Tab.propTypes = {
       enabled: PropTypes.bool.isRequired,
     })
   ).isRequired,
-  skinConfig: PropTypes.object,
+  skinConfig: PropTypes.shape({}),
   handleClick: PropTypes.func,
 };
 

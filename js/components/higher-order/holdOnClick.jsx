@@ -1,6 +1,6 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const CONSTANTS = require('../../constants/constants');
+import React from 'react';
+import PropTypes from 'prop-types';
+import CONSTANTS from '../../constants/constants';
 
 /**
  * Extends a button component with the ability to periodically call the onClick
@@ -11,10 +11,13 @@ const CONSTANTS = require('../../constants/constants');
  * The component must support adding handlers the following events: click, keydown, mousedown, mouseup
  * @returns {Component} A new component that supports holding the onClick handler
  */
-const holdOnClick = function(ComposedComponent) {
+const holdOnClick = (ComposedComponent) => {
   const CLICK_HOLD_START_DELAY = 500;
   const CLICK_HOLD_FREQUENCY = 100;
 
+  /**
+   * The extension itself
+   */
   class HoldOnClick extends React.Component {
     constructor(props) {
       super(props);
@@ -28,21 +31,22 @@ const holdOnClick = function(ComposedComponent) {
     }
 
     /**
+     * Make sure to release click when button is disabled.
+     * @private
+     */
+    componentDidUpdate() {
+      const { disabled } = this.props;
+      if (disabled) {
+        this.releaseClick();
+      }
+    }
+
+    /**
      * Cleanup when component is unmounted.
      * @private
      */
     componentWillUnmount() {
       this.releaseClick();
-    }
-
-    /**
-     * Make sure to release click when button is disabled.
-     * @private
-     */
-    componentDidUpdate() {
-      if (this.props.disabled) {
-        this.releaseClick();
-      }
     }
 
     /**
@@ -53,11 +57,10 @@ const holdOnClick = function(ComposedComponent) {
      * @param {event} event The keydown event object
      */
     onKeyDown(event) {
-      switch (event.key) {
-        case CONSTANTS.KEY_VALUES.SPACE:
-        case CONSTANTS.KEY_VALUES.ENTER:
-          this.props.onClick();
-          break;
+      const { onClick } = this.props;
+      if (event.key === CONSTANTS.KEY_VALUES.SPACE
+        || event.key === CONSTANTS.KEY_VALUES.ENTER) {
+        onClick();
       }
     }
 
@@ -65,12 +68,11 @@ const holdOnClick = function(ComposedComponent) {
      * Handler for the mousedown event which calls the onClick handler and starts
      * a timer that will enable calling onClick periodically unless the button is
      * released before the timer callback.
-     * @private
-     * @param {event} event The mousedown event object
      */
-    onMouseDown(event) {
-      this.props.onClick();
-      this.queueHoldClick(true);
+    onMouseDown() {
+      const { onClick } = this.props;
+      onClick();
+      this.queueHoldClick();
     }
 
     /**
@@ -89,10 +91,11 @@ const holdOnClick = function(ComposedComponent) {
      * @private
      */
     holdClick() {
+      const { onClick } = this.props;
       clearTimeout(this.repeatTimer);
 
       this.repeatTimer = setTimeout(() => {
-        this.props.onClick();
+        onClick();
         this.holdClick();
       }, CLICK_HOLD_FREQUENCY);
     }
@@ -109,6 +112,7 @@ const holdOnClick = function(ComposedComponent) {
     }
 
     render() {
+      const { children } = this.props;
       return (
         <ComposedComponent
           {...this.props}
@@ -118,7 +122,7 @@ const holdOnClick = function(ComposedComponent) {
           onMouseUp={this.releaseClick}
           onMouseLeave={this.releaseClick}
         >
-          {this.props.children}
+          {children}
         </ComposedComponent>
       );
     }

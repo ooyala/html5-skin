@@ -1,71 +1,36 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const createReactClass = require('create-react-class');
-const CONSTANTS = require('../../constants/constants');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import CONSTANTS from '../../constants/constants';
 
-const AccessibleMenu = function(ComposedComponent, options) {
-  const _options = options || {};
+const AccessibleMenu = (ComposedComponent, dirtyOptions) => {
+  const options = dirtyOptions || {};
 
-  return createReactClass({
+  /**
+   * Element accessibility is a routine that could be gather in one HOC
+   * Done it here
+   */
+  class Hoc extends React.Component {
     componentDidMount() {
-      this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent);
+      this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent); // eslint-disable-line
       this.applyOptions();
 
       if (this.menuDomElement) {
         this.menuDomElement.addEventListener('keydown', this.onKeyDown);
       }
-    },
+    }
 
     componentWillUnmount() {
       if (this.menuDomElement) {
         this.menuDomElement.removeEventListener('keydown', this.onKeyDown);
       }
-    },
-
-    /**
-     * Configures the component with the options object that was passed during initialization.
-     * Should be called only once after componentDidMount.
-     * @private
-     */
-    applyOptions() {
-      // If specified, use a child element instead of component's main element
-      if (_options.selector && this.menuDomElement) {
-        this.menuDomElement = this.menuDomElement.querySelector(_options.selector);
-      }
-      // Use roving tabindex for tab navigation if specified.
-      // See: https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
-      if (_options.useRovingTabindex) {
-        this.applyRovingTabIndex();
-        // When using roving tab index we need to monitor changes to the composed component
-        // in order to re-apply it when selection changes
-        if (this.composedComponent) {
-          // Store reference to child component's current componentDidUpdate handler
-          this.composedComponentDidUpdateHandler = this.composedComponent.componentDidUpdate;
-          // Replace with custom decorator handler
-          this.composedComponent.componentDidUpdate = this.composedComponentDidUpdate;
-        }
-      }
-    },
-
-    /**
-     * Fires when the composed component's componentDidUpdate handler is executed. We use this
-     * cue to make sure that the roving tab index state is up to date.
-     * @private
-     */
-    composedComponentDidUpdate() {
-      // Call component's original handler if existent
-      if (typeof this.composedComponentDidUpdateHandler === 'function') {
-        this.composedComponentDidUpdateHandler.apply(this.composedComponent, arguments);
-      }
-      this.applyRovingTabIndex();
-    },
+    }
 
     /**
      * Keydown event handler. Implements arrow key navigation for menu items.
      * @private
      * @param {event} event The keyboard event object.
      */
-    onKeyDown(event) {
+    onKeyDown = (event) => {
       if (
         !event.target
         || !event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)
@@ -88,7 +53,7 @@ const AccessibleMenu = function(ComposedComponent, options) {
         default:
           break;
       }
-    },
+    }
 
     /**
      * Gets a NodeList that contains all the children of this.menuDomElement that can be
@@ -97,7 +62,7 @@ const AccessibleMenu = function(ComposedComponent, options) {
      * @private
      * @returns {NodeList} An ordered list of elements that comprise a menu.
      */
-    getMenuItemList() {
+    getMenuItemList = () => {
       let menuItemList = [];
 
       if (this.menuDomElement) {
@@ -106,29 +71,7 @@ const AccessibleMenu = function(ComposedComponent, options) {
         );
       }
       return menuItemList;
-    },
-
-    /**
-     * Finds the previous or next sibling of the given menu item and gives it focus.
-     * @private
-     * @param {Element} menuItem The menuItem element whose sibling we want to focus on.
-     * @param {Boolean} useNextSibling Chooses the next sibling when true and the previous when false.
-     */
-    focusOnMenuItemSibling(menuItem, useNextSibling) {
-      const menuItemList = this.getMenuItemList();
-      if (!menuItemList.length) {
-        return;
-      }
-      // Since these elements aren't actually next to each other in the DOM, their position
-      // relative to one another is implied from their tab order, which should be the same as
-      // the one returned by querySelectorAll as long as tabindex is set to 0 (which should be the case).
-      const siblingIndex = this.getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling);
-      var menuItem = menuItemList[siblingIndex];
-
-      if (menuItem && typeof menuItem.focus === 'function') {
-        menuItem.focus();
-      }
-    },
+    }
 
     /**
      * Gets the index of the previous or next menu item on the list relative to
@@ -141,7 +84,7 @@ const AccessibleMenu = function(ComposedComponent, options) {
      * @param {Boolean} useNextSibling Chooses the sibling next to menuItem when true and the previous one when false.
      * @returns {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
      */
-    getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling) {
+    getMenuItemSiblingIndex = (menuItemList, menuItem, useNextSibling) => { // eslint-disable-line
       if (!menuItemList || !menuItemList.length) {
         return -1;
       }
@@ -156,7 +99,67 @@ const AccessibleMenu = function(ComposedComponent, options) {
         siblingIndex = 0;
       }
       return siblingIndex;
-    },
+    }
+
+    /**
+     * Finds the previous or next sibling of the given menu item and gives it focus.
+     * @private
+     * @param {Element} menuItem The menuItem element whose sibling we want to focus on.
+     * @param {Boolean} useNextSibling Chooses the next sibling when true and the previous when false.
+     */
+    focusOnMenuItemSibling = (menuItem, useNextSibling) => {
+      const menuItemList = this.getMenuItemList();
+      if (!menuItemList.length) {
+        return;
+      }
+      // Since these elements aren't actually next to each other in the DOM, their position
+      // relative to one another is implied from their tab order, which should be the same as
+      // the one returned by querySelectorAll as long as tabindex is set to 0 (which should be the case).
+      const siblingIndex = this.getMenuItemSiblingIndex(menuItemList, menuItem, useNextSibling);
+      const item = menuItemList[siblingIndex];
+
+      if (item && typeof menuItem.focus === 'function') {
+        item.focus();
+      }
+    }
+
+    /**
+     * Fires when the composed component's componentDidUpdate handler is executed. We use this
+     * cue to make sure that the roving tab index state is up to date.
+     * @private
+     */
+    composedComponentDidUpdate = (...args) => {
+      // Call component's original handler if existent
+      if (typeof this.composedComponentDidUpdateHandler === 'function') {
+        this.composedComponentDidUpdateHandler.apply(this.composedComponent, args);
+      }
+      this.applyRovingTabIndex();
+    }
+
+    /**
+     * Configures the component with the options object that was passed during initialization.
+     * Should be called only once after componentDidMount.
+     * @private
+     */
+    applyOptions = () => {
+      // If specified, use a child element instead of component's main element
+      if (options.selector && this.menuDomElement) {
+        this.menuDomElement = this.menuDomElement.querySelector(options.selector);
+      }
+      // Use roving tabindex for tab navigation if specified.
+      // See: https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
+      if (options.useRovingTabindex) {
+        this.applyRovingTabIndex();
+        // When using roving tab index we need to monitor changes to the composed component
+        // in order to re-apply it when selection changes
+        if (this.composedComponent) {
+          // Store reference to child component's current componentDidUpdate handler
+          this.composedComponentDidUpdateHandler = this.composedComponent.componentDidUpdate;
+          // Replace with custom decorator handler
+          this.composedComponent.componentDidUpdate = this.composedComponentDidUpdate;
+        }
+      }
+    }
 
     /**
      * Applies a roving tab index to the menu's menu items, which essentially only allows
@@ -165,13 +168,11 @@ const AccessibleMenu = function(ComposedComponent, options) {
      * Reference: https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
      * @private
      */
-    applyRovingTabIndex() {
-      let menuItem;
+    applyRovingTabIndex = () => {
       let hasSelectedItems = false;
       const menuItemList = this.getMenuItemList();
 
-      for (let i = 0; i < menuItemList.length; i++) {
-        menuItem = menuItemList[i];
+      menuItemList.forEach((menuItem) => {
         if (
           menuItem.getAttribute('aria-checked') === 'true'
           || menuItem.getAttribute('aria-selected') === 'true'
@@ -181,24 +182,26 @@ const AccessibleMenu = function(ComposedComponent, options) {
         } else {
           menuItem.setAttribute('tabindex', -1);
         }
-      }
+      });
       // Make first element tabbable if no selected item was found
       if (menuItemList.length && !hasSelectedItems) {
         menuItemList[0].setAttribute('tabindex', 0);
       }
-    },
+    }
 
     render() {
       return (
         <ComposedComponent
-          ref={function(c) {
-            this.composedComponent = c;
-          }.bind(this)}
+          ref={(element) => {
+            this.composedComponent = element;
+          }}
           {...this.props}
         />
       );
-    },
-  });
+    }
+  }
+
+  return Hoc;
 };
 
 module.exports = AccessibleMenu;

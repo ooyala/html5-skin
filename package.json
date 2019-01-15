@@ -38,7 +38,8 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scrollbar": "^0.5.4",
-    "screenfull": "3.3.3"
+    "screenfull": "3.3.3",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
@@ -97,7 +98,6 @@
     "sinon": "^6.3.4",
     "transform-loader": "^0.2.4",
     "uglifyjs-webpack-plugin": "^2.0.1",
-    "underscore": "^1.9.1",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^1.1.2",
     "watchify": "^3.11.0",
