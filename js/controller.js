@@ -2077,14 +2077,14 @@ module.exports = function(OO, _, $, W) {
     },
 
     onErrorEvent: function(event, errorCode) {
-      this.unsubscribeBasicPlaybackEvents();
       this.setBufferingState(false);
-
       this.state.currentVideoId = null;
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
       this.state.errorCode = errorCode;
+      this.mb.publish(OO.EVENTS.PAUSE);
       this.renderSkin();
+      this.unsubscribeBasicPlaybackEvents();
     },
 
     unsubscribeFromMessageBus: function() {
