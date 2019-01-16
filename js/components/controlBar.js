@@ -917,7 +917,7 @@ var ControlBar = createReactClass({
         continue;
       }
 
-      if (defaultItems[k].name === 'airPlay' && !this.props.controller.isAirPlayAvailable) {
+      if (defaultItems[k].name === 'airPlay' && this.props.controller.state.isAirPlayAvailable) {
         continue;
       }
 

@@ -502,6 +502,7 @@ module.exports = function(OO, _, $, W) {
         default:
           break;
       }
+      this.renderSkin();
     },
 
     /**
@@ -583,7 +584,7 @@ module.exports = function(OO, _, $, W) {
 
         // add the AirPlay TargetAvailability event listener
         if (window.WebKitPlaybackTargetAvailabilityEvent) {
-          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged', this.airPlayListener);
+          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged', _.bind(this.airPlayListener, this));
         }
       }
 
