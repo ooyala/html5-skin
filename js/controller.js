@@ -584,7 +584,8 @@ module.exports = function(OO, _, $, W) {
 
         // add the AirPlay TargetAvailability event listener
         if (window.WebKitPlaybackTargetAvailabilityEvent) {
-          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged', _.bind(this.airPlayListener, this));
+          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
+            _.bind(this.airPlayListener, this));
         }
       }
 

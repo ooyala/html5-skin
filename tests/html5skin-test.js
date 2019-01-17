@@ -1721,6 +1721,18 @@ describe('Controller', function() {
 
   });
 
+  describe('AirPlay button', () => {
+    window.WebKitPlaybackTargetAvailabilityEvent = true;
+    it('Should set availability state', () => {
+      const videoElement = controller.state.mainVideoElement;
+      const videoWrapper = Enzyme.mount(videoElement);
+      videoWrapper.vm.$emit('webkitplaybacktargetavailabilitychanged', {
+        availability: 'available'
+      });
+      expect(controller.state.isAirPlayAvailable).toBe(true);
+    })
+  });
+
   it('that we show playing screen when ads have finished playing and end screen if the video has finished', function() {
     controller.createPluginElements();
     controller.state.playerState = CONSTANTS.STATE.START;
