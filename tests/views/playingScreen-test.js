@@ -112,6 +112,8 @@ describe('PlayingScreen', function() {
       showControlBar: function() {},
       setVolume: function() {},
       togglePlayPause: () => {},
+      togglePopover: () => {},
+      toggleScreen: () => {},
       addBlur: () => {},
       removeBlur: () => {}
     };

@@ -7,17 +7,17 @@
  * @class CountDownClock
  * @constructor
  */
-const React = require('react');
+import React from 'react';
 
-const ReactDOM = require('react-dom');
+import ReactDOM from 'react-dom';
 
-const ClassNames = require('classnames');
+import ClassNames from 'classnames';
 
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Utils = require('./utils');
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import Utils from './utils';
 
-const CONSTANTS = require('../constants/constants');
+import CONSTANTS from '../constants/constants';
 
 const CountDownClock = createReactClass({
   getInitialState() {

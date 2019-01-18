@@ -100,7 +100,9 @@ describe('Audio Only Screen', () => {
       requestNextVideo: function() {},
       showControlBar: function() {},
       setVolume: function() {},
-      togglePlayPause: () => {}
+      togglePlayPause: () => {},
+      togglePopover: () => {},
+      toggleScreen: () => {},
     };
     mockSkinConfig = Utils.clone(skinConfig);
     mockContentTree = {

@@ -61,7 +61,9 @@ describe('EndScreen', function() {
       toggleMute: function() {},
       setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
-      setVolume: function() {}
+      setVolume: function() {},
+      togglePopover: () => {},
+      toggleScreen: () => {},
     };
     mockSkinConfig = Utils.clone(skinConfig);
     mockContentTree = {'description': 'description', 'title': 'title', promo_image: 'image.png'};

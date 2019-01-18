@@ -88,6 +88,8 @@ describe('ControlBar', function() {
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},
       toggleMute: function() {},
+      togglePopover: () => {},
+      toggleScreen: () => {},
       setFocusedControl: function() {},
       startHideControlBarTimer: function() {},
       setPlaybackSpeed: function() {},
@@ -1303,7 +1305,7 @@ describe('ControlBar', function() {
       expect(chromecastBtn.length).toBe(0);
     });
 
-    it('Should not show chromecast button when player param not exist', () => {
+    it('Should show chromecast button when player param exist', () => {
       baseMockController.state.cast.showButton = true;
       var wrapper = Enzyme.mount(getControlBar());
       var chromecastBtn = wrapper.find(".oo-cast");

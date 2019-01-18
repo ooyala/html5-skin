@@ -3,7 +3,10 @@
   "globals": {
     "_": false,
     "$": false,
-    "OO": false
+    "OO": false,
+    "document": false,
+    "window": false,
+    "screen": false
   },
   "parser": "babel-eslint",
   "plugins": [

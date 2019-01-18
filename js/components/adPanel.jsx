@@ -1,84 +1,92 @@
-/** ******************************************************************
- AD PANEL
- ******************************************************************** */
+import React from 'react';
+import ClassNames from 'classnames';
+
+import CONSTANTS from '../constants/constants';
+import Spinner from './spinner';
+import Utils from './utils';
+import Icon from './icon';
+import AdPanelTopBarItem from './adPanelTopBarItem';
+
 /**
- * The screen used while the video is playing.
- *
- * @class AdPanel
- * @constructor
+ * Representation of ad panel
  */
-const React = require('react');
+class AdPanel extends React.Component {
+  constructor(props) {
+    super(props);
+    const { controller } = props;
+    this.isMobile = controller.state.isMobile;
+  }
 
-const ClassNames = require('classnames');
-const createReactClass = require('create-react-class');
-const CONSTANTS = require('../constants/constants');
+  handleSkipAdButtonClick = () => {
+    const { controller } = this.props;
+    controller.onSkipAdClicked();
+  }
 
-const Spinner = require('./spinner');
+  handleLearnMoreButtonClick = () => {
+    const { controller } = this.props;
+    controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
+  }
 
-
-const Utils = require('./utils');
-
-const Icon = require('../components/icon');
-
-const AdPanelTopBarItem = createReactClass({
-  render() {
-    return (
-      <a className={this.props.itemClassName} onClick={this.props.onButtonClicked}>
-        {this.props.children}
-      </a>
-    );
-  },
-});
-
-const AdPanel = createReactClass({
-  getInitialState() {
-    this.isMobile = this.props.controller.state.isMobile;
-    return {
-      adEndTime: this.props.controller.state.adEndTime,
-    };
-  },
-
-  handleSkipAdButtonClick() {
-    this.props.controller.onSkipAdClicked();
-  },
-
-  handleLearnMoreButtonClick() {
-    this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
-  },
-
-  handleAdTopBarClick(event) {
+  /**
+   * handle the click
+   * @param {Object} event – the event object
+   */
+  handleAdTopBarClick = (event) => {
     if (event.type === 'touchend' || !this.isMobile) {
       // since mobile would fire both click and touched events,
       // we need to make sure only one actually does the work
       event.stopPropagation(); // W3C
-      event.cancelBubble = true; // IE
+      event.cancelBubble = true; // eslint-disable-line
     }
-  },
+  }
 
-  isValidAdPlaybackInfo(playbackInfo) {
-    return playbackInfo !== null && typeof playbackInfo !== 'undefined' && playbackInfo !== '';
-  },
+  /**
+   * define if playback info is valid
+   * @param {Object} playbackInfo - the playback
+   * @returns {boolean} the result of a check
+   */
+  isValidAdPlaybackInfo = playbackInfo => playbackInfo !== null
+    && typeof playbackInfo !== 'undefined'
+    && playbackInfo !== '';
 
-  populateAdTopBar() {
+  /**
+   * define the list of ad panel items based on props
+   * @returns {Array} array of React components
+   */
+  populateAdTopBar = () => {
+    const {
+      currentAdsInfo,
+      contentTree,
+      componentWidth,
+      language,
+      localizableStrings,
+      skinConfig,
+      controller,
+    } = this.props;
     const adTopBarItems = [];
 
-    // // Ad title
+    // Ad title
     let adTitle = 'Unknown';
     if (
-      this.props.currentAdsInfo
-      && this.props.currentAdsInfo.currentAdItem
-      && this.props.contentTree
-      && this.props.currentAdsInfo.currentAdItem.ooyalaAds
-      && this.props.contentTree.title
+      currentAdsInfo
+      && currentAdsInfo.currentAdItem
+      && contentTree
+      && currentAdsInfo.currentAdItem.ooyalaAds
+      && contentTree.title
     ) {
-      adTitle = this.props.contentTree.title;
+      adTitle = contentTree.title;
     } else {
-      adTitle = this.props.currentAdsInfo.currentAdItem.name;
+      adTitle = currentAdsInfo.currentAdItem.name;
     }
     // AMC puts "Unknown" in the name field if ad name unavailable
-    if (this.isValidAdPlaybackInfo(adTitle) && this.props.componentWidth > 560) {
+    const componentWidthThreshold = 560;
+    if (this.isValidAdPlaybackInfo(adTitle) && componentWidth > componentWidthThreshold) {
       const adTitleDiv = (
-        <AdPanelTopBarItem key="adTitle" ref="adTitle" itemClassName="oo-ad-title">
+        <AdPanelTopBarItem
+          key="adTitle"
+          ref="adTitle" // eslint-disable-line
+          itemClassName="oo-ad-title"
+        >
           {adTitle}
         </AdPanelTopBarItem>
       );
@@ -87,20 +95,20 @@ const AdPanel = createReactClass({
 
     // Ad playback Info
     let adPlaybackInfo = Utils.getLocalizedString(
-      this.props.language,
+      language,
       CONSTANTS.SKIN_TEXT.AD,
-      this.props.localizableStrings
+      localizableStrings
     );
-    const currentAdIndex = this.props.currentAdsInfo.currentAdItem.indexInPod;
-    const totalNumberOfAds = this.props.currentAdsInfo.numberOfAds;
+    const currentAdIndex = currentAdsInfo.currentAdItem.indexInPod;
+    const totalNumberOfAds = currentAdsInfo.numberOfAds;
     if (this.isValidAdPlaybackInfo(currentAdIndex) && this.isValidAdPlaybackInfo(totalNumberOfAds)) {
       adPlaybackInfo = `${adPlaybackInfo}: (${currentAdIndex}/${totalNumberOfAds})`;
     }
 
-    if (this.props.skinConfig.adScreen.showAdCountDown) {
-      let remainingTime = this.props.controller.getAdRemainingTime();
+    if (skinConfig.adScreen.showAdCountDown) {
+      let remainingTime = controller.getAdRemainingTime();
 
-      if (isFinite(remainingTime)) {
+      if (Number.isFinite(remainingTime)) {
         remainingTime = Utils.formatSeconds(Math.max(0, remainingTime));
         adPlaybackInfo = `${adPlaybackInfo} - ${remainingTime}`;
       } else {
@@ -109,7 +117,11 @@ const AdPanel = createReactClass({
     }
 
     const adPlaybackInfoDiv = (
-      <AdPanelTopBarItem ref="adPlaybackInfo" key="adPlaybackInfo" itemClassName="oo-ad-playback-info">
+      <AdPanelTopBarItem
+        ref="adPlaybackInfo" // eslint-disable-line
+        key="adPlaybackInfo"
+        itemClassName="oo-ad-playback-info"
+      >
         {adPlaybackInfo}
       </AdPanelTopBarItem>
     );
@@ -122,21 +134,21 @@ const AdPanel = createReactClass({
     // Learn more
     const learnMoreClass = ClassNames({
       'oo-learn-more': true,
-      'oo-hidden': !this.props.currentAdsInfo.currentAdItem.hasClickUrl,
+      'oo-hidden': !currentAdsInfo.currentAdItem.hasClickUrl,
     });
     if (
-      this.props.currentAdsInfo.currentAdItem !== null
-      && this.isValidAdPlaybackInfo(this.props.currentAdsInfo.currentAdItem.hasClickUrl)
+      currentAdsInfo.currentAdItem !== null
+      && this.isValidAdPlaybackInfo(currentAdsInfo.currentAdItem.hasClickUrl)
     ) {
       const learnMoreText = Utils.getLocalizedString(
-        this.props.language,
+        language,
         CONSTANTS.SKIN_TEXT.LEARN_MORE,
-        this.props.localizableStrings
+        localizableStrings
       );
       const learnMoreButtonDiv = (
         <AdPanelTopBarItem
           key="learnMoreButton"
-          ref="learnMoreButton"
+          ref="learnMoreButton" // eslint-disable-line
           onButtonClicked={this.handleLearnMoreButtonClick}
           itemClassName={learnMoreClass}
         >
@@ -150,18 +162,18 @@ const AdPanel = createReactClass({
     // Skip
     const skipButtonClass = ClassNames({
       'oo-skip-button': true,
-      'oo-visible': this.props.currentAdsInfo.skipAdButtonEnabled,
-      'oo-enabled': this.props.currentAdsInfo.skipAdButtonEnabled,
+      'oo-visible': currentAdsInfo.skipAdButtonEnabled,
+      'oo-enabled': currentAdsInfo.skipAdButtonEnabled,
     });
     const skipButtonText = Utils.getLocalizedString(
-      this.props.language,
+      language,
       CONSTANTS.SKIN_TEXT.SKIP_AD,
-      this.props.localizableStrings
+      localizableStrings
     );
     const skipButtonDiv = (
       <AdPanelTopBarItem
         key="skipButton"
-        ref="skipButton"
+        ref="skipButton" // eslint-disable-line
         onButtonClicked={this.handleSkipAdButtonClick}
         itemClassName={skipButtonClass}
       >
@@ -172,21 +184,22 @@ const AdPanel = createReactClass({
     adTopBarItems.push(skipButtonDiv);
 
     return adTopBarItems;
-  },
+  }
 
   render() {
+    const { controller, skinConfig } = this.props;
     let spinner = null;
-    if (this.props.controller.state.buffering === true) {
-      spinner = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />;
+    if (controller.state.buffering === true) {
+      spinner = <Spinner loadingImage={skinConfig.general.loadingImage.imageResource.url} />;
     }
     const adTopBarItems = this.populateAdTopBar();
     return (
       <div className="oo-ad-screen-panel">
         {spinner}
         <div className="oo-ad-screen-panel-click-layer" />
-        <div
+        <div // eslint-disable-line
           className="oo-ad-top-bar"
-          ref="adTopBar"
+          ref="adTopBar" // eslint-disable-line
           onClick={this.handleAdTopBarClick}
           onTouchEnd={this.handleAdTopBarClick}
         >
@@ -194,8 +207,8 @@ const AdPanel = createReactClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
 AdPanel.defaultProps = {
   currentPlayhead: 0,

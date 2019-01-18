@@ -1,7 +1,11 @@
-const CONSTANTS = require('./../constants/constants');
-const Utils = require('./utils');
+import CONSTANTS from '../constants/constants';
+import Utils from './utils';
 
-const AccessibilityControls = function(controller) {
+/**
+ * Wrapper that adds accessibility controls tracking
+ * @param {Object} controller - the global state controller
+ */
+function AccessibilityControls(controller) {
   this.controller = controller;
   this.vrRotationAllowed = true; // flag for checking repeat of keyDown
   this.keyDirectionMap = {};
@@ -21,7 +25,7 @@ const AccessibilityControls = function(controller) {
 
   document.addEventListener('keydown', this.keyEventDown);
   document.addEventListener('keyup', this.keyEventUp);
-};
+}
 
 AccessibilityControls.prototype = {
 
@@ -40,15 +44,15 @@ AccessibilityControls.prototype = {
     document.removeEventListener('keyup', this.keyEventUp);
   },
 
-  keyEventDown(e) {
+  keyEventDown(event) {
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
 
-    const targetTagName = this.getTargetTagName(e);
-    const charCode = e.which || e.keyCode;
+    const targetTagName = this.getTargetTagName(event);
+    const charCode = event.which || event.keyCode;
     if (this.controller.videoVr) {
-      this.moveVrToDirection(e, charCode, true, targetTagName); // start rotate 360
+      this.moveVrToDirection(event, charCode, true, targetTagName); // start rotate 360
     }
 
     switch (charCode) {
@@ -58,14 +62,14 @@ AccessibilityControls.prototype = {
         // Note that this is not a comprehensive fix for all clickable elements, this is
         // mostly meant to enable keyboard navigation on control bar elements.
         if (targetTagName !== 'button') {
-          e.preventDefault();
+          event.preventDefault();
           this.controller.togglePlayPause();
         }
         break;
       case CONSTANTS.KEYCODES.UP_ARROW_KEY:
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
         if (this.areArrowKeysAllowed()) {
-          e.preventDefault();
+          event.preventDefault();
           const increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
         }
@@ -73,8 +77,8 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
         if (this.areArrowKeysAllowed()) {
-          e.preventDefault();
-          const forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
+          event.preventDefault();
+          const forward = event.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
           const skinConfig = Utils.getPropertyValue(this.controller, 'skin.props.skinConfig');
           const skipTimes = Utils.getSkipTimes(skinConfig);
           const delta = forward ? skipTimes.forward : skipTimes.backward;
@@ -115,29 +119,29 @@ AccessibilityControls.prototype = {
   /**
    * @description handlers for keyup event
    * @private
-   * @param {Event} e - event
+   * @param {Event} event - event
    */
-  keyEventUp(e) {
+  keyEventUp(event) {
     if (!(this.controller.state.accessibilityControlsEnabled || this.controller.state.isClickedOutside)) {
       return;
     }
     if (this.controller.videoVr) {
-      const targetTagName = this.getTargetTagName(e);
-      const charCode = e.which || e.keyCode;
-      this.moveVrToDirection(e, charCode, false, targetTagName); // stop rotate 360
+      const targetTagName = this.getTargetTagName(event);
+      const charCode = event.which || event.keyCode;
+      this.moveVrToDirection(event, charCode, false, targetTagName); // stop rotate 360
     }
   },
 
   /**
    * @description get name of target tag, for example "button" etc
    * @private
-   * @param {Event} e - event
+   * @param {Event} event - event
    * @returns {string} name of the target tag
    */
-  getTargetTagName(e) {
+  getTargetTagName(event) {
     let targetTagName = '';
-    if (e.target && typeof e.target.tagName === 'string') {
-      targetTagName = e.target.tagName.toLowerCase();
+    if (event.target && typeof event.target.tagName === 'string') {
+      targetTagName = event.target.tagName.toLowerCase();
     }
     return targetTagName;
   },
@@ -145,19 +149,19 @@ AccessibilityControls.prototype = {
   /**
    * @description call moveVrToDirection from controller for rotation a vr video
    * @private
-   * @param {Event} e - event
+   * @param {Event} event - event
    * @param {number} charCode - char code;
    * @param {boolean} isKeyDown - true if key is pressed
    * @param {string} targetTagName - name of the clicked tag
    * @returns {boolean} true if moved
    */
-  moveVrToDirection(e, charCode, isKeyDown, targetTagName) {
-    const keyDirectionMap = this.keyDirectionMap;
+  moveVrToDirection(event, charCode, isKeyDown, targetTagName) {
+    const { keyDirectionMap } = this;
     if (!(this.controller.videoVr || keyDirectionMap[charCode] || targetTagName !== 'button')) {
       return false;
     }
-    if (e.repeat !== undefined) {
-      this.vrRotationAllowed = !e.repeat;
+    if (event.repeat !== undefined) {
+      this.vrRotationAllowed = !event.repeat;
     }
     if (!this.vrRotationAllowed) {
       return false;
@@ -166,34 +170,19 @@ AccessibilityControls.prototype = {
     this.controller.moveVrToDirection(false, keyDirectionMap[charCode]); // stop rotation if isKeyDown === false or prevent prev rotation if press a button (isKeyDown === true)
 
     if (isKeyDown === true) {
-      let newBtn = true;
-      for (let j = this.prevKeyPressedArr.length - 1; j >= 0; j--) {
-        if (this.prevKeyPressedArr[j] === charCode) {
-          newBtn = false; // there is extra pressDown for pressed btn in chrome (windows) and safari if to change to fullscreen mode
-          break; // we do not need to add charCode to prevKeyPressedArr in this case
-        }
-      }
+      const newBtn = this.prevKeyPressedArr.some(address => address === charCode);
       if (newBtn) {
         this.prevKeyPressedArr.push(charCode);
       }
     } else {
-      // if button is up, remove it from this.prevKeyPressedArr
-      let inPrevKeyPressedArrIndex = -1;
-      // check if button code is already in list of pressed buttons (this.prevKeyPressedArr)
-      // if code is in the array return index of the code
-      for (let i = this.prevKeyPressedArr.length - 1; i >= 0; i--) {
-        if (this.prevKeyPressedArr[i] === charCode) {
-          inPrevKeyPressedArrIndex = i;
-          break;
-        }
-      }
+      const inPrevKeyPressedArrIndex = this.prevKeyPressedArr.findIndex(address => address === charCode);
       if (inPrevKeyPressedArrIndex > -1) {
         this.prevKeyPressedArr.splice(inPrevKeyPressedArrIndex, 1);
       }
     }
     if (this.prevKeyPressedArr.length) {
-      isKeyDown = true;
-      charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length - 1];
+      isKeyDown = true; // eslint-disable-line
+      charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length - 1]; // eslint-disable-line
     }
     // rotate if a button is pressed, stop rotate if other case
     this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
@@ -208,17 +197,18 @@ AccessibilityControls.prototype = {
    * @param {Boolean} increase True for volume increase, false for descrease.
    */
   changeVolumeBy(percent, increase) {
-    const delta = Utils.constrainToRange(percent, 0, 100);
+    const percentsMax = 100;
+    const delta = Utils.constrainToRange(percent, 0, percentsMax);
 
     if (delta) {
       let volume = 0;
       const currentVolume = Utils.ensureNumber(this.controller.state.volumeState.volume, 0);
-      const currentVolumePercent = currentVolume * 100;
+      const currentVolumePercent = currentVolume * percentsMax;
 
       if (increase) {
-        volume = Utils.constrainToRange(currentVolumePercent + delta, 0, 100) / 100;
+        volume = Utils.constrainToRange(currentVolumePercent + delta, 0, percentsMax) / percentsMax;
       } else {
-        volume = Utils.constrainToRange(currentVolumePercent - delta, 0, 100) / 100;
+        volume = Utils.constrainToRange(currentVolumePercent - delta, 0, percentsMax) / percentsMax;
       }
       if (volume !== currentVolume) {
         this.controller.setVolume(volume);
@@ -232,16 +222,12 @@ AccessibilityControls.prototype = {
    * @returns {Boolean} True if seeking is possible, false otherwise.
    */
   canSeek() {
-    let seekingEnabled = false;
+    let seekingEnabled;
     switch (this.controller.state.screenToShow) {
       case CONSTANTS.SCREEN.PLAYING_SCREEN:
       case CONSTANTS.SCREEN.PAUSE_SCREEN:
       case CONSTANTS.SCREEN.END_SCREEN:
-        if (this.controller.state.isPlayingAd) {
-          seekingEnabled = false;
-        } else {
-          seekingEnabled = true;
-        }
+        seekingEnabled = !this.controller.state.isPlayingAd;
         break;
       default:
         seekingEnabled = false;

@@ -85,6 +85,7 @@ var skinControllerMock = {
   rewindOrRequestPreviousVideo: () => {},
   requestNextVideo: () => {},
   togglePlayPause: () => {},
+  togglePopover: () => {},
   onTouchMove: () => {}
 };
 
