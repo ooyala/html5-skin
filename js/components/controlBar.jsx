@@ -280,14 +280,14 @@ class ControlBar extends React.Component {
    * @param {string} popoverName - the name of the popover
    * @private
    * @returns {Object} - if toggleButtons (object) has key = popoverName it returns the value,
-   * otherwise it returns null
+   * otherwise it returns {}
    */
   getToggleButtons = (popoverName) => {
     const { controller } = this.props;
     if (controller && controller.toggleButtons) {
       return controller.toggleButtons[popoverName];
     }
-    return null;
+    return {};
   }
 
   /**
@@ -542,7 +542,7 @@ class ControlBar extends React.Component {
         <div key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY} className="oo-popover-button-container">
           <ControlButton
             {...commonButtonProps}
-            onRef={this.setToggleButtons(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+            onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, menu)}
             style={selectedStyle}
             className={qualityClass}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
@@ -551,7 +551,7 @@ class ControlBar extends React.Component {
             ariaExpanded={controller.state.videoQualityOptions.showPopover ? true : null}
             icon="quality"
             tooltip={CONSTANTS.SKIN_TEXT.VIDEO_QUALITY}
-            onClick={this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+            onClick={() => this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
           />
           {controller.state.videoQualityOptions.showPopover && (
             <Popover
@@ -586,7 +586,7 @@ class ControlBar extends React.Component {
         <div key={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION} className="oo-popover-button-container">
           <ControlButton
             {...commonButtonProps}
-            onRef={this.setToggleButtons(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+            onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, menu)}
             style={selectedStyle}
             className={captionClass}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
@@ -595,7 +595,7 @@ class ControlBar extends React.Component {
             ariaExpanded={controller.state.closedCaptionOptions.showPopover ? true : null}
             icon="cc"
             tooltip={CONSTANTS.SKIN_TEXT.CLOSED_CAPTIONS}
-            onClick={this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+            onClick={() => this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
           />
           {controller.state.closedCaptionOptions.showPopover && (
             <Popover
@@ -635,7 +635,7 @@ class ControlBar extends React.Component {
           <div key={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC} className="oo-popover-button-container">
             <ControlButton
               {...commonButtonProps}
-              onRef={this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+              onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO, menu)}
               style={selectedStyle}
               className={multiAudioClass}
               focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
@@ -675,14 +675,14 @@ class ControlBar extends React.Component {
 
           <PlaybackSpeedButton
             {...commonButtonProps}
-            onRef={this.setToggleButtons(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+            onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED, menu)}
             className={playbackSpeedClass}
             style={controller.state.playbackSpeedOptions.showPopover ? selectedStyle : null}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
             ariaHasPopup
             ariaExpanded={controller.state.playbackSpeedOptions.showPopover ? true : null}
             tooltip={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
-            onClick={this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+            onClick={() => this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
           />
 
           {controller.state.playbackSpeedOptions.showPopover
@@ -790,7 +790,7 @@ class ControlBar extends React.Component {
     };
 
     let defaultItems;
-    if (controlBarItems) {
+    if (controlBarItems && controlBarItems.length) {
       defaultItems = controlBarItems;
     } else if (audioOnly) {
       defaultItems = skinConfig.buttons.audioOnly;
@@ -854,7 +854,7 @@ class ControlBar extends React.Component {
           item.name !== CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION
           || (
             availableLanguages.length
-            && controller.state.isOoyalaAds
+            && !controller.state.isOoyalaAds
           )
         )
         // do not show quality button if no bitrates available
@@ -874,7 +874,7 @@ class ControlBar extends React.Component {
           || skinConfig.controlBar.logo.imageResource.url
         )
         && (
-          item.name !== 'volume' || Utils.isIos()
+          item.name !== 'volume' || !Utils.isIos()
         )
         // not sure what to do when there are multi streams
         && (

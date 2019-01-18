@@ -18,7 +18,6 @@ var Enzyme = require('enzyme');
 var CONSTANTS = require('../../js/constants/constants');
 var ControlBar = require('../../js/components/controlBar');
 var AccessibleButton = require('../../js/components/accessibleButton');
-var ControlButton = require('../../js/components/controlButton');
 var PlaybackSpeedButton = require('../../js/components/playbackSpeedButton');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');

@@ -296,7 +296,6 @@ const Skin = createReactClass({
     // Focusable elements on the player (this.domElement) are expected to have the
     // data-focus-id attribute, this is a convention used throughout this project.
     const selector = `[${CONSTANTS.KEYBD_FOCUS_ID_ATTR}]:enabled`;
-    console.log('>>>>',selector,'<<<<<<');
     const focusableElements = this.domElement.querySelectorAll(selector);
 
     if (focusableElements.length) {
