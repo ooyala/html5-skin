@@ -46,13 +46,15 @@ var ControlBar = createReactClass({
     window.addEventListener('orientationchange', this.closeOtherPopovers);
     window.addEventListener('orientationchange', this.setLandscapeScreenOrientation, false);
 
-    if (!window.WebKitPlaybackTargetAvailabilityEvent)
-      return;
-    const video = this.props.controller.state.mainVideoElement;
-    video.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
-      function(event) {
-        console.log('May be change the icon here', event);
-      });
+    //add eventListener when playing over AirPlay
+    if (!window.WebKitPlaybackTargetAvailabilityEvent) {
+      const video = this.props.controller.state.mainVideoElement;
+
+      //This event fires when a media element starts or stops AirPlay playback
+      video.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
+        function(event) {
+        });
+    }
   },
 
   componentWillReceiveProps: function(nextProps) {

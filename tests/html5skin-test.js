@@ -1723,13 +1723,18 @@ describe('Controller', function() {
 
   describe('AirPlay button', () => {
     window.WebKitPlaybackTargetAvailabilityEvent = true;
-    it('Should set availability state', () => {
-      const videoElement = controller.state.mainVideoElement;
-      const videoWrapper = Enzyme.mount(videoElement);
-      videoWrapper.vm.$emit('webkitplaybacktargetavailabilitychanged', {
+    it('Should set the airPlay availability state', () => {
+      controller.airPlayListener({
         availability: 'available'
       });
       expect(controller.state.isAirPlayAvailable).toBe(true);
+    });
+
+    it('Should not set the airPlay availability state', () => {
+      controller.airPlayListener({
+        availability: 'not-available'
+      });
+      expect(controller.state.isAirPlayAvailable).toBe(false);
     })
   });
 
