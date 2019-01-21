@@ -492,15 +492,6 @@ module.exports = function(OO, _, $, W) {
     },
 
     airPlayListener: function(event) {
-      switch (event.availability) {
-        case 'available':
-          this.state.isAirPlayAvailable = true;
-          break;
-        case 'not-available':
-          this.state.isAirPlayAvailable = false;
-          break;
-        default:
-          break;
       this.state.isAirPlayAvailable = event.availability === 'available';
       this.renderSkin();
     },
