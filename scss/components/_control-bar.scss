@@ -160,17 +160,8 @@
       cursor: default;
     }
 
-    .oo-cast {
+    .oo-cast, .oo-cast-air {
       width: 45px;
-    }
-
-    .oo-cast-air {
-      width: 45px;
-
-      .oo-icon {
-        width: 35px;
-        height: 35px;
-      }
     }
 
     &.oo-flex-end {
