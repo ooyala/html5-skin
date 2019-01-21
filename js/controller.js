@@ -501,7 +501,7 @@ module.exports = function(OO, _, $, W) {
           break;
         default:
           break;
-      }
+      this.state.isAirPlayAvailable = event.availability === 'available';
       this.renderSkin();
     },
 
