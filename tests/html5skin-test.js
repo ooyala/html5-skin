@@ -1735,7 +1735,9 @@ describe('Controller', function() {
         availability: 'not-available'
       });
       expect(controller.state.isAirPlayAvailable).toBe(false);
-    })
+    });
+
+    window.WebKitPlaybackTargetAvailabilityEvent = false;
   });
 
   it('that we show playing screen when ads have finished playing and end screen if the video has finished', function() {
