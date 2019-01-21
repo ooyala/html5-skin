@@ -2695,6 +2695,10 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
+    toggleClosedCaptions: function() {
+      this.mb.publish(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS);
+    },
+
     toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.state.persistentSettings.closedCaptionOptions['enabled'] = !!this.state.closedCaptionOptions
