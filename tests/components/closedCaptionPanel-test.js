@@ -77,7 +77,7 @@ describe('ClosedCaptionPanel', function() {
   });
 
   it('checks closed caption switch works', function() {
-    mockController.toggleClosedCaptionEnabled = function() {
+    mockController.toggleClosedCaptions = function() {
       closedCaptionsEnabled = !closedCaptionsEnabled;
     };
 
