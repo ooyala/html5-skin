@@ -1,66 +1,88 @@
-/** ******************************************************************
- MORE OPTIONS PANEL
- ******************************************************************** */
+import React from 'react';
+import ClassNames from 'classnames';
+import CONSTANTS from '../constants/constants';
+import ControlButton from './controlButton';
+import PlaybackSpeedButton from './playbackSpeedButton';
+
 /**
- * @class MoreOptionsPanel
- * @constructor
+ * More options panel
  */
-const React = require('react');
-const ClassNames = require('classnames');
-const createReactClass = require('create-react-class');
-const Utils = require('./utils');
-const CONSTANTS = require('../constants/constants');
-const AnimateMixin = require('../mixins/animateMixin');
-const Icon = require('../components/icon');
-const ControlButton = require('./controlButton');
-const PlaybackSpeedButton = require('./playbackSpeedButton');
+class MoreOptionsPanel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      animate: false,
+    };
+  }
 
-const MoreOptionsPanel = createReactClass({
-  mixins: [AnimateMixin],
+  componentDidMount() {
+    this.animateTimer = setTimeout(this.startAnimation, 1);
+  }
 
-  handleShareClick() {
-    this.props.controller.toggleShareScreen();
-  },
+  componentWillUnmount() {
+    clearTimeout(this.animateTimer);
+  }
 
-  handleQualityClick() {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
-  },
+  startAnimation = () => {
+    this.setState({ animate: true });
+  }
 
-  handleDiscoveryClick() {
-    this.props.controller.toggleDiscoveryScreen();
-  },
+  handleShareClick = () => {
+    const { controller } = this.props;
+    controller.toggleShareScreen();
+  }
 
-  handleClosedCaptionClick() {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
-  },
+  handleQualityClick = () => {
+    const { controller } = this.props;
+    controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
+  }
 
-  handleMultiAudioClick() {
-    if (this.props.controller && typeof this.props.controller.toggleScreen === 'function') {
-      this.props.controller.toggleScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
+  handleDiscoveryClick = () => {
+    const { controller } = this.props;
+    controller.toggleDiscoveryScreen();
+  }
+
+  handleClosedCaptionClick = () => {
+    const { controller } = this.props;
+    controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
+  }
+
+  handleMultiAudioClick = () => {
+    const { controller } = this.props;
+    if (controller && typeof controller.toggleScreen === 'function') {
+      controller.toggleScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
     }
-  },
+  }
 
   /**
-   * Opens the Playback Speed menu in screen mode when the playback speed button is clicked.
+   * Opens the Playback Speed menu in screen mode when the playback speed button is clicked
    * @private
    */
-  handlePlaybackSpeedClick() {
-    this.props.controller.toggleScreen(CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN);
-  },
+  handlePlaybackSpeedClick = () => {
+    const { controller } = this.props;
+    controller.toggleScreen(CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN);
+  }
 
-  buildMoreOptionsButtonList() {
+  /**
+   * Build list of items for more options panel
+   * @returns {Object} map of items
+   */
+  buildMoreOptionsButtonList = () => {
+    const {
+      controller,
+      language,
+      localizableStrings,
+      responsiveView,
+      skinConfig,
+    } = this.props;
     const commonButtonProps = {
-      language: this.props.language,
-      localizableStrings: this.props.localizableStrings,
-      responsiveView: this.props.responsiveView,
-      skinConfig: this.props.skinConfig,
-      controller: this.props.controller,
-      style: {
-        fontSize: `${this.props.skinConfig.moreOptionsScreen.iconSize}px`,
-      },
-      getTooltipAlignment(key) {
-        return CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
-      },
+      language,
+      localizableStrings,
+      responsiveView,
+      skinConfig,
+      controller,
+      style: { fontSize: `${skinConfig.moreOptionsScreen.iconSize}px` },
+      getTooltipAlignment: () => CONSTANTS.TOOLTIP_ALIGNMENT.CENTER,
     };
 
     const optionsItemsTemplates = {};
@@ -134,20 +156,16 @@ const MoreOptionsPanel = createReactClass({
       />
     );
 
-    const items = this.props.controller.state.moreOptionsItems;
-    const moreOptionsItems = [];
-
-    for (let i = 0; i < items.length; i++) {
-      moreOptionsItems.push(optionsItemsTemplates[items[i].name]);
-    }
-
+    const items = controller.state.moreOptionsItems;
+    const moreOptionsItems = items.map(item => optionsItemsTemplates[item.name]);
     return moreOptionsItems;
-  },
+  }
 
   render() {
+    const { animate } = this.state;
     const moreOptionsItemsClass = ClassNames({
       'oo-more-options-items': true,
-      'oo-animate-more-options': this.state.animate,
+      'oo-animate-more-options': animate,
     });
 
     const moreOptionsItems = this.buildMoreOptionsButtonList();
@@ -157,8 +175,8 @@ const MoreOptionsPanel = createReactClass({
         <div className={moreOptionsItemsClass}>{moreOptionsItems}</div>
       </div>
     );
-  },
-});
+  }
+}
 
 MoreOptionsPanel.defaultProps = {
   skinConfig: {

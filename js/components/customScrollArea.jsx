@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-const ScrollArea = require('react-scrollbar/dist/no-css').default;
+import ScrollArea from 'react-scrollbar/dist/no-css';
 
 /**
  * Extends the react-scrollbar component with the ability to prevent the full page
@@ -20,6 +20,24 @@ class CustomScrollArea extends React.Component {
 
   componentWillUnmount() {
     this.removeDomListeners();
+  }
+
+  /**
+   * Handles the touchmove event. This is used in order to prevent the whole page
+   * from scrolling while attempting to scroll the ScrollArea on touch devices.
+   * @private
+   * @param {Event} event The touchmove event object
+   */
+  onTouchMove(event) {
+    // Avoid preventing default on child elements otherwise the scroll area
+    // itself will not scroll
+    const { canScroll } = this.state;
+    if (
+      canScroll // Only prevent default if area can actually be scrolled
+      && this.domNode === event.currentTarget
+    ) {
+      event.preventDefault();
+    }
   }
 
   /**
@@ -49,7 +67,7 @@ class CustomScrollArea extends React.Component {
       // Make sure to remove any listeners that were previously set
       this.removeDomListeners();
       // Find new DOM node
-      this.domNode = ReactDOM.findDOMNode(this.composedComponent);
+      this.domNode = ReactDOM.findDOMNode(this.composedComponent); // eslint-disable-line
 
       if (this.domNode) {
         this.domNode.addEventListener('touchmove', this.onTouchMove);
@@ -63,48 +81,33 @@ class CustomScrollArea extends React.Component {
    * our state with its value.
    * @private
    */
-  composedComponentDidUpdate() {
+  composedComponentDidUpdate(...args) {
     // Called original componentDidUpdate handler if it exists
     if (typeof this.composedComponentDidUpdateHandler === 'function') {
-      this.composedComponentDidUpdateHandler.apply(this.composedComponent, arguments);
+      this.composedComponentDidUpdateHandler.apply(this.composedComponent, args);
     }
     if (this.composedComponent) {
       // The goal of getting this value is to allow scrolling freely in cases in
       // which the scroll area's content is not large enough to overflow
-      const canScroll = this.composedComponent.canScroll(this.composedComponent.state);
-
+      const canScrollComposedElement = this.composedComponent.canScroll(this.composedComponent.state);
+      const { canScroll } = this.state;
       // Update state only if it's different from previous
-      if (this.state.canScroll !== canScroll) {
-        this.setState({ canScroll });
+      if (canScroll !== canScrollComposedElement) {
+        this.setState({ canScroll: canScrollComposedElement });
       }
     }
   }
 
-  /**
-   * Handles the touchmove event. This is used in order to prevent the whole page
-   * from scrolling while attempting to scroll the ScrollArea on touch devices.
-   * @private
-   * @param {Event} event The touchmove event object
-   */
-  onTouchMove(event) {
-    // Avoid preventing default on child elements otherwise the scroll area
-    // itself will not scroll
-    if (
-      this.state.canScroll // Only prevent default if area can actually be scrolled
-      && this.domNode === event.currentTarget
-    ) {
-      event.preventDefault();
-    }
-  }
-
   render() {
+    const { children } = this.props;
+    const { canScroll } = this.state;
     return (
       <ScrollArea
         {...this.props}
         ref={this.storeRef}
-        stopScrollPropagation={this.state.canScroll}
+        stopScrollPropagation={canScroll}
       >
-        {this.props.children}
+        {children}
       </ScrollArea>
     );
   }

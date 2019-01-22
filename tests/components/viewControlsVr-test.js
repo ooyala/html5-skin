@@ -15,7 +15,7 @@ var CONSTANTS = require('../../js/constants/constants');
 var ViewControlsVr = require('../../js/components/viewControlsVr');
 var _ = require('underscore');
 
-import { DirectionControlVr } from '../../js/components/directionControlVr';
+import DirectionControlVr from '../../js/components/directionControlVr';
 
 describe('viewControlsVr', function() {
   

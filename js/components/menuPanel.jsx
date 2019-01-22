@@ -1,11 +1,11 @@
-const React = require('react');
-const classNames = require('classnames');
-const PropTypes = require('prop-types');
-const CustomScrollArea = require('./customScrollArea');
-const AccessibleMenu = require('./higher-order/accessibleMenu');
-const MenuPanelItem = require('./menuPanelItem');
-const Utils = require('./utils');
-const CONSTANTS = require('../constants/constants');
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import CustomScrollArea from './customScrollArea';
+import AccessibleMenu from './higher-order/accessibleMenu';
+import MenuPanelItem from './menuPanelItem';
+import Utils from './utils';
+import CONSTANTS from '../constants/constants';
 
 /**
  * Generic menu component that handles the rendering, accessibility and item selection
@@ -30,11 +30,11 @@ class MenuPanel extends React.Component {
    * @private
    * @param {String} itemValue The value of the menu item that was clicked
    */
-  onMenuItemClick(itemValue) {
-    this.props.onMenuItemClick(itemValue);
-
-    if (typeof this.props.onClose === 'function') {
-      this.props.onClose({ restoreToggleButtonFocus: true });
+  onMenuItemClick = (itemValue) => {
+    const { onMenuItemClick, onClose } = this.props;
+    onMenuItemClick(itemValue);
+    if (typeof onClose === 'function') {
+      onClose({ restoreToggleButtonFocus: true });
     }
   }
 
@@ -46,7 +46,7 @@ class MenuPanel extends React.Component {
    * @param {String} accentColor The accent color to use for selected items
    * @returns {Component} A MenuPanelItem component whose properties are mapped to the given menu item object
    */
-  renderMenuItem(item = {}, selectedValue, accentColor) {
+  renderMenuItem = (item = {}, selectedValue, accentColor) => {
     const { buttonClassName, skinConfig } = this.props;
     const isSelected = item.value === selectedValue;
 
@@ -138,6 +138,16 @@ MenuPanel.propTypes = {
       accentColor: PropTypes.string,
     }),
   }),
+};
+
+MenuPanel.defaultProps = {
+  className: '',
+  contentClassName: '',
+  buttonClassName: '',
+  title: '',
+  isPopover: false,
+  onClose: () => {},
+  skinConfig: {},
 };
 
 module.exports = AccessibleMenu(MenuPanel);

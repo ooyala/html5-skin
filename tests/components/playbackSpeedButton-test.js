@@ -36,7 +36,8 @@ describe('PlaybackSpeedButton', function() {
             currentSpeed: 1
           }
         }
-      }
+      },
+      skinConfig: {},
     };
   });
 

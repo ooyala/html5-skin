@@ -1,4 +1,4 @@
-import { DirectionControlVr } from './directionControlVr';
+import DirectionControlVr from './directionControlVr';
 
 const React = require('react');
 const classnames = require('classnames');

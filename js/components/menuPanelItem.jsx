@@ -1,14 +1,15 @@
-const React = require('react');
-const classNames = require('classnames');
-const PropTypes = require('prop-types');
-const AccessibleButton = require('./accessibleButton');
-const Icon = require('./icon');
-const CONSTANTS = require('../constants/constants');
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import AccessibleButton from './accessibleButton';
+import Icon from './icon';
+import CONSTANTS from '../constants/constants';
 
 /**
  * Presentational component that handles the rendering of the menu items that
  * are used by the MenuPanel component. Also handles styling of selected items
- * and click logic.
+ * and click logic
+ * @returns {Object} React template
  */
 const MenuPanelItem = ({
   itemValue,
@@ -73,8 +74,13 @@ MenuPanelItem.propTypes = {
   isSelected: PropTypes.bool.isRequired,
   focusId: PropTypes.string.isRequired,
   accentColor: PropTypes.string,
-  skinConfig: PropTypes.object.isRequired,
+  skinConfig: PropTypes.shape({}).isRequired,
   onClick: PropTypes.func.isRequired,
+};
+
+MenuPanelItem.defaultProps = {
+  buttonClassName: '',
+  accentColor: '',
 };
 
 module.exports = MenuPanelItem;

@@ -1,6 +1,6 @@
-const React = require('react');
-const classnames = require('classnames');
-const PropTypes = require('prop-types');
+import React from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 /**
  * A vr video rotation control button
@@ -20,9 +20,10 @@ class DirectionControlVr extends React.Component {
    */
   rotateVrVideo(event) {
     const isRotated = event && (event.type === 'mousedown' || event.type === 'touchstart');
-    if ((!this.state.isTouched && isRotated) || (this.state.isTouched && !isRotated)) {
-      this.props.handleVrViewControlsClick(event, isRotated, this.props.dir);
-
+    const { isTouched } = this.state;
+    const { dir, handleVrViewControlsClick } = this.props;
+    if ((!isTouched && isRotated) || (isTouched && !isRotated)) {
+      handleVrViewControlsClick(event, isRotated, dir);
       this.setState({
         isTouched: isRotated,
       });
@@ -31,20 +32,22 @@ class DirectionControlVr extends React.Component {
 
   render() {
     const baseDirectionClass = 'oo-vr-icon--move';
-    const directionClass = `${baseDirectionClass}--${this.props.dir}`;
+    const { dir } = this.props;
+    const { isTouched } = this.state;
+    const directionClass = `${baseDirectionClass}--${dir}`;
     let touchedDirectionClass = '';
-    if (this.state.isTouched) {
+    if (isTouched) {
       touchedDirectionClass = `${directionClass}--touched`;
     }
     return (
-      <div
+      <div // eslint-disable-line
         className={classnames(
           'oo-direction-control',
           baseDirectionClass,
           directionClass,
           touchedDirectionClass
         )}
-        key={this.props.dir}
+        key={dir}
         onMouseDown={this.rotateVrVideo}
         onTouchStart={this.rotateVrVideo}
         onMouseUp={this.rotateVrVideo}
@@ -56,7 +59,13 @@ class DirectionControlVr extends React.Component {
 }
 
 DirectionControlVr.propTypes = {
+  dir: PropTypes.string,
   handleVrViewControlsClick: PropTypes.func,
 };
 
-export { DirectionControlVr };
+DirectionControlVr.defaultProps = {
+  dir: undefined,
+  handleVrViewControlsClick: () => {},
+};
+
+export default DirectionControlVr;
