@@ -1059,7 +1059,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     onPlayed: function() {
-      var duration = this.state.mainVideoDuration;
+      var duration = this.state.mainVideoDuration || this.state.contentTree.duration / 1000;
       this.state.duration = duration;
       this.state.playerState = CONSTANTS.STATE.END;
 
