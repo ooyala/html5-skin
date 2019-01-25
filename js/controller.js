@@ -491,6 +491,11 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin({cast: {connected:false, device: ""}});
     },
 
+    airPlayListener: function(event) {
+      this.state.isAirPlayAvailable = event.availability === 'available';
+      this.renderSkin();
+    },
+
     /**
      * Set style "touch-action: none" only for video 360 on mobile devices
      * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
@@ -567,6 +572,12 @@ module.exports = function(OO, _, $, W) {
       // add loadedmetadata event listener to main video element
       if (videoElement) {
         videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
+
+        // add the AirPlay TargetAvailability event listener
+        if (window.WebKitPlaybackTargetAvailabilityEvent) {
+          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
+            _.bind(this.airPlayListener, this));
+        }
       }
 
       if (Utils.isIE10()) {

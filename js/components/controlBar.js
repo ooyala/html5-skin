@@ -216,6 +216,11 @@ var ControlBar = createReactClass({
     }
   },
 
+  handleAirPlayClick: function() {
+    const video = this.props.controller.state.mainVideoElement;
+    video.webkitShowPlaybackTargetPicker();
+  },
+
   handleMultiAudioClick: function() {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
 
@@ -595,6 +600,19 @@ var ControlBar = createReactClass({
         )
       }.bind(this)(),
 
+      airPlay: (
+        <ControlButton
+          {...commonButtonProps}
+          key={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
+          className="oo-airplay"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
+          ariaHidden={true}
+          icon="airPlay"
+          tooltip={CONSTANTS.SKIN_TEXT.AIRPLAY}
+          onClick={this.handleAirPlayClick}>
+        </ControlButton>
+      ),
+
       audioAndCC: function() {
         var closedCaptionsList = [];
         var multiAudioList = [];
@@ -896,6 +914,10 @@ var ControlBar = createReactClass({
       }
 
       if (defaultItems[k].name === 'chromecast' && !this.props.controller.state.cast.showButton) {
+        continue;
+      }
+
+      if (defaultItems[k].name === 'airPlay' && !this.props.controller.state.isAirPlayAvailable) {
         continue;
       }
 

@@ -1297,17 +1297,33 @@ describe('ControlBar', function() {
   });
 
   describe('Chromecast button', ()=> {
-    it('Should not show chromecast button when player param not exist', () => {
+    it('Should not show chromecast button when player param does not exist', () => {
       var wrapper = Enzyme.mount(getControlBar());
-      var chromecastBtn = wrapper.find(".oo-cast");
+      var chromecastBtn = wrapper.find('.oo-cast');
       expect(chromecastBtn.length).toBe(0);
     });
 
-    it('Should not show chromecast button when player param not exist', () => {
+    it('Should show chromecast button when player param exists', () => {
       baseMockController.state.cast.showButton = true;
       var wrapper = Enzyme.mount(getControlBar());
-      var chromecastBtn = wrapper.find(".oo-cast");
+      var chromecastBtn = wrapper.find('.oo-cast');
       expect(chromecastBtn.length).toBe(1);
     });
   });
+
+  describe('AirPlay button', () => {
+    it('Should show airPlay button when the airPlay is available', () => {
+      baseMockController.state.isAirPlayAvailable = true;
+      const wrapper = Enzyme.mount(getControlBar());
+      const airPlayBtn = wrapper.find('.oo-airplay').hostNodes();
+      expect(airPlayBtn.length).toBe(1);
+    });
+
+    it('Should not show airPlay button when the airPlay is not available', () => {
+      baseMockController.state.isAirPlayAvailable = false;
+      const wrapper = Enzyme.mount(getControlBar());
+      const airPlayBtn = wrapper.find('.oo-airplay').hostNodes();
+      expect(airPlayBtn.length).toBe(0);
+    })
+  })
 });

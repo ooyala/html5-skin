@@ -809,12 +809,12 @@ describe('Utils', function() {
     expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
     expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
     // test array merge for buttons (prepend)
-    expect(finalConfig.buttons.desktopContent.length).toBe(18);
+    expect(finalConfig.buttons.desktopContent.length).toBe(19);
     // test new buttons are placed after flexibleSpace
     expect(finalConfig.buttons.desktopContent[4].name).toBe('flexibleSpace');
     expect(finalConfig.buttons.desktopContent[5].name).toBe('ooyala');
     expect(finalConfig.buttons.desktopContent[6].name).toBe('alice');
-    expect(finalConfig.buttons.desktopContent[11].alice).toBe('video');
+    expect(finalConfig.buttons.desktopContent[12].alice).toBe('video');
   });
 
   it('tests getUserDevice', function() {
