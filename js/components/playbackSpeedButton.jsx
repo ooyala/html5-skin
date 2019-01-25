@@ -1,15 +1,18 @@
-const React = require('react');
-const classNames = require('classnames');
-const PropTypes = require('prop-types');
-const ControlButton = require('./controlButton');
-const Utils = require('./utils');
-const CONSTANTS = require('../constants/constants');
-const MACROS = require('../constants/macros');
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import ControlButton from './controlButton';
+import Utils from './utils';
+import CONSTANTS from '../constants/constants';
 
-class PlaybackSpeedButton extends React.Component {
+/**
+ * Playback speed button implementation
+ */
+class PlaybackSpeedButton extends React.Component { // eslint-disable-line
   render() {
+    const { children, className, controller } = this.props;
     const currentSpeed = Utils.getPropertyValue(
-      this.props.controller,
+      controller,
       'state.playbackSpeedOptions.currentSpeed',
       1
     );
@@ -18,14 +21,14 @@ class PlaybackSpeedButton extends React.Component {
     return (
       <ControlButton
         {...this.props}
-        className={classNames('oo-playback-speed', this.props.className)}
+        className={classNames('oo-playback-speed', className)}
         ariaLabel={ariaLabel}
       >
         <span className="oo-current-speed oo-icon">
           {currentSpeed}
 x
         </span>
-        {this.props.children}
+        {children}
       </ControlButton>
     );
   }
@@ -38,7 +41,7 @@ PlaybackSpeedButton.propTypes = {
         currentSpeed: PropTypes.number.isRequired,
       }),
     }),
-  }),
+  }).isRequired,
 };
 
 module.exports = PlaybackSpeedButton;

@@ -1,14 +1,16 @@
-const React = require('react');
-const classNames = require('classnames');
-const PropTypes = require('prop-types');
-const ControlButton = require('./controlButton');
-const HoldControlButton = require('./holdControlButton');
-const Icon = require('./icon');
-const Utils = require('./utils');
-const preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus');
-const CONSTANTS = require('../constants/constants');
-const MACROS = require('../constants/macros');
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import ControlButton from './controlButton';
+import HoldControlButton from './holdControlButton';
+import preserveKeyboardFocus from './higher-order/preserveKeyboardFocus';
+import CONSTANTS from '../constants/constants';
+import MACROS from '../constants/macros';
+import Utils from './utils';
 
+/**
+ * The implemenation of controls to skip asset
+ */
 class SkipControls extends React.Component {
   constructor(props) {
     super(props);
@@ -23,23 +25,15 @@ class SkipControls extends React.Component {
   }
 
   /**
-   * Stores a ref to this component's main element.
-   * @private
-   * @param {HTMLElement} domElement
-   */
-  storeRef(domElement) {
-    this.domElement = domElement;
-  }
-
-  /**
    * Fired when the component is mounted. Notifies its parent about it's position
    * and dimensions (client rect).
    * @private
    */
   componentDidMount() {
-    if (this.domElement && typeof this.props.onMount === 'function') {
+    const { onMount } = this.props;
+    if (this.domElement && typeof onMount === 'function') {
       const clientRect = this.domElement.getBoundingClientRect();
-      this.props.onMount(clientRect);
+      onMount(clientRect);
     }
   }
 
@@ -48,8 +42,9 @@ class SkipControls extends React.Component {
    * @private
    */
   onPreviousVideo() {
-    if (typeof this.props.controller.rewindOrRequestPreviousVideo === 'function') {
-      this.props.controller.rewindOrRequestPreviousVideo();
+    const { controller } = this.props;
+    if (typeof controller.rewindOrRequestPreviousVideo === 'function') {
+      controller.rewindOrRequestPreviousVideo();
     }
   }
 
@@ -58,8 +53,9 @@ class SkipControls extends React.Component {
    * @private
    */
   onNextVideo() {
-    if (typeof this.props.controller.requestNextVideo === 'function') {
-      this.props.controller.requestNextVideo();
+    const { controller } = this.props;
+    if (typeof controller.requestNextVideo === 'function') {
+      controller.requestNextVideo();
     }
   }
 
@@ -68,9 +64,10 @@ class SkipControls extends React.Component {
    * @private
    */
   onSkipBackward() {
-    if (typeof this.props.a11yControls.seekBy === 'function') {
-      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
-      this.props.a11yControls.seekBy(skipTimes.backward, false, true);
+    const { a11yControls, skinConfig } = this.props;
+    if (typeof a11yControls.seekBy === 'function') {
+      const skipTimes = Utils.getSkipTimes(skinConfig);
+      a11yControls.seekBy(skipTimes.backward, false, true);
     }
   }
 
@@ -79,9 +76,10 @@ class SkipControls extends React.Component {
    * @private
    */
   onSkipForward() {
-    if (typeof this.props.a11yControls.seekBy === 'function') {
-      const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
-      this.props.a11yControls.seekBy(skipTimes.forward, true, true);
+    const { a11yControls, skinConfig } = this.props;
+    if (typeof a11yControls.seekBy === 'function') {
+      const skipTimes = Utils.getSkipTimes(skinConfig);
+      a11yControls.seekBy(skipTimes.forward, true, true);
     }
   }
 
@@ -93,31 +91,8 @@ class SkipControls extends React.Component {
    * @private
    */
   onMouseEnter() {
-    this.props.controller.cancelTimer();
-  }
-
-  /**
-   * Determines whether or not the current video is at the end (VOD) or at the
-   * live edge (DVR Live Streams) based on the playhead state and duration.
-   * @private
-   * @returns {Boolean} True if the video is at the video end/live edge, false otherwise.
-   */
-  isAtVideoEdge() {
-    const isLiveStream = Utils.getPropertyValue(
-      this.props.controller,
-      'state.isLiveStream',
-      false
-    );
-    let isVideoEdge = false;
-    const duration = Utils.getPropertyValue(this.props.controller, 'state.duration', 0);
-    const currentPlayhead = Utils.ensureNumber(this.props.currentPlayhead, 0);
-
-    if (isLiveStream) {
-      isVideoEdge = Math.abs(currentPlayhead - duration) < 1;
-    } else {
-      isVideoEdge = currentPlayhead >= duration;
-    }
-    return isVideoEdge;
+    const { controller } = this.props;
+    controller.cancelTimer();
   }
 
   /**
@@ -125,7 +100,33 @@ class SkipControls extends React.Component {
    * @private
    */
   onPlayPauseClick() {
-    this.props.controller.togglePlayPause();
+    const { controller } = this.props;
+    controller.togglePlayPause();
+  }
+
+  /**
+   * Parses the skin.json's skip button configuration and returns the ids (button
+   * names from the skin config) of the enabled buttons sorted by index in ascending order.
+   * @private
+   * @returns {array} An array of button objects. Each object contains the id and index
+   * of the button.
+   */
+  getSortedButtonEntries() {
+    const { buttonConfig, skinConfig } = this.props;
+    const buttons = buttonConfig || Utils.getPropertyValue(
+      skinConfig,
+      'skipControls.buttons',
+      {}
+    );
+    // Find the ids and indexes of all enabled buttons
+    const sorted = Object.keys(buttons).filter(
+      buttonId => this.shouldDisplayButton(buttonId, buttons[buttonId])
+    ).map(
+      buttonId => ({ id: buttonId, index: buttons[buttonId].index })
+    ).sort(
+      (current, next) => current.index - next.index
+    );
+    return sorted;
   }
 
   /**
@@ -139,7 +140,13 @@ class SkipControls extends React.Component {
   getButtonTemplate() {
     const buttonTemplate = {};
     const buttonStyle = {};
-    const skipTimes = Utils.getSkipTimes(this.props.skinConfig);
+    const {
+      config,
+      controller,
+      isInactive,
+      skinConfig,
+    } = this.props;
+    const skipTimes = Utils.getSkipTimes(skinConfig);
 
     const skipBackwardAriaLabel = CONSTANTS.ARIA_LABELS.SKIP_BACKWARD.replace(
       MACROS.SECONDS,
@@ -153,12 +160,12 @@ class SkipControls extends React.Component {
     // are hidden. When controls are inactive we disable pointer events so that
     // the user won't accidentally trigger a button when bringing up the controls
     // on touch devices.
-    if (this.props.isInactive) {
+    if (isInactive) {
       buttonStyle.pointerEvents = 'none';
     }
 
-    const playButtonDetails = Utils.getPlayButtonDetails(this.props.controller.state.playerState);
-    const duration = Utils.getPropertyValue(this.props.controller, 'state.duration');
+    const playButtonDetails = Utils.getPlayButtonDetails(controller.state.playerState);
+    const duration = Utils.getPropertyValue(controller, 'state.duration');
 
     buttonTemplate[CONSTANTS.SKIP_CTRLS_KEYS.PREVIOUS_VIDEO] = (
       <ControlButton
@@ -169,7 +176,7 @@ class SkipControls extends React.Component {
         className="oo-previous-video"
         icon="previous"
         ariaLabel={CONSTANTS.ARIA_LABELS.PREVIOUS_VIDEO}
-        disabled={!this.props.config.hasPreviousVideos}
+        disabled={!config.hasPreviousVideos}
         onClick={this.onPreviousVideo}
       />
     );
@@ -215,7 +222,7 @@ class SkipControls extends React.Component {
         className="oo-next-video"
         icon="next"
         ariaLabel={CONSTANTS.ARIA_LABELS.NEXT_VIDEO}
-        disabled={!this.props.config.hasNextVideos}
+        disabled={!config.hasNextVideos}
         onClick={this.onNextVideo}
       />
     );
@@ -236,6 +243,37 @@ class SkipControls extends React.Component {
   }
 
   /**
+   * Stores a ref to this component's main element.
+   * @private
+   * @param {HTMLElement} domElement - the real DOM element
+   */
+  storeRef(domElement) {
+    this.domElement = domElement;
+  }
+
+  /**
+   * Determines whether or not the current video is at the end (VOD) or at the
+   * live edge (DVR Live Streams) based on the playhead state and duration.
+   * @private
+   * @returns {Boolean} True if the video is at the video end/live edge, false otherwise.
+   */
+  isAtVideoEdge() {
+    const { controller, currentPlayhead } = this.props;
+    const isLiveStream = Utils.getPropertyValue(
+      controller,
+      'state.isLiveStream',
+      false
+    );
+    const duration = Utils.getPropertyValue(controller, 'state.duration', 0);
+    const sanitizedCurrentPlayhead = Utils.ensureNumber(currentPlayhead, 0);
+
+    const isVideoEdge = isLiveStream
+      ? Math.abs(sanitizedCurrentPlayhead - duration) < 1
+      : sanitizedCurrentPlayhead >= duration;
+    return isVideoEdge;
+  }
+
+  /**
    * Determines whether or not the button with the particular id can be displayed
    * considering the current player state and configuration.
    * @private
@@ -244,7 +282,7 @@ class SkipControls extends React.Component {
    * @returns {boolean} True if the button should be displayed, false otherwise
    */
   shouldDisplayButton(buttonId, buttonConfig) {
-    const { config, controller } = this.props;
+    const { config, controller, forceShowButtons } = this.props;
     const isSingleVideo = !config.hasPreviousVideos && !config.hasNextVideos;
     const duration = Utils.getPropertyValue(controller, 'state.duration');
 
@@ -263,43 +301,12 @@ class SkipControls extends React.Component {
       return false;
     }
 
-    const isDisabled = !this.props.forceShowButtons && (
+    const isDisabled = !forceShowButtons && (
       (isSkipButton && !duration)
       || (isPrevNextButton && isSingleVideo)
       || !(buttonConfig && buttonConfig.enabled)
     );
     return !isDisabled;
-  }
-
-  /**
-   * Parses the skin.json's skip button configuration and returns the ids (button
-   * names from the skin config) of the enabled buttons sorted by index in ascending order.
-   * @private
-   * @returns {array} An array of button objects. Each object contains the id and index
-   * of the button.
-   */
-  getSortedButtonEntries() {
-    const buttons = [];
-    const buttonConfig = this.props.buttonConfig ? this.props.buttonConfig
-      : Utils.getPropertyValue(
-        this.props.skinConfig,
-        'skipControls.buttons',
-        {}
-      );
-    // Find the ids and indexes of all enabled buttons
-    for (const buttonId in buttonConfig) {
-      const button = buttonConfig[buttonId];
-
-      if (this.shouldDisplayButton(buttonId, button)) {
-        buttons.push({
-          id: buttonId,
-          index: button.index,
-        });
-      }
-    }
-    // Sort by index in ascending order
-    buttons.sort((a, b) => a.index - b.index);
-    return buttons;
   }
 
   render() {
@@ -309,19 +316,26 @@ class SkipControls extends React.Component {
       return null;
     }
 
-    const className = classNames('oo-skip-controls', this.props.className, {
-      'oo-inactive': this.props.isInactive,
-      'oo-in-background': this.props.isInBackground,
+    const {
+      className,
+      isInactive,
+      isInBackground,
+      onFocus,
+      onBlur,
+    } = this.props;
+    const finalClassName = classNames('oo-skip-controls', className, {
+      'oo-inactive': isInactive,
+      'oo-in-background': isInBackground,
     });
     const buttonTemplate = this.getButtonTemplate();
 
     return (
       <div
         ref={this.storeRef}
-        className={className}
+        className={finalClassName}
         onMouseEnter={this.onMouseEnter}
-        onFocus={this.props.onFocus}
-        onBlur={this.props.onBlur}
+        onFocus={onFocus}
+        onBlur={onBlur}
       >
         {buttons.map(button => buttonTemplate[button.id])}
       </div>
@@ -333,20 +347,20 @@ SkipControls.propTypes = {
   className: PropTypes.string,
   maxWidth: PropTypes.number,
   forceShowButtons: PropTypes.bool,
-  buttonConfig: PropTypes.object,
+  buttonConfig: PropTypes.shape({}),
   isInactive: PropTypes.bool,
   isInBackground: PropTypes.bool,
   language: PropTypes.string,
-  localizableStrings: PropTypes.object,
+  localizableStrings: PropTypes.shape({}),
   responsiveView: PropTypes.string.isRequired,
-  skinConfig: PropTypes.object.isRequired,
+  skinConfig: PropTypes.shape({}).isRequired,
   currentPlayhead: PropTypes.number.isRequired,
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   config: PropTypes.shape({
     hasPreviousVideos: PropTypes.bool.isRequired,
     hasNextVideos: PropTypes.bool.isRequired,
-  }),
+  }).isRequired,
   controller: PropTypes.shape({
     state: PropTypes.shape({
       isMobile: PropTypes.bool.isRequired,
@@ -362,10 +376,24 @@ SkipControls.propTypes = {
     startHideControlBarTimer: PropTypes.func.isRequired,
     cancelTimer: PropTypes.func.isRequired,
     togglePlayPause: PropTypes.func.isRequired,
-  }),
+  }).isRequired,
   a11yControls: PropTypes.shape({
     seekBy: PropTypes.func.isRequired,
   }),
+};
+
+SkipControls.defaultProps = {
+  className: '',
+  maxWidth: 0,
+  forceShowButtons: false,
+  buttonConfig: undefined,
+  isInactive: false,
+  isInBackground: false,
+  language: 'en',
+  localizableStrings: {},
+  onFocus: () => {},
+  onBlur: () => {},
+  a11yControls: { seekBy: () => {} },
 };
 
 module.exports = preserveKeyboardFocus(SkipControls);

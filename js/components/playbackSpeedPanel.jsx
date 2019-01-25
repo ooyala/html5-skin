@@ -1,9 +1,9 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const MenuPanel = require('./menuPanel');
-const Utils = require('./utils');
-const CONSTANTS = require('../constants/constants');
-const MACROS = require('../constants/macros');
+import React from 'react';
+import PropTypes from 'prop-types';
+import MenuPanel from './menuPanel';
+import Utils from './utils';
+import CONSTANTS from '../constants/constants';
+import MACROS from '../constants/macros';
 
 /**
  * Playback Speed options menu. This component is used for both the Popover and
@@ -32,11 +32,12 @@ class PlaybackSpeedPanel extends React.Component {
    * to min and max values and truncated to 2 decimals
    */
   getPlaybackSpeedOptions() {
+    const { skinConfig } = this.props;
     // Only process speed options once per component mount
     if (!this.playbackSpeedOptions) {
       // Get configured values from skin
       this.playbackSpeedOptions = Utils.getPropertyValue(
-        this.props.skinConfig,
+        skinConfig,
         'playbackSpeed.options',
         CONSTANTS.PLAYBACK_SPEED.DEFAULT_OPTIONS
       );
@@ -45,7 +46,7 @@ class PlaybackSpeedPanel extends React.Component {
       // Remove duplicates
       this.playbackSpeedOptions = Utils.dedupeArray(this.playbackSpeedOptions);
       // Sort in ascending order
-      this.playbackSpeedOptions.sort((a, b) => a - b);
+      this.playbackSpeedOptions.sort((first, second) => first - second);
     }
     return this.playbackSpeedOptions;
   }
@@ -126,7 +127,7 @@ class PlaybackSpeedPanel extends React.Component {
 PlaybackSpeedPanel.propTypes = {
   isPopover: PropTypes.bool,
   language: PropTypes.string.isRequired,
-  localizableStrings: PropTypes.object.isRequired,
+  localizableStrings: PropTypes.shape({}).isRequired,
   onClose: PropTypes.func,
   controller: PropTypes.shape({
     state: PropTypes.shape({
@@ -135,7 +136,7 @@ PlaybackSpeedPanel.propTypes = {
       }),
     }),
     setPlaybackSpeed: PropTypes.func.isRequired,
-  }),
+  }).isRequired,
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
       accentColor: PropTypes.string,
@@ -144,6 +145,12 @@ PlaybackSpeedPanel.propTypes = {
       options: PropTypes.arrayOf(PropTypes.number).isRequired,
     }),
   }),
+};
+
+PlaybackSpeedPanel.defaultProps = {
+  isPopover: false,
+  onClose: () => {},
+  skinConfig: {},
 };
 
 module.exports = PlaybackSpeedPanel;
