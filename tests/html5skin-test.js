@@ -44,7 +44,8 @@ const OOBase = {
     SET_CURRENT_AUDIO: 'setCurrentAudio',
     SET_PLAYBACK_SPEED: 'setPlaybackSpeed',
     SKIN_UI_LANGUAGE: 'skinUiLanguage',
-    UI_READY: 'uiReady'
+    UI_READY: 'uiReady',
+    TOGGLE_CLOSED_CAPTIONS: 'toggleClosedCaptions',
   },
   CONSTANTS: {
     PLAYER_TYPE: {
@@ -203,6 +204,12 @@ describe('Controller', function() {
       controller.onChangeClosedCaptionLanguage('', 'en', { forceEnabled: true });
       expect(controller.state.closedCaptionOptions.enabled).toBe(true);
       expect(controller.state.persistentSettings.closedCaptionOptions.enabled).toBe(true);
+    });
+
+    it('should publish TOGGLE_CLOSED_CAPTIONS event on toggleClosedCaptions', () => {
+      controller.toggleClosedCaptions();
+      expect(OO.mb.publish).toHaveBeenCalledTimes(2);
+      expect(OO.mb.publish).toHaveBeenCalledWith(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS);
     });
   });
 

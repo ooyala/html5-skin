@@ -316,6 +316,7 @@ module.exports = function(OO, _, $, W) {
           'customerUi',
           _.bind(this.onChangeClosedCaptionLanguage, this)
         );
+        this.mb.subscribe(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS, 'customerUi', this.toggleClosedCaptionEnabled.bind(this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
         this.mb.subscribe(
@@ -2703,6 +2704,10 @@ module.exports = function(OO, _, $, W) {
         this.state.mainVideoInnerWrapper.removeClass('oo-anamorphic');
         OO.log('Anamorphic video fix: OFF');
       }
+    },
+
+    toggleClosedCaptions: function() {
+      this.mb.publish(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS);
     },
 
     toggleClosedCaptionEnabled: function() {
