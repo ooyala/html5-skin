@@ -645,10 +645,10 @@ var Utils = {
     let userBrowserLanguage;
     let isLanguageCodeInAvailablelLanguageFile = false;
 
-    const isUseUserBrowserLanguage = playerParam && playerParam['useUserBrowserLanguage'];
+    const isUseBrowserLanguage = playerParam && playerParam['useBrowserLanguage'];
 
     // if useUserBrowserLanguage is set to true, use language from user browser settings
-    if (isUseUserBrowserLanguage) {
+    if (isUseBrowserLanguage) {
       userBrowserLanguage = this.getUserBrowserLanguage();
       isLanguageCodeInAvailablelLanguageFile = !!localization &&
         this.isLanguageCodeInAvailablelLanguageFile(

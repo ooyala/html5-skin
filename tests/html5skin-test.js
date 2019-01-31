@@ -1390,7 +1390,7 @@ describe('Controller', function() {
 
     it('test that language defaults to english if no defaultLanguage is specified', function() {
       OO_setWindowNavigatorProperty('language', 'en');
-      controller.state.playerParam = {...controller.state.playerParam, "useUserBrowserLanguage": true};
+      controller.state.playerParam = {...controller.state.playerParam, "useBrowserLanguage": true};
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":""}}, {}, {}, {});
       expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match('en')).calledOnce).toBe(true);
     });

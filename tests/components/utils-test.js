@@ -582,7 +582,7 @@ describe('Utils', function() {
     });
 
     it('should return en if ' +
-      'page-level param "useUserBrowserLanguage" is not set to true but ' +
+      'page-level param "useBrowserLanguage" is not set to true but ' +
       'browser language is "es" and' +
       'this language is in "availableLanguageFile"',
       () => {
@@ -618,7 +618,7 @@ describe('Utils', function() {
     );
 
     it('should return es if ' +
-      'page-level param "useUserBrowserLanguage" is true and ' +
+      'page-level param "useBrowserLanguage" is true and ' +
       'browser language is "es" and' +
       'this language is in "availableLanguageFile"',
       () => {
@@ -648,14 +648,14 @@ describe('Utils', function() {
           }
         };
         OO_setWindowNavigatorProperty('language', 'es-US');
-        const playerParam = {useUserBrowserLanguage: true};
+        const playerParam = {useBrowserLanguage: true};
         const getLanguageToUse = Utils.getLanguageToUse(skinConfig, playerParam);
         expect(getLanguageToUse).toBe('es');
       }
     );
 
     it('should return en (by default) if ' +
-      'page-level param "useUserBrowserLanguage" is true and ' +
+      'page-level param "useBrowserLanguage" is true and ' +
       'browser language is "es" but' +
       'this language is not in "availableLanguageFile"',
       () => {
@@ -679,7 +679,7 @@ describe('Utils', function() {
           }
         };
         OO_setWindowNavigatorProperty('language', 'es-US');
-        const playerParam = {useUserBrowserLanguage: true};
+        const playerParam = {useBrowserLanguage: true};
         const getLanguageToUse = Utils.getLanguageToUse(skinConfig, playerParam);
         expect(getLanguageToUse).toBe('en');
       }
