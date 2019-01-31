@@ -1383,13 +1383,16 @@ describe('Controller', function() {
     });
 
     it('test that the chosen ui language is sent on the message bus', function() {
+      OO_setWindowNavigatorProperty('language', undefined);
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":"es"}}, {}, {}, {});
       expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("es")).calledOnce).toBe(true);
     });
 
     it('test that language defaults to english if no defaultLanguage is specified', function() {
+      OO_setWindowNavigatorProperty('language', 'en');
+      controller.state.playerParam = {...controller.state.playerParam, "useUserBrowserLanguage": true};
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":""}}, {}, {}, {});
-      expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("en")).calledOnce).toBe(true);
+      expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match('en')).calledOnce).toBe(true);
     });
   });
 
