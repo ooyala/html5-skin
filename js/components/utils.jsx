@@ -3,8 +3,8 @@
  *
  * @module Utils
  */
-const DeepMerge = require('deepmerge');
-const CONSTANTS = require('./../constants/constants');
+import DeepMerge from 'deepmerge';
+import CONSTANTS from './../constants/constants';
 
 var Utils = {
   /**

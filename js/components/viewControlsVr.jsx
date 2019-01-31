@@ -1,11 +1,11 @@
 import DirectionControlVr from './directionControlVr';
 
-const React = require('react');
-const classnames = require('classnames');
-const _ = require('underscore');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Icon = require('../components/icon');
+import React from 'react';
+import classnames from 'classnames';
+import _ from 'underscore';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import Icon from '../components/icon';
 
 const ViewControlsVr = createReactClass({
   /**

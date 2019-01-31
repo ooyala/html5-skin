@@ -1,12 +1,12 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const ClassNames = require('classnames');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Slider = require('./slider');
-const Utils = require('./utils');
-const MACROS = require('../constants/macros');
-const CONSTANTS = require('../constants/constants');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ClassNames from 'classnames';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import Slider from './slider';
+import Utils from './utils';
+import MACROS from '../constants/macros';
+import CONSTANTS from '../constants/constants';
 
 const VolumeControls = createReactClass({
   volumeChange(vol) {

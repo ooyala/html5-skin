@@ -3,14 +3,14 @@
  *
  * @module VideoQualityPanel
  */
-const React = require('react');
-const classNames = require('classnames');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const MenuPanel = require('./menuPanel');
-const Utils = require('../components/utils');
-const CONSTANTS = require('../constants/constants');
-const MACROS = require('../constants/macros');
+import React from 'react';
+import classNames from 'classnames';
+import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
+import MenuPanel from './menuPanel';
+import Utils from '../components/utils';
+import CONSTANTS from '../constants/constants';
+import MACROS from '../constants/macros';
 
 const VideoQualityPanel = createReactClass({
 

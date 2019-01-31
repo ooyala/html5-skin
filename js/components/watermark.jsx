@@ -1,42 +1,45 @@
+import React from 'react';
+import ClassNames from 'classnames';
+import PropTypes from 'prop-types';
+
+import Utils from './utils';
+import CONSTANTS from '../constants/constants';
+
 /**
  * Watermark component
- *
- * @module Watermark
  */
-const React = require('react');
-
-
-const ClassNames = require('classnames');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const Utils = require('../components/utils');
-const CONSTANTS = require('../constants/constants');
-
-const Watermark = createReactClass({
-  handleWatermarkClick() {
-    if (this.props.playerState === CONSTANTS.STATE.PLAYING) {
-      this.props.controller.togglePlayPause();
+class Watermark extends React.Component {
+  handleWatermarkClick = () => {
+    const { controller, playerState } = this.props;
+    if (playerState !== CONSTANTS.STATE.PLAYING) {
+      return;
     }
-  },
+    controller.togglePlayPause();
+  }
 
   render() {
-    const watermarkUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.imageResource.url');
-    const clickUrl = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.clickUrl');
-    let watermarkPosition = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.position');
+    const {
+      controlBarVisible,
+      nonClickable,
+      skinConfig,
+    } = this.props;
+    const watermarkUrl = Utils.getPropertyValue(skinConfig, 'general.watermark.imageResource.url');
+    const clickUrl = Utils.getPropertyValue(skinConfig, 'general.watermark.clickUrl');
+    let watermarkPosition = Utils.getPropertyValue(skinConfig, 'general.watermark.position');
 
-    const watermarkTarget = Utils.getPropertyValue(this.props.skinConfig, 'general.watermark.target', '_blank');
+    const watermarkTarget = Utils.getPropertyValue(skinConfig, 'general.watermark.target', '_blank');
     const watermarkTransparency = Utils.getPropertyValue(
-      this.props.skinConfig,
+      skinConfig,
       'general.watermark.transparency',
       1
     );
     const watermarkScalingOption = Utils.getPropertyValue(
-      this.props.skinConfig,
+      skinConfig,
       'general.watermark.scalingOption',
       'default'
     );
     const watermarkScalingPercentage = Utils.getPropertyValue(
-      this.props.skinConfig,
+      skinConfig,
       'general.watermark.scalingPercentage'
     );
 
@@ -59,7 +62,6 @@ const Watermark = createReactClass({
       watermarkStyle.width = 'auto';
     }
 
-
     watermarkPosition = watermarkPosition.toLowerCase();
 
     // the position from db passed with the metadata uses 'right' instead of 'centerRight', etc.
@@ -75,7 +77,7 @@ const Watermark = createReactClass({
       'oo-watermark-no-clickURL': !clickUrl,
       'oo-watermark-top': watermarkPosition.indexOf('top') > -1,
       'oo-watermark-bottom': watermarkPosition.indexOf('bottom') > -1,
-      'oo-watermark-bottom-cb': this.props.controlBarVisible && watermarkPosition.indexOf('bottom') > -1,
+      'oo-watermark-bottom-cb': controlBarVisible && watermarkPosition.indexOf('bottom') > -1,
       'oo-watermark-left': watermarkPosition.indexOf('left') > -1,
       'oo-watermark-right': watermarkPosition.indexOf('right') > -1,
       'oo-watermark-center-horizontal':
@@ -85,7 +87,7 @@ const Watermark = createReactClass({
     });
 
     const watermarkImageClass = ClassNames({
-      'oo-blur': this.props.nonClickable,
+      'oo-blur': nonClickable,
       'oo-watermark': true,
     });
 
@@ -94,12 +96,17 @@ const Watermark = createReactClass({
         className={watermarkImageClass}
         style={watermarkImageStyle}
         src={watermarkUrl}
-        ref="watermarkImage"
+        ref="watermarkImage" // eslint-disable-line
+        alt="watermark"
       />
     );
-    if (this.props.nonClickable || !clickUrl) {
+    if (nonClickable || !clickUrl) {
       return (
-        <div className={watermarkClass} ref="watermark" style={watermarkStyle}>
+        <div
+          className={watermarkClass}
+          ref="watermark" // eslint-disable-line
+          style={watermarkStyle}
+        >
           {watermarkImage}
         </div>
       );
@@ -107,19 +114,21 @@ const Watermark = createReactClass({
     return (
       <a
         className={watermarkClass}
-        ref="watermark"
+        ref="watermark" // eslint-disable-line
         style={watermarkStyle}
-        href={this.props.skinConfig.general.watermark.clickUrl}
+        href={skinConfig.general.watermark.clickUrl}
         target={watermarkTarget}
         onClick={this.handleWatermarkClick}
       >
         {watermarkImage}
       </a>
     );
-  },
-});
+  }
+}
 
 Watermark.propTypes = {
+  nonClickable: PropTypes.bool,
+  playerState: PropTypes.string,
   controlBarVisible: PropTypes.bool,
   skinConfig: PropTypes.shape({
     general: PropTypes.shape({
@@ -143,6 +152,8 @@ Watermark.propTypes = {
 };
 
 Watermark.defaultProps = {
+  nonClickable: true,
+  playerState: CONSTANTS.STATE.PAUSE,
   controlBarVisible: false,
   skinConfig: {
     general: {

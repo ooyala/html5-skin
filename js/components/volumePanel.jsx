@@ -1,33 +1,41 @@
-const React = require('react');
-const PropTypes = require('prop-types');
-const ControlBar = require('./controlBar');
+import React from 'react';
+import PropTypes from 'prop-types';
+import ControlBar from './controlBar';
 
 /**
  * Volume menu. This component is used for both the Popover and
  * Screen modes of the menu.
  */
-class VolumePanel extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+class VolumePanel extends React.Component { // eslint-disable-line
   render() {
+    const {
+      a11yControls,
+      buffered,
+      componentWidth,
+      currentPlayhead,
+      duration,
+      isLiveStream,
+      playerState,
+      playheadTime,
+      responsiveId,
+      totalTime,
+    } = this.props;
     return (
       <div className="oo-absolute-centered oo-volume-panel">
         <ControlBar
           {...this.props}
           hideScrubberBar
           controlBarVisible
-          playerState={this.props.playerState}
-          isLiveStream={this.props.isLiveStream}
-          a11yControls={this.props.a11yControls}
-          currentPlayhead={this.props.currentPlayhead}
-          duration={this.props.duration}
-          totalTime={this.props.totalTime}
-          playheadTime={this.props.playheadTime}
-          buffered={this.props.buffered}
-          responsiveView={this.props.responsiveId}
-          componentWidth={this.props.componentWidth}
+          playerState={playerState}
+          isLiveStream={isLiveStream}
+          a11yControls={a11yControls}
+          currentPlayhead={currentPlayhead}
+          duration={duration}
+          totalTime={totalTime}
+          playheadTime={playheadTime}
+          buffered={buffered}
+          responsiveView={responsiveId}
+          componentWidth={componentWidth}
           controlBarItems={[{
             name: 'volume', location: 'controlBar', whenDoesNotFit: 'keep', minWidth: 200,
           }]}
@@ -46,10 +54,10 @@ VolumePanel.propTypes = {
   audioOnly: PropTypes.bool,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,
-  playerState: PropTypes.string,
+  playerState: PropTypes.string.isRequired,
   responsiveView: PropTypes.string,
   language: PropTypes.string,
-  localizableStrings: PropTypes.object,
+  localizableStrings: PropTypes.shape({}),
   duration: PropTypes.number,
   currentPlayhead: PropTypes.number,
   componentWidth: PropTypes.number,
@@ -71,7 +79,25 @@ VolumePanel.propTypes = {
     closePopover: PropTypes.func,
     closeOtherPopovers: PropTypes.func,
     isVrStereo: PropTypes.bool,
-  }),
+  }).isRequired,
+};
+
+VolumePanel.defaultProps = {
+  clickToVolumeScreen: () => {},
+  hideScrubberBar: () => {},
+  hideVolumeControls: () => {},
+  audioOnly: false,
+  isLiveStream: false,
+  controlBarVisible: false,
+  responsiveView: 'md',
+  language: 'en',
+  localizableStrings: {},
+  duration: 0,
+  currentPlayhead: 0,
+  componentWidth: 0,
+  onFocus: () => {},
+  onBlur: () => {},
+  skinConfig: {},
 };
 
 module.exports = VolumePanel;

@@ -1,35 +1,30 @@
-/** ******************************************************************
-  UP NEXT PANEL
-******************************************************************** */
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import CONSTANTS from '../constants/constants';
+import Utils from './utils';
+import CloseButton from './closeButton';
+import CountDownClock from './countDownClock';
+import Icon from './icon';
+
 /**
- * The screen used while the video is playing.
- *
- * @class UpNextPanel
- * @constructor
+ * The UpNext panel component
  */
-const React = require('react');
+class UpNextPanel extends React.Component {
+  closeUpNextPanel = () => {
+    const { controller } = this.props;
+    controller.upNextDismissButtonClicked();
+  }
 
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
-const CONSTANTS = require('./../constants/constants');
-
-const Utils = require('./utils');
-
-const CloseButton = require('./closeButton');
-
-const CountDownClock = require('./countDownClock');
-
-const Icon = require('../components/icon');
-
-const UpNextPanel = createReactClass({
-  closeUpNextPanel() {
-    this.props.controller.upNextDismissButtonClicked();
-  },
-
-  handleStartUpNextClick(event) {
+  /**
+   * Handle the click on start UpNext element
+   * @param {Object} event - the event object
+   */
+  handleStartUpNextClick = (event) => {
     event.preventDefault();
+    const { controller, upNextInfo } = this.props;
     // Use the same way as sending out the click event on discovery content
-    const asset = this.props.upNextInfo.upNextData;
+    const asset = upNextInfo.upNextData;
     const customData = {
       source: CONSTANTS.SCREEN.UP_NEXT_SCREEN,
       countdown: 0,
@@ -40,23 +35,34 @@ const UpNextPanel = createReactClass({
       custom: customData,
       metadata: Utils.getDiscoveryEventData(1, 1, CONSTANTS.UI_TAG.UP_NEXT, asset, customData),
     };
-    this.props.controller.sendDiscoveryClickEvent(eventData, false);
-  },
+    controller.sendDiscoveryClickEvent(eventData, false);
+  }
 
   render() {
+    const {
+      currentPlayhead,
+      language,
+      localizableStrings,
+      skinConfig,
+      upNextInfo,
+    } = this.props;
     const upNextString = Utils.getLocalizedString(
-      this.props.language,
+      language,
       CONSTANTS.SKIN_TEXT.UP_NEXT,
-      this.props.localizableStrings
+      localizableStrings
     );
     const thumbnailStyle = {};
-    if (Utils.isValidString(this.props.upNextInfo.upNextData.preview_image_url)) {
-      thumbnailStyle.backgroundImage = `url('${this.props.upNextInfo.upNextData.preview_image_url}')`;
+    if (Utils.isValidString(upNextInfo.upNextData.preview_image_url)) {
+      thumbnailStyle.backgroundImage = `url('${upNextInfo.upNextData.preview_image_url}')`;
     }
 
     return (
       <div className="oo-up-next-panel">
-        <a className="oo-up-next-content" onClick={this.handleStartUpNextClick} style={thumbnailStyle}>
+        <a // eslint-disable-line
+          className="oo-up-next-content"
+          onClick={this.handleStartUpNextClick}
+          style={thumbnailStyle}
+        >
           <Icon {...this.props} icon="play" />
         </a>
 
@@ -64,29 +70,29 @@ const UpNextPanel = createReactClass({
           <div className="oo-up-next-title">
             <CountDownClock
               {...this.props}
-              timeToShow={this.props.skinConfig.upNext.timeToShow}
-              currentPlayhead={this.props.currentPlayhead}
+              timeToShow={skinConfig.upNext.timeToShow}
+              currentPlayhead={currentPlayhead}
             />
 
             <div className="oo-up-next-title-text oo-text-truncate">
               {upNextString}
 :
               {' '}
-              <span dangerouslySetInnerHTML={Utils.createMarkup(this.props.upNextInfo.upNextData.name)} />
+              <span dangerouslySetInnerHTML={Utils.createMarkup(upNextInfo.upNextData.name)} />
             </div>
           </div>
 
           <div
             className="oo-content-description oo-text-truncate"
-            dangerouslySetInnerHTML={Utils.createMarkup(this.props.upNextInfo.upNextData.description)}
+            dangerouslySetInnerHTML={Utils.createMarkup(upNextInfo.upNextData.description)}
           />
         </div>
 
         <CloseButton {...this.props} cssClass="oo-up-next-close-btn" closeAction={this.closeUpNextPanel} />
       </div>
     );
-  },
-});
+  }
+}
 
 UpNextPanel.propTypes = {
   upNextInfo: PropTypes.shape({
@@ -102,6 +108,7 @@ UpNextPanel.propTypes = {
     }),
     icons: PropTypes.objectOf(PropTypes.object),
   }),
+  controller: PropTypes.shape({}),
 };
 
 UpNextPanel.defaultProps = {
@@ -119,7 +126,7 @@ UpNextPanel.defaultProps = {
   },
   controller: {
     upNextDismissButtonClicked() {},
-    sendDiscoveryClickEvent(a, b) {},
+    sendDiscoveryClickEvent() {},
   },
 };
 
