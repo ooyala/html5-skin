@@ -674,13 +674,8 @@ var Utils = {
    * in the page-level parameters (after executing function "onSkinMetaDataFetched")
    */
   getDefaultLanguage: function(localization) {
-    let defaultLanguage = '';
-    if ( (typeof localization === "object") && (localization !== null) ) {
-      defaultLanguage = localization.defaultLanguage ?
-        localization.defaultLanguage
-      : defaultLanguage;
-    }
-    return defaultLanguage;
+    const defaultLanguage = !!localization && localization.defaultLanguage;
+    return defaultLanguage || '';
   },
 
   /**
