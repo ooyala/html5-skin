@@ -384,7 +384,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     externalPluginSubscription: function() {
-      if (OO.EVENTS.DISCOVERY_API) {
+      if (OO.EVENTS.DISCOVERY_API && OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED) {
         this.mb.subscribe(
           OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED,
           'customerUi',
