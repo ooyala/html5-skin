@@ -10,6 +10,7 @@ var AdScreen = require('../../js/views/adScreen');
 var defaultSkinConfig = require('../../config/skin.json');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
 var AdPanel = require('../../js/components/adPanel');
+const Spinner = require('../../js/components/spinner');
 
 describe('AdScreen', function() {
   var mockController, mockSkinConfig;
@@ -224,6 +225,41 @@ describe('AdScreen', function() {
       />);
     var unmuteIcon = wrapper.find(UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
+  });
+
+  describe('Spinner tests', function() {
+    const createAdScreen = (buffered, buffering) => {
+      mockController.state.buffering = buffering;
+      return (
+        Enzyme.mount(
+          <AdScreen
+            controller={ mockController }
+            skinConfig={ defaultSkinConfig }
+            buffered={ buffered }
+          />
+        )
+      );
+    };
+
+    it('Spinner should not be shown when buffering is false and buffered !== 0', function(){
+      let wrapper = createAdScreen(2, false);
+      expect(wrapper.find(Spinner).length).toBe(0);
+    });
+
+    it('Spinner should not be shown when buffering is false and buffered === null', function(){
+      let wrapper = createAdScreen(null, false);
+      expect(wrapper.find(Spinner).length).toBe(0);
+    });
+
+    it('Spinner should be shown when buffered === 0', function(){
+      let wrapper = createAdScreen(0, false);
+      expect(wrapper.find(Spinner).length).toBe(1);
+    });
+
+    it('Spinner should be shown when buffering is true even if buffered !== 0', function(){
+      let wrapper = createAdScreen(2, true);
+      expect(wrapper.find(Spinner).length).toBe(1);
+    });
   });
 
   it('should not display unmute icon when not muted', function() {
