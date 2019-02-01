@@ -323,13 +323,26 @@ var ControlBar = createReactClass({
   },
 
   /**
-  * @description Retrieves configuration from server to be applied to audio skin
-  **/
+   * @description Retrieves configuration from server to be applied to audio skin
+   *  @returns {Array} list of icons to show on a screen
+  */
   getAudioControlsConfig: function() {
     //We receive location param in desktopContent, instead of audioOnly.
     //This is necessary to display or not the button, depending on Backlot settings.
-    var defaultConfig = JSON.parse(JSON.stringify(this.props.skinConfig.buttons.audioOnly));
-    this.props.skinConfig.buttons.desktopContent.forEach(item => {
+    if (!(this.props.skinConfig &&
+      this.props.skinConfig.buttons &&
+      this.props.skinConfig.buttons.audioOnly &&
+      this.props.skinConfig.buttons.audioOnly.desktop &&
+      Array.isArray(this.props.skinConfig.buttons.audioOnly.desktop))
+    ) {
+      return [];
+    }
+
+    const audioOnlyButtonsList = this.props.skinConfig.buttons.audioOnly.desktop;
+    const desktopContent = this.props.skinConfig.buttons.desktopContent;
+    const defaultConfig = JSON.parse(JSON.stringify(audioOnlyButtonsList));
+
+    desktopContent.forEach(item => {
       if (item.location !== 'none') {
         return;
       }
@@ -338,7 +351,7 @@ var ControlBar = createReactClass({
       ).forEach(
         field => field.location = 'none'
       );
-      });
+    });
     return defaultConfig;
   },
 
