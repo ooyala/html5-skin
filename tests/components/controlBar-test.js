@@ -1250,13 +1250,31 @@ describe('ControlBar', function() {
       expect(wrapper.find('.oo-skip-controls').length).toBe(1);
     });
 
-    it('tests rendering audio only buttons', () => {
-      baseMockProps.skinConfig.buttons.audioOnly = [
-        {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
-      ];
-      baseMockProps.audioOnly = true;
-      var wrapper = Enzyme.mount(getControlBar());
-      expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+    describe('AudioOnly', () => {
+      let audioOnlyConf;
+      beforeEach(() => {
+        audioOnlyConf = baseMockProps.skinConfig.buttons.audioOnly;
+      });
+      afterEach(() => {
+        baseMockProps.skinConfig.buttons.audioOnly = audioOnlyConf;
+      });
+      it('tests rendering audio only buttons', () => {
+        baseMockProps.skinConfig.buttons.audioOnly.desktop = [
+          {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
+        ];
+        baseMockProps.audioOnly = true;
+        const wrapper = Enzyme.mount(getControlBar());
+        expect(wrapper.find('.oo-skip-controls').length).toBe(1);
+      });
+
+      it('function getAudioControlsConfig should not get crash if no desktop icons array', () => {
+        baseMockProps.skinConfig.buttons.audioOnly = null;
+        baseMockProps.audioOnly = true;
+        const wrapper = Enzyme.mount(getControlBar());
+        const composedComponent = wrapper.instance().composedComponentRef.current;
+        const audioOnlyIconsList = composedComponent.getAudioControlsConfig();
+        expect(audioOnlyIconsList).toEqual([]);
+      });
     });
 
     it('tests row format for audio only', () => {
