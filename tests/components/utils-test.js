@@ -551,22 +551,14 @@ describe('Utils', function() {
   });
 
   describe('tests getLanguageToUse', function() {
-    let skinConfig = {
-      localization: {
-        defaultLanguage: 'zh'
-      }
-    };
-    beforeEach(function() {});
+    let skinConfig;
 
-    afterEach(function() {
+    it('should return an empty string if there is no skinConfig', function() {
       skinConfig = {
         localization: {
           defaultLanguage: 'zh'
         }
       };
-    });
-
-    it('should return an empty string if there is no skinConfig', function() {
       const getLanguageToUse = Utils.getLanguageToUse();
       expect(getLanguageToUse).toBe('');
     });
@@ -577,6 +569,11 @@ describe('Utils', function() {
       expect(getLanguageToUse).toBe('');
     });
     it('should return zh if "defaultLanguage" === "zh" and browser language is unknown', function() {
+      skinConfig = {
+        localization: {
+          defaultLanguage: 'zh'
+        }
+      };
       const getLanguageToUse = Utils.getLanguageToUse(skinConfig);
       expect(getLanguageToUse).toBe('zh');
     });
