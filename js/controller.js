@@ -2171,7 +2171,7 @@ module.exports = function(OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, 'customerUi');
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, 'customerUi');
 
-        if (OO.EVENTS.DISCOVERY_API) {
+        if (OO.EVENTS.DISCOVERY_API && OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, 'customerUi');
         }
       }
