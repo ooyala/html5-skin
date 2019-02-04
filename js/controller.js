@@ -500,6 +500,7 @@ module.exports = function(OO, _, $, W) {
     toggleAirPlayIcon: function(event) {
       if (!this.state.airPlayStatusIcon) {
         this.state.airPlayStatusIcon = 'airPlay-disconnected';
+        this.renderSkin();
         return;
       }
       this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === 'airPlay-disconnected' ?
