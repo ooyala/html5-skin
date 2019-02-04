@@ -12,6 +12,7 @@ var React = require('react'),
     UnmuteIcon = require('../components/unmuteIcon');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
+const Spinner = require('../components/spinner');
 
 var AdScreen = createReactClass({
   mixins: [ResizeMixin],
@@ -202,6 +203,12 @@ var AdScreen = createReactClass({
         onMouseMove={this.handlePlayerMouseMove}
         onMouseUp={this.handleClick}
       >
+        {
+          this.props.controller.state.buffering || this.props.buffered === 0 ?
+            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+            : null
+        }
+
         <a className={actionIconClass}>
           <Icon {...this.props} icon="pause" style={actionIconStyle} />
         </a>
