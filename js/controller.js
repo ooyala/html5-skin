@@ -1706,7 +1706,8 @@ module.exports = function(OO, _, $, W) {
         this.state.config.discoveryScreen.countDownTime
       );
 
-      var uiLanguage = Utils.getLanguageToUse(this.state.config);
+      const { config, playerParam } = this.state;
+      const uiLanguage = Utils.getLanguageToUse(config, playerParam);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
