@@ -497,6 +497,18 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
+    toggleAirPlayIcon: function(event) {
+      if (!this.state.airPlayStatusIcon) {
+        this.state.airPlayStatusIcon = 'airPlay-disconnected';
+        this.renderSkin();
+        return;
+      }
+      this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === 'airPlay-disconnected' ?
+        'airPlay-connected' :
+        'airPlay-disconnected';
+      this.renderSkin();
+    },
+
     /**
      * Set style "touch-action: none" only for video 360 on mobile devices
      * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
@@ -578,6 +590,10 @@ module.exports = function(OO, _, $, W) {
         if (window.WebKitPlaybackTargetAvailabilityEvent) {
           videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
             _.bind(this.airPlayListener, this));
+
+          //This event fires when a media element starts or stops AirPlay playback
+          videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
+            _.bind(this.toggleAirPlayIcon, this));
         }
       }
 
