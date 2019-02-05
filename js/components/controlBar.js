@@ -619,7 +619,6 @@ var ControlBar = createReactClass({
           key={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
           className="oo-airplay"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
-          ariaHidden={true}
           icon={this.props.controller.state.airPlayStatusIcon}
           tooltip={CONSTANTS.SKIN_TEXT.AIRPLAY}
           onClick={this.handleAirPlayClick}>
