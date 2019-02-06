@@ -492,12 +492,20 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin({cast: {connected:false, device: ""}});
     },
 
-    airPlayListener: function(event) {
+    airPlayListener: function(container, event) {
+      const videoContainer = event.target.closest('#ooplayer');
+      if (container !== videoContainer) {
+        return;
+      }
       this.state.isAirPlayAvailable = event.availability === 'available';
       this.renderSkin();
     },
 
-    toggleAirPlayIcon: function(event) {
+    toggleAirPlayIcon: function(container, event) {
+      const videoContainer = event.target.closest('#ooplayer');
+      if (container !== videoContainer) {
+        return;
+      }
       if (!this.state.airPlayStatusIcon) {
         const airPlayState = window.sessionStorage.getItem('airPlayState');
         if (airPlayState) {
@@ -591,17 +599,16 @@ module.exports = function(OO, _, $, W) {
 
       // add loadedmetadata event listener to main video element
       if (videoElement) {
-        videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
-
         // add the AirPlay TargetAvailability event listener
         if (window.WebKitPlaybackTargetAvailabilityEvent) {
-          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
-            _.bind(this.airPlayListener, this));
+          document.addEventListener('webkitplaybacktargetavailabilitychanged',
+            _.bind(this.airPlayListener, this, videoElement));
 
-          //This event fires when a media element starts or stops AirPlay playback
-          videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
-            _.bind(this.toggleAirPlayIcon, this));
+          // This event fires when a media element starts or stops AirPlay playback
+          document.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
+            _.bind(this.toggleAirPlayIcon, this, videoElement));
         }
+        videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
       }
 
       if (Utils.isIE10()) {
