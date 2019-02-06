@@ -9,7 +9,6 @@
  */
 var React = require('react'),
     CONSTANTS = require('../constants/constants'),
-    Spinner = require('./spinner'),
     ClassNames = require('classnames'),
     Utils = require('./utils'),
     Icon = require('../components/icon');
@@ -170,14 +169,9 @@ var AdPanel = createReactClass({
   },
 
   render: function() {
-    var spinner = null;
-    if (this.props.controller.state.buffering === true) {
-      spinner = <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />;
-    }
     var adTopBarItems = this.populateAdTopBar();
     return (
       <div className="oo-ad-screen-panel">
-        {spinner}
         <div className="oo-ad-screen-panel-click-layer" />
         <div
           className="oo-ad-top-bar"
