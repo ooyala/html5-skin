@@ -502,7 +502,7 @@ module.exports = function(OO, _, $, W) {
         const airPlayState = window.sessionStorage.getItem('airPlayState');
         if (airPlayState) {
           this.state.airPlayStatusIcon = airPlayState;
-          this.mainVideoElement.webkitShowPlaybackTargetPicker();
+          this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
         } else {
           this.state.airPlayStatusIcon = 'airPlay-disconnected';
         }
