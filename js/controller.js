@@ -714,6 +714,9 @@ module.exports = function(OO, _, $, W) {
         this.skin.updatePlayhead(null, duration)
         .catch(() => {OO.log('onContentTreeFetched: Could not set new state for skin')});
       }
+      if (this.state.audioOnly && contentTree.promo_image) {
+        this.state.mainVideoContainer.height(CONSTANTS.UI.AUDIO_ONLY_WITH_COVER_HEIGHT);
+      }
     },
 
     onSkinMetaDataFetched: function(event, skinMetaData) {
