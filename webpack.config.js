@@ -78,8 +78,8 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     port: 4444,
+    host: '0.0.0.0',
     compress: true,
-    open: true,
     headers: {
       'Access-Control-Allow-Origin': '*'
     }
