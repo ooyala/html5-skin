@@ -186,7 +186,8 @@ var CONSTANTS = {
     PLAYBACK_SPEED: MACROS.RATE + 'x Playback Speed',
     PLAYBACK_SPEED_OPTION: 'Speed',
     NORMAL_SPEED: 'Normal Speed',
-    CHROMECAST: 'Chromecast'
+    CHROMECAST: 'Chromecast',
+    AIRPLAY: 'Airplay'
   },
 
   CONTROL_BAR_KEYS: {
