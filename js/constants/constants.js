@@ -3,6 +3,11 @@ var MACROS = require('./macros');
  CONSTANT
  *********************************************************************/
 var CONSTANTS = {
+  AIRPLAY_STATE: {
+    CONNECTED: 'airPlay-connected',
+    DISCONNECTED: 'airPlay-disconnected'
+  },
+
   STATE: {
     START: 'start',
     PLAYING: 'playing',

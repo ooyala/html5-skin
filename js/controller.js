@@ -500,18 +500,17 @@ module.exports = function(OO, _, $, W) {
     toggleAirPlayIcon: function(event) {
       if (!this.state.airPlayStatusIcon) {
         const airPlayState = window.sessionStorage.getItem('airPlayState');
-        if (airPlayState) {
-          this.state.airPlayStatusIcon = airPlayState;
+        if (airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED) {
+          this.showControlBar();
           this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
-        } else {
-          this.state.airPlayStatusIcon = 'airPlay-disconnected';
         }
+        this.state.airPlayStatusIcon = CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
         this.renderSkin();
         return;
       }
-      this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === 'airPlay-disconnected' ?
-        'airPlay-connected' :
-        'airPlay-disconnected';
+      this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === CONSTANTS.AIRPLAY_STATE.DISCONNECTED ?
+        CONSTANTS.AIRPLAY_STATE.CONNECTED :
+        CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
       window.sessionStorage.setItem('airPlayState', this.state.airPlayStatusIcon);
       this.renderSkin();
     },
