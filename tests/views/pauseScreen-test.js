@@ -214,8 +214,9 @@ describe('PauseScreen', function() {
   });
 
   describe('Spinner tests', function() {
-    const createPauseScreen = (buffered, buffering) => {
+    const createPauseScreen = ({ buffered, buffering=false, isLiveStream=false }) => {
       mockController.state.buffering = buffering;
+      mockController.state.isLiveStream = isLiveStream;
       return (
         Enzyme.mount(
           <PauseScreen
@@ -236,23 +237,28 @@ describe('PauseScreen', function() {
     };
 
     it('Spinner should not be shown when buffering is false and buffered !== 0', function() {
-      let wrapper = createPauseScreen(2, false);
+      let wrapper = createPauseScreen({ buffered: 2 });
       expect(wrapper.find(Spinner).length).toBe(0);
     });
 
     it('Spinner should not be shown when buffering is false and buffered === null', function(){
-      let wrapper = createPauseScreen(null, false);
+      let wrapper = createPauseScreen({ buffered: null }, );
       expect(wrapper.find(Spinner).length).toBe(0);
     });
 
     it('Spinner should be shown when buffered === 0', function() {
-      let wrapper = createPauseScreen(0, false);
+      let wrapper = createPauseScreen({ buffered: 0 });
       expect(wrapper.find(Spinner).length).toBe(1);
     });
 
     it('Spinner should be shown when buffering is true even if buffered !== 0', function(){
-      let wrapper = createPauseScreen(2, true);
+      let wrapper = createPauseScreen({ buffered: 2, buffering: true });
       expect(wrapper.find(Spinner).length).toBe(1);
+    });
+
+    it('Spinner should not be shown when buffered === 0 on live stream', function(){
+      let wrapper = createPauseScreen({ buffered: 0, isLiveStream: true });
+      expect(wrapper.find(Spinner).length).toBe(0);
     });
   });
 

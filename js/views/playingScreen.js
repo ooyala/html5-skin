@@ -403,6 +403,9 @@ class PlayingScreen extends React.Component {
       'oo-animate-fade': true
     });
 
+    const { buffering, isLiveStream } = this.props.controller.state;
+    var showSpinner = buffering || this.props.buffered === 0 && !isLiveStream;
+
     return (
       <div
         className={className}
@@ -437,11 +440,9 @@ class PlayingScreen extends React.Component {
           />
         }
 
-        {
-          this.props.controller.state.buffering || this.props.buffered === 0 ?
-            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
-            : null
-        }
+        {showSpinner && (
+          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+        )}
 
         {viewControlsVr}
 

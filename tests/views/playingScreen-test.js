@@ -273,7 +273,7 @@ describe('PlayingScreen', function() {
     mockController.state.isMobile = true;
     mockController.togglePlayPause = function() {
       clicked = true;
-    };    
+    };
 
     const handleTouchEndOnPlayer = function() {
       mockController.togglePlayPause();
@@ -309,7 +309,7 @@ describe('PlayingScreen', function() {
     screen.simulate('touchStart');
     screen.simulate('touchMove');
     screen.simulate('touchEnd');
-    
+
     expect(isMouseDown).toBe(true);
     expect(isMouseUp).toBe(true);
     expect(clicked).toBe(true);
@@ -633,8 +633,9 @@ describe('PlayingScreen', function() {
   });
 
   describe('Spinner tests', function() {
-    const createPlayingScreen = (buffered, buffering) => {
+    const createPlayingScreen = ({ buffered, buffering=false, isLiveStream=false }) => {
       mockController.state.buffering = buffering;
+      mockController.state.isLiveStream = isLiveStream;
       return (
         Enzyme.mount(
           <PlayingScreen
@@ -654,24 +655,29 @@ describe('PlayingScreen', function() {
       );
     };
 
-    it('Spinner should not be shown when buffering is false and buffered !== 0', function(){
-      let wrapper = createPlayingScreen(2, false);
+    it('Spinner should not be shown when buffering is false and buffered !== 0', function() {
+      let wrapper = createPlayingScreen({ buffered: 2 });
       expect(wrapper.find(Spinner).length).toBe(0);
     });
 
     it('Spinner should not be shown when buffering is false and buffered === null', function(){
-      let wrapper = createPlayingScreen(null, false);
+      let wrapper = createPlayingScreen({ buffered: null }, );
       expect(wrapper.find(Spinner).length).toBe(0);
     });
 
-    it('Spinner should be shown when buffered === 0', function(){
-      let wrapper = createPlayingScreen(0, false);
+    it('Spinner should be shown when buffered === 0', function() {
+      let wrapper = createPlayingScreen({ buffered: 0 });
       expect(wrapper.find(Spinner).length).toBe(1);
     });
 
     it('Spinner should be shown when buffering is true even if buffered !== 0', function(){
-      let wrapper = createPlayingScreen(2, true);
+      let wrapper = createPlayingScreen({ buffered: 2, buffering: true });
       expect(wrapper.find(Spinner).length).toBe(1);
+    });
+
+    it('Spinner should not be shown when buffered === 0 on live stream', function(){
+      let wrapper = createPlayingScreen({ buffered: 0, isLiveStream: true });
+      expect(wrapper.find(Spinner).length).toBe(0);
     });
   });
 
