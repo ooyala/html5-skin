@@ -208,6 +208,11 @@ module.exports = function(OO, _, $, W) {
         isReceiver: false
       },
 
+      markers: {
+        types:{},
+        list:[]
+      },
+
       audioOnly: false
     };
 
@@ -268,6 +273,7 @@ module.exports = function(OO, _, $, W) {
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.mb.subscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi', _.bind(this.onChromecastStartCast, this));
       this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
+      this.mb.subscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi', _.bind(this.onMarkersAvailabe, this));
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -720,6 +726,21 @@ module.exports = function(OO, _, $, W) {
         this.skin.updatePlayhead(null, duration)
         .catch(() => {OO.log('onContentTreeFetched: Could not set new state for skin')});
       }
+    },
+
+    onMarkersAvailabe: function(event, data) {
+      let markers = data.marker_list;
+      if (this.state.playerParam.markers && this.state.playerParam.markers.inline) {
+        let inlineData = this.state.playerParam.markers.inline;
+        
+        markers = markers.filter(marker => {
+          return inlineData.findIndex(inlineMarker=> inlineMarker.start == marker.start) < 0;
+        });
+
+        markers = [...markers, ...inlineData];
+      }
+      this.state.markers.list = markers;
+      this.renderSkin();
     },
 
     onSkinMetaDataFetched: function(event, skinMetaData) {
@@ -2143,6 +2164,7 @@ module.exports = function(OO, _, $, W) {
       this.mb.unsubscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents: function() {

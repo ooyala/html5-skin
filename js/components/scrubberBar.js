@@ -230,8 +230,10 @@ var ScrubberBar = createReactClass({
     }
     this.props.controller.setScrubberBarHoverState(true);
 
+    let offsetX = (evt.target.className.match('oo-marker'))? evt.target.offsetLeft + evt.nativeEvent.offsetX : evt.nativeEvent.offsetX;
+
     this.setState({
-      hoveringX: evt.nativeEvent.offsetX
+      hoveringX: offsetX
     });
   },
 
@@ -245,6 +247,7 @@ var ScrubberBar = createReactClass({
     this.setState({
       hoveringX: 0
     });
+    console.log('[Scrubber] onMouseOut', 0);
   },
 
   handleScrubberBarMouseLeave: function(evt) {
@@ -419,6 +422,33 @@ var ScrubberBar = createReactClass({
 
     var ariaValueText = this.getAriaValueText();
 
+
+    var markers = this.props.controller.state.markers.list;
+    var markerList = markers.map((marker, index)=>{
+      let left = 0;
+      let width = 0;
+      let markerDuration = 2;
+      let styles = {};
+      let typeStyle = {
+        marker_color: '#f50505'
+      }
+      if (this.props.duration && this.state.scrubberBarWidth) {
+        left = parseFloat(marker.start) / parseFloat(this.props.duration) * this.state.scrubberBarWidth;
+        if (marker.end && marker.end > 0){
+           markerDuration = marker.end - marker.start;
+        }
+        width = parseFloat(markerDuration) * parseFloat(this.state.scrubberBarWidth) / parseFloat(this.props.duration) + 'px';
+      }
+
+      marker = Object.assign({}, typeStyle, marker);
+
+
+      styles.left = left;
+      styles.width = width;
+      styles.backgroundColor = marker.marker_color ? marker.marker_color : this.props.state.config.general.accentColor;
+      return (<div key={index} style={styles} className="oo-marker"></div>)
+    });
+
     return (
       <div
         className="oo-scrubber-bar-container"
@@ -449,6 +479,7 @@ var ScrubberBar = createReactClass({
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle} />
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle} />
             <div className={playedIndicatorClassName} style={playedIndicatorStyle} />
+            {markerList}
             <div
               className="oo-playhead-padding"
               style={playheadPaddingStyle}
