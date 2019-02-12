@@ -2211,6 +2211,31 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
+    promisifiedReplay: function() {
+      return new Promise((resolve, reject) => {
+        let resolved = false;
+        this.mb.subscribe(OO.EVENTS.REPLAY, 'customerUi', (event, payload) => {
+          console.log('>>>>>> Catched the event with the payload:', payload);
+          if (!payload || payload.id !== 42) {
+            return;
+          }
+          console.log(`>>>>>> So nice! This is exactly the payload I've waited for: 42`);
+          resolved = true;
+          qwe.asfd = 13;
+          resolve();
+        });
+        setTimeout(() => {
+            if (resolved) {
+              return;
+            }
+            reject('>>>>> Ooops, time is gone. Rejecting!');
+          },
+          3000,
+        );
+        this.mb.publish(OO.EVENTS.REPLAY, {id: 42});
+      });
+    },
+
     /* --------------------------------------------------------------------
      skin UI-action -> publish event to core player
      ---------------------------------------------------------------------*/
@@ -2281,7 +2306,12 @@ module.exports = function(OO, _, $, W) {
           }
           break;
         case CONSTANTS.STATE.END:
-          this.mb.publish(OO.EVENTS.REPLAY);
+          //this.mb.publish(OO.EVENTS.REPLAY);
+          this.promisifiedReplay().then(() => {
+            this.resetUpNextInfo(false);
+          }).catch((error) => {
+            console.log('>>>>> The error catched:', error);
+          });
           break;
         case CONSTANTS.STATE.PAUSE:
           this.isNewVrVideo = false;
