@@ -501,8 +501,12 @@ module.exports = function(OO, _, $, W) {
       if (!this.state.airPlayStatusIcon) {
         const airPlayState = window.sessionStorage.getItem('airPlayState');
         if (airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED) {
-          this.showControlBar();
-          this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
+          const onVideoPlaying = () => {
+            this.showControlBar();
+            this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
+            this.state.mainVideoElement.removeEventListener('playing', onVideoPlaying);
+          };
+          this.state.mainVideoElement.addEventListener('playing', onVideoPlaying);
         }
         this.state.airPlayStatusIcon = CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
         this.renderSkin();
