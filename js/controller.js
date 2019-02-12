@@ -492,22 +492,21 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin({cast: {connected:false, device: ""}});
     },
 
+    showAirplayPicker: function() {
+      this.showControlBar();
+      this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
+      this.state.mainVideoElement.removeEventListener('playing', this.showAirplayPickerBound);
+    },
+
+    showAirplayPickerBound: undefined,
+
     airPlayListener: function(event) {
       this.state.isAirPlayAvailable = event.availability === 'available';
       this.renderSkin();
     },
 
-    toggleAirPlayIcon: function(event) {
+    toggleAirPlayIcon: function() {
       if (!this.state.airPlayStatusIcon) {
-        const airPlayState = window.sessionStorage.getItem('airPlayState');
-        if (airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED) {
-          const onVideoPlaying = () => {
-            this.showControlBar();
-            this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
-            this.state.mainVideoElement.removeEventListener('playing', onVideoPlaying);
-          };
-          this.state.mainVideoElement.addEventListener('playing', onVideoPlaying);
-        }
         this.state.airPlayStatusIcon = CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
         this.renderSkin();
         return;
@@ -604,6 +603,12 @@ module.exports = function(OO, _, $, W) {
           //This event fires when a media element starts or stops AirPlay playback
           videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
             _.bind(this.toggleAirPlayIcon, this));
+
+          const airPlayState = window.sessionStorage.getItem('airPlayState');
+          if (airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED) {
+            this.showAirplayPickerBound = this.showAirplayPicker.bind(this);
+            videoElement.addEventListener('playing', this.showAirplayPickerBound);
+          }
         }
       }
 
