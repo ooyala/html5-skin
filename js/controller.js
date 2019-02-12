@@ -493,6 +493,11 @@ module.exports = function(OO, _, $, W) {
     },
 
     showAirplayPicker: function() {
+      const airPlayState = window.sessionStorage.getItem('airPlayState');
+      if (airPlayState !== CONSTANTS.AIRPLAY_STATE.CONNECTED) {
+        this.state.mainVideoElement.removeEventListener('playing', this.showAirplayPickerBound);
+        return;
+      }
       this.showControlBar();
       this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
       this.state.mainVideoElement.removeEventListener('playing', this.showAirplayPickerBound);
@@ -604,11 +609,8 @@ module.exports = function(OO, _, $, W) {
           videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
             _.bind(this.toggleAirPlayIcon, this));
 
-          const airPlayState = window.sessionStorage.getItem('airPlayState');
-          if (airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED) {
-            this.showAirplayPickerBound = this.showAirplayPicker.bind(this);
-            videoElement.addEventListener('playing', this.showAirplayPickerBound);
-          }
+          this.showAirplayPickerBound = this.showAirplayPicker.bind(this);
+          videoElement.addEventListener('playing', this.showAirplayPickerBound);
         }
       }
 
