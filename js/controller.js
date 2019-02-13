@@ -729,17 +729,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     onMarkersAvailabe: function(event, data) {
-      let markers = data.marker_list;
-      if (this.state.playerParam.markers && this.state.playerParam.markers.inline) {
-        let inlineData = this.state.playerParam.markers.inline;
-        
-        markers = markers.filter(marker => {
-          return inlineData.findIndex(inlineMarker=> inlineMarker.start == marker.start) < 0;
-        });
-
-        markers = [...markers, ...inlineData];
-      }
-      this.state.markers.list = markers;
+      this.state.markers.list = data.marker_list;
       this.renderSkin();
     },
 

@@ -212,6 +212,10 @@ var ScrubberBar = createReactClass({
       offsetX = evt.nativeEvent.offsetX === undefined ? evt.nativeEvent.layerX : evt.nativeEvent.offsetX;
     }
 
+    if (evt.target.className.match('oo-marker')){
+      offsetX += evt.target.offsetLeft;
+    }
+
     this.setState({
       scrubbingPlayheadX: offsetX
     });
@@ -285,6 +289,26 @@ var ScrubberBar = createReactClass({
       ariaValueText = ariaValueText.replace(MACROS.TOTAL_TIME, timeDisplayValues.totalTime);
     }
     return ariaValueText;
+  },
+
+  getMarkerPosition: function(marker) {
+    if (!this.props.duration || !this.state.scrubberBarWidth) {
+      return 0;
+    }
+    return parseFloat(marker.start) / parseFloat(this.props.duration) * this.state.scrubberBarWidth;
+  },
+
+  getMarkerWidth: function(marker) {
+    let duration = 2; // 2 seconds is the default value
+    if (!this.props.duration || !this.state.scrubberBarWidth) {
+      return 0;
+    }    
+
+    if (marker.end && marker.end > 0){
+      duration = marker.end - marker.start;
+    }
+    
+    return parseFloat(duration) * parseFloat(this.state.scrubberBarWidth) / parseFloat(this.props.duration) + 'px';
   },
 
   render: function() {
@@ -425,27 +449,14 @@ var ScrubberBar = createReactClass({
 
     var markers = this.props.controller.state.markers.list;
     var markerList = markers.map((marker, index)=>{
-      let left = 0;
-      let width = 0;
-      let markerDuration = 2;
-      let styles = {};
-      let typeStyle = {
-        marker_color: '#f50505'
-      }
-      if (this.props.duration && this.state.scrubberBarWidth) {
-        left = parseFloat(marker.start) / parseFloat(this.props.duration) * this.state.scrubberBarWidth;
-        if (marker.end && marker.end > 0){
-           markerDuration = marker.end - marker.start;
-        }
-        width = parseFloat(markerDuration) * parseFloat(this.state.scrubberBarWidth) / parseFloat(this.props.duration) + 'px';
-      }
+      let styles = {
+        left: this.getMarkerPosition(marker),
+        width: this.getMarkerWidth(marker)
+      };
+      let baseConfig = this.props.skinConfig.markers.types[marker.type];      
 
-      marker = Object.assign({}, typeStyle, marker);
-
-
-      styles.left = left;
-      styles.width = width;
-      styles.backgroundColor = marker.marker_color ? marker.marker_color : this.props.state.config.general.accentColor;
+      marker = Object.assign({}, baseConfig, marker);
+      styles.backgroundColor = marker.marker_color ? marker.marker_color : this.props.skinConfig.general.accentColor;
       return (<div key={index} style={styles} className="oo-marker"></div>)
     });
 
