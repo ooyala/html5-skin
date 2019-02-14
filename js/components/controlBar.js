@@ -1,24 +1,24 @@
 /** ******************************************************************
-  CONTROL BAR
-*********************************************************************/
+ CONTROL BAR
+ *********************************************************************/
 var React = require('react'),
-    CONSTANTS = require('../constants/constants'),
-    ClassNames = require('classnames'),
-    ScrubberBar = require('./scrubberBar'),
-    Utils = require('./utils'),
-    Popover = require('../views/popover'),
-    AccessibleButton = require('./accessibleButton'),
-    ControlButton = require('./controlButton'),
-    PlaybackSpeedButton = require('./playbackSpeedButton'),
-    VolumeControls = require('./volumeControls'),
-    VideoQualityPanel = require('./videoQualityPanel'),
-    PlaybackSpeedPanel = require('./playbackSpeedPanel'),
-    ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
-    ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
-    preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus'),
-    Logo = require('./logo'),
-    Icon = require('./icon'),
-    Tooltip = require('./tooltip');
+  CONSTANTS = require('../constants/constants'),
+  ClassNames = require('classnames'),
+  ScrubberBar = require('./scrubberBar'),
+  Utils = require('./utils'),
+  Popover = require('../views/popover'),
+  AccessibleButton = require('./accessibleButton'),
+  ControlButton = require('./controlButton'),
+  PlaybackSpeedButton = require('./playbackSpeedButton'),
+  VolumeControls = require('./volumeControls'),
+  VideoQualityPanel = require('./videoQualityPanel'),
+  PlaybackSpeedPanel = require('./playbackSpeedPanel'),
+  ClosedCaptionPopover = require('./closed-caption/closedCaptionPopover'),
+  ClosedCaptionMultiAudioMenu = require('./closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu'),
+  preserveKeyboardFocus = require('./higher-order/preserveKeyboardFocus'),
+  Logo = require('./logo'),
+  Icon = require('./icon'),
+  Tooltip = require('./tooltip');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
@@ -325,7 +325,7 @@ var ControlBar = createReactClass({
   /**
    * @description Retrieves configuration from server to be applied to audio skin
    *  @returns {Array} list of icons to show on a screen
-  */
+   */
   getAudioControlsConfig: function() {
     //We receive location param in desktopContent, instead of audioOnly.
     //This is necessary to display or not the button, depending on Backlot settings.
@@ -608,7 +608,7 @@ var ControlBar = createReactClass({
             key={CONSTANTS.CONTROL_BAR_KEYS.CHROMECAST}
             tooltip={CONSTANTS.SKIN_TEXT.CHROMECAST}
             className="oo-cast oo-control-bar-item">
-              <google-cast-launcher class="oo-icon"/>
+            <google-cast-launcher class="oo-icon"/>
           </div>
         )
       }.bind(this)(),
@@ -661,18 +661,18 @@ var ControlBar = createReactClass({
               onClick={this.handleMultiAudioClick}>
             </ControlButton>
             {this.props.controller.state.multiAudioOptions.showPopover &&
-              <Popover
-                popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
-                autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
-                closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-                closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
-                <ClosedCaptionMultiAudioMenu
-                  language={this.props.language}
-                  localizableStrings={this.props.localizableStrings}
-                  menuClassName={"oo-cc-ma-menu--popover"}
-                  togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
-                  {...this.props} />
-              </Popover>
+            <Popover
+              popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
+              autoFocus={this.props.controller.state.multiAudioOptions.autoFocus}
+              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}>
+              <ClosedCaptionMultiAudioMenu
+                language={this.props.language}
+                localizableStrings={this.props.localizableStrings}
+                menuClassName={"oo-cc-ma-menu--popover"}
+                togglePopoverAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+                {...this.props} />
+            </Popover>
             }
           </div>
         );
@@ -696,18 +696,18 @@ var ControlBar = createReactClass({
           </PlaybackSpeedButton>
 
           {this.props.controller.state.playbackSpeedOptions.showPopover &&
-            <Popover
-              autoFocus={this.props.controller.state.playbackSpeedOptions.autoFocus}
-              closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
-              <PlaybackSpeedPanel
-                isPopover={true}
-                language={this.props.language}
-                localizableStrings={this.props.localizableStrings}
-                controller={this.props.controller}
-                skinConfig={this.props.skinConfig}
-                onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}/>
-            </Popover>
+          <Popover
+            autoFocus={this.props.controller.state.playbackSpeedOptions.autoFocus}
+            closeActionEnabled={this.props.controller.state.accessibilityControlsEnabled}
+            closeAction={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}>
+            <PlaybackSpeedPanel
+              isPopover={true}
+              language={this.props.language}
+              localizableStrings={this.props.localizableStrings}
+              controller={this.props.controller}
+              skinConfig={this.props.skinConfig}
+              onClose={this.closePopover.bind(this, CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}/>
+          </Popover>
           }
 
         </div>
@@ -749,7 +749,7 @@ var ControlBar = createReactClass({
           tooltip={
             this.props.controller.state.fullscreen ?
               CONSTANTS.SKIN_TEXT.EXIT_FULL_SCREEN
-            :
+              :
               CONSTANTS.SKIN_TEXT.FULL_SCREEN
           }
           onClick={this.handleFullscreenClick}>
@@ -891,7 +891,7 @@ var ControlBar = createReactClass({
       // do not show quality button if no bitrates available
       if (
         (this.props.controller.state.isOoyalaAds ||
-          !this.props.controller.state.videoQualityOptions.availableBitrates) &&
+        !this.props.controller.state.videoQualityOptions.availableBitrates) &&
         defaultItems[k].name === 'quality'
       ) {
         continue;
@@ -992,7 +992,9 @@ var ControlBar = createReactClass({
       'oo-flex-end': this.props.audioOnly && Utils.isIos()
     });
 
-    return (
+    return (this.props.skinConfig &&
+      this.props.skinConfig.controlBar &&
+      this.props.skinConfig.controlBar.enabled ?
       <div
         className={controlBarClass}
         style={controlBarStyle}
@@ -1006,7 +1008,8 @@ var ControlBar = createReactClass({
           {controlBarItems}
         </div>
       </div>
-    );
+      : null
+    )
   }
 });
 

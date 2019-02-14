@@ -1287,6 +1287,24 @@ describe('ControlBar', function() {
       expect(wrapper.find('.oo-flex-row-parent').length).toBe(1);
     });
 
+    it('should not return controlBar element if inline prop "enabled" is false', () => {
+      baseMockProps.skinConfig.controlBar.enabled = false;
+      const wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-control-bar').length).toBe(0);
+    });
+
+    it('should not return controlBar element if inline prop "enabled" is not true', () => {
+      baseMockProps.skinConfig.controlBar.enabled = undefined;
+      const wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-control-bar').length).toBe(0);
+    });
+
+    it('should return controlBar element if inline prop "enabled" is true', () => {
+      baseMockProps.skinConfig.controlBar.enabled = true;
+      const wrapper = Enzyme.mount(getControlBar());
+      expect(wrapper.find('.oo-control-bar').length).toBe(1);
+    });
+
     it('tests audio only does not use oo-animating-control-bar class', () => {
       baseMockProps.skinConfig.buttons.desktopContent = [
         {"name":"skipControls", "location":"controlBar", "whenDoesNotFit":"keep", "minWidth":200 }
