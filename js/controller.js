@@ -317,6 +317,7 @@ module.exports = function(OO, _, $, W) {
           'customerUi',
           _.bind(this.onChangeClosedCaptionLanguage, this)
         );
+        this.mb.subscribe(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS, 'customerUi', this.toggleClosedCaptionEnabled.bind(this));
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
         this.mb.subscribe(
@@ -384,7 +385,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     externalPluginSubscription() {
-      if (OO.EVENTS.DISCOVERY_API) {
+      if (OO.EVENTS.DISCOVERY_API && OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED) {
         this.mb.subscribe(
           OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED,
           'customerUi',
@@ -491,6 +492,37 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin({ cast: { connected: false, device: '' } });
     },
 
+    showAirplayPicker: function() {
+      const airPlayState = window.sessionStorage.getItem('airPlayState');
+      if (airPlayState !== CONSTANTS.AIRPLAY_STATE.CONNECTED) {
+        this.state.mainVideoElement.removeEventListener('playing', this.showAirplayPickerBound);
+        return;
+      }
+      this.showControlBar();
+      this.state.mainVideoElement.webkitShowPlaybackTargetPicker();
+      this.state.mainVideoElement.removeEventListener('playing', this.showAirplayPickerBound);
+    },
+
+    showAirplayPickerBound: undefined,
+
+    airPlayListener: function(event) {
+      this.state.isAirPlayAvailable = event.availability === 'available';
+      this.renderSkin();
+    },
+
+    toggleAirPlayIcon: function() {
+      if (!this.state.airPlayStatusIcon) {
+        this.state.airPlayStatusIcon = CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
+        this.renderSkin();
+        return;
+      }
+      this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === CONSTANTS.AIRPLAY_STATE.DISCONNECTED ?
+        CONSTANTS.AIRPLAY_STATE.CONNECTED :
+        CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
+      window.sessionStorage.setItem('airPlayState', this.state.airPlayStatusIcon);
+      this.renderSkin();
+    },
+
     /**
      * Set style "touch-action: none" only for video 360 on mobile devices
      * see details: https://stackoverflow.com/questions/42206645/konvajs-unable-to-preventdefault-inside-passive-event-listener-due-to-target-be
@@ -567,6 +599,19 @@ module.exports = function(OO, _, $, W) {
       // add loadedmetadata event listener to main video element
       if (videoElement) {
         videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
+
+        // add the AirPlay TargetAvailability event listener
+        if (window.WebKitPlaybackTargetAvailabilityEvent) {
+          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
+            _.bind(this.airPlayListener, this));
+
+          //This event fires when a media element starts or stops AirPlay playback
+          videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
+            _.bind(this.toggleAirPlayIcon, this));
+
+          this.showAirplayPickerBound = this.showAirplayPicker.bind(this);
+          videoElement.addEventListener('playing', this.showAirplayPickerBound);
+        }
       }
 
       if (Utils.isIE10()) {
@@ -1057,8 +1102,8 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPlayed() {
-      const duration = this.state.mainVideoDuration;
+    onPlayed: function() {
+      var duration = this.state.mainVideoDuration || this.state.contentTree.duration / 1000;
       this.state.duration = duration;
       this.state.playerState = CONSTANTS.STATE.END;
 
@@ -1460,6 +1505,7 @@ module.exports = function(OO, _, $, W) {
         this.state.adEndTime = this.state.adStartTime + this.state.adVideoDuration;
         this.skin.state.currentPlayhead = 0;
         this.removeBlur();
+        this.renderSkin();
       }
     },
 
@@ -1468,6 +1514,8 @@ module.exports = function(OO, _, $, W) {
       this.state.isPlayingAd = false;
       this.state.adVideoDuration = 0;
       this.state.currentAdsInfo.skipAdButtonEnabled = false;
+      this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
+      this.renderSkin();
     },
 
     onShowAdSkipButton(event) {
@@ -1684,7 +1732,8 @@ module.exports = function(OO, _, $, W) {
         this.state.config.discoveryScreen.countDownTime
       );
 
-      const uiLanguage = Utils.getLanguageToUse(this.state.config);
+      const { config, playerParam } = this.state;
+      const uiLanguage = Utils.getLanguageToUse(config, playerParam);
       this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
@@ -2049,7 +2098,7 @@ module.exports = function(OO, _, $, W) {
       // [PLAYER-212]
       // We can't show UI such as the "Up Next" countdown on fullscreen iOS. If a countdown
       // is configured, we wait until the user exits fullscreen and then we display it.
-      if (showUpNext && this.state.playerState === CONSTANTS.STATE.END) {
+      if (showUpNext && this.state.playerState === CONSTANTS.STATE.END && this.state.discoveryData) {
         this.state.forceCountDownTimerOnEndScreen = true;
         this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
         this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
@@ -2071,12 +2120,13 @@ module.exports = function(OO, _, $, W) {
     onErrorEvent(event, errorCode) {
       this.unsubscribeBasicPlaybackEvents();
       this.setBufferingState(false);
-
       this.state.currentVideoId = null;
       this.state.screenToShow = CONSTANTS.SCREEN.ERROR_SCREEN;
       this.state.playerState = CONSTANTS.STATE.ERROR;
       this.state.errorCode = errorCode;
+      this.mb.publish(OO.EVENTS.PAUSE);
       this.renderSkin();
+      this.unsubscribeBasicPlaybackEvents();
     },
 
     unsubscribeFromMessageBus() {
@@ -2147,7 +2197,7 @@ module.exports = function(OO, _, $, W) {
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_CONTROLS, 'customerUi');
         this.mb.unsubscribe(OO.EVENTS.SHOW_AD_MARQUEE, 'customerUi');
 
-        if (OO.EVENTS.DISCOVERY_API) {
+        if (OO.EVENTS.DISCOVERY_API && OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED) {
           this.mb.unsubscribe(OO.EVENTS.DISCOVERY_API.RELATED_VIDEOS_FETCHED, 'customerUi');
         }
       }
@@ -2675,7 +2725,11 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    toggleClosedCaptionEnabled() {
+    toggleClosedCaptions: function() {
+      this.mb.publish(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS);
+    },
+
+    toggleClosedCaptionEnabled: function() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.state.persistentSettings.closedCaptionOptions.enabled = !!this.state.closedCaptionOptions
         .enabled;

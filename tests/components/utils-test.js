@@ -527,47 +527,161 @@ describe('Utils', function() {
     expect(isIE10).toBeFalsy();
   });
 
-  it('tests getLanguageToUse', function() {
-    var skinConfig = {
-      localization: {
-        defaultLanguage: 'zh'
+  describe('tests getDefaultLanguage', function() {
+    it('should return an empty string if param "localization" is wrong type', function(){
+      const emptyToParam = Utils.getDefaultLanguage();
+      expect(emptyToParam).toBe('');
+      const nullToParam = Utils.getDefaultLanguage(null);
+      expect(nullToParam).toBe('');
+      const arrayToParam = Utils.getDefaultLanguage([1, 2, 3]);
+      expect(arrayToParam).toBe('');
+    });
+
+    it('should return an empty string if param "localization" does not have field "defaultLanguage',
+      function() {
+        const defaultLanguage = Utils.getDefaultLanguage({'test': 1});
+        expect(defaultLanguage).toBe('');
       }
-    };
-    var skinConfig2 = {
-      localization: {
-        defaultLanguage: '',
-        availableLanguageFile: [
-          {
-            'language': 'en',
-            'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/en.json',
-            'androidResource': 'skin-config/en.json',
-            'iosResource': 'en'
-          },
-          {
-            'language': 'es',
-            'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/es.json',
-            'androidResource': 'skin-config/es.json',
-            'iosResource': 'es'
-          },
-          {
-            'language': 'zh',
-            'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/zh.json',
-            'androidResource': 'skin-config/zh.json',
-            'iosResource': 'zh'
+    );
+
+    it('should return "defaultLanguage" from "localization" object', function(){
+      const defaultLanguage = Utils.getDefaultLanguage({'defaultLanguage': 'en'});
+      expect(defaultLanguage).toBe('en');
+    });
+  });
+
+  describe('tests getLanguageToUse', function() {
+    let skinConfig;
+
+    it('should return an empty string if there is no skinConfig', function() {
+      skinConfig = {
+        localization: {
+          defaultLanguage: 'zh'
+        }
+      };
+      const getLanguageToUse = Utils.getLanguageToUse();
+      expect(getLanguageToUse).toBe('');
+    });
+    it('should return an empty string if skinConfig does not have "defaultLanguage" and ' +
+      'browser language is unknown' , function() {
+      skinConfig = {};
+      const getLanguageToUse = Utils.getLanguageToUse(skinConfig);
+      expect(getLanguageToUse).toBe('');
+    });
+    it('should return zh if "defaultLanguage" === "zh" and browser language is unknown', function() {
+      skinConfig = {
+        localization: {
+          defaultLanguage: 'zh'
+        }
+      };
+      const getLanguageToUse = Utils.getLanguageToUse(skinConfig);
+      expect(getLanguageToUse).toBe('zh');
+    });
+
+    it('should return en if ' +
+      'page-level param "useBrowserLanguage" is not set to true but ' +
+      'browser language is "es" and' +
+      'this language is in "availableLanguageFile"',
+      () => {
+        skinConfig = {
+          localization: {
+            defaultLanguage: 'en',
+            availableLanguageFile: [
+              {
+                'language': 'en',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/en.json',
+                'androidResource': 'skin-config/en.json',
+                'iosResource': 'en'
+              },
+              {
+                'language': 'es',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/es.json',
+                'androidResource': 'skin-config/es.json',
+                'iosResource': 'es'
+              },
+              {
+                'language': 'zh',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/zh.json',
+                'androidResource': 'skin-config/zh.json',
+                'iosResource': 'zh'
+              }
+            ]
           }
-        ]
+        };
+        OO_setWindowNavigatorProperty('language', 'es-US');
+        const getLanguageToUse = Utils.getLanguageToUse(skinConfig, null);
+        expect(getLanguageToUse).toBe('en');
       }
-    };
-    var getLanguageToUse = Utils.getLanguageToUse(skinConfig);
-    expect(getLanguageToUse).toEqual('zh');
-    //window.navigator.languages defaults to ['en-US', 'en']
-    getLanguageToUse = Utils.getLanguageToUse(skinConfig2);
-    expect(getLanguageToUse).toEqual('en');
-    //test window.navigator.browserLanguage
-    OO_setWindowNavigatorProperty('languages', null);
-    window.navigator.browserLanguage = 'es-US';
-    getLanguageToUse = Utils.getLanguageToUse(skinConfig2);
-    expect(getLanguageToUse).toEqual('es');
+    );
+
+    it('should return es if ' +
+      'page-level param "useBrowserLanguage" is true and ' +
+      'browser language is "es" and' +
+      'this language is in "availableLanguageFile"',
+      () => {
+        skinConfig = {
+          localization: {
+            defaultLanguage: 'zh',
+            availableLanguageFile: [
+              {
+                'language': 'en',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/en.json',
+                'androidResource': 'skin-config/en.json',
+                'iosResource': 'en'
+              },
+              {
+                'language': 'es',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/es.json',
+                'androidResource': 'skin-config/es.json',
+                'iosResource': 'es'
+              },
+              {
+                'language': 'zh',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/zh.json',
+                'androidResource': 'skin-config/zh.json',
+                'iosResource': 'zh'
+              }
+            ]
+          }
+        };
+        OO_setWindowNavigatorProperty('language', 'es-US');
+        const playerParam = {useBrowserLanguage: true};
+        const getLanguageToUse = Utils.getLanguageToUse(skinConfig, playerParam);
+        expect(getLanguageToUse).toBe('es');
+      }
+    );
+
+    it('should return en (by default) if ' +
+      'page-level param "useBrowserLanguage" is true and ' +
+      'browser language is "es" but' +
+      'this language is not in "availableLanguageFile"',
+      () => {
+        skinConfig = {
+          localization: {
+            defaultLanguage: 'en',
+            availableLanguageFile: [
+              {
+                'language': 'en',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/en.json',
+                'androidResource': 'skin-config/en.json',
+                'iosResource': 'en'
+              },
+              {
+                'language': 'zh',
+                'languageFile': '//player.ooyala.com/static/v4/candidate/latest/skin-plugin/zh.json',
+                'androidResource': 'skin-config/zh.json',
+                'iosResource': 'zh'
+              }
+            ]
+          }
+        };
+        OO_setWindowNavigatorProperty('language', 'es-US');
+        const playerParam = {useBrowserLanguage: true};
+        const getLanguageToUse = Utils.getLanguageToUse(skinConfig, playerParam);
+        expect(getLanguageToUse).toBe('en');
+      }
+    );
+
   });
 
   it('tests getLocalizedString', function() {
@@ -809,12 +923,12 @@ describe('Utils', function() {
     expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
     expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
     // test array merge for buttons (prepend)
-    expect(finalConfig.buttons.desktopContent.length).toBe(18);
+    expect(finalConfig.buttons.desktopContent.length).toBe(19);
     // test new buttons are placed after flexibleSpace
     expect(finalConfig.buttons.desktopContent[4].name).toBe('flexibleSpace');
     expect(finalConfig.buttons.desktopContent[5].name).toBe('ooyala');
     expect(finalConfig.buttons.desktopContent[6].name).toBe('alice');
-    expect(finalConfig.buttons.desktopContent[11].alice).toBe('video');
+    expect(finalConfig.buttons.desktopContent[12].alice).toBe('video');
   });
 
   it('tests getUserDevice', function() {

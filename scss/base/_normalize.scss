@@ -49,8 +49,13 @@ section {
 //canvas,
 //progress,
 video {
-  display: block; // 1
+  display: none;
   vertical-align: baseline; // 2
+}
+.oo-video-player {
+  video {
+    display: block; // 1
+  }
 }
 
 //

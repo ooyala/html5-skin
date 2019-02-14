@@ -293,6 +293,10 @@ class PauseScreen extends React.Component {
       'oo-info-panel-cast-bottom': skipControlsEnabled,
     });
 
+    const { buffering, cast, isLiveStream } = this.props.controller.state;
+
+    const showSpinner = buffering || !cast.connected && this.props.buffered === 0 && !isLiveStream;
+
     return (
       <div className="oo-state-screen oo-pause-screen">
         {
@@ -343,6 +347,10 @@ class PauseScreen extends React.Component {
           />
           )
         }
+
+        {showSpinner && (
+          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+        )}
 
         {viewControlsVr}
 

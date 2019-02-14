@@ -4,6 +4,7 @@ import ClassNames from 'classnames';
 
 import AdPanel from '../components/adPanel';
 import ControlBar from '../components/controlBar';
+import Spinner from '../components/spinner';
 import Icon from '../components/icon';
 import UnmuteIcon from '../components/unmuteIcon';
 import CONSTANTS from '../constants/constants';
@@ -243,6 +244,12 @@ class AdScreen extends React.Component {
         onMouseMove={this.handlePlayerMouseMove}
         onMouseUp={this.handleClick}
       >
+        {
+          this.props.controller.state.buffering || this.props.buffered === 0 ?
+            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+            : null
+        }
+
         <a // eslint-disable-line
           className={actionIconClass}
         >

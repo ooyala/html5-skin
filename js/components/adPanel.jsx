@@ -2,7 +2,6 @@ import React from 'react';
 import ClassNames from 'classnames';
 
 import CONSTANTS from '../constants/constants';
-import Spinner from './spinner';
 import Utils from './utils';
 import Icon from './icon';
 import AdPanelTopBarItem from './adPanelTopBarItem';
@@ -15,6 +14,7 @@ class AdPanel extends React.Component {
     super(props);
     const { controller } = props;
     this.isMobile = controller.state.isMobile;
+    this.state.adEndTime = controller.state.adEndTime;
   }
 
   handleSkipAdButtonClick = () => {
@@ -187,15 +187,9 @@ class AdPanel extends React.Component {
   }
 
   render() {
-    const { controller, skinConfig } = this.props;
-    let spinner = null;
-    if (controller.state.buffering === true) {
-      spinner = <Spinner loadingImage={skinConfig.general.loadingImage.imageResource.url} />;
-    }
     const adTopBarItems = this.populateAdTopBar();
     return (
       <div className="oo-ad-screen-panel">
-        {spinner}
         <div className="oo-ad-screen-panel-click-layer" />
         <div // eslint-disable-line
           className="oo-ad-top-bar"

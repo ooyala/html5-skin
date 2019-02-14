@@ -6,14 +6,15 @@ jest
 .dontMock('../../js/components/utils')
 .dontMock('classnames');
 
-var React = require('react');
-var sinon = require('sinon');
-var Enzyme = require('enzyme');
-var ClassNames = require('classnames');
-var skinConfig = require('../../config/skin.json');
-var SkipControls = require('../../js/components/skipControls');
-var Utils = require('../../js/components/utils');
-var CONSTANTS = require('../../js/constants/constants');
+const React = require('react');
+const sinon = require('sinon');
+const Enzyme = require('enzyme');
+const ClassNames = require('classnames');
+const skinConfig = require('../../config/skin.json');
+const SkipControls = require('../../js/components/skipControls');
+const Utils = require('../../js/components/utils');
+const CONSTANTS = require('../../js/constants/constants');
+const Spinner = require('../../js/components/spinner');
 
 const CastPanel = require('../../js/components/castPanel');
 
@@ -212,6 +213,55 @@ describe('PauseScreen', function() {
     mockSkinConfig.skipControls.enabled = true;
     wrapper = Enzyme.mount(component);
     expect(wrapper.find(SkipControls).length).toBe(1);
+  });
+
+  describe('Spinner tests', function() {
+    const createPauseScreen = ({ buffered, buffering=false, isLiveStream=false }) => {
+      mockController.state.buffering = buffering;
+      mockController.state.isLiveStream = isLiveStream;
+      return (
+        Enzyme.mount(
+          <PauseScreen
+            responsiveView={ "md" }
+            skinConfig={ mockSkinConfig }
+            controller={ mockController }
+            contentTree={ mockContentTree }
+            handleVrPlayerClick={ () => {} }
+            closedCaptionOptions={ { cueText: 'sample text' } }
+            currentPlayhead={ 0 }
+            playerState={ CONSTANTS.STATE.PAUSE }
+            totalTime={ "60:00" }
+            playheadTime={ "00:00" }
+            buffered={ buffered }
+          />
+        )
+      );
+    };
+
+    it('Spinner should not be shown when buffering is false and buffered !== 0', function() {
+      let wrapper = createPauseScreen({ buffered: 2 });
+      expect(wrapper.find(Spinner).length).toBe(0);
+    });
+
+    it('Spinner should not be shown when buffering is false and buffered === null', function(){
+      let wrapper = createPauseScreen({ buffered: null }, );
+      expect(wrapper.find(Spinner).length).toBe(0);
+    });
+
+    it('Spinner should be shown when buffered === 0', function() {
+      let wrapper = createPauseScreen({ buffered: 0 });
+      expect(wrapper.find(Spinner).length).toBe(1);
+    });
+
+    it('Spinner should be shown when buffering is true even if buffered !== 0', function(){
+      let wrapper = createPauseScreen({ buffered: 2, buffering: true });
+      expect(wrapper.find(Spinner).length).toBe(1);
+    });
+
+    it('Spinner should not be shown when buffered === 0 on live stream', function(){
+      let wrapper = createPauseScreen({ buffered: 0, isLiveStream: true });
+      expect(wrapper.find(Spinner).length).toBe(0);
+    });
   });
 
   it('[Chromecast] should not display cast panel', function(){

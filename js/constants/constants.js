@@ -1,6 +1,11 @@
 const MACROS = require('./macros');
 
 const CONSTANTS = {
+  AIRPLAY_STATE: {
+    CONNECTED: 'airPlay-connected',
+    DISCONNECTED: 'airPlay-disconnected'
+  },
+
   STATE: {
     START: 'start',
     PLAYING: 'playing',
@@ -130,6 +135,7 @@ const CONSTANTS = {
     UNCODED_LANGUAGES: 'Uncoded languages',
     MULTIPLE_LANGUAGES: 'Multiple languages',
     CHROMECAST: 'Chromecast',
+    AIRPLAY: 'Airplay'
   },
 
   ARIA_LABELS: {
@@ -179,6 +185,7 @@ const CONSTANTS = {
     PLAYBACK_SPEED_OPTION: 'Speed',
     NORMAL_SPEED: 'Normal Speed',
     CHROMECAST: 'Chromecast',
+    AIRPLAY: 'Airplay'
   },
 
   CONTROL_BAR_KEYS: {
@@ -199,6 +206,7 @@ const CONSTANTS = {
     LOGO: 'logo',
     CHROMECAST: 'chromecast',
     SKIP_CONTROLS: 'skipControls',
+    AIRPLAY: 'airPlay'
   },
 
   ARIA_ROLES: {

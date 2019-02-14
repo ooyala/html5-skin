@@ -30,7 +30,7 @@ class LanguageTab extends React.Component {
     });
 
     if (!this.props.closedCaptionOptions.enabled) {
-      this.props.controller.toggleClosedCaptionEnabled();
+      this.props.controller.toggleClosedCaptions();
     }
 
     this.props.controller.onClosedCaptionChange('language', invertedLocale[language]);

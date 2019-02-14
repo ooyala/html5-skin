@@ -15,7 +15,8 @@ const ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPan
 const DiscoveryPanel = require('./components/discoveryPanel');
 const VideoQualityPanel = require('./components/videoQualityPanel');
 const PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
-const ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
+const ClosedCaptionMultiAudioMenu =
+  require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 const SharePanel = require('./components/sharePanel');
 const VolumePanel = require('./components/volumePanel');
 const MoreOptionsPanel = require('./components/moreOptionsPanel');
@@ -121,12 +122,14 @@ const Skin = createReactClass({
    * @private
    * @returns {string} The current playhead time in (HH:)MM:SS format or null if the current playhead is invalid or timeshift is 0
    */
-  getPlayheadTime() {
-    let playheadTime = isFinite(parseInt(this.state.currentPlayhead))
-      ? Utils.formatSeconds(parseInt(this.state.currentPlayhead))
-      : null;
-    const isLiveStream = this.state.isLiveStream;
-    const timeShift = this.state.currentPlayhead - this.state.duration;
+  getPlayheadTime: function() {
+    const { currentPlayhead, duration, isLiveStream } = this.state;
+    if (!isFinite(parseInt(currentPlayhead)) || !isFinite(parseInt(duration))) {
+      return '--:--';
+    }
+
+    let playheadTime = Utils.formatSeconds(parseInt(currentPlayhead));
+    var timeShift = currentPlayhead - duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
     const isLiveNow = Math.abs(timeShift) < 1;
     playheadTime = isLiveStream

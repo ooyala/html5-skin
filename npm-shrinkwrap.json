@@ -427,16 +427,6 @@
         "@babel/plugin-syntax-async-generators": "^7.0.0"
       }
     },
-    "@babel/plugin-proposal-class-properties": {
-      "version": "7.2.3",
-      "resolved": "https://nexus.ooflex.net/repository/npm/@babel/plugin-proposal-class-properties/-/plugin-proposal-class-properties-7.2.3.tgz",
-      "integrity": "sha512-FVuQngLoN2iDrpW7LmhPZ2sO4DJxf35FOcwidwB9Ru9tMvI5URthnkVHuG14IStV+TzkMTyLMoOUlSTtrdVwqw==",
-      "dev": true,
-      "requires": {
-        "@babel/helper-create-class-features-plugin": "^7.2.3",
-        "@babel/helper-plugin-utils": "^7.0.0"
-      }
-    },
     "@babel/plugin-proposal-json-strings": {
       "version": "7.0.0",
       "resolved": "https://nexus.ooflex.net/repository/npm/@babel/plugin-proposal-json-strings/-/plugin-proposal-json-strings-7.0.0.tgz",

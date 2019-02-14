@@ -44,7 +44,8 @@ const OOBase = {
     SET_CURRENT_AUDIO: 'setCurrentAudio',
     SET_PLAYBACK_SPEED: 'setPlaybackSpeed',
     SKIN_UI_LANGUAGE: 'skinUiLanguage',
-    UI_READY: 'uiReady'
+    UI_READY: 'uiReady',
+    TOGGLE_CLOSED_CAPTIONS: 'toggleClosedCaptions',
   },
   CONSTANTS: {
     PLAYER_TYPE: {
@@ -203,6 +204,12 @@ describe('Controller', function() {
       controller.onChangeClosedCaptionLanguage('', 'en', { forceEnabled: true });
       expect(controller.state.closedCaptionOptions.enabled).toBe(true);
       expect(controller.state.persistentSettings.closedCaptionOptions.enabled).toBe(true);
+    });
+
+    it('should publish TOGGLE_CLOSED_CAPTIONS event on toggleClosedCaptions', () => {
+      controller.toggleClosedCaptions();
+      expect(OO.mb.publish).toHaveBeenCalledTimes(2);
+      expect(OO.mb.publish).toHaveBeenCalledWith(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS);
     });
   });
 
@@ -1372,17 +1379,20 @@ describe('Controller', function() {
     });
 
     afterEach(function() {
-      spyPublish.restore()
+      spyPublish.restore();
     });
 
     it('test that the chosen ui language is sent on the message bus', function() {
+      OO_setWindowNavigatorProperty('language', undefined);
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":"es"}}, {}, {}, {});
       expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("es")).calledOnce).toBe(true);
     });
 
     it('test that language defaults to english if no defaultLanguage is specified', function() {
+      OO_setWindowNavigatorProperty('language', 'en');
+      controller.state.playerParam = {...controller.state.playerParam, "useBrowserLanguage": true};
       controller.loadConfigData('customerUi', {"localization":{"defaultLanguage":""}}, {}, {}, {});
-      expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match("en")).calledOnce).toBe(true);
+      expect(spyPublish.withArgs(OO.EVENTS.SKIN_UI_LANGUAGE, sinon.match('en')).calledOnce).toBe(true);
     });
   });
 
@@ -1719,6 +1729,29 @@ describe('Controller', function() {
       expect(controller.state.cast.showButton).toBe(false);
     });
 
+  });
+
+  describe('AirPlay button', () => {
+    beforeAll(() => {
+      window.WebKitPlaybackTargetAvailabilityEvent = true;
+    });
+
+    it('Should set the airPlay availability state', () => {
+      controller.airPlayListener({
+        availability: 'available'
+      });
+      expect(controller.state.isAirPlayAvailable).toBe(true);
+    });
+
+    it('Should not set the airPlay availability state', () => {
+      controller.airPlayListener({
+        availability: 'not-available'
+      });
+      expect(controller.state.isAirPlayAvailable).toBe(false);
+    });
+    afterAll(() => {
+      window.WebKitPlaybackTargetAvailabilityEvent = false;
+    });
   });
 
   it('that we show playing screen when ads have finished playing and end screen if the video has finished', function() {

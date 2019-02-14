@@ -240,6 +240,12 @@ class ControlBar extends React.Component {
     }
   }
 
+  handleAirPlayClick = () => {
+    const { controller } = this.props;
+    const video = controller.state.mainVideoElement;
+    video.webkitShowPlaybackTargetPicker();
+  }
+
   handleMultiAudioClick = () => {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
     const { controller, skinConfig, responsiveView } = this.props;
@@ -358,6 +364,42 @@ class ControlBar extends React.Component {
   }
 
   /**
+   * @description Retrieves configuration from server to be applied to audio skin
+   * @returns {Array} list of icons to show on a screen
+   */
+  getAudioControlsConfig = () => {
+    const { skinConfig } = this.props;
+    // We receive location param in desktopContent, instead of audioOnly.
+    // This is necessary to display or not the button, depending on Backlot settings.
+    if (!(skinConfig
+      && skinConfig.buttons
+      && skinConfig.buttons.audioOnly
+      && skinConfig.buttons.audioOnly.desktop
+      && Array.isArray(skinConfig.buttons.audioOnly.desktop))
+    ) {
+      return [];
+    }
+
+    const audioOnlyButtonsList = skinConfig.buttons.audioOnly.desktop;
+    const { desktopContent } = skinConfig.buttons;
+    const defaultConfig = JSON.parse(JSON.stringify(audioOnlyButtonsList));
+
+    desktopContent.forEach((item) => {
+      if (item.location !== 'none') {
+        return;
+      }
+      defaultConfig.filter(
+        field => field.name === item.name
+      ).forEach(
+        (field) => {
+          field.location = 'none' // eslint-disable-line
+        }
+      );
+    });
+    return defaultConfig;
+  }
+
+  /**
    * Build the control bar items
    * @returns {Array} the array of control bar items
    */
@@ -445,6 +487,8 @@ class ControlBar extends React.Component {
 
     const selectedStyle = { color: skinConfig.general.accentColor || null };
 
+    const moreOptionsStyle = { position: 'relative', textAlign: 'right' };
+
     // Map of tooltip aligments, which vary depending of the button's order within
     // the control bar. This is populated below.
     const tooltipAlignments = {};
@@ -526,17 +570,21 @@ class ControlBar extends React.Component {
       ),
 
       moreOptions: (
-        <ControlButton
-          {...commonButtonProps}
-          key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-          className="oo-more-options"
-          focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-          ariaHidden
-          icon="ellipsis"
-          tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
-          onClick={this.handleMoreOptionsClick}
-        />
+        <div key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS} className="oo-control-bar-item">
+          <ControlButton
+            {...commonButtonProps}
+            key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            className="oo-more-options"
+            style={moreOptionsStyle}
+            focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            ariaHidden={true} // eslint-disable-line
+            icon="ellipsis"
+            tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
+            onClick={this.handleMoreOptionsClick}
+          />
+        </div>
       ),
+
 
       quality: (
         <div key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY} className="oo-popover-button-container">
@@ -575,7 +623,7 @@ class ControlBar extends React.Component {
           key={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
           className="oo-discovery"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
-          ariaHidden
+          ariaHidden={true} // eslint-disable-line
           icon="discovery"
           tooltip={CONSTANTS.SKIN_TEXT.DISCOVER}
           onClick={this.handleDiscoveryClick}
@@ -629,6 +677,19 @@ class ControlBar extends React.Component {
         </div>
       ),
 
+      airPlay: (
+        <ControlButton
+          {...commonButtonProps}
+          key={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
+          className="oo-airplay"
+          focusId={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
+          ariaLabel={CONSTANTS.ARIA_LABELS.AIRPLAY}
+          icon={controller.state.airPlayStatusIcon}
+          tooltip={CONSTANTS.SKIN_TEXT.AIRPLAY}
+          onClick={this.handleAirPlayClick}
+        />
+      ),
+
       audioAndCC: closedCaptionsList.length === 0 && multiAudioList.length === 0
         ? null
         : (
@@ -679,7 +740,7 @@ class ControlBar extends React.Component {
             className={playbackSpeedClass}
             style={controller.state.playbackSpeedOptions.showPopover ? selectedStyle : null}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
-            ariaHasPopup
+            ariaHasPopup={true} // eslint-disable-line
             ariaExpanded={controller.state.playbackSpeedOptions.showPopover ? true : null}
             tooltip={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
             onClick={() => this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
@@ -888,6 +949,10 @@ class ControlBar extends React.Component {
         && (
           item.name !== 'chromecast'
           || controller.state.cast.showButton
+        )
+        && (
+          item.name !== 'airPlay'
+          || controller.state.isAirPlayAvailable
         );
     });
 

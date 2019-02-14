@@ -396,6 +396,9 @@ class PlayingScreen extends React.Component {
       'oo-animate-fade': true,
     });
 
+    const { buffering, isLiveStream } = this.props.controller.state;
+    var showSpinner = buffering || this.props.buffered === 0 && !isLiveStream;
+
     return (
       <div // eslint-disable-line
         className={className}
@@ -433,9 +436,9 @@ class PlayingScreen extends React.Component {
           )
         }
 
-        {this.props.controller.state.buffering ? (
+        {showSpinner && (
           <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
-        ) : null}
+        )}
 
         {viewControlsVr}
 

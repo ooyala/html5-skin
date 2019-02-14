@@ -54,7 +54,7 @@ const OnOffSwitch = (props) => {
     localizableStrings
   );
 
-  const handleOnOffSwitch = () => controller.toggleClosedCaptionEnabled();
+  const handleOnOffSwitch = () => controller.toggleClosedCaptions();
 
   return (
     <div className="oo-switch-container">
