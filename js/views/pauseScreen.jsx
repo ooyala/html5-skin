@@ -8,6 +8,7 @@ import TextTrackPanel from '../components/textTrackPanel';
 import Watermark from '../components/watermark';
 import Icon from '../components/icon';
 import SkipControls from '../components/skipControls';
+import Spinner from '../components/spinner';
 import Utils from '../components/utils';
 import CONSTANTS from '../constants/constants';
 import ViewControlsVr from '../components/viewControlsVr';

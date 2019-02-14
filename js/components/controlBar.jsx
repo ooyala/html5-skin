@@ -854,7 +854,7 @@ class ControlBar extends React.Component {
     if (controlBarItems && controlBarItems.length) {
       defaultItems = controlBarItems;
     } else if (audioOnly) {
-      defaultItems = skinConfig.buttons.audioOnly;
+      defaultItems = skinConfig.buttons.audioOnly ? skinConfig.buttons.audioOnly.desktop : [];
     } else {
       defaultItems = controller.state.isPlayingAd
         ? skinConfig.buttons.desktopAd : skinConfig.buttons.desktopContent;

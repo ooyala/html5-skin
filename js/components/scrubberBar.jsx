@@ -548,7 +548,7 @@ class ScrubberBar extends React.Component {
 
 ScrubberBar.propTypes = {
   audioOnly: PropTypes.bool,
-  buffered: PropTypes.bool,
+  buffered: PropTypes.number,
   controller: PropTypes.shape({}).isRequired,
   duration: PropTypes.number,
   forceResize: PropTypes.bool,
@@ -560,7 +560,7 @@ ScrubberBar.propTypes = {
 
 ScrubberBar.defaultProps = {
   audioOnly: false,
-  buffered: false,
+  buffered: 0,
   currentPlayhead: 0,
   duration: 0,
   forceResize: false,

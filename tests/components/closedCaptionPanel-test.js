@@ -29,14 +29,12 @@ describe('ClosedCaptionPanel', function() {
 
   var closedCaptionOptions;
 
-  var controller = {
-    toggleClosedCaptionEnabled: function() {},
-    onClosedCaptionChange: function() {}
-  };
+  var controller = {};
 
   beforeEach(function() {
     controller = {
       toggleClosedCaptionEnabled: function() {},
+      toggleClosedCaptions: function() { closedCaptionOptions.enabled = !closedCaptionOptions.enabled },
       onClosedCaptionChange: function() {}
     };
     closedCaptionOptions = {

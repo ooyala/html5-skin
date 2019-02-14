@@ -152,7 +152,7 @@ Watermark.propTypes = {
 };
 
 Watermark.defaultProps = {
-  nonClickable: true,
+  nonClickable: false,
   playerState: CONSTANTS.STATE.PAUSE,
   controlBarVisible: false,
   skinConfig: {

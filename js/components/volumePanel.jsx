@@ -50,11 +50,11 @@ VolumePanel.propTypes = {
   playheadTime: PropTypes.string.isRequired,
   clickToVolumeScreen: PropTypes.bool,
   hideVolumeControls: PropTypes.bool,
-  hideScrubberBar: PropTypes.bool,
+  hideScrubberBar: PropTypes.func,
   audioOnly: PropTypes.bool,
   isLiveStream: PropTypes.bool,
   controlBarVisible: PropTypes.bool,
-  playerState: PropTypes.string.isRequired,
+  playerState: PropTypes.string,
   responsiveView: PropTypes.string,
   language: PropTypes.string,
   localizableStrings: PropTypes.shape({}),
@@ -83,11 +83,12 @@ VolumePanel.propTypes = {
 };
 
 VolumePanel.defaultProps = {
-  clickToVolumeScreen: () => {},
+  clickToVolumeScreen: false,
   hideScrubberBar: () => {},
-  hideVolumeControls: () => {},
+  hideVolumeControls: false,
   audioOnly: false,
   isLiveStream: false,
+  playerState: 'playing',
   controlBarVisible: false,
   responsiveView: 'md',
   language: 'en',

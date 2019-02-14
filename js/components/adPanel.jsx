@@ -14,7 +14,6 @@ class AdPanel extends React.Component {
     super(props);
     const { controller } = props;
     this.isMobile = controller.state.isMobile;
-    this.state.adEndTime = controller.state.adEndTime;
   }
 
   handleSkipAdButtonClick = () => {

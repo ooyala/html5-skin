@@ -32,13 +32,16 @@ describe('Watermark', function() {
           paused = true;
           playerState = 'paused';
         }
-        else paused = false;
+        else {
+          paused = false;
+        }
       },
       state: {
         isMobile: false
       }
     }
   };
+
   it('renders watermark', function() {
     var wrapper = Enzyme.mount(
       <Watermark {...mockProps}
