@@ -37,7 +37,7 @@ class PlaybackSpeedPanel extends React.Component {
     if (!this.playbackSpeedOptions) {
       if (this.props.skinConfig.playbackSpeed.length >= 1) {
         // We take configured values from backlot
-        this.props.skinConfig.playbackSpeed.options = [... this.props.skinConfig.playbackSpeed];
+        this.props.skinConfig.playbackSpeed.options = [...this.props.skinConfig.playbackSpeed];
       }
       // Get configured values from skin
       this.playbackSpeedOptions = Utils.getPropertyValue(

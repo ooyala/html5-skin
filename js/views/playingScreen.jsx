@@ -397,7 +397,7 @@ class PlayingScreen extends React.Component {
     });
 
     const { buffering, isLiveStream } = this.props.controller.state;
-    var showSpinner = buffering || this.props.buffered === 0 && !isLiveStream;
+    const showSpinner = buffering || this.props.buffered === 0 && !isLiveStream;
 
     return (
       <div // eslint-disable-line

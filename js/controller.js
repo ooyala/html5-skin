@@ -492,7 +492,7 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin({ cast: { connected: false, device: '' } });
     },
 
-    showAirplayPicker: function() {
+    showAirplayPicker() {
       const airPlayState = window.sessionStorage.getItem('airPlayState');
       if (airPlayState !== CONSTANTS.AIRPLAY_STATE.CONNECTED) {
         this.state.mainVideoElement.removeEventListener('playing', this.showAirplayPickerBound);
@@ -505,20 +505,20 @@ module.exports = function(OO, _, $, W) {
 
     showAirplayPickerBound: undefined,
 
-    airPlayListener: function(event) {
+    airPlayListener(event) {
       this.state.isAirPlayAvailable = event.availability === 'available';
       this.renderSkin();
     },
 
-    toggleAirPlayIcon: function() {
+    toggleAirPlayIcon() {
       if (!this.state.airPlayStatusIcon) {
         this.state.airPlayStatusIcon = CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
         this.renderSkin();
         return;
       }
-      this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === CONSTANTS.AIRPLAY_STATE.DISCONNECTED ?
-        CONSTANTS.AIRPLAY_STATE.CONNECTED :
-        CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
+      this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === CONSTANTS.AIRPLAY_STATE.DISCONNECTED
+        ? CONSTANTS.AIRPLAY_STATE.CONNECTED
+        : CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
       window.sessionStorage.setItem('airPlayState', this.state.airPlayStatusIcon);
       this.renderSkin();
     },
@@ -605,7 +605,7 @@ module.exports = function(OO, _, $, W) {
           videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
             _.bind(this.airPlayListener, this));
 
-          //This event fires when a media element starts or stops AirPlay playback
+          // This event fires when a media element starts or stops AirPlay playback
           videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
             _.bind(this.toggleAirPlayIcon, this));
 
@@ -1102,8 +1102,8 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPlayed: function() {
-      var duration = this.state.mainVideoDuration || this.state.contentTree.duration / 1000;
+    onPlayed() {
+      const duration = this.state.mainVideoDuration || this.state.contentTree.duration / 1000;
       this.state.duration = duration;
       this.state.playerState = CONSTANTS.STATE.END;
 
@@ -2725,11 +2725,11 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    toggleClosedCaptions: function() {
+    toggleClosedCaptions() {
       this.mb.publish(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS);
     },
 
-    toggleClosedCaptionEnabled: function() {
+    toggleClosedCaptionEnabled() {
       this.state.closedCaptionOptions.enabled = !this.state.closedCaptionOptions.enabled;
       this.state.persistentSettings.closedCaptionOptions.enabled = !!this.state.closedCaptionOptions
         .enabled;

@@ -63,7 +63,7 @@ class ViewControlsVr extends React.Component {
       if (controller.state) {
         this.isMobile = controller.state.isMobile;
       }
-      if (controller.state && !(controller.state.isPlayingAd || this.isMobile)) {
+      if (!(controller.state.isPlayingAd || this.isMobile)) {
         if (
           !(
             skinConfig
@@ -129,7 +129,7 @@ ViewControlsVr.propTypes = {
 
 ViewControlsVr.defaultProps = {
   controller: {
-    moveVrToDirection: () => {},
+    state: {},
   },
 };
 

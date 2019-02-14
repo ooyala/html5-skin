@@ -27,7 +27,7 @@
       }
     ],
     "no-continue": ["warn"],
-    "no-magic-numbers": ["error", { "ignore": [-360, -1, 0, 1, 2, 100, 360] }],
+    "no-magic-numbers": ["error", { "ignore": [-360, -1, 0, 1, 2, 10, 100, 360] }],
     "no-param-reassign": ["error"],
     "no-var": ["error"],
     "one-var-declaration-per-line": ["error"],

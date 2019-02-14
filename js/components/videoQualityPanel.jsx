@@ -1,82 +1,86 @@
-/**
- * Panel component for video quality selection
- *
- * @module VideoQualityPanel
- */
 import React from 'react';
 import classNames from 'classnames';
-import createReactClass from 'create-react-class';
 import PropTypes from 'prop-types';
 import MenuPanel from './menuPanel';
-import Utils from '../components/utils';
+import Utils from './utils';
 import CONSTANTS from '../constants/constants';
 import MACROS from '../constants/macros';
 
-const VideoQualityPanel = createReactClass({
-
-  ref: React.createRef(),
-
-  getInitialState() {
-    const selectedValue = Utils.getPropertyValue(
-      this.props,
-      'videoQualityOptions.selectedBitrate.id',
-      CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY
-    );
-
-    return {
-      selectedValue,
+/**
+ * Panel component for video quality selection
+ */
+class VideoQualityPanel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.ref = React.createRef();
+    this.state = {
+      selectedValue: Utils.getPropertyValue(
+        this.props,
+        'videoQualityOptions.selectedBitrate.id',
+        CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY
+      ),
     };
-  },
+  }
 
-  onMenuItemClick(itemValue) {
-    this.props.controller.sendVideoQualityChangeEvent({
+  /**
+   * Handle click on menu item
+   * @param {string} itemValue the item value
+   */
+  onMenuItemClick = (itemValue) => {
+    const { controller } = this.props;
+    controller.sendVideoQualityChangeEvent({
       id: itemValue,
     });
     this.setState({
       selectedValue: itemValue,
     });
-  },
+  }
 
-  getBitrateButtons() {
+  /**
+   * Build list of buttons for various bitrates
+   * @returns {Array} array of react components
+   */
+  getBitrateButtons = () => {
     const bitrateButtons = [];
-    const availableBitrates = this.props.videoQualityOptions.availableBitrates;
+    const { skinConfig, videoQualityOptions } = this.props;
+    const { availableBitrates } = videoQualityOptions;
     let label = '';
     let availableResolution = null;
     let availableBitrate = null;
-    const qualityTextFormat = this.props.skinConfig.controlBar
-      && this.props.skinConfig.controlBar.qualitySelection
-      && this.props.skinConfig.controlBar.qualitySelection.format
-      ? this.props.skinConfig.controlBar.qualitySelection.format
+    const qualityTextFormat = skinConfig.controlBar
+      && skinConfig.controlBar.qualitySelection
+      && skinConfig.controlBar.qualitySelection.format
+      ? skinConfig.controlBar.qualitySelection.format
       : CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE;
     const showResolution = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.RESOLUTION) >= 0;
     const showBitrate = qualityTextFormat.indexOf(CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) >= 0;
     let qualityText = null;
     let ariaLabel = null;
-    let i = 0;
     const resolutions = {};
-    const buttonCount = 0;
 
     if (showResolution) {
       // Group into buckets so we can assign quality tiers
-      for (i = 0; i < availableBitrates.length; i++) {
-        if (typeof availableBitrates[i].height === 'number') {
-          if (!resolutions[availableBitrates[i].height]) {
-            resolutions[availableBitrates[i].height] = [];
+      availableBitrates.forEach((bitrate) => {
+        if (typeof bitrate.height === 'number') {
+          if (!resolutions[bitrate.height]) {
+            resolutions[bitrate.height] = [];
           }
-          resolutions[availableBitrates[i].height].push(availableBitrates[i]);
+          resolutions[bitrate.height].push(bitrate);
         }
-      }
+      });
       // sort by ascending bitrate
-      for (const res in resolutions) {
-        if (resolutions.hasOwnProperty(res)) {
-          resolutions[res].sort((a, b) => a.bitrate - b.bitrate);
+      for (const res in resolutions) { // eslint-disable-line
+        if (resolutions.hasOwnProperty(res)) { // eslint-disable-line
+          resolutions[res].sort((current, next) => current.bitrate - next.bitrate);
         }
       }
     }
 
     // available bitrates
-    for (i = 0; i < availableBitrates.length; i++) {
-      if (availableBitrates[i].id === CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY) {
+    const bitratePrecision = 1000;
+    const three = 3;
+    availableBitrates.forEach((bitrate) => {
+      if (bitrate.id === CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY) {
         bitrateButtons.unshift({
           value: CONSTANTS.QUALITY_SELECTION.AUTO_QUALITY,
           label: CONSTANTS.SKIN_TEXT.AUTO_QUALITY,
@@ -89,20 +93,20 @@ const VideoQualityPanel = createReactClass({
         qualityText = null;
         ariaLabel = null;
 
-        if (typeof availableBitrates[i].height === 'number') {
-          availableResolution = availableBitrates[i].height;
+        if (typeof bitrate.height === 'number') {
+          availableResolution = bitrate.height;
         }
 
-        if (typeof availableBitrates[i].bitrate === 'number') {
+        if (typeof bitrate.bitrate === 'number') {
           let suffix = 'kbps';
-          availableBitrate = Math.round(availableBitrates[i].bitrate / 1000);
-          if (availableBitrate >= 1000) {
+          availableBitrate = Math.round(bitrate.bitrate / bitratePrecision);
+          if (availableBitrate >= bitratePrecision) {
             availableBitrate = Math.round(availableBitrate / 10) / 100;
             suffix = 'mbps';
           }
           availableBitrate += ` ${suffix}`;
         } else {
-          availableBitrate = availableBitrates[i].bitrate;
+          availableBitrate = bitrate.bitrate;
         }
 
         if (showResolution && showBitrate && typeof availableResolution === 'number' && availableBitrate) {
@@ -126,12 +130,12 @@ const VideoQualityPanel = createReactClass({
               let tiering = null;
               if (sameResolutionLength === 2) {
                 tiering = CONSTANTS.RESOLUTION_TIER.TWO;
-              } else if (sameResolutionLength >= 3) {
+              } else if (sameResolutionLength >= three) {
                 tiering = CONSTANTS.RESOLUTION_TIER.THREE;
               }
               if (tiering) {
                 // We want to use top 3 resolutions if we are using 3 resolution tiers
-                const resolutionIndex = resolutions[availableResolution].indexOf(availableBitrates[i]);
+                const resolutionIndex = resolutions[availableResolution].indexOf(bitrate);
                 const extraResolutionLength = resolutions[availableResolution].length - tiering.length;
                 const trueResolutionIndex = resolutionIndex - extraResolutionLength;
                 if (trueResolutionIndex >= 0 && trueResolutionIndex < tiering.length) {
@@ -150,33 +154,44 @@ const VideoQualityPanel = createReactClass({
             label = qualityText.replace(MACROS.BITRATE, availableBitrate);
             ariaLabel = label;
             break;
+          default:
+            /** do nothing */
         }
 
         if (label) {
           bitrateButtons.push({
-            value: availableBitrates[i].id,
+            value: bitrate.id,
             label,
             ariaLabel,
           });
         }
       }
-    }
+    });
     return bitrateButtons;
-  },
+  }
 
   render() {
     const menuItems = this.getBitrateButtons();
+    const {
+      language,
+      isPopover,
+      skinConfig,
+      onClose,
+      localizableStrings,
+    } = this.props;
 
     const title = Utils.getLocalizedString(
-      this.props.language,
-      this.props.isPopover ? CONSTANTS.SKIN_TEXT.VIDEO_QUALITY : '',
-      this.props.localizableStrings
+      language,
+      isPopover ? CONSTANTS.SKIN_TEXT.VIDEO_QUALITY : '',
+      localizableStrings
     );
 
     const className = classNames({
-      'oo-content-panel oo-quality-panel': !this.props.isPopover,
-      'oo-quality-popover': this.props.isPopover,
+      'oo-content-panel oo-quality-panel': !isPopover,
+      'oo-quality-popover': isPopover,
     });
+
+    const { selectedValue } = this.state;
 
     return (
       <MenuPanel
@@ -185,21 +200,21 @@ const VideoQualityPanel = createReactClass({
         contentClassName="oo-quality-screen-content"
         buttonClassName="oo-quality-btn"
         title={title}
-        selectedValue={this.state.selectedValue}
-        isPopover={this.props.isPopover}
-        skinConfig={this.props.skinConfig}
+        selectedValue={selectedValue}
+        isPopover={isPopover}
+        skinConfig={skinConfig}
         menuItems={menuItems}
         onMenuItemClick={this.onMenuItemClick}
-        onClose={this.props.onClose}
+        onClose={onClose}
       />
     );
-  },
-});
+  }
+}
 
 VideoQualityPanel.propTypes = {
   isPopover: PropTypes.bool,
   language: PropTypes.string.isRequired,
-  localizableStrings: PropTypes.object.isRequired,
+  localizableStrings: PropTypes.shape({}).isRequired,
   onClose: PropTypes.func,
   videoQualityOptions: PropTypes.shape({
     selectedBitrate: PropTypes.shape({
@@ -226,6 +241,14 @@ VideoQualityPanel.propTypes = {
   controller: PropTypes.shape({
     sendVideoQualityChangeEvent: PropTypes.func,
   }),
+};
+
+VideoQualityPanel.defaultProps = {
+  isPopover: false,
+  onClose: () => {},
+  videoQualityOptions: {},
+  skinConfig: {},
+  controller: {},
 };
 
 module.exports = VideoQualityPanel;

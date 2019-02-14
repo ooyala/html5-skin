@@ -3,6 +3,7 @@
 ******************************************************************** */
 import { PlayingScreen, PlayingScreenWithAutoHide } from './views/playingScreen';
 import { PauseScreen, PauseScreenWithAutoHide } from './views/pauseScreen';
+import AdScreen from './views/adScreen';
 
 const React = require('react');
 const createReactClass = require('create-react-class');
@@ -15,12 +16,10 @@ const ClosedCaptionPanel = require('./components/closed-caption/closedCaptionPan
 const DiscoveryPanel = require('./components/discoveryPanel');
 const VideoQualityPanel = require('./components/videoQualityPanel');
 const PlaybackSpeedPanel = require('./components/playbackSpeedPanel');
-const ClosedCaptionMultiAudioMenu =
-  require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
+const ClosedCaptionMultiAudioMenu = require('./components/closed-caption-multi-audio-menu/closedCaptionMultiAudioMenu');
 const SharePanel = require('./components/sharePanel');
 const VolumePanel = require('./components/volumePanel');
 const MoreOptionsPanel = require('./components/moreOptionsPanel');
-import AdScreen from './views/adScreen';
 const EndScreen = require('./views/endScreen');
 const StartScreen = require('./views/startScreen');
 const ErrorScreen = require('./views/errorScreen');
@@ -122,14 +121,14 @@ const Skin = createReactClass({
    * @private
    * @returns {string} The current playhead time in (HH:)MM:SS format or null if the current playhead is invalid or timeshift is 0
    */
-  getPlayheadTime: function() {
+  getPlayheadTime() {
     const { currentPlayhead, duration, isLiveStream } = this.state;
     if (!isFinite(parseInt(currentPlayhead)) || !isFinite(parseInt(duration))) {
       return '--:--';
     }
 
     let playheadTime = Utils.formatSeconds(parseInt(currentPlayhead));
-    var timeShift = currentPlayhead - duration;
+    const timeShift = currentPlayhead - duration;
     // checking timeShift < 1 seconds (not === 0) as processing of the click after we rewinded and then went live may take some time
     const isLiveNow = Math.abs(timeShift) < 1;
     playheadTime = isLiveStream

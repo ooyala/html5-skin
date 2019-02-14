@@ -632,39 +632,89 @@ Utils.isIE10 = () => !!window.navigator.userAgent.match(/MSIE 10/);
  *
  * @function getLanguageToUse
  * @param {Object} skinConfig - The skin configuration file to read languages from
+ * @param {Object} playerParam - Page-level params
  * @returns {String} The ISO code of the language to use
  */
-Utils.getLanguageToUse = (skinConfig) => {
-  const { localization } = skinConfig;
-  let language;
-
-  // set lang to default lang in skin config
-  language = localization.defaultLanguage;
-
-  // if no default lang in skin config check browser lang settings
-  if (!language) {
-    if (window.navigator.languages) {
-      // A String, representing the language version of the browser.
-      // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
-      [language] = window.navigator.languages;
-    } else {
-      language = window.navigator.browserLanguage // current operating system language
-        || window.navigator.userLanguage // operating system's natural language setting
-        || window.navigator.language; // the preferred language of the user, usually the language of the browser UI
-    }
-
-    // remove lang sub-code
-    const primaryLanguage = language.substr(0, 2);
-
-    // check available lang file for browser lang
-    localization.availableLanguageFile.forEach((availableLanguage) => {
-      // if lang file available set lang to browser primary lang
-      if (primaryLanguage === availableLanguage.language) {
-        language = primaryLanguage;
-      }
-    });
+Utils.getLanguageToUse = (skinConfig, playerParam) => {
+  if (!skinConfig) {
+    return '';
   }
-  return language;
+
+  const { localization } = skinConfig;
+  let userBrowserLanguage;
+  let isLanguageCodeInAvailablelLanguageFile = false;
+
+  const isUseBrowserLanguage = playerParam && playerParam['useBrowserLanguage']; // eslint-disable-line
+
+  // if useUserBrowserLanguage is set to true, use language from user browser settings
+  if (isUseBrowserLanguage) {
+    userBrowserLanguage = Utils.getUserBrowserLanguage();
+    isLanguageCodeInAvailablelLanguageFile = !!localization
+    && Utils.isLanguageCodeInAvailablelLanguageFile(
+      localization.availableLanguageFile, userBrowserLanguage
+    );
+  }
+
+  if (!userBrowserLanguage || !localization || !isLanguageCodeInAvailablelLanguageFile) {
+    // if useUserBrowserLanguage is not set to true or
+    // useUserBrowserLanguage is set to true but browser language is not checkable or
+    // there is no browser language in availableLanguageFile
+    return Utils.getDefaultLanguage(localization);
+  }
+  return userBrowserLanguage;
+};
+
+/**
+ * @param {Object} localization - location configuration object
+ * @param {String} localization.defaultLanguage - value for default language
+ * @returns {String} defaultLanguage - language code from file "skin.json" (
+ * before executing function "onSkinMetaDataFetched") or language code that was set
+ * in the page-level parameters (after executing function "onSkinMetaDataFetched")
+ */
+Utils.getDefaultLanguage = (localization) => {
+  const defaultLanguage = !!localization && localization.defaultLanguage;
+  return defaultLanguage || '';
+};
+
+/**
+ *
+ * @returns {String} two-digit value of an user's system language or an empty string
+ */
+Utils.getUserBrowserLanguage = () => {
+  // Examples of valid language codes are: "en", "en-US", "de", "fr", etc.
+  const { navigator } = window;
+  let language;
+  if (navigator) {
+    language = (
+      navigator.language
+      // "language" property returns the language of the browser application in
+      // Firefox, Opera, Google Chrome and Safari
+      || navigator.userLanguage
+      // "userLanguage" property returns the current Regional and Language settings
+      // of the operating system in
+      // Internet Explorer and the language of the browser application in Opera
+      || navigator.systemLanguage
+      // "systemLanguage" property returns the language edition of the operating system in
+      // Internet Explorer
+    );
+  }
+  return language ? language.substr(0, 2).toLowerCase() : ''; // remove lang sub-code
+};
+
+/**
+ *
+ * @param {Array} availableLanguageList - array of objects of language code values
+ * with the key "language"
+ * @param {string} languageCode - two-digit value of the language
+ * @returns {Boolean} "true" if the corresponding language code "languageCode" is
+ * in the array of available languages "availableLanguageList",
+ * otherwise "false"
+ */
+Utils.isLanguageCodeInAvailablelLanguageFile = (availableLanguageList, languageCode) => {
+  if (!(availableLanguageList && Array.isArray(availableLanguageList) && languageCode)) {
+    return false;
+  }
+  return availableLanguageList.some(languageObj => languageObj.language === languageCode);
 };
 
 /**
@@ -1031,7 +1081,7 @@ Utils.arrayDeepMerge = (target, source, optionsArgument) => {
     // find flexibleSpace btn index
     for (const y in destination) { // eslint-disable-line
       if (destination[y][optionsArgument.arrayUnionBy] === 'flexibleSpace') {
-        flexibleSpaceIndex = parseInt(y);
+        flexibleSpaceIndex = Number.parseInt(y, 0);
         break;
       }
     }

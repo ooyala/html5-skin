@@ -245,8 +245,8 @@ class AdScreen extends React.Component {
         onMouseUp={this.handleClick}
       >
         {
-          this.props.controller.state.buffering || this.props.buffered === 0 ?
-            <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+          this.props.controller.state.buffering || this.props.buffered === 0
+            ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
             : null
         }
 
