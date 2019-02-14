@@ -2284,7 +2284,7 @@ module.exports = function(OO, _, $, W) {
       this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
-    togglePlayPause: function() {
+    togglePlayPause: function(event) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           if (!this.state.isInitialPlay) {
@@ -2296,7 +2296,7 @@ module.exports = function(OO, _, $, W) {
           break;
         case CONSTANTS.STATE.PAUSE:
           this.isNewVrVideo = false;
-          this.mb.publish(OO.EVENTS.PLAY);
+          this.customPlayPause(event, OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:
           this.isNewVrVideo = false;
@@ -2304,10 +2304,31 @@ module.exports = function(OO, _, $, W) {
           // set explicitly when pausing. When this happens the control bar flashes
           // when the playingScreen is rendered, so we want to avoid that.
           this.showControlBar();
-          this.mb.publish(OO.EVENTS.PAUSE);
+          this.customPlayPause(event, OO.EVENTS.PAUSE);
           break;
         default:
           break;
+      }
+    },
+
+    /**
+     * Override actions for play-pause in case
+     * if page-level param "controlDisabled" is set to true and
+     * param "onTogglePlayPause" is defined
+     * @param {Object} event - event object
+     * @param {String} nextPublishEvent - next state should be published to set
+     */
+    customPlayPause: function(event, nextPublishEvent) {
+      if (
+        event &&
+        this.state.playerParam.controlDisabled &&
+        typeof this.state.playerParam.onTogglePlayPause === 'function'
+      ) {
+        // The function must have access to the current state of the player and
+        // to the event
+        this.state.playerParam.onTogglePlayPause(event, this.state.playerState);
+      } else if (nextPublishEvent) {
+        this.mb.publish(nextPublishEvent);
       }
     },
 

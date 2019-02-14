@@ -521,6 +521,84 @@ describe('Controller', function() {
       expect(controller.state.controlBarVisible).toBe(true);
     });
 
+    describe('test customPlayPause', () => {
+      let spy;
+      let testEvent;
+      let testPlayerState;
+      const onTogglePlayPause = (event, playerState) => {
+        testEvent = event;
+        testPlayerState = playerState;
+      };
+
+      beforeEach(function() {
+        spy = sinon.spy(controller.mb, 'publish');
+        controller.createPluginElements();
+      });
+
+      afterEach(function() {
+        testEvent = undefined;
+        testPlayerState = undefined;
+        spy.resetHistory();
+        spy.restore();
+      });
+
+      it('should call custom function to togglePlayPause if ' +
+        'controlDisabled is true and onTogglePlayPause is function', () => {
+        controller.state.playerState = CONSTANTS.STATE.PLAYING;
+        const playerParam = {
+          controlDisabled: true,
+          onTogglePlayPause: onTogglePlayPause
+        };
+        controller.state.playerParam = playerParam;
+        controller.customPlayPause({}, 'test');
+        expect(testEvent).toEqual({});
+        expect(testPlayerState).toBe(CONSTANTS.STATE.PLAYING);
+
+        expect(spy.calledWith('test')).toBe(false);
+      });
+
+      it('should publish an event if controlDisabled is not true', () => {
+        controller.state.playerState = CONSTANTS.STATE.PLAYING;
+        const playerParam = {
+          onTogglePlayPause: onTogglePlayPause
+        };
+        controller.state.playerParam = playerParam;
+        controller.customPlayPause({}, 'test');
+        expect(testEvent).toBe(undefined);
+        expect(testPlayerState).toBe(undefined);
+
+        expect(spy.calledWith('test')).toBe(true);
+      });
+
+      it('should not publish an event if nextPublishEvent is undefined', () => {
+        controller.state.playerState = CONSTANTS.STATE.PLAYING;
+        const playerParam = {
+          onTogglePlayPause: onTogglePlayPause
+        };
+        controller.state.playerParam = playerParam;
+        controller.customPlayPause({});
+        expect(testEvent).toBe(undefined);
+        expect(testPlayerState).toBe(undefined);
+
+        expect(spy.calledWith('test')).toBe(false);
+      });
+
+      it('should not call custom function to togglePlayPause if ' +
+        'onTogglePlayPause is not function and ' +
+        'should publish an event', () => {
+        controller.state.playerState = CONSTANTS.STATE.PLAYING;
+        const playerParam = {
+          controlDisabled: true
+        };
+        controller.state.playerParam = playerParam;
+        controller.customPlayPause({}, 'test');
+        expect(testEvent).toBe(undefined);
+        expect(testPlayerState).toBe(undefined);
+
+        expect(spy.calledWith('test')).toBe(true);
+      });
+    });
+
     it('should hide control bar when playing ads', function() {
       controller.state.controlBarVisible = true;
       controller.state.playerState = CONSTANTS.STATE.PLAYING;

@@ -40,15 +40,15 @@ AccessibilityControls.prototype = {
     document.removeEventListener('keyup', this.keyEventUp);
   },
 
-  keyEventDown: function(e) {
+  keyEventDown: function(event) {
     if (!this.controller.state.accessibilityControlsEnabled) {
       return;
     }
 
-    var targetTagName = this.getTargetTagName(e);
-    var charCode = e.which || e.keyCode;
+    const targetTagName = this.getTargetTagName(event);
+    const charCode = event.which || event.keyCode;
     if (this.controller.videoVr) {
-      this.moveVrToDirection(e, charCode, true, targetTagName); // start rotate 360
+      this.moveVrToDirection(event, charCode, true, targetTagName); // start rotate 360
     }
 
     switch (charCode) {
@@ -58,14 +58,14 @@ AccessibilityControls.prototype = {
         // Note that this is not a comprehensive fix for all clickable elements, this is
         // mostly meant to enable keyboard navigation on control bar elements.
         if (targetTagName !== 'button') {
-          e.preventDefault();
-          this.controller.togglePlayPause();
+          event.preventDefault();
+          this.controller.togglePlayPause(event);
         }
         break;
       case CONSTANTS.KEYCODES.UP_ARROW_KEY:
       case CONSTANTS.KEYCODES.DOWN_ARROW_KEY:
         if (this.areArrowKeysAllowed()) {
-          e.preventDefault();
+          event.preventDefault();
           var increase = charCode === CONSTANTS.KEYCODES.UP_ARROW_KEY;
           this.changeVolumeBy(CONSTANTS.A11Y_CTRLS.VOLUME_CHANGE_DELTA, increase);
         }
@@ -73,8 +73,8 @@ AccessibilityControls.prototype = {
       case CONSTANTS.KEYCODES.LEFT_ARROW_KEY:
       case CONSTANTS.KEYCODES.RIGHT_ARROW_KEY:
         if (this.areArrowKeysAllowed()) {
-          e.preventDefault();
-          var forward = e.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
+          event.preventDefault();
+          var forward = event.keyCode === CONSTANTS.KEYCODES.RIGHT_ARROW_KEY;
           var skinConfig = Utils.getPropertyValue(this.controller, 'skin.props.skinConfig');
           var skipTimes = Utils.getSkipTimes(skinConfig);
           var delta = forward ? skipTimes.forward : skipTimes.backward;
