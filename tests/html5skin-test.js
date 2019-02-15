@@ -543,10 +543,9 @@ describe('Controller', function() {
       });
 
       it('should call custom function to togglePlayPause if ' +
-        'controlDisabled is true and onTogglePlayPause is function', () => {
+        'conTogglePlayPause is a function', () => {
         controller.state.playerState = CONSTANTS.STATE.PLAYING;
         const playerParam = {
-          controlDisabled: true,
           onTogglePlayPause: onTogglePlayPause
         };
         controller.state.playerParam = playerParam;
@@ -557,23 +556,10 @@ describe('Controller', function() {
         expect(spy.calledWith('test')).toBe(false);
       });
 
-      it('should publish an event if controlDisabled is not true', () => {
-        controller.state.playerState = CONSTANTS.STATE.PLAYING;
-        const playerParam = {
-          onTogglePlayPause: onTogglePlayPause
-        };
-        controller.state.playerParam = playerParam;
-        controller.customPlayPause({}, 'test');
-        expect(testEvent).toBe(undefined);
-        expect(testPlayerState).toBe(undefined);
-
-        expect(spy.calledWith('test')).toBe(true);
-      });
-
       it('should not publish an event if nextPublishEvent is undefined', () => {
         controller.state.playerState = CONSTANTS.STATE.PLAYING;
         const playerParam = {
-          onTogglePlayPause: onTogglePlayPause
+          onTogglePlayPause: 'test'
         };
         controller.state.playerParam = playerParam;
         controller.customPlayPause({});
@@ -583,12 +569,11 @@ describe('Controller', function() {
         expect(spy.calledWith('test')).toBe(false);
       });
 
-      it('should not call custom function to togglePlayPause if ' +
-        'onTogglePlayPause is not function and ' +
-        'should publish an event', () => {
+      it('should publish an event if onTogglePlayPause is not a function and' +
+        'nextPublishEvent is defined', () => {
         controller.state.playerState = CONSTANTS.STATE.PLAYING;
         const playerParam = {
-          controlDisabled: true
+          onTogglePlayPause: 'test'
         };
         controller.state.playerParam = playerParam;
         controller.customPlayPause({}, 'test');

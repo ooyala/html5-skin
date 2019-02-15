@@ -2313,15 +2313,13 @@ module.exports = function(OO, _, $, W) {
 
     /**
      * Override actions for play-pause in case
-     * if page-level param "controlDisabled" is set to true and
-     * param "onTogglePlayPause" is defined
+     * if page-level param "onTogglePlayPause" is defined
      * @param {Object} event - event object
      * @param {String} nextPublishEvent - next state should be published to set
      */
     customPlayPause: function(event, nextPublishEvent) {
       if (
         event &&
-        this.state.playerParam.controlDisabled &&
         typeof this.state.playerParam.onTogglePlayPause === 'function'
       ) {
         // The function must have access to the current state of the player and
