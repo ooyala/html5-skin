@@ -8,6 +8,6 @@ describe('Spinner', function() {
   it('tests spinner', function() {
 
     // Render spinner into DOM
-    var wrapper = Enzyme.mount(<Spinner />);
+    var wrapper = Enzyme.mount(<Spinner loadingImage="some.jpg" />);
   });
 });

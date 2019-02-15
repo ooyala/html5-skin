@@ -23,7 +23,7 @@ describe('OnOffSwitch', function() {
           accentColor: '#fff'
         }
       },
-      localizableStrings: [],
+      localizableStrings: {},
       controller: {
         toggleClosedCaptionEnabled: function() {
           props.closedCaptionOptions.enabled = !props.closedCaptionOptions.enabled;

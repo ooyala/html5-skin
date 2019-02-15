@@ -9,7 +9,7 @@ const skinConfig = require('../../config/skin.json');
 const CONSTANTS = require('../../js/constants/constants');
 const sinon = require('sinon');
 
-import { DirectionControlVr } from '../../js/components/directionControlVr';
+import DirectionControlVr from '../../js/components/directionControlVr';
 
 describe('directionControlVr', function() {
   let spyClick;
