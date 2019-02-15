@@ -34,11 +34,11 @@
 }
 
 .oo-discovery-image-wrapper-style {
+  @include flex-shrink(0);
   position: relative;
   width: 150px;
   height: auto;
   margin: 0 42px 42px 0;
-  flex-shrink: 0;
 
   &:nth-of-type(even) {
     margin-bottom: 0;

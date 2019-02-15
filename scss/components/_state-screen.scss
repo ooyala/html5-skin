@@ -25,16 +25,19 @@
     position: relative;
   }
 
+  $timeMinWidth: 35px;
   .oo-scrubber-bar-right {
+    @include flex-shrink(0);
     margin-left: 8px;
     text-align: right;
     padding-right: 0px !important;
-    width: 35px;
+    min-width: $timeMinWidth;
   }
 
   .oo-scrubber-bar-left {
+    @include flex-shrink(0);
     margin-right: 8px;
-    width: 35px;
+    min-width: $timeMinWidth;
   }
 
   .oo-state-screen-audio-title {
