@@ -94,33 +94,45 @@ class AudioOnlyScreen extends React.Component {
       scrubberRight = (<span className="oo-scrubber-bar-right oo-scrubber-bar-current-time">{dvrText}</span>);
     }
 
+    const coverImageHeight = `${CONSTANTS.UI.AUDIO_ONLY_WITH_COVER_HEIGHT.slice(0, -2) -
+      CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT.slice(0, -2)}px`;
+
    //TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
     return (
-      <div className="oo-state-screen-audio oo-flex-column-parent">
-        <div className={infoPanelClass}>
-          {titleMetadata}
-        </div>
-        <div className="oo-interactive-container">
-          <ControlBar
-            {...this.props}
-            audioOnly={true}
-            hideVolumeControls={true}
-            hideScrubberBar={true}
-            controlBarVisible={true}
-            playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
-            a11yControls={this.props.controller.accessibilityControls}
-            clickToVolumeScreen={true}
+      <div>
+        {this.props.contentTree.promo_image &&
+          <img
+            height={coverImageHeight}
+            src={this.props.contentTree.promo_image}
+            className="oo-audio-only-coverImg"
           />
-        </div>
-        <div className="oo-interactive-container">
-          <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            {scrubberLeft}
-            <ScrubberBar {...this.props}
+        }
+        <div className="oo-state-screen-audio oo-flex-column-parent">
+          <div className={infoPanelClass}>
+            {titleMetadata}
+          </div>
+          <div className="oo-interactive-container">
+            <ControlBar
+              {...this.props}
               audioOnly={true}
-              forceResize={this.state.forceResize}
+              hideVolumeControls={true}
+              hideScrubberBar={true}
+              controlBarVisible={true}
+              playerState={this.props.playerState}
+              isLiveStream={this.props.isLiveStream}
+              a11yControls={this.props.controller.accessibilityControls}
+              clickToVolumeScreen={true}
             />
-            {scrubberRight}
+          </div>
+          <div className="oo-interactive-container">
+            <div className="oo-scrubber-bar-parent oo-flex-row-parent">
+              {scrubberLeft}
+              <ScrubberBar {...this.props}
+                audioOnly={true}
+                forceResize={this.state.forceResize}
+              />
+              {scrubberRight}
+            </div>
           </div>
         </div>
       </div>
