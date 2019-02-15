@@ -974,6 +974,13 @@ var ControlBar = createReactClass({
   },
 
   render: function() {
+    if (
+      !(this.props.skinConfig &&
+      this.props.skinConfig.controlBar &&
+      this.props.skinConfig.controlBar.enabled)
+    ) {
+      return null;
+    }
     var controlBarClass = ClassNames({
       'oo-control-bar': true,
       'oo-control-bar-hidden': !this.props.controlBarVisible,
@@ -992,9 +999,7 @@ var ControlBar = createReactClass({
       'oo-flex-end': this.props.audioOnly && Utils.isIos()
     });
 
-    return (this.props.skinConfig &&
-      this.props.skinConfig.controlBar &&
-      this.props.skinConfig.controlBar.enabled ?
+    return (
       <div
         className={controlBarClass}
         style={controlBarStyle}
@@ -1008,7 +1013,6 @@ var ControlBar = createReactClass({
           {controlBarItems}
         </div>
       </div>
-      : null
     )
   }
 });

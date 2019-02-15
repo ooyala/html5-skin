@@ -522,24 +522,10 @@ describe('Controller', function() {
     });
 
     describe('test customPlayPause', () => {
-      let spy;
-      let testEvent;
-      let testPlayerState;
-      const onTogglePlayPause = (event, playerState) => {
-        testEvent = event;
-        testPlayerState = playerState;
-      };
+      const onTogglePlayPause = jest.fn();
 
       beforeEach(function() {
-        spy = sinon.spy(controller.mb, 'publish');
         controller.createPluginElements();
-      });
-
-      afterEach(function() {
-        testEvent = undefined;
-        testPlayerState = undefined;
-        spy.resetHistory();
-        spy.restore();
       });
 
       it('should call custom function to togglePlayPause if ' +
@@ -550,10 +536,9 @@ describe('Controller', function() {
         };
         controller.state.playerParam = playerParam;
         controller.customPlayPause({}, 'test');
-        expect(testEvent).toEqual({});
-        expect(testPlayerState).toBe(CONSTANTS.STATE.PLAYING);
+        expect(onTogglePlayPause).toHaveBeenCalledWith({}, CONSTANTS.STATE.PLAYING);
 
-        expect(spy.calledWith('test')).toBe(false);
+        expect(controller.mb.publish).not.toHaveBeenCalledWith('test');
       });
 
       it('should not publish an event if nextPublishEvent is undefined', () => {
@@ -563,10 +548,10 @@ describe('Controller', function() {
         };
         controller.state.playerParam = playerParam;
         controller.customPlayPause({});
-        expect(testEvent).toBe(undefined);
-        expect(testPlayerState).toBe(undefined);
 
-        expect(spy.calledWith('test')).toBe(false);
+        expect(onTogglePlayPause).not.toHaveBeenCalled();
+
+        expect(controller.mb.publish).not.toHaveBeenCalledWith('test');
       });
 
       it('should publish an event if onTogglePlayPause is not a function and' +
@@ -577,10 +562,10 @@ describe('Controller', function() {
         };
         controller.state.playerParam = playerParam;
         controller.customPlayPause({}, 'test');
-        expect(testEvent).toBe(undefined);
-        expect(testPlayerState).toBe(undefined);
 
-        expect(spy.calledWith('test')).toBe(true);
+        expect(onTogglePlayPause).not.toHaveBeenCalled();
+
+        expect(controller.mb.publish).toHaveBeenCalledWith('test');
       });
     });
 
