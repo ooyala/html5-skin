@@ -745,7 +745,8 @@ function controller(OO, _, $) {
     },
 
     onAuthorizationFetched(event, authorization) {
-      this.state.isLiveStream = authorization.streams[0].is_live_stream;
+      this.state.isLiveStream = authorization.streams[0].is_live_stream
+        || this.state.contentTree.content_type === 'LiveStream';
     },
 
     onContentTreeFetched(event, contentTree) {
@@ -793,7 +794,8 @@ function controller(OO, _, $) {
       this.resetUpNextInfo(true);
       this.state.isOoyalaAds = false;
 
-      this.state.isLiveStream = asset.content.streams[0].is_live_stream;
+      this.state.isLiveStream = asset.content.streams[0].is_live_stream
+        || this.state.contentTree.content_type === 'LiveStream';
 
       const contentTree = {};
       contentTree.title = asset.content.title;
@@ -810,7 +812,8 @@ function controller(OO, _, $) {
     onAssetUpdated(event, asset) {
       this.resetUpNextInfo(true);
 
-      this.state.isLiveStream = asset.content.streams[0].is_live_stream;
+      this.state.isLiveStream = asset.content.streams[0].is_live_stream
+        || this.state.contentTree.content_type === 'LiveStream';
 
       this.state.contentTree.title = asset.content.title;
       this.state.contentTree.description = asset.content.description;
