@@ -1,19 +1,15 @@
 #!/usr/bin/env groovy
 
 // params
-def jenkinsNodeLabel = 'ops-alfred3-aws'
+def nodeLabel = 'ops-alfred3-aws'
 
 // variables
 def numToKeepStr = '10'
 
 pipeline {
 
-    parameters {
-        string(defaultValue: jenkinsNodeLabel, description: 'Jenkins nodes label', name: 'nodeLabel')
-    }
-
     agent {
-        node { label "${params.nodeLabel}" }
+        node { label "${nodeLabel}" }
     }
 
     tools {
