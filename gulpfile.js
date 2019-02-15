@@ -45,7 +45,8 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
     debug: debug,
     transform: [babelify, bulkify],
     cache: {},
-    packageCache: {}
+    packageCache: {},
+    extensions: [".js",".jsx"]
   };
   var bundler = watch ? watchify(browserify(props)) : browserify(props);
 
