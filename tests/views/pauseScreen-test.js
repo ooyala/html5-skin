@@ -90,7 +90,9 @@ describe('PauseScreen', function() {
       rewindOrRequestPreviousVideo: function() {},
       requestNextVideo: function() {},
       setVolume: function() {},
-      togglePlayPause: () => {}
+      togglePlayPause: () => {},
+      togglePopover: () => {},
+      toggleScreen: () => {},
     };
     mockContentTree = {
       promo_image: 'image.png',

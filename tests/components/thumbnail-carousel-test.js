@@ -140,8 +140,8 @@ describe('ThumbnailCarousel', function() {
         scrubberBarWidth={200}
         carouselWidth="154"
         carouselHeight="102"
-        thumbnailWidth="93"
-        thumbnailHeight="63"
+        thumbnailWidth={93}
+        thumbnailHeight={63}
         thumbnailCarouselWidth={93}
         centralThumbnail={centralThumbnail}
         thumbnailStyle={thumbnailStyle}
@@ -170,8 +170,8 @@ describe('ThumbnailCarousel', function() {
         scrubberBarWidth={200}
         carouselWidth="154"
         carouselHeight="102"
-        thumbnailWidth="93"
-        thumbnailHeight="63"
+        thumbnailWidth={93}
+        thumbnailHeight={63}
         thumbnailCarouselWidth={93}
         centralThumbnail={centralThumbnail}
         thumbnailStyle={thumbnailStyle}

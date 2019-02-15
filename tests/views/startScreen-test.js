@@ -41,7 +41,7 @@ describe('StartScreen', function() {
     };
     mockProps = {
       controller: mockController,
-      skinConfig: JSON.parse(JSON.stringify(skinConfig))
+      skinConfig: JSON.parse(JSON.stringify(skinConfig)),
     };
     mockProps.skinConfig.startScreen = {
       titleFont: {},
@@ -55,13 +55,15 @@ describe('StartScreen', function() {
       showPromo: true,
       showTitle: true,
       showDescription: true,
-      promoImageSize: 'default'
+      promoImageSize: 'default',
     };
+    mockProps.skinConfig.general.loadingImage = { imageResource: { url: 'some.jpg' } };
+    // his.props.skinConfig.general.loadingImage.imageResource.url
   });
 
   it('should render start screen', function() {
     // Render start screen into DOM
-    var wrapper = Enzyme.mount(<StartScreen />);
+    var wrapper = Enzyme.mount(<StartScreen skinConfig={mockProps.skinConfig} />);
 
     // test play
     var playBtn = wrapper.find('.oo-state-screen-selectable');

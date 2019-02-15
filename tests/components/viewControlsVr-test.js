@@ -15,7 +15,7 @@ var CONSTANTS = require('../../js/constants/constants');
 var ViewControlsVr = require('../../js/components/viewControlsVr');
 var _ = require('underscore');
 
-import { DirectionControlVr } from '../../js/components/directionControlVr';
+import DirectionControlVr from '../../js/components/directionControlVr';
 
 describe('viewControlsVr', function() {
   
@@ -45,7 +45,7 @@ describe('viewControlsVr', function() {
       skinConfig: JSON.parse(JSON.stringify(defaultSkinConfig))
     };
   });
-  
+
   it('creates a viewControlsVr', function() {
     var controller = {
       state: {
@@ -91,7 +91,7 @@ describe('viewControlsVr', function() {
     button.simulate('mouseDown');
     expect(mockProps.clickButton).toBe(true);
   });
-  
+
   it('check condition: if video support vr360 then viewControlsVr exist', function() {
     var controller = {
       state: {
@@ -117,13 +117,13 @@ describe('viewControlsVr', function() {
 
     expect(buttons.length).toBe(5);
   });
-
+   
   it('check condition: if video does not support vr360 then viewControlsVr does not exist', function() {
     var wrapper = Enzyme.mount(<ViewControlsVr {...baseMockProps}/>);
     var buttons = wrapper.find('.oo-direction-control');
     expect(buttons.length).toBe(0);
   });
-
+ 
   it('on the ViewControlsVr should be two icons: one icon of the background and one icon of the symbol', function() {
     var controller = {
       state: {
