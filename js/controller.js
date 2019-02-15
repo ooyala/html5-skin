@@ -2567,7 +2567,6 @@ function controller(OO, _, $) {
 
     togglePopover(menu) {
       const menuOptions = this.state[menu];
-
       if (menuOptions) {
         menuOptions.showPopover = !menuOptions.showPopover;
         this.renderSkin();

@@ -605,11 +605,11 @@ class ControlBar extends React.Component {
             <Popover
               autoFocus={controller.state.videoQualityOptions.autoFocus}
               closeActionEnabled={controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+              closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
             >
               <VideoQualityPanel
                 {...this.props}
-                onClose={this.closePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
+                onClose={() => this.closePopover(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY)}
                 isPopover
               />
             </Popover>
@@ -650,11 +650,11 @@ class ControlBar extends React.Component {
               popoverClassName="oo-popover oo-popover-pull-right"
               autoFocus={controller.state.closedCaptionOptions.autoFocus}
               closeActionEnabled={controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+              closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
             >
               <ClosedCaptionPopover
                 {...this.props}
-                togglePopoverAction={this.closePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
+                togglePopoverAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
               />
             </Popover>
           )}
@@ -713,13 +713,13 @@ class ControlBar extends React.Component {
                 popoverClassName="oo-popover oo-popover-pull-right oo-cc-ma-container"
                 autoFocus={controller.state.multiAudioOptions.autoFocus}
                 closeActionEnabled={controller.state.accessibilityControlsEnabled}
-                closeAction={this.closePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+                closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
               >
                 <ClosedCaptionMultiAudioMenu
                   language={language}
                   localizableStrings={localizableStrings}
                   menuClassName="oo-cc-ma-menu--popover"
-                  togglePopoverAction={this.closePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
+                  togglePopoverAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}
                   {...this.props}
                 />
               </Popover>
@@ -751,7 +751,7 @@ class ControlBar extends React.Component {
             <Popover
               autoFocus={controller.state.playbackSpeedOptions.autoFocus}
               closeActionEnabled={controller.state.accessibilityControlsEnabled}
-              closeAction={this.closePopover(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+              closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
             >
               <PlaybackSpeedPanel
                 isPopover
@@ -759,7 +759,7 @@ class ControlBar extends React.Component {
                 localizableStrings={localizableStrings}
                 controller={controller}
                 skinConfig={skinConfig}
-                onClose={this.closePopover(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
+                onClose={() => this.closePopover(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
               />
             </Popover>
             )
