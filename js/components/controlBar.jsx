@@ -68,7 +68,7 @@ class ControlBar extends React.Component {
   getResponsiveUIMultiple = (responsiveView) => {
     const { skinConfig } = this.props;
     return skinConfig.responsive.breakpoints[responsiveView].multiplier;
-  }
+  };
 
   /**
    * Handle mouse up event on control bar
@@ -81,7 +81,7 @@ class ControlBar extends React.Component {
       controller.state.accessibilityControlsEnabled = true;
       controller.startHideControlBarTimer();
     }
-  }
+  };
 
   /**
    * Handle fullscreen click
@@ -101,7 +101,7 @@ class ControlBar extends React.Component {
         this.toggleStereoVr();
       }
     }
-  }
+  };
 
   /**
    * Handle stereoVr click
@@ -135,7 +135,7 @@ class ControlBar extends React.Component {
     } else {
       this.unlockScreenOrientation();
     }
-  }
+  };
 
   /**
    * @description set landscape orientation if it is possible
@@ -148,7 +148,7 @@ class ControlBar extends React.Component {
         Utils.setLandscapeScreenOrientation();
       }
     }
-  }
+  };
 
   /**
    * @description set possibility to use all orientations
@@ -164,14 +164,14 @@ class ControlBar extends React.Component {
     } else if (screen.msUnlockOrientation) { // eslint-disable-line
       screen.msUnlockOrientation(); // eslint-disable-line
     }
-  }
+  };
 
   toggleStereoVr = () => {
     const { controller } = this.props;
     if (controller && typeof controller.toggleStereoVr === 'function') {
       controller.toggleStereoVr();
     }
-  }
+  };
 
   /**
    * Handle click on live button
@@ -184,7 +184,7 @@ class ControlBar extends React.Component {
     const { controller, duration } = this.props;
     controller.onLiveClick();
     controller.seek(duration);
-  }
+  };
 
   /**
    * Handle click on volume button
@@ -208,17 +208,17 @@ class ControlBar extends React.Component {
     } else {
       controller.handleMuteClick();
     }
-  }
+  };
 
   handlePlayClick = () => {
     const { controller } = this.props;
     controller.togglePlayPause();
-  }
+  };
 
   handleShareClick = () => {
     const { controller } = this.props;
     controller.toggleShareScreen();
-  }
+  };
 
   /**
    * Generic toggle logic for menus that display as popover on large screen sizes
@@ -238,13 +238,13 @@ class ControlBar extends React.Component {
       this.togglePopover(menuOptionsId);
       this.closeOtherPopovers(menuOptionsId);
     }
-  }
+  };
 
   handleAirPlayClick = () => {
     const { controller } = this.props;
     const video = controller.state.mainVideoElement;
     video.webkitShowPlaybackTargetPicker();
-  }
+  };
 
   handleMultiAudioClick = () => {
     this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO);
@@ -260,7 +260,7 @@ class ControlBar extends React.Component {
     } else {
       controller.toggleMultiAudioScreen();
     }
-  }
+  };
 
   /**
    * Configure the autofocus for menu
@@ -279,7 +279,7 @@ class ControlBar extends React.Component {
       // autofocus on the first element
       menuOptions.autoFocus = menuToggleButton.wasTriggeredWithKeyboard();
     }
-  }
+  };
 
   /**
    * @description It gets value of toggleButtons from controller.js by popoverName
@@ -294,7 +294,7 @@ class ControlBar extends React.Component {
       return controller.toggleButtons[popoverName];
     }
     return {};
-  }
+  };
 
   /**
    * @description It sets this.props.controller.toggleButtons value (menu) for key = popoverName
@@ -307,7 +307,7 @@ class ControlBar extends React.Component {
     if (controller && controller.toggleButtons) {
       controller.toggleButtons[popoverName] = menu;
     }
-  }
+  };
 
   /**
    * @description It calls function closePopover from controller.js
@@ -320,7 +320,7 @@ class ControlBar extends React.Component {
     if (controller && typeof controller.closePopover === 'function') {
       controller.closePopover(menu, params);
     }
-  }
+  };
 
   /**
    * @description It calls function closeOtherPopovers from controller.js
@@ -332,11 +332,11 @@ class ControlBar extends React.Component {
     if (controller && typeof controller.closeOtherPopovers === 'function') {
       controller.closeOtherPopovers(popoverName);
     }
-  }
+  };
 
   /**
    * show/hide the popover for specified item
-   * @param {Array} menu - an array of menu items
+   * @param {String} menu - an array of menu items
    */
   togglePopover = (menu) => {
     const { controller } = this.props;
@@ -351,17 +351,17 @@ class ControlBar extends React.Component {
       menuToggleButton.wasTriggeredWithKeyboard(false);
     }
     controller.togglePopover(menu);
-  }
+  };
 
   handleDiscoveryClick = () => {
     const { controller } = this.props;
     controller.toggleDiscoveryScreen();
-  }
+  };
 
   handleMoreOptionsClick = () => {
     const { controller } = this.props;
     controller.toggleMoreOptionsScreen(this.moreOptionsItems);
-  }
+  };
 
   /**
    * @description Retrieves configuration from server to be applied to audio skin
@@ -392,12 +392,12 @@ class ControlBar extends React.Component {
         field => field.name === item.name
       ).forEach(
         (field) => {
-          field.location = 'none' // eslint-disable-line
+          field.location = 'none'; // eslint-disable-line
         }
       );
     });
     return defaultConfig;
-  }
+  };
 
   /**
    * Build the control bar items
@@ -989,7 +989,7 @@ class ControlBar extends React.Component {
     }
 
     return finalControlBarItems;
-  }
+  };
 
   render() {
     const {
@@ -1000,7 +1000,17 @@ class ControlBar extends React.Component {
       onFocus,
       onBlur,
       hideScrubberBar,
+      skinConfig,
     } = this.props;
+
+    if (
+      !(skinConfig
+        && skinConfig.controlBar
+        && skinConfig.controlBar.enabled)
+    ) {
+      return null;
+    }
+
     const controlBarClass = ClassNames({
       'oo-control-bar': true,
       'oo-control-bar-hidden': !controlBarVisible,

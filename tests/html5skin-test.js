@@ -521,6 +521,54 @@ describe('Controller', function() {
       expect(controller.state.controlBarVisible).toBe(true);
     });
 
+    describe('test customPlayPause', () => {
+      const onTogglePlayPause = jest.fn();
+
+      beforeEach(function() {
+        controller.createPluginElements();
+      });
+
+      it('should call custom function to togglePlayPause if ' +
+        'conTogglePlayPause is a function', () => {
+        controller.state.playerState = CONSTANTS.STATE.PLAYING;
+        const playerParam = {
+          onTogglePlayPause: onTogglePlayPause
+        };
+        controller.state.playerParam = playerParam;
+        controller.customPlayPause({}, 'test');
+        expect(onTogglePlayPause).toHaveBeenCalledWith({}, CONSTANTS.STATE.PLAYING);
+
+        expect(controller.mb.publish).not.toHaveBeenCalledWith('test');
+      });
+
+      it('should not publish an event if nextPublishEvent is undefined', () => {
+        controller.state.playerState = CONSTANTS.STATE.PLAYING;
+        const playerParam = {
+          onTogglePlayPause: 'test'
+        };
+        controller.state.playerParam = playerParam;
+        controller.customPlayPause({});
+
+        expect(onTogglePlayPause).not.toHaveBeenCalled();
+
+        expect(controller.mb.publish).not.toHaveBeenCalledWith('test');
+      });
+
+      it('should publish an event if onTogglePlayPause is not a function and' +
+        'nextPublishEvent is defined', () => {
+        controller.state.playerState = CONSTANTS.STATE.PLAYING;
+        const playerParam = {
+          onTogglePlayPause: 'test'
+        };
+        controller.state.playerParam = playerParam;
+        controller.customPlayPause({}, 'test');
+
+        expect(onTogglePlayPause).not.toHaveBeenCalled();
+
+        expect(controller.mb.publish).toHaveBeenCalledWith('test');
+      });
+    });
+
     it('should hide control bar when playing ads', function() {
       controller.state.controlBarVisible = true;
       controller.state.playerState = CONSTANTS.STATE.PLAYING;

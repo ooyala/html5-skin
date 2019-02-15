@@ -63,7 +63,7 @@ AccessibilityControls.prototype = {
         // mostly meant to enable keyboard navigation on control bar elements.
         if (targetTagName !== 'button') {
           event.preventDefault();
-          this.controller.togglePlayPause();
+          this.controller.togglePlayPause(event);
         }
         break;
       case CONSTANTS.KEYCODES.UP_ARROW_KEY:

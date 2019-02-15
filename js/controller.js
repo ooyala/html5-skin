@@ -2318,7 +2318,7 @@ function controller(OO, _, $) {
       this.mb.publish(OO.EVENTS.MOVE_VR_TO_DIRECTION, this.focusedElement, rotate, direction);
     },
 
-    togglePlayPause() {
+    togglePlayPause(event) {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.START:
           if (!this.state.isInitialPlay) {
@@ -2330,7 +2330,7 @@ function controller(OO, _, $) {
           break;
         case CONSTANTS.STATE.PAUSE:
           this.isNewVrVideo = false;
-          this.mb.publish(OO.EVENTS.PLAY);
+          this.customPlayPause(event, OO.EVENTS.PLAY);
           break;
         case CONSTANTS.STATE.PLAYING:
           this.isNewVrVideo = false;
@@ -2338,10 +2338,29 @@ function controller(OO, _, $) {
           // set explicitly when pausing. When this happens the control bar flashes
           // when the playingScreen is rendered, so we want to avoid that.
           this.showControlBar();
-          this.mb.publish(OO.EVENTS.PAUSE);
+          this.customPlayPause(event, OO.EVENTS.PAUSE);
           break;
         default:
           break;
+      }
+    },
+
+    /**
+     * Override actions for play-pause in case
+     * if page-level param "onTogglePlayPause" is defined
+     * @param {Object} event - event object
+     * @param {String} nextPublishEvent - next state should be published to set
+     */
+    customPlayPause(event, nextPublishEvent) {
+      if (
+        event
+        && typeof this.state.playerParam.onTogglePlayPause === 'function'
+      ) {
+        // The function must have access to the current state of the player and
+        // to the event
+        this.state.playerParam.onTogglePlayPause(event, this.state.playerState);
+      } else if (nextPublishEvent) {
+        this.mb.publish(nextPublishEvent);
       }
     },
 

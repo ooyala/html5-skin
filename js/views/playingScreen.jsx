@@ -139,7 +139,7 @@ class PlayingScreen extends React.Component {
       event.stopPropagation(); // W3C
       event.cancelBubble = true; /* IE specific */ // eslint-disable-line
       if (!this.props.controller.videoVr) {
-        this.props.controller.togglePlayPause(); // if clicked on selectableSceen
+        this.props.controller.togglePlayPause(event); // if clicked on selectableSceen
       }
       // the order of the loop and this.props.controller.state is not important
       this.props.controller.state.accessibilityControlsEnabled = true;
