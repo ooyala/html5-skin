@@ -71,8 +71,7 @@ class AudioOnlyScreen extends React.Component {
         <span className={titleClass} style={titleStyle}>
           {this.props.contentTree.title}
         </span>
-        :
-        {' '}
+        :&nbsp;
         {this.props.contentTree.description}
       </div>
     );
@@ -114,9 +113,23 @@ class AudioOnlyScreen extends React.Component {
       scrubberRight = (<span className="oo-scrubber-bar-right oo-scrubber-bar-current-time">{dvrText}</span>);
     }
 
+    const shift = -2;
+    const coverImageHeight = `${CONSTANTS.UI.AUDIO_ONLY_WITH_COVER_HEIGHT.slice(0, shift)
+      - CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT.slice(0, shift)}px`;
+
     // TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
     return (
-      <div className="oo-state-screen-audio oo-flex-column-parent">
+      <div>
+        {this.props.contentTree.promo_image
+          && (
+            <img
+              height={coverImageHeight}
+              src={this.props.contentTree.promo_image}
+              className="oo-audio-only-coverImg"
+              alt="promo"
+            />
+          )
+        }
         <div className={infoPanelClass}>
           {titleMetadata}
         </div>

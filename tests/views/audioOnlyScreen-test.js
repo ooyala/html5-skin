@@ -127,7 +127,7 @@ describe('Audio Only Screen', () => {
     expect(titleWrapper.innerHTML).toBe('title');
 
     var textWrapper = wrapper.find('.oo-text-truncate').hostNodes().getDOMNode();
-    expect(textWrapper.innerHTML.includes(': description')).toBe(true);
+    expect(textWrapper.innerHTML.includes(':&nbsp;description')).toBe(true);
   });
 
   it('renders an audio only control bar', () => {
