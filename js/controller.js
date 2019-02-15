@@ -1,27 +1,33 @@
-/** ******************************************************************
- CONTROLLER
- ******************************************************************** */
-const React = require('react');
-const ReactDOM = require('react-dom');
-const DeepMerge = require('deepmerge');
-const Fullscreen = require('screenfull');
-const Utils = require('./components/utils');
-const CONSTANTS = require('./constants/constants');
-const AccessibilityControls = require('./components/accessibilityControls');
-const Skin = require('./skin');
-const SkinJSON = require('../config/skin');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import DeepMerge from 'deepmerge';
+import Fullscreen from 'screenfull';
+import Utils from './components/utils';
+import CONSTANTS from './constants/constants';
+import AccessibilityControls from './components/accessibilityControls';
+import Skin from './skin';
+import SkinJSON from '../config/skin';
+
+import en from '../config/languageFiles/en.json';
+import es from '../config/languageFiles/es.json';
+import ja from '../config/languageFiles/ja.json';
+import ko from '../config/languageFiles/ko.json';
+import zh from '../config/languageFiles/zh.json';
 
 const Localization = {
   languageFiles: {
-    en: require('../config/languageFiles/en.json'),
-    es: require('../config/languageFiles/es.json'),
-    ja: require('../config/languageFiles/ja.json'),
-    ko: require('../config/languageFiles/ko.json'),
-    zh: require('../config/languageFiles/zh.json'),
+    en, es, ja, ko, zh,
   },
 };
 
-module.exports = function(OO, _, $, W) {
+/**
+ * Instantiate the controller
+ * @param {Object} OO - the common Ooyala namespace
+ * @param {Object} _ - underscore lib
+ * @param {Object} $ - jQuery lib
+ * @returns {Object} react component
+ */
+function controller(OO, _, $) {
   // Check if the player is at least v4. If not, the skin cannot load.
   const UNSUPPORTED_PLAYER_VERSION = 3;
 
@@ -32,10 +38,15 @@ module.exports = function(OO, _, $, W) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = { releaseVersion: '<SKIN_VERSION>', rev: '<SKIN_REV>' };
+    OO.publicApi.VERSION.skin = { releaseVersion: '<SKIN_VERSION>', rev: '<SKIN_REV>' }; // eslint-disable-line
   }
 
-  const Html5Skin = function(mb, id) {
+  /**
+   * The constructor of Html5Skin
+   * @param {Object} mb - the message bus object
+   * @param {string} id - unique id of the skin
+   */
+  function Html5Skin(mb, id) {
     this.mb = mb;
     this.id = id;
     this.accessibilityControls = null;
@@ -213,7 +224,7 @@ module.exports = function(OO, _, $, W) {
     };
 
     this.init();
-  };
+  }
 
   Html5Skin.prototype = {
     init() {
@@ -267,7 +278,11 @@ module.exports = function(OO, _, $, W) {
       );
       this.mb.subscribe(OO.EVENTS.ERROR, 'customerUi', _.bind(this.onErrorEvent, this));
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
-      this.mb.subscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi', _.bind(this.onChromecastStartCast, this));
+      this.mb.subscribe(
+        OO.EVENTS.CHROMECAST_START_CAST,
+        'customerUi',
+        _.bind(this.onChromecastStartCast, this),
+      );
       this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
       this.state.isPlaybackReadySubscribed = true;
     },
@@ -300,8 +315,16 @@ module.exports = function(OO, _, $, W) {
           'customerUi',
           _.bind(this.onClosedCaptionsInfoAvailable, this)
         );
-        this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_FETCHED, 'customerUi', _.bind(this.onMultiAudioFetched, this));
-        this.mb.subscribe(OO.EVENTS.MULTI_AUDIO_CHANGED, 'customerUi', _.bind(this.onMultiAudioChanged, this));
+        this.mb.subscribe(
+          OO.EVENTS.MULTI_AUDIO_FETCHED,
+          'customerUi',
+          _.bind(this.onMultiAudioFetched, this),
+        );
+        this.mb.subscribe(
+          OO.EVENTS.MULTI_AUDIO_CHANGED,
+          'customerUi',
+          _.bind(this.onMultiAudioChanged, this),
+        );
         this.mb.subscribe(
           OO.EVENTS.BITRATE_INFO_AVAILABLE,
           'customerUi',
@@ -317,7 +340,11 @@ module.exports = function(OO, _, $, W) {
           'customerUi',
           _.bind(this.onChangeClosedCaptionLanguage, this)
         );
-        this.mb.subscribe(OO.EVENTS.TOGGLE_CLOSED_CAPTIONS, 'customerUi', this.toggleClosedCaptionEnabled.bind(this));
+        this.mb.subscribe(
+          OO.EVENTS.TOGGLE_CLOSED_CAPTIONS,
+          'customerUi',
+          this.toggleClosedCaptionEnabled.bind(this)
+        );
         this.mb.subscribe(OO.EVENTS.VOLUME_CHANGED, 'customerUi', _.bind(this.onVolumeChanged, this));
         this.mb.subscribe(OO.EVENTS.MUTE_STATE_CHANGED, 'customerUi', _.bind(this.onMuteStateChanged, this));
         this.mb.subscribe(
@@ -474,10 +501,9 @@ module.exports = function(OO, _, $, W) {
     isChromecastEnabled(params) {
       const chromecastConfig = params.chromecast;
       const appId = Utils.getPropertyValue(chromecastConfig, 'appId', '');
-      if (typeof appId === 'string' && appId !== '' && Utils.getPropertyValue(chromecastConfig, 'enable', false)) {
-        return true;
-      }
-      return false;
+      return typeof appId === 'string'
+        && appId !== ''
+        && !!Utils.getPropertyValue(chromecastConfig, 'enable', false);
     },
 
     onChromecastStartCast(event, deviceName) {
@@ -551,10 +577,9 @@ module.exports = function(OO, _, $, W) {
      */
     handleVrMobileOrientation(event) {
       if (!this.vrMobileOrientationChecked || this.checkDeviceOrientation) {
-        const beta = event.beta;
-        const gamma = event.gamma;
-        const yaw = this.state.vrViewingDirection.yaw;
-        let pitch = this.state.vrViewingDirection.pitch;
+        const { beta, gamma } = event;
+        const { yaw } = this.state.vrViewingDirection;
+        let { pitch } = this.state.vrViewingDirection;
         let dir = beta;
         const orientationType = Utils.getOrientationType();
         if (
@@ -574,7 +599,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onClearVideoType(event, params) {
+    onClearVideoType() {
       this.videoVr = false;
       this.videoVrSource = null;
       this.vrMobileOrientationChecked = false;
@@ -593,7 +618,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     onVcVideoElementCreated(event, params) {
-      let videoElement = params.videoElement;
+      let { videoElement } = params;
       videoElement = this.findMainVideoElement(videoElement);
 
       // add loadedmetadata event listener to main video element
@@ -626,7 +651,7 @@ module.exports = function(OO, _, $, W) {
         // Note that this could end up being the video itself, but it shouldn't matter.
         let videoElementContainer = params.videoElement;
         if (videoElementContainer && videoElementContainer.length) {
-          videoElementContainer = videoElementContainer[0];
+          [videoElementContainer] = videoElementContainer;
         }
         this.state.mainVideoElementContainer = videoElementContainer;
 
@@ -646,8 +671,8 @@ module.exports = function(OO, _, $, W) {
       this.enableIosFullScreen();
     },
 
-    onPlayerDestroy(event) {
-      const elementId = this.state.elementId;
+    onPlayerDestroy() {
+      const { elementId } = this.state;
       const mountNode = document.querySelector(`#${elementId} .oo-player-skin`);
       // remove mounted Skin component
       if (mountNode) {
@@ -726,7 +751,8 @@ module.exports = function(OO, _, $, W) {
     onContentTreeFetched(event, contentTree) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
-      const duration = Utils.ensureNumber(contentTree.duration, 0) / 1000;
+      const mSecInSec = 1000;
+      const duration = Utils.ensureNumber(contentTree.duration, 0) / mSecInSec;
       if (this.skin) {
         this.skin.updatePlayhead(null, duration)
           .catch(() => { OO.log('onContentTreeFetched: Could not set new state for skin'); });
@@ -837,13 +863,13 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {String} eventName The name of the message bus event
      * @param {String} videoId The id of the video whose playback speed change
-     * @param {Number} playbackSpeed A number that represents the new playback rate
+     * @param {Number} playbackSpeedDirty A number that represents the new playback rate
      */
-    onPlaybackSpeedChanged(eventName, videoId, playbackSpeed) {
+    onPlaybackSpeedChanged(eventName, videoId, playbackSpeedDirty) {
       // Note that we don't constrain to min/max values in this case since
       // the new speed is already set, but we make sure that the value we get can
       // be displayed in a user-friendly way
-      playbackSpeed = Utils.sanitizePlaybackSpeed(playbackSpeed, true);
+      const playbackSpeed = Utils.sanitizePlaybackSpeed(playbackSpeedDirty, true);
       // Add speed to options if it's not one of the predefined values
       const playbackSpeedOptions = Utils.getPropertyValue(
         this.skin,
@@ -931,7 +957,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     showUpNextScreenWhenReady(currentPlayhead, duration) {
-      let timeToShow = this.skin.props.skinConfig.upNext.timeToShow;
+      let { timeToShow } = this.skin.props.skinConfig.upNext;
 
       if (timeToShow < 1) {
         // time to show is based on percentage of duration from the beginning
@@ -958,7 +984,13 @@ module.exports = function(OO, _, $, W) {
           this.sendDiscoveryDisplayEventRelatedVideos('endScreen', upNextEmbedCode);
           this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
           const customData = { playheadPercent: currentPlayhead / duration };
-          this.sendDiscoveryDisplayEvent(1, 1, CONSTANTS.UI_TAG.UP_NEXT, this.state.upNextInfo.upNextData, customData);
+          this.sendDiscoveryDisplayEvent(
+            1,
+            1,
+            CONSTANTS.UI_TAG.UP_NEXT,
+            this.state.upNextInfo.upNextData,
+            customData,
+          );
         }
         this.state.upNextInfo.showing = true;
       } else {
@@ -1059,7 +1091,7 @@ module.exports = function(OO, _, $, W) {
           this.state.pauseAnimationDisabled = true;
         }
         if (
-          this.state.pauseAnimationDisabled == false
+          !this.state.pauseAnimationDisabled
           && this.state.discoveryData
           && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === 'discovery'
           && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
@@ -1103,12 +1135,13 @@ module.exports = function(OO, _, $, W) {
     },
 
     onPlayed() {
-      const duration = this.state.mainVideoDuration || this.state.contentTree.duration / 1000;
+      const mSecInSec = 1000;
+      const duration = this.state.mainVideoDuration || this.state.contentTree.duration / mSecInSec;
       this.state.duration = duration;
       this.state.playerState = CONSTANTS.STATE.END;
 
       if (this.state.upNextInfo.delayedSetEmbedCodeEvent) {
-        const delayedContentData = this.state.upNextInfo.delayedContentData;
+        const { delayedContentData } = this.state.upNextInfo;
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
 
         if (delayedContentData.clickedVideo.embed_code) {
@@ -1191,7 +1224,7 @@ module.exports = function(OO, _, $, W) {
       this.state.vrViewingDirection = { yaw, roll, pitch };
     },
 
-    recreatingUI(event, elementId, params, settings) {
+    recreatingUI() {
       if (!$('.oo-player-skin').length) {
         this.state.mainVideoInnerWrapper.append('<div class=\'oo-player-skin\'></div>');
       }
@@ -1268,7 +1301,7 @@ module.exports = function(OO, _, $, W) {
       this.mb.publish(OO.EVENTS.SET_CURRENT_AUDIO, this.state.currentVideoId, currentTrack);
     },
 
-    onSeek(_, time) {
+    onSeek(event, time) {
       if (this.state.cast.isReceiver) {
         this.skin.updatePlayhead(time).then(() => {
           if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
@@ -1282,7 +1315,7 @@ module.exports = function(OO, _, $, W) {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
         OO.log('popping queued update');
-        this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate).then(() => {
+        this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate).then(() => { // eslint-disable-line
           this.state.queuedPlayheadUpdate = null;
         }).catch(() => { OO.log('onSeeked: Could not set new state for skin'); });
       }
@@ -1298,31 +1331,29 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onPlaybackReady(event, timeSincePlayerCreated, params) {
+    onPlaybackReady(event, timeSincePlayerCreated, paramsDirty) {
       if (this.state.failoverInProgress) {
         return;
       }
 
-      params = params || {};
+      const params = paramsDirty || {};
 
       if (this.state.afterOoyalaAd) {
         this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-      } else {
+      } else if (params.willAutoplay) {
         // If the core tells us that it will autoplay then we display the loading
         // spinner (with the thumbnail and description if it's the first video, or just a
         // black background when transitioning to a new one), otherwise we need to render
         // the big play button.
-        if (params.willAutoplay) {
-          // Show just the loading spinner when transitioning to another Discovery or
-          // Playlist video, otherwise show the spinner and thumbnail.
-          if (this.state.initialPlayHasOccurred) {
-            this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
-          } else {
-            this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
-          }
+        // Show just the loading spinner when transitioning to another Discovery or
+        // Playlist video, otherwise show the spinner and thumbnail.
+        if (this.state.initialPlayHasOccurred) {
+          this.state.screenToShow = CONSTANTS.SCREEN.LOADING_SCREEN;
         } else {
-          this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
+          this.state.screenToShow = CONSTANTS.SCREEN.START_LOADING_SCREEN;
         }
+      } else {
+        this.state.screenToShow = CONSTANTS.SCREEN.START_SCREEN;
       }
 
       this.renderSkin({ contentTree: this.state.contentTree });
@@ -1333,7 +1364,7 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {Event} event - message bus event
      */
-    onBuffering(event) {
+    onBuffering() {
       if (this.state.isInitialPlay === false && this.state.screenToShow === CONSTANTS.SCREEN.START_SCREEN) {
         this.setBufferingState(false);
       } else {
@@ -1346,7 +1377,7 @@ module.exports = function(OO, _, $, W) {
      * @private
      * @param {Event} event - message bus event
      */
-    onBuffered(event) {
+    onBuffered() {
       this.setBufferingState(false);
     },
 
@@ -1408,7 +1439,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onReplay(event) {
+    onReplay() {
       this.resetUpNextInfo(false);
     },
 
@@ -1438,7 +1469,8 @@ module.exports = function(OO, _, $, W) {
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.PLAYING_SCREEN;
       }
-      this.state.duration = this.state.contentTree.duration / 1000;
+      const mSecInSec = 1000;
+      this.state.duration = this.state.contentTree.duration / mSecInSec;
       this.state.isPlayingAd = false;
       this.state.pluginsElement.removeClass('oo-showing');
       this.state.pluginsClickElement.removeClass('oo-showing');
@@ -1492,7 +1524,8 @@ module.exports = function(OO, _, $, W) {
     onWillPlaySingleAd(event, adItem) {
       OO.log(`onWillPlaySingleAd is called with adItem = ${adItem}`);
       if (adItem !== null) {
-        this.state.adVideoDuration = adItem.duration * 1000;
+        const mSecInSec = 1000;
+        this.state.adVideoDuration = adItem.duration * mSecInSec;
         this.state.screenToShow = CONSTANTS.SCREEN.AD_SCREEN;
         this.state.isPlayingAd = true;
         this.state.currentAdsInfo.currentAdItem = adItem;
@@ -1509,7 +1542,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onSingleAdPlayed(event) {
+    onSingleAdPlayed() {
       OO.log('onSingleAdPlayed is called');
       this.state.isPlayingAd = false;
       this.state.adVideoDuration = 0;
@@ -1518,7 +1551,7 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    onShowAdSkipButton(event) {
+    onShowAdSkipButton() {
       this.state.currentAdsInfo.skipAdButtonEnabled = true;
       this.renderSkin();
     },
@@ -1572,12 +1605,9 @@ module.exports = function(OO, _, $, W) {
         this.state.showAdOverlay = true;
       }
       this.state.pluginsElement.addClass('oo-overlay-showing');
-      const skinElement = $(`#${this.state.elementId} .oo-player-skin`);
-      const elementWidth = skinElement.width();
-      const elementHeight = skinElement.height();
       const newCSS = {};
       if (adInfo.ad.height && adInfo.ad.height !== -1) {
-        var padding = adInfo.ad.paddingHeight ? adInfo.ad.paddingHeight : 0;
+        const padding = adInfo.ad.paddingHeight ? adInfo.ad.paddingHeight : 0;
         newCSS.height = `${adInfo.ad.height + padding}px`;
         newCSS.top = 'auto';
       } else {
@@ -1585,7 +1615,7 @@ module.exports = function(OO, _, $, W) {
         newCSS.bottom = 0;
       }
       if (adInfo.ad.width && adInfo.ad.width !== -1) {
-        var padding = adInfo.ad.paddingWidth ? adInfo.ad.paddingWidth : 0;
+        const padding = adInfo.ad.paddingWidth ? adInfo.ad.paddingWidth : 0;
         newCSS.width = `${adInfo.ad.width + padding}px`;
         newCSS.left = '50%';
         newCSS.transform = 'translateX(-50%)';
@@ -1614,7 +1644,7 @@ module.exports = function(OO, _, $, W) {
       this.state.currentVideoId = source;
     },
 
-    closeNonlinearAd(event) {
+    closeNonlinearAd() {
       this.state.adOverlayUrl = null;
       this.state.showAdOverlay = false;
       this.state.showAdOverlayCloseButton = false;
@@ -1631,19 +1661,19 @@ module.exports = function(OO, _, $, W) {
       this.renderSkin();
     },
 
-    hideNonlinearAd(event) {
+    hideNonlinearAd() {
       this.state.showAdOverlay = false;
       this.state.pluginsElement.removeClass('oo-overlay-showing');
       this.renderSkin();
     },
 
-    showNonlinearAd(event) {
+    showNonlinearAd() {
       this.state.showAdOverlay = true;
       this.state.pluginsElement.addClass('oo-overlay-showing');
       this.renderSkin();
     },
 
-    showNonlinearAdCloseButton(event) {
+    showNonlinearAdCloseButton() {
       this.state.showAdOverlayCloseButton = true;
       this.renderSkin();
     },
@@ -1665,16 +1695,18 @@ module.exports = function(OO, _, $, W) {
         : false;
 
       if (isLive) {
-        remainingTime = parseInt((this.state.adStartTime + this.state.adVideoDuration - Date.now()) / 1000);
+        const mSecInSec = 1000;
+        const { adStartTime, adVideoDuration } = this.state;
+        remainingTime = parseInt((adStartTime + adVideoDuration - Date.now()) / mSecInSec, 0);
         if (isSSAI) {
           if (this.state.playerState !== CONSTANTS.STATE.PAUSE) {
-            remainingTime = (this.state.adEndTime - Date.now()) / 1000;
+            remainingTime = (this.state.adEndTime - Date.now()) / mSecInSec;
           } else {
-            remainingTime = (this.state.adEndTime - this.state.adPausedTime) / 1000;
+            remainingTime = (this.state.adEndTime - this.state.adPausedTime) / mSecInSec;
           }
         }
       } else {
-        remainingTime = parseInt(this.state.adVideoDuration - this.state.adVideoPlayhead);
+        remainingTime = parseInt(this.state.adVideoDuration - this.state.adVideoPlayhead, 0);
       }
       return remainingTime;
     },
@@ -1707,9 +1739,9 @@ module.exports = function(OO, _, $, W) {
       // remove 'url' from the list until the tab is worked on
       const shareContent = Utils.getPropertyValue(this.state.config, 'shareScreen.shareContent');
       if (shareContent) {
-        for (let i = 0; i < shareContent.length; i++) {
-          if (shareContent[i] === 'url') {
-            shareContent.splice(i, 1);
+        for (let index = 0; index < shareContent.length; index += 1) {
+          if (shareContent[index] === 'url') {
+            shareContent.splice(index, 1);
           }
         }
         this.state.config.shareScreen.shareContent = shareContent;
@@ -1719,8 +1751,8 @@ module.exports = function(OO, _, $, W) {
       if (this.state.config.localization.availableLanguageFile) {
         this.state.config.localization.availableLanguageFile.forEach((languageObj) => {
           if (languageObj.languageFile) {
-            $.getJSON(languageObj.languageFile, (data) => {
-              Localization.languageFiles[languageObj.language] = data;
+            $.getJSON(languageObj.languageFile, (response) => {
+              Localization.languageFiles[languageObj.language] = response;
             });
           }
         });
@@ -1874,7 +1906,7 @@ module.exports = function(OO, _, $, W) {
         // when displaying only bitrates we need to give priority to bitrates over
         // resolutions when sorting, otherwise the quality display might appear unsorted to the user.
         if (qualityFormat === CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) {
-          bitrates.bitrates = Utils.sortQualitiesByBitrate(bitrates.bitrates);
+          bitrates.bitrates = Utils.sortQualitiesByBitrate(bitrates.bitrates); // eslint-disable-line
         }
 
         this.state.videoQualityOptions.availableBitrates = bitrates.bitrates;
@@ -1914,7 +1946,7 @@ module.exports = function(OO, _, $, W) {
         if (relatedVideos.upNextVideo) {
           this.state.upNextInfo.upNextData = relatedVideos.upNextVideo;
         } else {
-          this.state.upNextInfo.upNextData = relatedVideos.videos[0];
+          [this.state.upNextInfo.upNextData] = relatedVideos.videos;
         }
         this.renderSkin();
       }
@@ -1969,7 +2001,7 @@ module.exports = function(OO, _, $, W) {
      * @public
      */
     closeOtherPopovers(popoverOptionsName) {
-      for (const menuName in CONSTANTS.MENU_OPTIONS) {
+      for (const menuName in CONSTANTS.MENU_OPTIONS) { // eslint-disable-line
         const currentOptionsName = CONSTANTS.MENU_OPTIONS[menuName];
 
         if (currentOptionsName !== popoverOptionsName) {
@@ -1981,11 +2013,11 @@ module.exports = function(OO, _, $, W) {
     /**
      * @description It close popover with name = menu
      * @param {string} menu - the name of the popover to be closed
-     * @param {Object} [params] - params for the function
+     * @param {Object} paramsDirty - params for the function
      * @public
      */
-    closePopover(menu, params) {
-      params = params || {};
+    closePopover(menu, paramsDirty) {
+      const params = paramsDirty || {};
       const menuOptions = this.state[menu];
       const menuToggleButton = this.toggleButtons[menu];
 
@@ -2062,7 +2094,8 @@ module.exports = function(OO, _, $, W) {
     // if fullscreen is not supported natively, "full window" style
     // is applied to video wrapper to fill browser window
     enterFullWindow() {
-      this.state.isFullWindow = this.state.fullscreen = true;
+      this.state.isFullWindow = true;
+      this.state.fullscreen = true;
 
       // add listener for esc key
       document.addEventListener('keydown', this.exitFullWindowOnEscKey.bind(this));
@@ -2074,7 +2107,8 @@ module.exports = function(OO, _, $, W) {
 
     // remove "full window" style and event listener
     exitFullWindow() {
-      this.state.isFullWindow = this.state.fullscreen = false;
+      this.state.isFullWindow = false;
+      this.state.fullscreen = false;
 
       // remove event listener
       document.removeEventListener('keydown', this.exitFullWindowOnEscKey);
@@ -2346,7 +2380,7 @@ module.exports = function(OO, _, $, W) {
     /**
      * Toggles the provided screen. Will switch to the provided screen
      * if that screen is not active, otherwise it will close the screen.
-     * @param screen The screen to toggle
+     * @param {string} screen The screen to toggle
      * @param {boolean} doNotPause Set to true to avoid pausing when toggling the screen
      */
     toggleScreen(screen, doNotPause = false) {
@@ -2395,10 +2429,10 @@ module.exports = function(OO, _, $, W) {
      * the Previous/Next video buttons are displayed.
      * @private
      * @param {type} eventName The name of the event
-     * @param {type} params The event's parameters
+     * @param {type} paramsDirty The event's parameters
      */
-    onPositionInPlaylistDetermined(eventName, params) {
-      params = params || {};
+    onPositionInPlaylistDetermined(eventName, paramsDirty) {
+      const params = paramsDirty || {};
       this.state.skipControls.hasPreviousVideos = !!params.hasPreviousVideos;
       this.state.skipControls.hasNextVideos = !!params.hasNextVideos;
     },
@@ -2490,7 +2524,7 @@ module.exports = function(OO, _, $, W) {
     },
 
     sendDiscoveryDisplayEvent(assetPosition, pageSize, uiTag, asset, customData) {
-      customData.source = this.state.discoverySource;
+      customData.source = this.state.discoverySource; // eslint-disable-line
       // With "Up Next" panel we only pass the data of the asset
       // that is currently shown
       if (asset.embed_code) {
@@ -2505,6 +2539,8 @@ module.exports = function(OO, _, $, W) {
      * This event is for compatability with the old thrift analytics pipeline that expects
      * the discovery display event to contain a single list of all displayed
      * discovery assets in one event as "relatedVideos".
+     * @param {string} screenName - the name of the screen
+     * @param {string} embedCode - the asset embed code
      */
     sendDiscoveryDisplayEventRelatedVideos(screenName, embedCode) {
       const relatedVideosData = Utils.getPropertyValue(this.state.discoveryData, 'relatedVideos', []);
@@ -2572,23 +2608,25 @@ module.exports = function(OO, _, $, W) {
      * Requests that closed captions either be set with the currently active
      * language or be disabled.
      * @private
-     * @param {Object} An object with properties that provide additional information
+     * @param {Object} paramsDirty - An object with properties that provide additional information
      * about the requested operation.
      *  - isGoingFullScreen: {Boolean} Determines whether or not the player is about
      * to enter fullscreen mode when this operation is requested.
      */
-    setClosedCaptionsLanguage(params) {
-      var params = params || {};
-      const availableLanguages = this.state.closedCaptionOptions.availableLanguages;
+    setClosedCaptionsLanguage(paramsDirty) {
+      const params = paramsDirty || {};
+      const { availableLanguages } = this.state.closedCaptionOptions;
       // if saved language not in available languages, set to first available language
       if (
         availableLanguages
         && (this.state.closedCaptionOptions.language === null
           || !_.contains(availableLanguages.languages, this.state.closedCaptionOptions.language))
       ) {
-        this.state.closedCaptionOptions.language = availableLanguages.languages[0];
+        [this.state.closedCaptionOptions.language] = availableLanguages.languages;
       }
-      const language = this.state.closedCaptionOptions.enabled ? this.state.closedCaptionOptions.language : '';
+      const language = this.state.closedCaptionOptions.enabled
+        ? this.state.closedCaptionOptions.language
+        : '';
       const mode = this.state.closedCaptionOptions.enabled
         ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN
         : OO.CONSTANTS.CLOSED_CAPTIONS.DISABLED;
@@ -2622,7 +2660,7 @@ module.exports = function(OO, _, $, W) {
      * Handles the CHANGE_CLOSED_CAPTION_LANGUAGE event. Fired by the core when
      * a change in closed captions language is requested.
      * @private
-     * @param {String} eventName The name of the event that was fired
+     * @param {String} event The name of the event that was fired
      * @param {String} language The new closed captions language to set, or 'none' if captions are to be disabled
      * @param {Object} params An object with additional options for this operation
      *  - forceEnabled: {Boolean} If true this will ensure that captions are also turned on after the new language is set
@@ -2634,7 +2672,7 @@ module.exports = function(OO, _, $, W) {
         }
         return;
       }
-      const availableLanguages = this.state.closedCaptionOptions.availableLanguages;
+      const { availableLanguages } = this.state.closedCaptionOptions;
 
       // validate language is available before update and save
       if (language && availableLanguages && _.contains(availableLanguages.languages, language)) {
@@ -2646,7 +2684,8 @@ module.exports = function(OO, _, $, W) {
           this.state.persistentSettings.closedCaptionOptions.enabled = true;
         }
 
-        this.state.closedCaptionOptions.language = this.state.persistentSettings.closedCaptionOptions.language = language;
+        this.state.closedCaptionOptions.language = language;
+        this.state.persistentSettings.closedCaptionOptions.language = language;
         const captionLanguage = this.state.closedCaptionOptions.enabled ? language : '';
         const mode = this.state.closedCaptionOptions.enabled
           ? OO.CONSTANTS.CLOSED_CAPTIONS.HIDDEN
@@ -2666,9 +2705,8 @@ module.exports = function(OO, _, $, W) {
     },
 
     onClosedCaptionChange(name, value) {
-      this.state.closedCaptionOptions[name] = this.state.persistentSettings.closedCaptionOptions[
-        name
-      ] = value;
+      this.state.closedCaptionOptions[name] = value;
+      this.state.persistentSettings.closedCaptionOptions[name] = value;
       if (name === 'language') {
         this.setClosedCaptionsLanguage();
         this.setCaptionDirection(value);
@@ -2789,8 +2827,8 @@ module.exports = function(OO, _, $, W) {
       this.state.seeking = false;
     },
 
-    updateSeekingPlayhead(playhead) {
-      playhead = Math.min(Math.max(0, playhead), this.skin.state.duration);
+    updateSeekingPlayhead(playheadDirty) {
+      const playhead = Math.min(Math.max(0, playheadDirty), this.skin.state.duration);
       this.skin.updatePlayhead(
         playhead,
         this.skin.state.duration,
@@ -2813,13 +2851,14 @@ module.exports = function(OO, _, $, W) {
 
     startHideVolumeSliderTimer() {
       this.cancelTimer();
+      const timeout = 3000;
       const timer = setTimeout(
         () => {
           if (this.state.volumeState.volumeSliderVisible === true) {
             this.hideVolumeSliderBar();
           }
         },
-        3000
+        timeout
       );
       this.state.timer = timer;
     },
@@ -2827,13 +2866,14 @@ module.exports = function(OO, _, $, W) {
     startHideControlBarTimer() {
       if (this.skin.props.skinConfig.controlBar.autoHide === true && !this.state.audioOnly) {
         this.cancelTimer();
+        const timeout = 3000;
         const timer = setTimeout(
           () => {
             if (this.state.controlBarVisible === true) {
               this.hideControlBar();
             }
           },
-          3000
+          timeout
         );
         this.state.timer = timer;
       }
@@ -2904,7 +2944,7 @@ module.exports = function(OO, _, $, W) {
       let elements = [];
       // use actual element
       if (element[0]) {
-        element = element[0];
+        element = element[0]; // eslint-disable-line
       }
 
       // find html5 video
@@ -2913,7 +2953,7 @@ module.exports = function(OO, _, $, W) {
       } else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
         elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
         if (elements.length) {
-          element = elements[0];
+          element = elements[0]; // eslint-disable-line
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
         }
       } else if (
@@ -2925,7 +2965,7 @@ module.exports = function(OO, _, $, W) {
       } else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
         elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
         if (elements.length) {
-          element = elements[0];
+          element = elements[0]; // eslint-disable-line
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
         }
       }
@@ -2959,4 +2999,6 @@ module.exports = function(OO, _, $, W) {
   };
 
   return Html5Skin;
-};
+}
+
+module.exports = controller;

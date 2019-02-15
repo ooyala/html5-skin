@@ -296,7 +296,7 @@ class PauseScreen extends React.Component {
 
     const { buffering, cast, isLiveStream } = this.props.controller.state;
 
-    const showSpinner = buffering || !cast.connected && this.props.buffered === 0 && !isLiveStream;
+    const showSpinner = buffering || (!cast.connected && this.props.buffered === 0 && !isLiveStream);
 
     return (
       <div className="oo-state-screen oo-pause-screen">

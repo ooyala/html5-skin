@@ -20,6 +20,13 @@ class ContentScreen extends React.Component {
   }
 
   /**
+   * manage accessibility
+   */
+  componentWillUnmount() {
+    this.props.controller.state.accessibilityControlsEnabled = true;
+  }
+
+  /**
    * Keep in self properties DOM element where we're rendered in
    * @param {Object} ref - DOM element
    */
@@ -52,13 +59,6 @@ class ContentScreen extends React.Component {
       default:
         this.props.controller.toggleScreen(this.props.screen);
     }
-  }
-
-  /**
-   * manage accessibility
-   */
-  componentWillUnmount() {
-    this.props.controller.state.accessibilityControlsEnabled = true;
   }
 
   render() {

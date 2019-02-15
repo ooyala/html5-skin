@@ -10,7 +10,6 @@ jest.dontMock('../js/components/playbackSpeedPanel');
 jest.dontMock('../js/components/utils');
 jest.dontMock('../js/components/higher-order/accessibleMenu');
 jest.dontMock('../js/components/higher-order/preserveKeyboardFocus');
-jest.dontMock('../js/mixins/responsiveManagerMixin');
 jest.dontMock('screenfull');
 
 var React = require('react');

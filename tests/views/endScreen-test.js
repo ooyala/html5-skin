@@ -10,7 +10,6 @@ var React = require('react');
 var Enzyme = require('enzyme');
 var EndScreen = require('../../js/views/endScreen');
 var ClassNames = require('classnames');
-var ResizeMixin = require('../../js/mixins/resizeMixin');
 var skinConfig = require('../../config/skin.json');
 var Utils = require('../../js/components/utils');
 var CONSTANTS = require('../../js/constants/constants');

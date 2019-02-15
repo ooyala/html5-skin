@@ -1,7 +1,6 @@
 jest.dontMock('../../js/views/adScreen')
     .dontMock('../../js/components/icon')
-    .dontMock('../../js/components/higher-order/accessibleMenu')
-    .dontMock('../../js/mixins/resizeMixin');
+    .dontMock('../../js/components/higher-order/accessibleMenu');
 
 var React = require('react');
 var ReactDOM = require('react-dom');

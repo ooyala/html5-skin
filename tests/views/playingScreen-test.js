@@ -1,7 +1,6 @@
 jest
 .dontMock('classnames')
 .dontMock('../../js/views/playingScreen')
-.dontMock('../../js/mixins/resizeMixin')
 .dontMock('../../js/components/higher-order/accessibleMenu')
 .dontMock('../../js/components/higher-order/preserveKeyboardFocus');
 

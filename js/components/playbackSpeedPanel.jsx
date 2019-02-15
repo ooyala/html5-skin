@@ -35,9 +35,9 @@ class PlaybackSpeedPanel extends React.Component {
     const { skinConfig } = this.props;
     // Only process speed options once per component mount
     if (!this.playbackSpeedOptions) {
-      if (this.props.skinConfig.playbackSpeed.length >= 1) {
+      if (skinConfig.playbackSpeed.length >= 1) {
         // We take configured values from backlot
-        this.props.skinConfig.playbackSpeed.options = [...this.props.skinConfig.playbackSpeed];
+        skinConfig.playbackSpeed.options = [...skinConfig.playbackSpeed];
       }
       // Get configured values from skin
       this.playbackSpeedOptions = Utils.getPropertyValue(
@@ -46,7 +46,9 @@ class PlaybackSpeedPanel extends React.Component {
         CONSTANTS.PLAYBACK_SPEED.DEFAULT_OPTIONS
       );
       // Constrain to min and max values and ensure at most 2 decimals
-      this.playbackSpeedOptions = this.playbackSpeedOptions.map(option => Utils.sanitizePlaybackSpeed(option));
+      this.playbackSpeedOptions = this.playbackSpeedOptions.map(
+        option => Utils.sanitizePlaybackSpeed(option),
+      );
       // Remove duplicates
       this.playbackSpeedOptions = Utils.dedupeArray(this.playbackSpeedOptions);
       // Sort in ascending order
