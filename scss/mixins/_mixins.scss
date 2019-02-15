@@ -266,6 +266,14 @@
   flex: $values;
 }
 
+// Flex shrink {Number}: applies to flex item shrink factor
+@mixin flex-shrink($shrink) {
+  -webkit-flex-shrink: $shrink;
+  -moz-flex-shrink: $shrink;
+  -ms-flex-shrink: $shrink;
+  flex-shrink: $shrink;
+}
+
 @mixin flex-center-children($flex-direction) {
   @include flexbox;
   @include flex-direction($flex-direction);
