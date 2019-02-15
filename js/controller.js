@@ -601,7 +601,7 @@ module.exports = function(OO, _, $, W) {
         videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
 
         // add the AirPlay TargetAvailability event listener
-        if (window.WebKitPlaybackTargetAvailabilityEvent) {
+        if (window.WebKitPlaybackTargetAvailabilityEvent && this.state.isAirplayAllowed) {
           videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
             _.bind(this.airPlayListener, this));
 
@@ -730,6 +730,9 @@ module.exports = function(OO, _, $, W) {
       if (this.skin) {
         this.skin.updatePlayhead(null, duration)
         .catch(() => {OO.log('onContentTreeFetched: Could not set new state for skin')});
+      }
+      if (this.state.audioOnly && contentTree.promo_image) {
+        this.state.mainVideoContainer.height(CONSTANTS.UI.AUDIO_ONLY_WITH_COVER_HEIGHT);
       }
     },
 
@@ -1744,6 +1747,8 @@ module.exports = function(OO, _, $, W) {
       this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
       this.state.cast.showButton = this.isChromecastEnabled(params);
       this.state.cast.isReceiver = params.chromecast && params.chromecast.isReceiver;
+
+      this.state.isAirplayAllowed = Utils.getPropertyValue(params, 'airplay', true);
 
       // load player
       this.skin = ReactDOM.render(

@@ -87,5 +87,9 @@ video {
 }
 
 .oo-audio-only {
-  padding: 12px;
+
+  .oo-audio-only-coverImg {
+    margin: auto;
+    display: block;
+  }
 }
