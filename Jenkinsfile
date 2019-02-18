@@ -1,19 +1,17 @@
 #!/usr/bin/env groovy
 
 // params
-def jenkinsNodeLabel = 'ops-alfred3-aws'
+def nodeLabel = 'ops-alfred3-aws'
 
 // variables
+def repositoryKey = 'mjolnir'
 def numToKeepStr = '10'
+def eventKeyStatic
 
 pipeline {
 
-    parameters {
-        string(defaultValue: jenkinsNodeLabel, description: 'Jenkins nodes label', name: 'nodeLabel')
-    }
-
     agent {
-        node { label "${params.nodeLabel}" }
+        node { label "${nodeLabel}" }
     }
 
     tools {
@@ -32,12 +30,27 @@ pipeline {
             steps {
                 script {
                     echo "Run Main build"
-                    echo "Commit SHA: ${env.GIT_COMMIT}"
-                    echo "Branch Name: ${env.GIT_BRANCH}"         
-                    sh 'printenv'
-                    build job: 'Playback-Web-CI-test/html5-skin-commits-test-2', parameters: [
+                    if (env.CHANGE_BRANCH) {
+                        echo "Branch Source Name: ${env.CHANGE_TITLE}"
+                        echo "Branch Target Name: ${env.CHANGE_TARGET}"
+                        echo "Commit SHA: ${env.GIT_COMMIT}"
+                        echo "Event Key: ${eventKeyStatic}"
+                        build job: 'Playback-Web-CI-test/html5-skin-commits-test-2', parameters: [
                         string(name: 'commitHash', value: env.GIT_COMMIT),
-                        string(name: 'branchNameFrom', value: env.GIT_BRANCH)]
+                        string(name: 'branchNameFrom', value: env.CHANGE_BRANCH),
+                        string(name: 'branchNameTo', value: env.CHANGE_TARGET),
+                        string(name: 'eventKey', value: "pr")]
+                    }                       
+                    else {
+                        echo "Branch Name: ${env.GIT_BRANCH}"
+                        echo "Commit SHA: ${env.GIT_COMMIT}"
+                        echo "Event Key: ${eventKeyStatic}"
+                        build job: 'Playback-Web-CI-test/html5-skin-commits-test-2', parameters: [
+                        string(name: 'commitHash', value: env.GIT_COMMIT),
+                        string(name: 'branchNameFrom', value: env.GIT_BRANCH),
+                        string(name: 'eventKey', value: "commit")]
+                    }
+                    sh 'printenv'
                 }
             }
         }
