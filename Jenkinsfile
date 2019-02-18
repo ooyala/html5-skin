@@ -35,7 +35,7 @@ pipeline {
                         echo "Branch Target Name: ${env.CHANGE_TARGET}"
                         echo "Commit SHA: ${env.GIT_COMMIT}"
                         echo "Event Key: ${eventKeyStatic}"
-                        build job: 'Playback-Web-CI-test/html5-skin-commits-test-2', parameters: [
+                        build job: 'Playback-Web-CI/html5-skin-commits-pull-requests', parameters: [
                         string(name: 'commitHash', value: env.GIT_COMMIT),
                         string(name: 'branchNameFrom', value: env.CHANGE_BRANCH),
                         string(name: 'branchNameTo', value: env.CHANGE_TARGET),
@@ -45,7 +45,7 @@ pipeline {
                         echo "Branch Name: ${env.GIT_BRANCH}"
                         echo "Commit SHA: ${env.GIT_COMMIT}"
                         echo "Event Key: ${eventKeyStatic}"
-                        build job: 'Playback-Web-CI-test/html5-skin-commits-test-2', parameters: [
+                        build job: 'Playback-Web-CI/html5-skin-commits-pull-requests', parameters: [
                         string(name: 'commitHash', value: env.GIT_COMMIT),
                         string(name: 'branchNameFrom', value: env.GIT_BRANCH),
                         string(name: 'eventKey', value: "commit")]
