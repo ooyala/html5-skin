@@ -14,6 +14,7 @@
   ],
   "main": "html5-skin.js",
   "scripts": {
+    "test-ci": "jest",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
