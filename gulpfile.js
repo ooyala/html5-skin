@@ -25,7 +25,6 @@ var gulp        = require('gulp'),
 var babelify = require('babelify');
 
 var path = {
-  scripts: ['./js/**/*.js'],
   sass: ['./scss/**/*.scss'],
   pages: ['./iframe.html']
 };
