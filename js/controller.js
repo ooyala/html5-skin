@@ -259,6 +259,11 @@ function controller(OO, _, $) {
         'customerUi',
         _.bind(this.onSkinMetaDataFetched, this)
       );
+      this.mb.subscribe(
+        OO.EVENTS.METADATA_FETCHED,
+        'customerUi',
+        _.bind(this.onMetaDataFetched, this)
+      );
       this.mb.subscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi', _.bind(this.onAttributesFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
@@ -773,6 +778,10 @@ function controller(OO, _, $) {
       );
     },
 
+    onMetaDataFetched(event, metadata) {
+      this.state.metadata = metadata;
+    },
+
     onAttributesFetched(event, attributes) {
       this.state.attributes = attributes;
       // This is the first point at which we know whether the video is anamorphic or not,
@@ -1098,6 +1107,7 @@ function controller(OO, _, $) {
         }
         if (
           !this.state.pauseAnimationDisabled
+          && this.state.metadata.modules['discovery-ui']
           && this.state.discoveryData
           && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === 'discovery'
           && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
@@ -1165,7 +1175,8 @@ function controller(OO, _, $) {
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       } else if (
-        this.state.discoveryData
+        this.state.metadata.modules['discovery-ui']
+        && this.state.discoveryData
         && this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'discovery'
         && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
       ) {
@@ -2140,7 +2151,12 @@ function controller(OO, _, $) {
       // [PLAYER-212]
       // We can't show UI such as the "Up Next" countdown on fullscreen iOS. If a countdown
       // is configured, we wait until the user exits fullscreen and then we display it.
-      if (showUpNext && this.state.playerState === CONSTANTS.STATE.END && this.state.discoveryData) {
+      if (
+        showUpNext
+        && this.state.playerState === CONSTANTS.STATE.END
+        && this.state.metadata.modules['discovery-ui']
+        && this.state.discoveryData
+      ) {
         this.state.forceCountDownTimerOnEndScreen = true;
         this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
         this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;
@@ -2179,6 +2195,7 @@ function controller(OO, _, $) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.METADATA_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');

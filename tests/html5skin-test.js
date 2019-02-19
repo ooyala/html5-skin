@@ -109,6 +109,11 @@ describe('Controller', function() {
     controller.state.mainVideoElementContainer = mockDomElement;
     controller.state.hideMultiAudioIcon = false;
     controller.state.elementId = elementId;
+    controller.state.metadata = {
+      modules: {
+        'discovery-ui': {}
+      }
+    };
     controller.skin = {
       state: {},
       setState: (newStateObj, callback) => {
@@ -623,6 +628,71 @@ describe('Controller', function() {
       expect(spy.callCount).toBe(1);
       expect(spy.calledWith('oo-blur')).toBe(true);
       spy.restore();
+    });
+
+    it('should show discovery screen on pause depending on the metadata', () => {
+      controller.state.discoveryData = {};
+      controller.skin.props.skinConfig.pauseScreen.screenToShowOnPause = 'discovery';
+      controller.state.duration = 10000;
+      controller.state.metadata.modules = {};
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.PAUSE_SCREEN);
+      controller.state.metadata.modules = {
+        'discovery-ui': {}
+      };
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPaused('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
+    });
+
+    it('should show discovery screen on played depending on the metadata', () => {
+      controller.state.discoveryData = {};
+      controller.skin.props.skinConfig.pauseScreen.screenToShowOnPause = 'discovery';
+      controller.state.duration = 10000;
+      controller.state.metadata.modules = {};
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlayed('event', OO.VIDEO.MAIN);
+
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.END_SCREEN);
+      controller.state.metadata.modules = {
+        'discovery-ui': {}
+      };
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlayed('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
+    });
+
+    it('should show discovery screen on webkitEndFullscreen depending on the metadata', () => {
+      controller.state.discoveryData = {};
+      controller.skin.props.skinConfig.pauseScreen.screenToShowOnPause = 'discovery';
+      controller.state.duration = 10000;
+      controller.state.metadata.modules = {};
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlayed('event', OO.VIDEO.MAIN);
+      controller.webkitEndFullscreen('event', OO.VIDEO.MAIN);
+
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.END_SCREEN);
+      controller.state.metadata.modules = {
+        'discovery-ui': {}
+      };
+
+      controller.onVideoElementFocus('event', OO.VIDEO.MAIN);
+      controller.onVcPlay('event', OO.VIDEO.MAIN);
+      controller.onPlayed('event', OO.VIDEO.MAIN);
+      controller.webkitEndFullscreen('event', OO.VIDEO.MAIN);
+      expect(controller.state.screenToShow).toBe(CONSTANTS.SCREEN.DISCOVERY_SCREEN);
     });
   });
 
