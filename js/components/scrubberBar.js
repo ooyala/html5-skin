@@ -12,6 +12,7 @@ var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
 const ClassNames = require('classnames');
+import MarkerContainer from './markerContainer';
 
 var ScrubberBar = createReactClass({
   mixins: [ResizeMixin],
@@ -446,19 +447,28 @@ var ScrubberBar = createReactClass({
 
     var ariaValueText = this.getAriaValueText();
 
+    if (this.props.duration && this.props.duration > 0) {
+      var markers = this.props.controller.state.markers.list;
+      var markerList = [];
+      //var markerIcon = [];
+      markers.forEach((marker, index) => {
+        let styles = {
+          left: this.getMarkerPosition(marker),
+          width: this.getMarkerWidth(marker)
+        };
+        let baseConfig = this.props.skinConfig.markers.types[marker.type];
+        let bgColor = marker.marker_color ? marker.marker_color : this.props.skinConfig.general.accentColor;
 
-    var markers = this.props.controller.state.markers.list;
-    var markerList = markers.map((marker, index)=>{
-      let styles = {
-        left: this.getMarkerPosition(marker),
-        width: this.getMarkerWidth(marker)
-      };
-      let baseConfig = this.props.skinConfig.markers.types[marker.type];      
+        marker = Object.assign({}, baseConfig, marker);
 
-      marker = Object.assign({}, baseConfig, marker);
-      styles.backgroundColor = marker.marker_color ? marker.marker_color : this.props.skinConfig.general.accentColor;
-      return (<div key={index} style={styles} className="oo-marker"></div>)
-    });
+        styles.backgroundColor = bgColor;
+        markerList.push((<div key={index} style={styles} className="oo-marker"></div>));
+
+        marker.position = styles.left;
+
+        //markerIcon.push((<MarkerText key={index} style={bubbleStyle} marker={marker}/>));
+      });
+    }    
 
     return (
       <div
@@ -468,6 +478,7 @@ var ScrubberBar = createReactClass({
         onMouseOut={scrubberBarMouseOut}
         onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}>
+        <MarkerContainer markers={markers} types={this.props.skinConfig.markers.types} />     
         {thumbnailsContainer}
         <div
           className="oo-scrubber-bar-padding"
