@@ -259,6 +259,11 @@ function controller(OO, _, $) {
         'customerUi',
         _.bind(this.onSkinMetaDataFetched, this)
       );
+      this.mb.subscribe(
+        OO.EVENTS.METADATA_FETCHED,
+        'customerUi',
+        _.bind(this.onMetaDataFetched, this)
+      );
       this.mb.subscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi', _.bind(this.onAttributesFetched, this));
       this.mb.subscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi', _.bind(this.onAssetChanged, this));
       this.mb.subscribe(OO.EVENTS.ASSET_UPDATED, 'customerUi', _.bind(this.onAssetUpdated, this));
@@ -771,6 +776,10 @@ function controller(OO, _, $) {
         this.state.customSkinJSON,
         this.state.skinMetaData
       );
+    },
+
+    onMetaDataFetched(event, metadata) {
+      this.state.metadata = metadata;
     },
 
     onAttributesFetched(event, attributes) {
@@ -2179,6 +2188,7 @@ function controller(OO, _, $) {
       this.mb.unsubscribe(OO.EVENTS.PLAYER_CREATED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CONTENT_TREE_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.SKIN_METADATA_FETCHED, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.METADATA_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ATTRIBUTES_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.AUTHORIZATION_FETCHED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.ASSET_CHANGED, 'customerUi');

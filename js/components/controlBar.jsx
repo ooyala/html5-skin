@@ -927,7 +927,8 @@ class ControlBar extends React.Component {
         // do not show discovery button if no related videos available
         && (
           item.name !== 'discovery'
-          || (!controller.state.isOoyalaAds && controller.state.discoveryData)
+          || (!controller.state.isOoyalaAds && controller.state.metadata.modules['discovery-ui']
+            && controller.state.discoveryData)
         )
         // do not show logo if no image url available
         && (
