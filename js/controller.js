@@ -1107,6 +1107,7 @@ function controller(OO, _, $) {
         }
         if (
           !this.state.pauseAnimationDisabled
+          && this.state.metadata.modules['discovery-ui']
           && this.state.discoveryData
           && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === 'discovery'
           && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
@@ -1174,7 +1175,8 @@ function controller(OO, _, $) {
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       } else if (
-        this.state.discoveryData
+        this.state.metadata.modules['discovery-ui']
+        && this.state.discoveryData
         && this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'discovery'
         && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
       ) {
@@ -2149,7 +2151,12 @@ function controller(OO, _, $) {
       // [PLAYER-212]
       // We can't show UI such as the "Up Next" countdown on fullscreen iOS. If a countdown
       // is configured, we wait until the user exits fullscreen and then we display it.
-      if (showUpNext && this.state.playerState === CONSTANTS.STATE.END && this.state.discoveryData) {
+      if (
+        showUpNext
+        && this.state.playerState === CONSTANTS.STATE.END
+        && this.state.metadata.modules['discovery-ui']
+        && this.state.discoveryData
+      ) {
         this.state.forceCountDownTimerOnEndScreen = true;
         this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
         this.state.discoverySource = CONSTANTS.SCREEN.END_SCREEN;

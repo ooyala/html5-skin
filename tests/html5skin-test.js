@@ -109,6 +109,11 @@ describe('Controller', function() {
     controller.state.mainVideoElementContainer = mockDomElement;
     controller.state.hideMultiAudioIcon = false;
     controller.state.elementId = elementId;
+    controller.state.metadata = {
+      modules: {
+        'discovery-ui': {}
+      }
+    };
     controller.skin = {
       state: {},
       setState: (newStateObj, callback) => {
