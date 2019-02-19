@@ -273,7 +273,7 @@ module.exports = function(OO, _, $, W) {
       this.mb.addDependent(OO.EVENTS.PLAYBACK_READY, OO.EVENTS.UI_READY);
       this.mb.subscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi', _.bind(this.onChromecastStartCast, this));
       this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
-      this.mb.subscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi', _.bind(this.onMarkersAvailabe, this));
+      this.mb.subscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi', _.bind(this.onMarkersAvailable, this));
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -728,7 +728,7 @@ module.exports = function(OO, _, $, W) {
       }
     },
 
-    onMarkersAvailabe: function(event, data) {
+    onMarkersAvailable: function(event, data) {
       this.state.markers.list = data.marker_list;
       this.renderSkin();
     },
