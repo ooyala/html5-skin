@@ -82,6 +82,11 @@ describe('ControlBar', function() {
           showButton: false,
           connected: false,
           device: ""
+        },
+        metadata: {
+          modules: {
+            'discovery-ui': {}
+          }
         }
       },
       cancelTimer: function() {},
