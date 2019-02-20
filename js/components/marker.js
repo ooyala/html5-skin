@@ -9,47 +9,29 @@ class Marker extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      start: this.props.start,
-      end: this.props.end,
-      scrubberBarWidth: this.props.scrubberBarWidth,
-      duration: this.props.duration,
-      style: this.props.style
-    };
+    this.style = this.props.style;
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.state) {
-      this.setState({
-        start: nextProps.start,
-        end: nextProps.end,
-        scrubberBarWidth: nextProps.scrubberBarWidth,
-        duration: nextProps.duration,
-        style: this.props.style
-      });
+  
+  shouldComponentUpdate(nextProps) {
+    if (this.style.left !== nextProps.style.left || this.style.width !== nextProps.style.width || this.style.backgroundColor !== nextProps.style.backgroundColor) {
+      this.style = nextProps.style;
+      return true;
     }
+    return false;
   }
 
   render() {
     return (
-      <div style={this.state.style} className="oo-marker"></div>
+      <div style={this.style} className="oo-marker"></div>
     );
   }
 }
 
 Marker.propTypes = {
-  start: PropTypes.number,
-  end: PropTypes.number,
-  scrubberBarWidth: PropTypes.number,
-  duration: PropTypes.number,
   style: PropTypes.object
 };
 
 Marker.defaultProps = {
-  start: 0,
-  end: 0,
-  scrubberBarWidth: 0,
-  duration: 0,
   style: []
 };
 

@@ -449,7 +449,6 @@ var ScrubberBar = createReactClass({
 
 
     var markers = this.props.controller.state.markers.list;
-    markers = markers.sort((a,b)=>(a.start > b.start) ? 1 : -1);
     var markerList = markers.map((marker, index)=>{
       let styles = {
         left: this.getMarkerPosition(marker),
@@ -462,10 +461,6 @@ var ScrubberBar = createReactClass({
       return (
         <Marker
           key={index}
-          start={marker.start}
-          end={marker.end}
-          scrubberBarWidth={this.state.scrubberBarWidth}
-          duration={this.props.duration}
           style={styles}
         />
       );
