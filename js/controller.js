@@ -630,17 +630,28 @@ function controller(OO, _, $) {
       if (videoElement) {
         videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
 
-        // add the AirPlay TargetAvailability event listener
-        if (window.WebKitPlaybackTargetAvailabilityEvent && this.state.isAirplayAllowed) {
-          videoElement.addEventListener('webkitplaybacktargetavailabilitychanged',
-            _.bind(this.airPlayListener, this));
+        // add the AirPlay event listeners
+        if (window.WebKitPlaybackTargetAvailabilityEvent) {
+          const airPlayState = window.sessionStorage.getItem('airPlayState');
+          if (airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED || this.state.isAirplayAllowed) {
+            videoElement.addEventListener(
+              'webkitplaybacktargetavailabilitychanged',
+              _.bind(this.airPlayListener, this)
+            );
 
-          // This event fires when a media element starts or stops AirPlay playback
-          videoElement.addEventListener('webkitcurrentplaybacktargetiswirelesschanged',
-            _.bind(this.toggleAirPlayIcon, this));
+            // This event fires when a media element starts or stops AirPlay playback
+            videoElement.addEventListener(
+              'webkitcurrentplaybacktargetiswirelesschanged',
+              _.bind(this.toggleAirPlayIcon, this)
+            );
 
-          this.showAirplayPickerBound = this.showAirplayPicker.bind(this);
-          videoElement.addEventListener('playing', this.showAirplayPickerBound);
+            // Showing the AirPlay target picker if it was connected before reloading
+            this.showAirplayPickerBound = this.showAirplayPicker.bind(this);
+            videoElement.addEventListener(
+              'playing',
+              this.showAirplayPickerBound
+            );
+          }
         }
       }
 
