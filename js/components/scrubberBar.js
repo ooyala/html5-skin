@@ -10,7 +10,7 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants');
 var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
-var Marker = require('./marker');
+var Marker = require('./markers/marker');
 
 const ClassNames = require('classnames');
 
@@ -449,19 +449,19 @@ var ScrubberBar = createReactClass({
 
 
     var markers = this.props.controller.state.markers.list;
-    var markerList = markers.map((marker, index)=>{
-      let styles = {
-        left: this.getMarkerPosition(marker),
-        width: this.getMarkerWidth(marker)
-      };
-      let baseConfig = this.props.skinConfig.markers ? this.props.skinConfig.markers.types[marker.type] : [];      
-
-      marker = Object.assign({}, baseConfig, marker);
-      styles.backgroundColor = marker.marker_color ? marker.marker_color : this.props.skinConfig.general.accentColor;
+    var markersType =
+      this.props.skinConfig.markers && this.props.skinConfig.markers.types
+        ? this.props.skinConfig.markers.types
+        : [];
+    var markerList = markers.map((marker, index) => {
       return (
         <Marker
           key={index}
-          style={styles}
+          duration={this.props.duration}
+          scrubberBarWidth={this.state.scrubberBarWidth}
+          data={marker}
+          config={markersType[marker.type]}
+          accentColor={this.props.skinConfig.general.accentColor}
         />
       );
     });
