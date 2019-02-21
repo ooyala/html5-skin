@@ -524,21 +524,22 @@ function controller(OO, _, $) {
     },
 
     addAirPlayListeners(videoElement) {
-      if (window.WebKitPlaybackTargetAvailabilityEvent) {
-        const airPlayState = window.sessionStorage.getItem('airPlayState');
-        this.airPlayWasConnected = airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED;
-        if (this.airPlayWasConnected || this.state.isAirplayAllowed) {
-          videoElement.addEventListener(
-            'webkitplaybacktargetavailabilitychanged',
-            _.bind(this.airPlayListener, this)
-          );
+      if (!window.WebKitPlaybackTargetAvailabilityEvent) {
+        return;
+      }
+      const airPlayState = window.sessionStorage.getItem('airPlayState');
+      this.airPlayWasConnected = airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED;
+      if (this.airPlayWasConnected || this.state.isAirplayAllowed) {
+        videoElement.addEventListener(
+          'webkitplaybacktargetavailabilitychanged',
+          _.bind(this.airPlayListener, this)
+        );
 
-          // This event fires when a media element starts or stops AirPlay playback
-          videoElement.addEventListener(
-            'webkitcurrentplaybacktargetiswirelesschanged',
-            _.bind(this.toggleAirPlayIcon, this)
-          );
-        }
+        // This event fires when a media element starts or stops AirPlay playback
+        videoElement.addEventListener(
+          'webkitcurrentplaybacktargetiswirelesschanged',
+          _.bind(this.toggleAirPlayIcon, this)
+        );
       }
     },
 
@@ -551,21 +552,21 @@ function controller(OO, _, $) {
       if (!this.state.airPlayStatusIcon) {
         this.state.airPlayStatusIcon = CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
         this.renderSkin();
-      } else {
-        if (this.airPlayWasConnected) {
-          const videoElement = this.state.mainVideoElement;
-          // We need timeout to display the target picker checkbox correctly in MacOS
-          setTimeout(() => {
-            videoElement.webkitShowPlaybackTargetPicker();
-          });
-          this.airPlayWasConnected = false;
-        }
-        this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === CONSTANTS.AIRPLAY_STATE.DISCONNECTED
-          ? CONSTANTS.AIRPLAY_STATE.CONNECTED
-          : CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
-        window.sessionStorage.setItem('airPlayState', this.state.airPlayStatusIcon);
-        this.renderSkin();
+        return;
       }
+      if (this.airPlayWasConnected) {
+        const videoElement = this.state.mainVideoElement;
+        // We need timeout to display the target picker checkbox correctly in MacOS
+        setTimeout(() => {
+          videoElement.webkitShowPlaybackTargetPicker();
+        });
+        this.airPlayWasConnected = false;
+      }
+      this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === CONSTANTS.AIRPLAY_STATE.DISCONNECTED
+        ? CONSTANTS.AIRPLAY_STATE.CONNECTED
+        : CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
+      window.sessionStorage.setItem('airPlayState', this.state.airPlayStatusIcon);
+      this.renderSkin();
     },
 
     /**
