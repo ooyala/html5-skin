@@ -12,7 +12,7 @@ var createReactClass = require('create-react-class');
 var PropTypes = require('prop-types');
 
 const ClassNames = require('classnames');
-import MarkerContainer from './markerContainer';
+import MarkerIcon from './markers/markerIcon';
 
 var ScrubberBar = createReactClass({
   mixins: [ResizeMixin],
@@ -292,24 +292,19 @@ var ScrubberBar = createReactClass({
     return ariaValueText;
   },
 
-  getMarkerPosition: function(marker) {
-    if (!this.props.duration || !this.state.scrubberBarWidth) {
-      return 0;
-    }
-    return parseFloat(marker.start) / parseFloat(this.props.duration) * this.state.scrubberBarWidth;
-  },
+  getMarkerIcons: function() {
+    let markers = this.props.controller.state.markers.list;
+    let markerTypes = this.props.skinConfig.markers.types; 
 
-  getMarkerWidth: function(marker) {
-    let duration = 2; // 2 seconds is the default value
-    if (!this.props.duration || !this.state.scrubberBarWidth) {
-      return 0;
-    }    
-
-    if (marker.end && marker.end > 0){
-      duration = marker.end - marker.start;
-    }
-    
-    return parseFloat(duration) * parseFloat(this.state.scrubberBarWidth) / parseFloat(this.props.duration) + 'px';
+    return markers.map((marker, index) => {
+      return (<MarkerIcon
+        key={index}
+        data={marker} 
+        config={markerTypes[marker.type]}
+        duration={this.props.duration}
+        scrubberBarWidth={this.state.scrubberBarWidth}
+      />)
+    });
   },
 
   render: function() {
@@ -447,28 +442,8 @@ var ScrubberBar = createReactClass({
 
     var ariaValueText = this.getAriaValueText();
 
-    if (this.props.duration && this.props.duration > 0) {
-      var markers = this.props.controller.state.markers.list;
-      var markerList = [];
-      //var markerIcon = [];
-      markers.forEach((marker, index) => {
-        let styles = {
-          left: this.getMarkerPosition(marker),
-          width: this.getMarkerWidth(marker)
-        };
-        let baseConfig = this.props.skinConfig.markers.types[marker.type];
-        let bgColor = marker.marker_color ? marker.marker_color : this.props.skinConfig.general.accentColor;
-
-        marker = Object.assign({}, baseConfig, marker);
-
-        styles.backgroundColor = bgColor;
-        markerList.push((<div key={index} style={styles} className="oo-marker"></div>));
-
-        marker.position = styles.left;
-
-        //markerIcon.push((<MarkerText key={index} style={bubbleStyle} marker={marker}/>));
-      });
-    }    
+    // Markers
+    let markerIcons = this.getMarkerIcons();
 
     return (
       <div
@@ -478,7 +453,12 @@ var ScrubberBar = createReactClass({
         onMouseOut={scrubberBarMouseOut}
         onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}>
-        <MarkerContainer markers={markers} types={this.props.skinConfig.markers.types} />     
+        { this.props.controller.state.markers.list.length > 0 &&
+          <div id="oo-marker-container">
+            {markerIcons}
+          </div>
+        }
+               
         {thumbnailsContainer}
         <div
           className="oo-scrubber-bar-padding"
@@ -501,7 +481,7 @@ var ScrubberBar = createReactClass({
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle} />
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle} />
             <div className={playedIndicatorClassName} style={playedIndicatorStyle} />
-            {markerList}
+            {/* {markerList} */}
             <div
               className="oo-playhead-padding"
               style={playheadPaddingStyle}
