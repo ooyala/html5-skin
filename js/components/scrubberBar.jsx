@@ -7,6 +7,7 @@ import Utils from './utils';
 import MACROS from '../constants/macros';
 import CONSTANTS from '../constants/constants';
 import Marker from './markers/marker';
+import MarkerIcon from './markers/markerIcon';
 
 /**
  * Scrubbler bar implementation
@@ -345,6 +346,32 @@ class ScrubberBar extends React.Component {
     return ariaValueText;
   }
 
+  getMarkerIcons() {
+    const {
+      controller,
+      skinConfig,
+      duration
+    } = this.props;
+
+    const {
+      scrubberBarWidth
+    } = this.state;
+
+    let markers = controller.state.markers.list;
+    let markerTypes = skinConfig.markers.types; 
+
+    return markers.map((marker, index) => {
+      return (<MarkerIcon
+        key={index}
+        data={marker} 
+        config={markerTypes[marker.type]}
+        duration={duration}
+        scrubberBarWidth={scrubberBarWidth}
+        accentColor={skinConfig.general.accentColor}
+      />)
+    });
+  }
+
   render() {
     const {
       audioOnly,
@@ -511,6 +538,8 @@ class ScrubberBar extends React.Component {
       );
     });
 
+    let markerIcons = this.getMarkerIcons();
+
     return (
       <div // eslint-disable-line
         className="oo-scrubber-bar-container"
@@ -520,6 +549,11 @@ class ScrubberBar extends React.Component {
         onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}
       >
+        {controller.state.markers.list.length > 0 &&
+          <div id="oo-marker-container">
+            {markerIcons}
+          </div>
+        }
         {thumbnailsContainer}
         <div // eslint-disable-line
           className="oo-scrubber-bar-padding"
