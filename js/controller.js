@@ -220,7 +220,16 @@ function controller(OO, _, $) {
         isReceiver: false,
       },
 
+<<<<<<< HEAD
       audioOnly: false,
+=======
+      markers: {
+        types:{},
+        list:[]
+      },
+
+      audioOnly: false
+>>>>>>> 2dbb0304643164e7793a87a16d8cd13d527361ee
     };
 
     this.init();
@@ -289,6 +298,7 @@ function controller(OO, _, $) {
         _.bind(this.onChromecastStartCast, this),
       );
       this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
+      this.mb.subscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi', _.bind(this.onMarkersAvailable, this));
       this.state.isPlaybackReadySubscribed = true;
     },
 
@@ -773,7 +783,12 @@ function controller(OO, _, $) {
       }
     },
 
-    onSkinMetaDataFetched(event, skinMetaData) {
+    onMarkersAvailable: function(event, data) {
+      this.state.markers.list = data.marker_list;
+      this.renderSkin();
+    },
+
+    onSkinMetaDataFetched: function(event, skinMetaData) {
       this.state.skinMetaData = skinMetaData;
       this.loadConfigData(
         this.state.playerParam,
@@ -2212,6 +2227,7 @@ function controller(OO, _, $) {
       this.mb.unsubscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents() {
