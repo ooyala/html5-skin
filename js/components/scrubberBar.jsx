@@ -6,6 +6,7 @@ import ThumbnailsContainer from './thumbnailContainer';
 import Utils from './utils';
 import MACROS from '../constants/macros';
 import CONSTANTS from '../constants/constants';
+import Marker from './markers/marker';
 
 /**
  * Scrubbler bar implementation
@@ -494,6 +495,22 @@ class ScrubberBar extends React.Component {
 
     const ariaValueText = this.getAriaValueText();
 
+    // Markers
+    let markers = controller.state.markers.list;
+    let markersType = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types : {};
+    let markerList = markers.map((marker, index) => {
+      return (
+        <Marker
+          key={index}
+          duration={duration}
+          scrubberBarWidth={scrubberBarWidth}
+          data={marker}
+          config={markersType[marker.type]}
+          accentColor={skinConfig.general.accentColor}
+        />
+      );
+    });
+
     return (
       <div // eslint-disable-line
         className="oo-scrubber-bar-container"
@@ -527,6 +544,7 @@ class ScrubberBar extends React.Component {
             <div className="oo-buffered-indicator" style={bufferedIndicatorStyle} />
             <div className="oo-hovered-indicator" style={hoveredIndicatorStyle} />
             <div className={playedIndicatorClassName} style={playedIndicatorStyle} />
+            {markerList}
             <div // eslint-disable-line
               className="oo-playhead-padding"
               style={playheadPaddingStyle}
