@@ -554,7 +554,10 @@ function controller(OO, _, $) {
       } else {
         if (this.airPlayWasConnected) {
           const videoElement = this.state.mainVideoElement;
-          videoElement.webkitShowPlaybackTargetPicker();
+          // We need timeout to display the target picker checkbox correctly in MacOS
+          setTimeout(() => {
+            videoElement.webkitShowPlaybackTargetPicker();
+          });
           this.airPlayWasConnected = false;
         }
         this.state.airPlayStatusIcon = this.state.airPlayStatusIcon === CONSTANTS.AIRPLAY_STATE.DISCONNECTED
