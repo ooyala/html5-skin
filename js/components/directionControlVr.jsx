@@ -88,7 +88,11 @@ DirectionControlVr.propTypes = {
   ariaLabel: PropTypes.string,
   language: PropTypes.string,
   responsiveView: PropTypes.string,
-  controller: PropTypes.shape({}).isRequired,
+  controller: PropTypes.shape({
+    state : {
+      isMobile: PropTypes.bool.isRequired
+    }
+  }).isRequired,
   skinConfig: PropTypes.shape({}).isRequired,
   localizableStrings: PropTypes.shape({}),
   handleVrViewControlsClick: PropTypes.func,

@@ -1,5 +1,6 @@
 jest
   .dontMock('../../js/components/directionControlVr')
+  .dontMock('../../js/components/controlButton')
   .dontMock('../../js/constants/constants')
   .dontMock('classnames');
 
@@ -10,10 +11,16 @@ const CONSTANTS = require('../../js/constants/constants');
 const sinon = require('sinon');
 
 import DirectionControlVr from '../../js/components/directionControlVr';
+import ControlButton from '../../js/components/controlButton';
 
 describe('directionControlVr', function() {
   let spyClick;
   let mockProps = {
+    controller: {
+      state: {
+        isMobile: false
+      }
+    },
     skinConfig: skinConfig,
     playerState: CONSTANTS.STATE.PLAYING,
     clickButton: false,
