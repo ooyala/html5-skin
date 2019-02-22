@@ -5,7 +5,6 @@
   opacity: 0.5;
   .oo-marker-bubble {
     position: absolute;
-    height: 30px;
     bottom: 6px;
     background-color: rgb(63, 134, 255);
     z-index: 1000;
@@ -25,8 +24,18 @@
       margin-bottom: -6px;
     }
     &.oo-marker-icon {
-      width: 44px;
-      height: 44px;
+      height: 32px;
+      width: 32px;
+      vertical-align: middle;
+      padding: 4px;
+      border: 1px solid #4E4E4E;
+      background-color: rgb(0, 0, 0);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+        display: block;
+      }
     }
     &.oo-marker-text {
       font-size: 13px;

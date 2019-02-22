@@ -12,7 +12,8 @@ const TYPES = {
 }
 
 const OFFSET = {
-  TEXT: 35
+  TEXT: 35,
+  ICON: 16
 }
 
 class markerIcon extends Component {
@@ -62,13 +63,17 @@ class markerIcon extends Component {
 
     marker = Object.assign({}, config, data);
     styles = {
-      left: getPosition(duration, scrubberBarWidth, data.start),
-      backgroundColor: marker.marker_color ? marker.marker_color : accentColor,
-      borderTopColor: marker.marker_color ? marker.marker_color : accentColor
+      left: getPosition(duration, scrubberBarWidth, data.start)
     };
 
     if (data.type === TYPES.TEXT) {
       styles.left -= OFFSET.TEXT;
+      styles.backgroundColor = marker.marker_color ? marker.marker_color : accentColor;
+      styles.borderTopColor = marker.marker_color ? marker.marker_color : accentColor;
+    }
+
+    if (data.type === TYPES.ICON) {
+      styles.left -= OFFSET.ICON;
     }
     return styles;
   }
@@ -83,6 +88,11 @@ class markerIcon extends Component {
       case TYPES.TEXT:
         content = (
           <p className="oo-text-truncate">{data.text || "Here's the label tooooo long"}</p>
+        );
+        break;
+      case TYPES.ICON:
+        content = (
+          <img src={data.url} alt={data.text}/>
         );
         break;
 
