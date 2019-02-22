@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import DirectionControlVr from './directionControlVr';
 import Icon from './icon';
+import CONSTANTS from '../constants/constants';
 
 /**
  * Controls for managing VR
@@ -23,7 +24,7 @@ class ViewControlsVr extends React.Component {
     }
 
     controller.moveVrToDirection(isRotated, direction);
-  }
+  };
 
   /**
    * @method ViewControlsVr#setupIconSymbol
@@ -32,7 +33,7 @@ class ViewControlsVr extends React.Component {
   setupIconSymbol = () => {
     const { skinConfig } = this.props;
     this.icon = skinConfig.buttons.desktopContent.find(el => el.location === 'mainView');
-  }
+  };
 
   /**
    * @method ViewControlsVr#setupBackgroundSymbol
@@ -46,7 +47,7 @@ class ViewControlsVr extends React.Component {
         this.backgroundIcon = 'circleArrowsWhite';
       }
     }
-  }
+  };
 
   componentWillMount = () => {
     // if we have vr mode, and the device !== mobile, we need to add control element to the screen of the player.
@@ -95,26 +96,36 @@ class ViewControlsVr extends React.Component {
           {...this.props}
           handleVrViewControlsClick={this.handleVrViewControlsClick}
           dir="left"
+          focusId={CONSTANTS.VR.KEYS.MOVE_LEFT}
+          ariaLabel={CONSTANTS.ARIA_LABELS.MOVE_LEFT}
         />
         <DirectionControlVr
           {...this.props}
           handleVrViewControlsClick={this.handleVrViewControlsClick}
           dir="right"
+          focusId={CONSTANTS.VR.KEYS.MOVE_RIGHT}
+          ariaLabel={CONSTANTS.ARIA_LABELS.MOVE_RIGHT}
         />
         <DirectionControlVr
           {...this.props}
           handleVrViewControlsClick={this.handleVrViewControlsClick}
           dir="up"
+          focusId={CONSTANTS.VR.KEYS.MOVE_UP}
+          ariaLabel={CONSTANTS.ARIA_LABELS.MOVE_UP}
         />
         <DirectionControlVr
           {...this.props}
           handleVrViewControlsClick={this.handleVrViewControlsClick}
           dir="down"
+          focusId={CONSTANTS.VR.KEYS.MOVE_DOWN}
+          ariaLabel={CONSTANTS.ARIA_LABELS.MOVE_DOWN}
         />
         <DirectionControlVr
           {...this.props}
           handleVrViewControlsClick={this.handleVrViewControlsClick}
           dir="init"
+          focusId={CONSTANTS.VR.KEYS.MOVE_CENTER}
+          ariaLabel={CONSTANTS.ARIA_LABELS.MOVE_CENTER}
         />
       </div>
     );
@@ -124,13 +135,16 @@ class ViewControlsVr extends React.Component {
 ViewControlsVr.propTypes = {
   controller: PropTypes.shape({
     moveVrToDirection: PropTypes.func,
-  }),
+    state: {
+      isMobile: PropTypes.bool,
+    },
+  }).isRequired,
+  skinConfig: PropTypes.shape({}).isRequired,
+  language: PropTypes.string,
 };
 
 ViewControlsVr.defaultProps = {
-  controller: {
-    moveVrToDirection: () => {},
-  },
+  language: 'en',
 };
 
 module.exports = ViewControlsVr;

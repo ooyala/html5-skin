@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import ControlButton from './controlButton';
 
 /**
  * A vr video rotation control button
@@ -19,7 +20,15 @@ class DirectionControlVr extends React.Component {
    * @param {Event} event - event object
    */
   rotateVrVideo(event) {
-    const isRotated = event && (event.type === 'mousedown' || event.type === 'touchstart');
+    const charCode = event.which || event.keyCode;
+    const enterCharCode = 13;
+    const spaceCharCode = 32;
+    const isRotated = event
+      && (
+        event.type === 'mousedown'
+        || event.type === 'touchstart'
+        || (event.type === 'keydown' && (charCode === enterCharCode || charCode === spaceCharCode))
+      );
     const { isTouched } = this.state;
     const { dir, handleVrViewControlsClick } = this.props;
     if ((!isTouched && isRotated) || (isTouched && !isRotated)) {
@@ -32,7 +41,10 @@ class DirectionControlVr extends React.Component {
 
   render() {
     const baseDirectionClass = 'oo-vr-icon--move';
-    const { dir } = this.props;
+    const {
+      dir, focusId, ariaLabel, tooltip,
+      language, localizableStrings, responsiveView, skinConfig, controller,
+    } = this.props;
     const { isTouched } = this.state;
     const directionClass = `${baseDirectionClass}--${dir}`;
     let touchedDirectionClass = '';
@@ -40,19 +52,30 @@ class DirectionControlVr extends React.Component {
       touchedDirectionClass = `${directionClass}--touched`;
     }
     return (
-      <div // eslint-disable-line
+      <ControlButton
         className={classnames(
           'oo-direction-control',
           baseDirectionClass,
           directionClass,
           touchedDirectionClass
         )}
-        key={dir}
         onMouseDown={this.rotateVrVideo}
         onTouchStart={this.rotateVrVideo}
         onMouseUp={this.rotateVrVideo}
         onTouchEnd={this.rotateVrVideo}
         onMouseOut={this.rotateVrVideo}
+        onBlur={this.rotateVrVideo}
+        onKeyDown={this.rotateVrVideo}
+        onKeyUp={this.rotateVrVideo}
+        language={language}
+        localizableStrings={localizableStrings}
+        responsiveView={responsiveView}
+        skinConfig={skinConfig}
+        controller={controller}
+        key={focusId}
+        focusId={focusId}
+        ariaLabel={ariaLabel}
+        tooltip={tooltip}
       />
     );
   }
@@ -60,11 +83,24 @@ class DirectionControlVr extends React.Component {
 
 DirectionControlVr.propTypes = {
   dir: PropTypes.string,
+  focusId: PropTypes.string.isRequired,
+  tooltip: PropTypes.string,
+  ariaLabel: PropTypes.string,
+  language: PropTypes.string,
+  responsiveView: PropTypes.string,
+  controller: PropTypes.shape({}).isRequired,
+  skinConfig: PropTypes.shape({}).isRequired,
+  localizableStrings: PropTypes.shape({}),
   handleVrViewControlsClick: PropTypes.func,
 };
 
 DirectionControlVr.defaultProps = {
   dir: undefined,
+  tooltip: '',
+  ariaLabel: '',
+  language: 'en',
+  localizableStrings: {},
+  responsiveView: 'md',
   handleVrViewControlsClick: () => {},
 };
 

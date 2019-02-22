@@ -13,9 +13,7 @@
   font-size: 30px;
 
   a.oo-control-bar-item {
-    background-color: transparent;
-    border:0;
-    outline: none;
+    @include hide-button();
   }
 
   .oo-control-bar-item {

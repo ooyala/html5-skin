@@ -186,6 +186,11 @@ const CONSTANTS = {
     NORMAL_SPEED: 'Normal Speed',
     CHROMECAST: 'Chromecast',
     AIRPLAY: 'Airplay',
+    MOVE_LEFT: 'Move left',
+    MOVE_RIGHT: 'Move right',
+    MOVE_UP: 'Move up',
+    MOVE_DOWN: 'Move down',
+    MOVE_CENTER: 'Reset View',
   },
 
   CONTROL_BAR_KEYS: {
@@ -207,6 +212,16 @@ const CONSTANTS = {
     CHROMECAST: 'chromecast',
     SKIP_CONTROLS: 'skipControls',
     AIRPLAY: 'airPlay',
+  },
+
+  VR: {
+    KEYS: {
+      MOVE_LEFT: 'moveLeft',
+      MOVE_RIGHT: 'moveRight',
+      MOVE_UP: 'moveUp',
+      MOVE_DOWN: 'moveDown',
+      MOVE_CENTER: 'moveCenter',
+    },
   },
 
   ARIA_ROLES: {
