@@ -17,10 +17,11 @@ const ViewControlsVr = require('../../js/components/viewControlsVr');
 const _ = require('underscore');
 
 import DirectionControlVr from '../../js/components/directionControlVr';
+import ControlButton from '../../js/components/controlButton';
 
 describe('viewControlsVr', function() {
   
-  let baseMockController, baseMockProps;
+  let baseMockProps;
   let defaultSkinConfig = JSON.parse(JSON.stringify(skinConfig));
   skinConfig.buttons.desktopContent =  [
     {'name':'playPause', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':45 },
@@ -54,7 +55,7 @@ describe('viewControlsVr', function() {
   });
 
   it('creates a viewControlsVr', function() {
-    var controller = {
+    const controller = {
       state: {
         isPlayingAd: false
       },
@@ -65,7 +66,7 @@ describe('viewControlsVr', function() {
       }
     };
     
-    var mockProps = {
+    let mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller,
@@ -73,7 +74,7 @@ describe('viewControlsVr', function() {
 
     mockProps = _.extend(mockProps, baseMockProps);
 
-    var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
+    const wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
   });
   
   it('create buttons in a viewControlsVr', function() {
@@ -82,6 +83,7 @@ describe('viewControlsVr', function() {
         isMobile: false
       },
     };
+
     let mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
@@ -95,17 +97,21 @@ describe('viewControlsVr', function() {
     mockProps = _.extend(mockProps, baseMockProps);
 
     const wrapper = Enzyme.mount(
-      <DirectionControlVr {...mockProps} handleVrViewControlsClick={mockProps.handleVrViewControlsClick} dir="left"/>
+      <DirectionControlVr
+        {...mockProps}
+        handleVrViewControlsClick={mockProps.handleVrViewControlsClick}
+        dir="left"
+      />
     );
 
-    const button = wrapper.find('.oo-direction-control').hostNodes();
+    const buttons = wrapper.find(ControlButton);
     
     expect(mockProps.clickButton).toBe(false);
-    button.simulate('mouseDown');
+    buttons.simulate('mouseDown');
     expect(mockProps.clickButton).toBe(true);
   });
 
-  it('check condition: if video support vr360 then viewControlsVr exist', function() {
+  it('check condition: if video support vr360 then viewControlsVr exist', () => {
     const controller = {
       state: {
         isPlayingAd: false,
@@ -126,51 +132,47 @@ describe('viewControlsVr', function() {
       controller: controller
     };
     const wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    const buttons = wrapper.find('.oo-direction-control').hostNodes();
+    const buttons = wrapper.find(ControlButton);
 
     expect(buttons.length).toBe(5);
   });
    
-  it('check condition: if video does not support vr360 then viewControlsVr does not exist', function() {
-    const wrapper = Enzyme.mount(<ViewControlsVr {...baseMockProps}/>);
-    const buttons = wrapper.find('.oo-direction-control').hostNodes();
-    expect(buttons.length).toBe(0);
-  });
- 
-  it('on the ViewControlsVr should be two icons: one icon of the background and one icon of the symbol', function() {
-    var controller = {
-      state: {
-        isPlayingAd: false,
-        isMobile: false
-      },
-      videoVrSource: {
-        vr: {
-          stereo: false
+  it('on the ViewControlsVr should be two icons: one icon of the background and one icon of the symbol',
+    () => {
+      const controller = {
+        state: {
+          isPlayingAd: false,
+          isMobile: false
+        },
+        videoVrSource: {
+          vr: {
+            stereo: false
+          }
         }
-      }
-    };
+      };
 
-    this.icon = {
-      'name':'arrowsBlack',
-      'location': 'mainView',
-      'whenDoesNotFit':'keep',
-      'minWidth':45
-    };
+      this.icon = {
+        'name':'arrowsBlack',
+        'location': 'mainView',
+        'whenDoesNotFit':'keep',
+        'minWidth':45
+      };
 
-    var mockProps = {
-      skinConfig: skinConfig,
-      playerState: CONSTANTS.STATE.PLAYING,
-      controller: controller
-    };
-    var wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    var iconSubstrate = wrapper.find('.oo-vr-icon--substrate').hostNodes();
-    var iconSymbol = wrapper.find('.oo-vr-icon--icon-symbol').hostNodes();
+      const mockProps = {
+        skinConfig: skinConfig,
+        playerState: CONSTANTS.STATE.PLAYING,
+        controller: controller
+      };
+      const wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
+      const iconSubstrate = wrapper.find('.oo-vr-icon--substrate').hostNodes();
+      const iconSymbol = wrapper.find('.oo-vr-icon--icon-symbol').hostNodes();
 
-    expect(iconSubstrate.length).toBe(1);
-    expect(iconSymbol.length).toBe(1);
-  });
+      expect(iconSubstrate.length).toBe(1);
+      expect(iconSymbol.length).toBe(1);
+    }
+  );
 
-  it('should be render viewControlsVr only desktop', function() {
+  it('should be render viewControlsVr only desktop', () => {
     const controller = {
       state: {
         isPlayingAd: false,
@@ -196,13 +198,13 @@ describe('viewControlsVr', function() {
       controller: controller
     };
     const wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    const buttons = wrapper.find('.oo-direction-control').hostNodes();
+    const buttons = wrapper.find(ControlButton);
 
     expect(buttons.length).toBe(0);
   });
 
-  it('should not be rendered on advertising', function() {
-    var controller = {
+  it('should not be rendered on advertising', () => {
+    const controller = {
       state: {
         isPlayingAd: true,
         isMobile: true
@@ -221,13 +223,13 @@ describe('viewControlsVr', function() {
       'minWidth':45
     };
 
-    var mockProps = {
+    const mockProps = {
       skinConfig: skinConfig,
       playerState: CONSTANTS.STATE.PLAYING,
       controller: controller
     };
     const wrapper = Enzyme.mount(<ViewControlsVr {...mockProps}/>);
-    const buttons = wrapper.find('.oo-direction-control').hostNodes();
+    const buttons = wrapper.find(ControlButton);
 
     expect(buttons.length).toBe(0);
   });
