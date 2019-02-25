@@ -504,15 +504,17 @@ function controller(OO, _, $) {
     },
 
     isChromecastEnabled(params) {
-      if (!OO.isSSL) {
+      const chromecastConfig = params.chromecast;
+      const chromecastEnabled = !!Utils.getPropertyValue(chromecastConfig, 'enable', false);
+      const appId = Utils.getPropertyValue(chromecastConfig, 'appId', '');
+      const appIdValid = typeof appId === 'string' && appId !== '';
+      
+      if (chromecastEnabled && !OO.isSSL) {
         console.warn('Casting is enabled but impossible for http hosted pages. Serve the page through https for casting');
         return false;
       }
-      const chromecastConfig = params.chromecast;
-      const appId = Utils.getPropertyValue(chromecastConfig, 'appId', '');
-      return typeof appId === 'string'
-        && appId !== ''
-        && !!Utils.getPropertyValue(chromecastConfig, 'enable', false);
+
+      return appIdValid && chromecastEnabled;
     },
 
     onChromecastStartCast(event, deviceName) {
