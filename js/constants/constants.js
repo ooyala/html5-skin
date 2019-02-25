@@ -270,6 +270,7 @@ const CONSTANTS = {
     UP_ARROW_KEY: 38,
     DOWN_ARROW_KEY: 40,
     ESCAPE_KEY: 27,
+    ENTER_KEY: 13,
     A: 65, // eslint-disable-line id-length
     D: 68, // eslint-disable-line id-length
     W: 87, // eslint-disable-line id-length

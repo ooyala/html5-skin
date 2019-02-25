@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ControlButton from './controlButton';
+import CONSTANTS from '../constants/constants';
 
 /**
  * A vr video rotation control button
@@ -21,8 +22,8 @@ class DirectionControlVr extends React.Component {
    */
   rotateVrVideo(event) {
     const charCode = event.which || event.keyCode;
-    const enterCharCode = 13;
-    const spaceCharCode = 32;
+    const enterCharCode = CONSTANTS.KEYCODES.ENTER_KEY;
+    const spaceCharCode = CONSTANTS.KEYCODES.SPACE_KEY;
     const isRotated = event
       && (
         event.type === 'mousedown'
