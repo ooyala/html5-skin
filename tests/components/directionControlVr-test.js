@@ -1,6 +1,8 @@
 jest
   .dontMock('../../js/components/directionControlVr')
   .dontMock('../../js/components/controlButton')
+  .dontMock('../../js/components/accessibleButton')
+  .dontMock('../../js/components/nonAccessibleButton')
   .dontMock('../../js/constants/constants')
   .dontMock('classnames');
 
@@ -11,7 +13,6 @@ const CONSTANTS = require('../../js/constants/constants');
 const sinon = require('sinon');
 
 import DirectionControlVr from '../../js/components/directionControlVr';
-import ControlButton from '../../js/components/controlButton';
 
 describe('directionControlVr', function() {
   let spyClick;
@@ -26,7 +27,8 @@ describe('directionControlVr', function() {
     clickButton: false,
     handleVrViewControlsClick: function() {
       mockProps.clickButton = true;
-    }
+    },
+    focusId: 'test',
   };
   beforeEach(function() {
     spyClick = sinon.spy(mockProps, 'handleVrViewControlsClick');
@@ -36,7 +38,7 @@ describe('directionControlVr', function() {
   });
   it('should creates a directionControlVr', function() {
     const wrapper = Enzyme.mount(<DirectionControlVr {...mockProps}/>);
-    const button = wrapper.find('.oo-direction-control');
+    const button = wrapper.find('.oo-direction-control').hostNodes();
 
     expect(mockProps.clickButton).toBe(false);
     button.simulate('mouseDown');
@@ -45,7 +47,7 @@ describe('directionControlVr', function() {
   it('should call handleVrViewControlsClick with specific params when it is neccessary', function() {
     mockProps.dir = 'left';
     const wrapper = Enzyme.mount(<DirectionControlVr {...mockProps}/>);
-    const button = wrapper.find('.oo-direction-control');
+    const button = wrapper.find('.oo-direction-control').hostNodes();
 
     button.simulate('mousedown');
     expect(spyClick.callCount).toBe(1);

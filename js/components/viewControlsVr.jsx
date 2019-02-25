@@ -135,9 +135,9 @@ class ViewControlsVr extends React.Component {
 ViewControlsVr.propTypes = {
   controller: PropTypes.shape({
     moveVrToDirection: PropTypes.func,
-    state: {
+    state: PropTypes.shape({
       isMobile: PropTypes.bool,
-    },
+    }),
   }).isRequired,
   skinConfig: PropTypes.shape({}).isRequired,
   language: PropTypes.string,

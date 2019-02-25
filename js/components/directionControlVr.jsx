@@ -89,9 +89,9 @@ DirectionControlVr.propTypes = {
   language: PropTypes.string,
   responsiveView: PropTypes.string,
   controller: PropTypes.shape({
-    state : {
+    state : PropTypes.shape({
       isMobile: PropTypes.bool.isRequired
-    }
+    })
   }).isRequired,
   skinConfig: PropTypes.shape({}).isRequired,
   localizableStrings: PropTypes.shape({}),
