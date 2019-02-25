@@ -504,6 +504,10 @@ function controller(OO, _, $) {
     },
 
     isChromecastEnabled(params) {
+      if (!OO.isSSL) {
+        console.warn('Casting is enabled but impossible for http hosted pages. Serve the page through https for casting');
+        return false;
+      }
       const chromecastConfig = params.chromecast;
       const appId = Utils.getPropertyValue(chromecastConfig, 'appId', '');
       return typeof appId === 'string'
