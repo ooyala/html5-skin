@@ -361,6 +361,7 @@ class ScrubberBar extends React.Component {
     let markerTypes = skinConfig.markers.types; 
 
     return markers.map((marker, index) => {
+      marker.index = index;
       return (<MarkerIcon
         key={index}
         data={marker} 

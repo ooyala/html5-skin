@@ -16,6 +16,8 @@ const OFFSET = {
   ICON: 16
 }
 
+const ZINDEX = 12000;
+
 class markerIcon extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +65,8 @@ class markerIcon extends Component {
 
     marker = Object.assign({}, config, data);
     styles = {
-      left: getPosition(duration, scrubberBarWidth, data.start)
+      left: getPosition(duration, scrubberBarWidth, data.start),
+      zIndex: ZINDEX - marker.index
     };
 
     if (data.type === TYPES.TEXT) {
