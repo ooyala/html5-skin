@@ -14,22 +14,17 @@ class DirectionControlVr extends React.Component {
       isTouched: false,
     };
     this.rotateVrVideo = this.rotateVrVideo.bind(this);
+    this.handleMouseOrTouchEvent = this.handleMouseOrTouchEvent.bind(this);
+    this.handleKeyboardEvent = this.handleKeyboardEvent.bind(this);
   }
 
   /**
-   * Rotate the image in the specified direction or stop the rotation if the user has stopped clicking on the item
+   * Rotate the image in the specified direction or stop the rotation
+   * if an user moves the video
    * @param {Event} event - event object
+   * @param {Boolean} isRotated - flag to show if the video is needed to be rotated
    */
-  rotateVrVideo(event) {
-    const charCode = event.which || event.keyCode;
-    const enterCharCode = CONSTANTS.KEYCODES.ENTER_KEY;
-    const spaceCharCode = CONSTANTS.KEYCODES.SPACE_KEY;
-    const isRotated = event
-      && (
-        event.type === 'mousedown'
-        || event.type === 'touchstart'
-        || (event.type === 'keydown' && (charCode === enterCharCode || charCode === spaceCharCode))
-      );
+  rotateVrVideo(event, isRotated) {
     const { isTouched } = this.state;
     const { dir, handleVrViewControlsClick } = this.props;
     if ((!isTouched && isRotated) || (isTouched && !isRotated)) {
@@ -38,6 +33,28 @@ class DirectionControlVr extends React.Component {
         isTouched: isRotated,
       });
     }
+  }
+
+  /**
+   * When an user touch or move video need to do rotation
+   * @param {Event} event - event object
+   */
+  handleMouseOrTouchEvent(event) {
+    const isRotated = event && (event.type === 'mousedown' || event.type === 'touchstart');
+    this.rotateVrVideo(event, isRotated);
+  }
+
+  /**
+   * When an user touch or move video need to do rotation
+   * @param {Event} event - event object
+   */
+  handleKeyboardEvent(event) {
+    const charCode = event.which || event.keyCode;
+    const enterCharCode = CONSTANTS.KEYCODES.ENTER_KEY;
+    const spaceCharCode = CONSTANTS.KEYCODES.SPACE_KEY;
+    const isRotated = event
+      && (event.type === 'keydown' && (charCode === enterCharCode || charCode === spaceCharCode));
+    this.rotateVrVideo(event, isRotated);
   }
 
   render() {
@@ -60,14 +77,14 @@ class DirectionControlVr extends React.Component {
           directionClass,
           touchedDirectionClass
         )}
-        onMouseDown={this.rotateVrVideo}
-        onTouchStart={this.rotateVrVideo}
-        onMouseUp={this.rotateVrVideo}
-        onTouchEnd={this.rotateVrVideo}
-        onMouseOut={this.rotateVrVideo}
-        onBlur={this.rotateVrVideo}
-        onKeyDown={this.rotateVrVideo}
-        onKeyUp={this.rotateVrVideo}
+        onMouseDown={this.handleMouseOrTouchEvent}
+        onMouseUp={this.handleMouseOrTouchEvent}
+        onMouseOut={this.handleMouseOrTouchEvent}
+        onTouchStart={this.handleMouseOrTouchEvent}
+        onTouchEnd={this.handleMouseOrTouchEvent}
+        onBlur={this.handleMouseOrTouchEvent}
+        onKeyDown={this.handleKeyboardEvent}
+        onKeyUp={this.handleKeyboardEvent}
         language={language}
         localizableStrings={localizableStrings}
         responsiveView={responsiveView}
