@@ -220,16 +220,12 @@ function controller(OO, _, $) {
         isReceiver: false,
       },
 
-<<<<<<< HEAD
-      audioOnly: false,
-=======
       markers: {
         types:{},
         list:[]
       },
 
       audioOnly: false
->>>>>>> 2dbb0304643164e7793a87a16d8cd13d527361ee
     };
 
     this.init();
@@ -783,12 +779,12 @@ function controller(OO, _, $) {
       }
     },
 
-    onMarkersAvailable: function(event, data) {
+    onMarkersAvailable(event, data) {
       this.state.markers.list = data.marker_list;
       this.renderSkin();
     },
 
-    onSkinMetaDataFetched: function(event, skinMetaData) {
+    onSkinMetaDataFetched(event, skinMetaData) {
       this.state.skinMetaData = skinMetaData;
       this.loadConfigData(
         this.state.playerParam,

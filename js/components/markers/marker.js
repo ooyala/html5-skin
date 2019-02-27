@@ -1,9 +1,9 @@
-const React = require('react');
-const PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
 import {getPosition, getSize} from './helpers';
 
 /**
- * This component represents an element that handles the rendering 
+ * This component represents an element that handles the rendering
  * of an individual marker.
  */
 class Marker extends React.Component {
@@ -13,27 +13,27 @@ class Marker extends React.Component {
   }
 
   getStyles() {
-    var marker = Object.assign({}, this.props.config, this.props.data);
-    var backgroundColor = marker.marker_color ? marker.marker_color : this.props.accentColor;
+    const {data, config, accentColor, duration, scrubberBarWidth} = this.props;
+
+    let marker = Object.assign({}, config, data);
+    let backgroundColor = marker.marker_color
+      ? marker.marker_color
+      : accentColor;
     return {
-      left: getPosition(
-        this.props.duration,
-        this.props.scrubberBarWidth,
-        this.props.data.start
-      ),
-      width: getSize(
-        this.props.duration,
-        this.props.scrubberBarWidth,
-        this.props.data.start, this.props.data.end
-      ),
+      left: getPosition(duration, scrubberBarWidth, data.start),
+      width: getSize(duration, scrubberBarWidth, data.start, data.end),
       backgroundColor: backgroundColor
     };
   };
-  
-  shouldComponentUpdate(nextProps) {
-    if (this.props.data.start !== nextProps.data.start || this.props.data.end !== nextProps.data.end || 
-      this.props.duration !== nextProps.duration || this.props.scrubberBarWidth !== nextProps.scrubberBarWidth) {
-        return true;
+
+  shouldComponentUpdate = (nextProps) => {
+    const {data, duration, scrubberBarWidth} = this.props;
+
+    if (data.start !== nextProps.data.start || 
+        data.end !== nextProps.data.end || 
+        duration !== nextProps.duration || 
+        scrubberBarWidth !== nextProps.scrubberBarWidth) {
+      return true;
     }
     return false;
   }
@@ -61,4 +61,4 @@ Marker.defaultProps = {
   accentColor: ''
 };
 
-module.exports = Marker;
+export default Marker;
