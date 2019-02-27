@@ -6,6 +6,8 @@ import ThumbnailsContainer from './thumbnailContainer';
 import Utils from './utils';
 import MACROS from '../constants/macros';
 import CONSTANTS from '../constants/constants';
+import Marker from './markers/marker';
+import MarkerIcon from './markers/markerIcon';
 
 /**
  * Scrubbler bar implementation
@@ -287,6 +289,9 @@ class ScrubberBar extends React.Component {
     if (event.target.className.match('oo-playhead')) {
       return;
     }
+    if (event.target.className.match('oo-text-truncate')) {
+      return;
+    }
     controller.setScrubberBarHoverState(true);
 
     this.setState({ hoveringX: event.nativeEvent.offsetX });
@@ -342,6 +347,33 @@ class ScrubberBar extends React.Component {
       ariaValueText = ariaValueText.replace(MACROS.TOTAL_TIME, timeDisplayValues.totalTime);
     }
     return ariaValueText;
+  }
+
+  getMarkerIcons() {
+    const {
+      controller,
+      skinConfig,
+      duration
+    } = this.props;
+
+    const {
+      scrubberBarWidth
+    } = this.state;
+
+    let markers = controller.state.markers.list;
+    let markerTypes = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types: []; 
+
+    return markers.map((marker, index) => {
+      return (<MarkerIcon
+        key={index}
+        data={marker} 
+        config={markerTypes[marker.type]}
+        duration={duration}
+        scrubberBarWidth={scrubberBarWidth}
+        accentColor={skinConfig.general.accentColor}
+        controller={controller}
+      />)
+    });
   }
 
   render() {
@@ -494,6 +526,24 @@ class ScrubberBar extends React.Component {
 
     const ariaValueText = this.getAriaValueText();
 
+    // Markers
+    let markers = controller.state.markers.list;
+    let markersType = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types : {};
+    let markerList = markers.map((marker, index) => {
+      return (
+        <Marker
+          key={index}
+          duration={duration}
+          scrubberBarWidth={scrubberBarWidth}
+          data={marker}
+          config={markersType[marker.type]}
+          accentColor={skinConfig.general.accentColor}
+        />
+      );
+    });
+
+    let markerIcons = this.getMarkerIcons();
+
     return (
       <div // eslint-disable-line
         className="oo-scrubber-bar-container"
@@ -503,6 +553,11 @@ class ScrubberBar extends React.Component {
         onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}
       >
+        {controller.state.markers.list.length > 0 && (
+          <div id="oo-marker-container">
+            {markerIcons}
+          </div>
+        )}
         {thumbnailsContainer}
         <div // eslint-disable-line
           className="oo-scrubber-bar-padding"
@@ -518,15 +573,27 @@ class ScrubberBar extends React.Component {
             aria-label={CONSTANTS.ARIA_LABELS.SEEK_SLIDER}
             aria-valuemin="0"
             aria-valuemax={duration}
-            aria-valuenow={Utils.ensureNumber(currentPlayhead, 0).toFixed(2)}
+            aria-valuenow={Utils.ensureNumber(currentPlayhead, 0).toFixed(
+              2
+            )}
             aria-valuetext={ariaValueText}
             data-focus-id={CONSTANTS.FOCUS_IDS.SCRUBBER_BAR}
             tabIndex="0"
             onKeyDown={this.handleScrubberBarKeyDown}
           >
-            <div className="oo-buffered-indicator" style={bufferedIndicatorStyle} />
-            <div className="oo-hovered-indicator" style={hoveredIndicatorStyle} />
-            <div className={playedIndicatorClassName} style={playedIndicatorStyle} />
+            <div
+              className="oo-buffered-indicator"
+              style={bufferedIndicatorStyle}
+            />
+            <div
+              className="oo-hovered-indicator"
+              style={hoveredIndicatorStyle}
+            />
+            <div
+              className={playedIndicatorClassName}
+              style={playedIndicatorStyle}
+            />
+            {markerList}
             <div // eslint-disable-line
               className="oo-playhead-padding"
               style={playheadPaddingStyle}

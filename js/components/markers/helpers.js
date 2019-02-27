@@ -19,4 +19,8 @@ const getSize = function(duration, width, init, end) {
   return parseFloat(size) * parseFloat(width) / parseFloat(duration);
 };
 
+<<<<<<< HEAD
 export { getPosition, getSize };
+=======
+export { getPosition, getSize };
+>>>>>>> d8331a8e4f53466153f49a43b7a6f3f77cc260c1
