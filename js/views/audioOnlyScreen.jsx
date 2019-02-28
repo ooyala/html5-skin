@@ -130,31 +130,33 @@ class AudioOnlyScreen extends React.Component {
             />
           )
         }
-        <div className={infoPanelClass}>
-          {titleMetadata}
-        </div>
-        <div className="oo-interactive-container">
-          <ControlBar
-            {...this.props}
-            audioOnly
-            hideVolumeControls
-            hideScrubberBar
-            controlBarVisible
-            playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
-            a11yControls={this.props.controller.accessibilityControls}
-            clickToVolumeScreen
-          />
-        </div>
-        <div className="oo-interactive-container">
-          <div className="oo-scrubber-bar-parent oo-flex-row-parent">
-            {scrubberLeft}
-            <ScrubberBar
+        <div className="oo-state-screen-audio oo-flex-column-parent">
+          <div className={infoPanelClass}>
+            {titleMetadata}
+          </div>
+          <div className="oo-interactive-container">
+            <ControlBar
               {...this.props}
               audioOnly
-              forceResize={this.state.forceResize}
+              hideVolumeControls
+              hideScrubberBar
+              controlBarVisible
+              playerState={this.props.playerState}
+              isLiveStream={this.props.isLiveStream}
+              a11yControls={this.props.controller.accessibilityControls}
+              clickToVolumeScreen
             />
-            {scrubberRight}
+          </div>
+          <div className="oo-interactive-container">
+            <div className="oo-scrubber-bar-parent oo-flex-row-parent">
+              {scrubberLeft}
+              <ScrubberBar
+                {...this.props}
+                audioOnly
+                forceResize={this.state.forceResize}
+              />
+              {scrubberRight}
+            </div>
           </div>
         </div>
       </div>
