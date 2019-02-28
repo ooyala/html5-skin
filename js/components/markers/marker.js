@@ -39,6 +39,10 @@ class Marker extends React.Component {
   }
 
   render() {
+    const { data } = this.props;
+    if (!data.text || !data.type || !data.start) {
+      return null;
+    }
     return (
       <div style={this.getStyles()} className="oo-marker"></div>
     );

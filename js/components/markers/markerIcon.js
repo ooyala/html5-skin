@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {getPosition, getSize} from './helpers';
 import classNames from 'classnames';
+import Utils from '../utils';
 
 const TYPES = {
   TEXT: 'text',
@@ -98,9 +100,11 @@ class markerIcon extends Component {
 
     switch (data.type) {
       case TYPES.TEXT:
-        content = (
-          <p>{data.text}</p>
-        );
+        if (!data.text || data.text.length === 0){
+          return;
+        }
+        let truncatedText = data.text.length <= 78 ? data.text : data.text.slice(0,78).concat(" ...");
+        content = <p>{truncatedText}</p>;
         break;
       case TYPES.ICON:
         let iconClass = classNames({
@@ -149,7 +153,7 @@ class markerIcon extends Component {
     });
 
     let content = this.getContent();
-    if (!duration || !scrubberBarWidth) {
+    if (!duration || !scrubberBarWidth || !content) {
       return null;
     }
 
