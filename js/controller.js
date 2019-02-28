@@ -529,7 +529,7 @@ function controller(OO, _, $) {
       }
       const airPlayState = window.sessionStorage.getItem('airPlayState');
       this.airPlayWasConnected = airPlayState === CONSTANTS.AIRPLAY_STATE.CONNECTED;
-      if (this.airPlayWasConnected || this.state.isAirplayAllowed) {
+      if (this.state.isAirplayAllowed) {
         videoElement.addEventListener(
           'webkitplaybacktargetavailabilitychanged',
           _.bind(this.airPlayListener, this)
