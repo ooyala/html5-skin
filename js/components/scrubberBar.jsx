@@ -281,6 +281,7 @@ class ScrubberBar extends React.Component {
    */
   handleScrubberBarMouseOver = (event) => {
     const { controller, skinConfig } = this.props;
+    let offsetX;
     if (!skinConfig.controlBar.scrubberBar.thumbnailPreview) return;
     if (controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) return;
     if (this.isMobile) {
@@ -293,15 +294,18 @@ class ScrubberBar extends React.Component {
       return;
     }
     if (
-      event.target.className.match("oo-marker-icon") ||
-      event.target.parentElement.className.match("oo-marker-icon")
+      event.target.className.match("oo-marker-bubble") ||
+      event.target.parentElement.className.match("oo-marker-bubble")
     ) {
       return;
     }
 
     controller.setScrubberBarHoverState(true);
-
-    this.setState({ hoveringX: event.nativeEvent.offsetX });
+    offsetX = event.nativeEvent.offsetX;
+    if (event.target.className.match("oo-marker")) {
+      offsetX += event.target.offsetLeft;
+    }
+    this.setState({ hoveringX:  offsetX});
   }
 
   handleScrubberBarMouseOut = () => {

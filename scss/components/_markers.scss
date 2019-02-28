@@ -44,6 +44,9 @@
         height: 80px;
         width: 140px;
       }
+      &:hover{
+        cursor: pointer;
+      }
     }
     &.oo-marker-text {
       font-size: 13px;
@@ -62,6 +65,7 @@
       &:hover {
         height: 80px;
         width: 140px;
+        cursor: pointer;
         p {
           overflow: hidden;
           text-overflow: ellipsis;
