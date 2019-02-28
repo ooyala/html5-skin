@@ -74,9 +74,6 @@ class markerIcon extends Component {
         : ZINDEX - marker.index,
       backgroundColor: this.state.hover
         ? hoverColor
-        : backgroundColor,
-      borderTopColor: this.state.hover
-        ? hoverColor
         : backgroundColor
     };
 
