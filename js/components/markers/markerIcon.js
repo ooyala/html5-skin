@@ -15,7 +15,7 @@ const OFFSET = {
   TEXT: 35,
   ICON: 16,
   TEXT_HOVER: 70,
-  ICON_HOVER: 32
+  ICON_HOVER: 70
 }
 
 const ZINDEX = 12000;
@@ -24,15 +24,13 @@ class markerIcon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hover: false
+      hover: false,
+      text: props.data.text
     }
   }
 
-  // componentWillMount() {}
-  // componentDidMount() {}
-  // componentWillReceiveProps(nextProps) {}
   shouldComponentUpdate(nextProps, nextState) {
-    const { data, duration, scrubberBarWidth } = this.props;
+    const {data, duration, scrubberBarWidth} = this.props;
 
     if (data.start !== nextProps.data.start) {
       return true;
@@ -45,44 +43,41 @@ class markerIcon extends Component {
     if (scrubberBarWidth !== nextProps.scrubberBarWidth) {
       return true;
     }
-    console.log("Va a cambiar el hover a", this.state.hover, "nextState: ", nextState);
-    if (this.state.hover !== nextState.hover){
+
+    if (this.state.hover !== nextState.hover) {
       return true;
     }
 
     return false;
   }
-  // componentWillUpdate(nextProps, nextState) {}
-  // componentDidUpdate(prevProps, prevState) {}
-  // componentWillUnmount() {}
 
   getStyles() {
     let styles;
     let marker;
-    const {
-      duration,
-      scrubberBarWidth,
-      data,
-      config,
-      accentColor
-    } = this.props;
+    const {duration, scrubberBarWidth, data, config, accentColor} = this.props;
 
-    const hoverColor = data.hover_color
-      ? data.hover_color
-        : accentColor;
+    const hoverColor = data.hover_color ? data.hover_color : accentColor;
 
     const backgroundColor = data.background_color
       ? data.background_color
       : accentColor;
 
-    const opacity = data.opacity ? data.opacity : 0.5;
+    const opacity = data.opacity
+      ? data.opacity
+      : 0.5;
 
     marker = Object.assign({}, config, data);
     styles = {
       left: getPosition(duration, scrubberBarWidth, data.start),
-      zIndex: this.state.hover ? ZINDEX : ZINDEX - marker.index,
-      backgroundColor: this.state.hover ? hoverColor : backgroundColor,
-      borderTopColor: this.state.hover ? hoverColor : backgroundColor
+      zIndex: this.state.hover
+        ? ZINDEX
+        : ZINDEX - marker.index,
+      backgroundColor: this.state.hover
+        ? hoverColor
+        : backgroundColor,
+      borderTopColor: this.state.hover
+        ? hoverColor
+        : backgroundColor
     };
 
     if (data.type === TYPES.TEXT) {
@@ -90,36 +85,39 @@ class markerIcon extends Component {
     }
 
     if (data.type === TYPES.ICON) {
-      styles.left -= this.state.hover ? OFFSET.ICON_HOVER : OFFSET.ICON;
+      styles.left -= this.state.hover && this.hasCoverImage() ? OFFSET.ICON_HOVER : OFFSET.ICON;
     }
     return styles;
   }
 
+  hasCoverImage () {
+    const {data} = this.props;
+    return data.image_url && data.image_url !== '';
+  }
+
   getContent() {
     let content;
-    const { data } = this.props;
+    const {data} = this.props;
 
     switch (data.type) {
       case TYPES.TEXT:
         content = (
-          <p className="oo-text-truncate">{data.text || "Here's the label tooooo long"}</p>
+          <p>{data.text}</p>
         );
         break;
       case TYPES.ICON:
+        let iconClass = classNames({
+          'oo-hidden': this.state.hover && this.hasCoverImage()
+        });
+        let coverImgClass = classNames({
+          'oo-hidden': !this.state.hover && this.hasCoverImage()
+        });
         content = (
           <>
-            <img
-              className="oo-content-icon"
-              src={data.icon_url}
-              alt={data.text}
-            />
-            <img
-              className="oo-content-img"
-              src={data.image_url}
-              alt={data.text}
-            />
-          </>
-        );
+            <img className={iconClass} src={data.icon_url} alt={data.text}/>
+            { this.hasCoverImage() &&
+            <img className={coverImgClass} src={data.image_url} alt={data.text}/>}
+          </>);
         break;
 
       default:
@@ -130,33 +128,27 @@ class markerIcon extends Component {
     return content;
   }
 
-  onMarkerClick(playhead) {
-    const { controller } = this.props;
-    controller.seek(playhead);
+  onMarkerClick = () => {
+    const {controller, data} = this.props;
+    controller.seek(data.start);
   }
 
-  onMouseOutMarker(event){
-    console.log("Este es el tagName: ", event.target.tagName);
-    console.log("Evento: ", event);
-    if (
-      event.target.className.match("oo-marker-icon") ||
-      event.currentTarget.className.match("oo-marker-icon")
-    ) {
-      return;
-    }
+  onMouseEnter = (event) => {
+    this.setState({hover: true});
+  }
 
-    this.setState({
-      hover: false
-    });
+  onMouseLeave = (event) => {
+    this.setState({hover: false});
   }
 
   render() {
-    const { data, scrubberBarWidth, duration } = this.props;
+    const {data, scrubberBarWidth, duration} = this.props;
 
     let styles = this.getStyles();
     let markerClass = classNames({
       "oo-marker-bubble": true,
-      [`oo-marker-${data.type || "text"}`]: true
+      [`oo-marker-${data.type || "text"}`]: true,
+      'oo-marker-expanded': this.state.hover && data.type === TYPES.ICON && this.hasCoverImage()
     });
 
     let content = this.getContent();
@@ -168,18 +160,9 @@ class markerIcon extends Component {
       <div
         style={styles}
         className={markerClass}
-        onMouseEnter={(e) => {
-          this.setState({
-            hover: true
-          });
-        }}
-        onMouseOut={(e) => {
-          this.onMouseOutMarker(e);
-        }}
-        onClick={() => {
-          this.onMarkerClick(data.start);
-        }}
-      >
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+        onClick={this.onMarkerClick}>
         {content}
       </div>
     );

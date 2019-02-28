@@ -3,7 +3,7 @@
   bottom: 20px;
   position: absolute;
   opacity: 0.5;
-  &:hover{
+  &:hover {
     opacity: 1;
   }
   .oo-marker-bubble {
@@ -39,16 +39,10 @@
         max-height: 100%;
         margin: auto;
         display: block;
-        &.oo-content-img {
-          display: none;
-        }
       }
-    }&:hover {
-      &.oo-content-icon {
-          display: none;
-        }
-      &.oo-content-img {
-        display: block;
+      &.oo-marker-expanded {
+        height: 80px;
+        width: 140px;
       }
     }
     &.oo-marker-text {
@@ -61,24 +55,19 @@
       padding: 0;
       text-align: center;
       p {
+        @include text-truncate();
         padding: 0px 2px 0px 2px;
         margin: 0;
       }
       &:hover {
+        height: 80px;
+        width: 140px;
         p {
-          @include text-truncate();
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: normal;
-          height: 80px;
-          width: 140px;
         }
       }
-    }
-    &:hover {
-    height: 80px;
-    width: 140px;
-    opacity: 1;
     }
   }
 }
