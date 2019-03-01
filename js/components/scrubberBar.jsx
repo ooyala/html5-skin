@@ -49,8 +49,12 @@ class ScrubberBar extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { transitionedDuringSeek } = this.state;
     const { seeking } = nextProps;
+    const { componentWidth } = this.props;
     if (transitionedDuringSeek && !seeking) {
       this.setState({ transitionedDuringSeek: false });
+    }
+    if (nextProps.componentWidth !== componentWidth) {
+      this.handleResize(nextProps);
     }
   }
 
@@ -556,6 +560,7 @@ ScrubberBar.propTypes = {
   currentPlayhead: PropTypes.number,
   seeking: PropTypes.bool,
   skinConfig: PropTypes.shape({}),
+  componentWidth: PropTypes.number.isRequired,
 };
 
 ScrubberBar.defaultProps = {
