@@ -116,6 +116,8 @@ class AccessibleButton extends React.Component {
       onMouseLeave,
       onFocus,
       onClick,
+      onTouchStart,
+      onTouchEnd,
     } = this.props;
     return (
       <button // eslint-disable-line
@@ -143,6 +145,8 @@ class AccessibleButton extends React.Component {
         onMouseOut={onMouseOut}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
         onFocus={onFocus}
         onClick={onClick}
       >
@@ -178,6 +182,8 @@ AccessibleButton.propTypes = {
   onMouseLeave: PropTypes.func,
   onFocus: PropTypes.func,
   onClick: PropTypes.func,
+  onTouchStart: PropTypes.func,
+  onTouchEnd: PropTypes.func,
 };
 
 // Define focusId as a getter so that it returns a different value

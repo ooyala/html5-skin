@@ -1,37 +1,35 @@
 .oo-vr-icon {
   &--move {
-    position: absolute;
     height: $vr-controls-move;
     width: $vr-controls-move;
     cursor: pointer;
     outline: none;
     &--left {
-      top: 33%;
+      @include vertical-center();
       left: 5%;
       bottom: auto;
       right: auto;
     }
     &--right {
-      top: 33%;
+      @include vertical-center();
       left: auto;
       bottom: auto;
-      right: 20%;
+      right: 5%;
     }
     &--up {
-      top: 5%;
-      left: 33%;
+      @include horizontal-center();
+      top: 13%;
       bottom: auto;
       right: auto;
     }
     &--down {
+      @include horizontal-center();
       top: auto;
-      left: 33%;
-      bottom: 20%;
+      bottom: 13%;
       right: auto;
     }
     &--init {
-      top: 37%;
-      left: 38%;
+      @include absolute-center();
     }
   }
   &-container {
@@ -47,6 +45,9 @@
     @include vendor-prefixes (transition, opacity .3s ease-in-out);
     &--hidden {
       opacity: 0;
+    }
+    .oo-control-bar-item {
+      @include hide-button();
     }
   }
   &--type {
