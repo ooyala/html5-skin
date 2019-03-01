@@ -1745,6 +1745,7 @@ describe('Controller', function() {
 
   describe('Chromecast button', () => {
     it('Should enable the chromecast button at state when appId is valid and enable it is true', () => {
+      OO.isSSL = true;
       controller.loadConfigData({
         chromecast: {
           enable: true,
