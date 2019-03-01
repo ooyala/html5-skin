@@ -194,7 +194,6 @@ class AdScreen extends React.Component {
    * @param {Object} event object
    */
   handleResize = () => {
-    console.log('***********************************************************************');
     if (this.isMounted) {
       this.props.controller.startHideControlBarTimer();
     }
