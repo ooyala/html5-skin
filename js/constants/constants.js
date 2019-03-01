@@ -604,15 +604,16 @@ const CONSTANTS = {
     TYPE: {
       TEXT: 'text',
       ICON: 'icon',
-      TEXT_ICON: 'textIcon'
+      TEXT_ICON: 'textIcon',
     },
     OFFSET: {
       TEXT: 35,
       ICON: 16,
       TEXT_HOVER: 70,
-      ICON_HOVER: 70
+      ICON_HOVER: 70,
     },
     ZINDEX: 12000,
+    MAXCHAR: 78,
   },
 };
 

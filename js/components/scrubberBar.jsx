@@ -294,18 +294,19 @@ class ScrubberBar extends React.Component {
       return;
     }
     if (
-      event.target.className.match("oo-marker-bubble") ||
-      event.target.parentElement.className.match("oo-marker-bubble")
+      event.target.className.match('oo-marker-bubble')
+      || event.target.parentElement.className.match('oo-marker-bubble')
     ) {
       return;
     }
 
     controller.setScrubberBarHoverState(true);
+    // eslint-disable-next-line prefer-destructuring
     offsetX = event.nativeEvent.offsetX;
-    if (event.target.className.match("oo-marker")) {
+    if (event.target.className.match('oo-marker')) {
       offsetX += event.target.offsetLeft;
     }
-    this.setState({ hoveringX:  offsetX});
+    this.setState({ hoveringX: offsetX });
   }
 
   handleScrubberBarMouseOut = () => {
@@ -360,32 +361,35 @@ class ScrubberBar extends React.Component {
     return ariaValueText;
   }
 
-  getMarkerIcons() {
+  /**
+   * getMarkerIcons creates and returns a collection of markerIcon components to be rendered
+   *
+   * @returns {array} Collection of markerIcon components
+   * @memberof ScrubberBar
+   */
+  getMarkerIcons = () => {
     const {
       controller,
       skinConfig,
-      duration
+      duration,
     } = this.props;
 
-    const {
-      scrubberBarWidth
-    } = this.state;
+    const { scrubberBarWidth } = this.state;
 
-    let markers = controller.state.markers.list;
-    let markerTypes = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types: []; 
-  
-    return markers.map((marker, index) => {
-      marker.index = index;
-      return (<MarkerIcon
+    const markers = controller.state.markers.list;
+    const markerTypes = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types : [];
+    return markers.map((marker, index) => (
+      <MarkerIcon
+        // eslint-disable-next-line react/no-array-index-key
         key={index}
-        data={marker} 
+        level={index}
+        data={marker}
         config={markerTypes[marker.type]}
         duration={duration}
         scrubberBarWidth={scrubberBarWidth}
         accentColor={skinConfig.general.accentColor}
         controller={controller}
-      />)
-    });
+      />));
   }
 
   render() {
@@ -539,22 +543,21 @@ class ScrubberBar extends React.Component {
     const ariaValueText = this.getAriaValueText();
 
     // Markers
-    let markers = controller.state.markers.list;
-    let markersType = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types : {};
-    let markerList = markers.map((marker, index) => {
-      return (
-        <Marker
-          key={index}
-          duration={duration}
-          scrubberBarWidth={scrubberBarWidth}
-          data={marker}
-          config={markersType[marker.type]}
-          accentColor={skinConfig.general.accentColor}
-        />
-      );
-    });
+    const markers = controller.state.markers.list;
+    const markersType = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types : {};
+    const markerList = markers.map((marker, index) => (
+      <Marker
+        // eslint-disable-next-line react/no-array-index-key
+        key={index}
+        duration={duration}
+        scrubberBarWidth={scrubberBarWidth}
+        data={marker}
+        config={markersType[marker.type]}
+        accentColor={skinConfig.general.accentColor}
+      />
+    ));
 
-    let markerIcons = this.getMarkerIcons();
+    const markerIcons = this.getMarkerIcons();
 
     return (
       <div // eslint-disable-line

@@ -221,11 +221,11 @@ function controller(OO, _, $) {
       },
 
       markers: {
-        types:{},
-        list:[]
+        types: {},
+        list: [],
       },
 
-      audioOnly: false
+      audioOnly: false,
     };
 
     this.init();
