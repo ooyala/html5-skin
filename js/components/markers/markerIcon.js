@@ -3,24 +3,7 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {getPosition, getSize} from './helpers';
 import classNames from 'classnames';
-import Utils from '../utils';
-
-const TYPES = {
-  TEXT: 'text',
-  IMAGE: 'image',
-  ICON: 'icon',
-  TEXT_IMAGE: 'textImage',
-  TEXT_ICON: 'textIcon'
-}
-
-const OFFSET = {
-  TEXT: 35,
-  ICON: 16,
-  TEXT_HOVER: 70,
-  ICON_HOVER: 70
-}
-
-const ZINDEX = 12000;
+import CONSTANTS from '../../constants/constants';
 
 class markerIcon extends Component {
   constructor(props) {
@@ -72,19 +55,19 @@ class markerIcon extends Component {
     styles = {
       left: getPosition(duration, scrubberBarWidth, data.start),
       zIndex: this.state.hover
-        ? ZINDEX
-        : ZINDEX - marker.index,
+        ? CONSTANTS.MARKERS.ZINDEX
+        : CONSTANTS.MARKERS.ZINDEX - marker.index,
       backgroundColor: this.state.hover
         ? hoverColor
         : backgroundColor
     };
 
-    if (data.type === TYPES.TEXT) {
-      styles.left -= this.state.hover ? OFFSET.TEXT_HOVER : OFFSET.TEXT;
+    if (data.type === CONSTANTS.MARKERS.TYPE.TEXT) {
+      styles.left -= this.state.hover ? CONSTANTS.MARKERS.OFFSET.TEXT_HOVER : CONSTANTS.MARKERS.OFFSET.TEXT;
     }
 
-    if (data.type === TYPES.ICON) {
-      styles.left -= this.state.hover && this.hasCoverImage() ? OFFSET.ICON_HOVER : OFFSET.ICON;
+    if (data.type === CONSTANTS.MARKERS.TYPE.ICON) {
+      styles.left -= this.state.hover && this.hasCoverImage() ? CONSTANTS.MARKERS.OFFSET.ICON_HOVER : CONSTANTS.MARKERS.OFFSET.ICON;
     }
     return styles;
   }
@@ -99,14 +82,14 @@ class markerIcon extends Component {
     const {data} = this.props;
 
     switch (data.type) {
-      case TYPES.TEXT:
+      case CONSTANTS.MARKERS.TYPE.TEXT:
         if (!data.text || data.text.length === 0){
           return;
         }
         let truncatedText = data.text.length <= 78 ? data.text : data.text.slice(0,78).concat(" ...");
         content = <p>{truncatedText}</p>;
         break;
-      case TYPES.ICON:
+      case CONSTANTS.MARKERS.TYPE.ICON:
         let iconClass = classNames({
           'oo-hidden': this.state.hover && this.hasCoverImage()
         });
@@ -149,7 +132,7 @@ class markerIcon extends Component {
     let markerClass = classNames({
       "oo-marker-bubble": true,
       [`oo-marker-${data.type || "text"}`]: true,
-      'oo-marker-expanded': this.state.hover && data.type === TYPES.ICON && this.hasCoverImage()
+      'oo-marker-expanded': this.state.hover && data.type === CONSTANTS.MARKERS.TYPE.ICON && this.hasCoverImage()
     });
 
     let content = this.getContent();

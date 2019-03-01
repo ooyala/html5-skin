@@ -583,6 +583,21 @@ const CONSTANTS = {
   CLASS_NAMES: {
     SELECTABLE_SCREEN: 'oo-state-screen-selectable',
   },
+
+  MARKERS: {
+    TYPE: {
+      TEXT: 'text',
+      ICON: 'icon',
+      TEXT_ICON: 'textIcon'
+    },
+    OFFSET: {
+      TEXT: 35,
+      ICON: 16,
+      TEXT_HOVER: 70,
+      ICON_HOVER: 70
+    },
+    ZINDEX: 12000,
+  },
 };
 
 // Maps menu options to their respective screens
