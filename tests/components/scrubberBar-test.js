@@ -566,14 +566,28 @@ describe('ScrubberBar', function() {
     };
     const wrapper = Enzyme.mount(
       <ScrubberBar
-        controller={mockController}
         componentWidth={600}
+        currentPlayhead={50}
+        duration={100}
+        controlBarVisible={true}
+        seeking={false}
+        controller={mockController}
+        skinConfig={skinConfig}
       />
     );
-    const handleResize = jest.spyOn(wrapper.instance(), 'handleResize');
-    wrapper.setProps({ componentWidth: 1900 });
 
-    expect(handleResize).toHaveBeenCalled();
+    wrapper.setState({
+      scrubberBarWidth: 600,
+      playheadWidth: 10
+    });
+
+    const playhead = wrapper.find('.oo-playhead-padding').getDOMNode();
+    let leftPos = parseInt(playhead.style.left);
+    expect(leftPos).toBe(300);
+
+    wrapper.setState({ scrubberBarWidth: 1900 });
+    leftPos = parseInt(playhead.style.left);
+    expect(leftPos).toBe(950);
   })
 
 });
