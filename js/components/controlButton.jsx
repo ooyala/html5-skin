@@ -24,7 +24,6 @@ class ControlButton extends React.Component {
     this.getTooltipVerticalOffset = this.getTooltipVerticalOffset.bind(this);
     this.getResponsiveUiMultiplier = this.getResponsiveUiMultiplier.bind(this);
     this.getIconStyles = this.getIconStyles.bind(this);
-    this.storeRef = this.storeRef.bind(this);
     this.highlight = this.highlight.bind(this);
     this.removeHighlight = this.removeHighlight.bind(this);
     this.areTooltipsEnabled = this.areTooltipsEnabled.bind(this);

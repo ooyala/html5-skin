@@ -52,9 +52,7 @@
 
     a.oo-control-bar-item,
     button.oo-control-bar-item {
-      background-color: transparent;
-      border: 0;
-      outline: none;
+      @include hide-button();
 
       // Workaround for Safari clipping text shadows
       // inside buttons

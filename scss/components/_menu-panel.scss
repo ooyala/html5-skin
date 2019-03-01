@@ -34,6 +34,7 @@
   }
 
   .oo-menu-btn {
+    @include hide-button();
     color: $white;
     display: block;
     position: relative;
@@ -41,11 +42,8 @@
     margin: 0 auto;
     font-family: $font-family-roboto;
     text-align: left;
-    border: none;
-    outline: none;
     opacity: 1;
     white-space: nowrap;
-    background-color: transparent;
   }
 
   .oo-menu-btn:not(.oo-selected) {
