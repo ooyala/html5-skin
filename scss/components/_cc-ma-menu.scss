@@ -107,11 +107,9 @@ $tab-border-width: 2px;
   }
 }
 .oo-multi-audio-btn {
+  @include hide-button();
   width: 100%;
   text-align: left;
   padding: $inner-menu-padding - $tab-border-width;
-  background-color: transparent;
   color: inherit;
-  outline: none;
-  border: none;
 }

@@ -103,6 +103,12 @@
         #{$property}: $value;
 }
 
+@mixin hide-button() {
+  background-color: transparent;
+  border: 0;
+  outline: none;
+}
+
 // base style for close buttons
 @mixin close($x, $y) {
   position: absolute;
@@ -110,10 +116,8 @@
   opacity: 0.6;
   line-height: 1;
   padding: 0;
-  border: 0;
-  outline: none;
-  background: transparent;
   -webkit-appearance: none;
+  @include hide-button();
   @include highlight();
 
   // increase selectable area, helps with mobile
