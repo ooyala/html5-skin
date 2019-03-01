@@ -15,8 +15,6 @@ import Utils from '../components/utils';
  * The screen to be displayed on advertising
  */
 class AdScreen extends React.Component {
-  isMounted = false;
-
   constructor(props) {
     super(props);
     this.isMobile = this.props.controller.state.isMobile;
@@ -26,15 +24,14 @@ class AdScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.isMounted = true;
     // for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen) {
       this.props.controller.startHideControlBarTimer();
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.componentWidth !== this.props.componentWidth) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.componentWidth !== this.props.componentWidth) {
       this.handleResize();
     }
   }
@@ -68,7 +65,6 @@ class AdScreen extends React.Component {
   }
 
   componentWillUnmount() {
-    this.isMounted = false;
     this.props.controller.cancelTimer();
   }
 
@@ -194,9 +190,7 @@ class AdScreen extends React.Component {
    * @param {Object} event object
    */
   handleResize = () => {
-    if (this.isMounted) {
-      this.props.controller.startHideControlBarTimer();
-    }
+    this.props.controller.startHideControlBarTimer();
   };
 
   /**
