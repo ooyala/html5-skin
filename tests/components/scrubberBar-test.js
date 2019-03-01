@@ -557,4 +557,23 @@ describe('ScrubberBar', function() {
     expect(wrapper.find('.oo-scrubber-bar-video').length).toBe(0);
   });
 
+  it('should handle resize after entering fullscreen', () => {
+
+    const mockController = {
+      state: {
+        isMobile: false
+      }
+    };
+    const wrapper = Enzyme.mount(
+      <ScrubberBar
+        controller={mockController}
+        componentWidth={600}
+      />
+    );
+    const handleResize = jest.spyOn(wrapper.instance(), 'handleResize');
+    wrapper.setProps({ componentWidth: 1900 });
+
+    expect(handleResize).toHaveBeenCalled();
+  })
+
 });
