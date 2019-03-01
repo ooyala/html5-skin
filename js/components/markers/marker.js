@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {getPosition, getSize} from './helpers';
+import CONSTANTS from "../../constants/constants";
 
 /**
  * This component represents an element that handles the rendering
@@ -40,7 +41,7 @@ class Marker extends React.Component {
 
   render() {
     const { data } = this.props;
-    if (!data.text || !data.type || !data.start) {
+    if (!data.type || (!data.start && data.start !== 0)  || (data.type === CONSTANTS.MARKERS.TYPE.TEXT && !data.text )) {
       return null;
     }
     return (
