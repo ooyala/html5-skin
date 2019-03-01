@@ -11,8 +11,8 @@ var UnmuteIcon = require('../../js/components/unmuteIcon');
 var AdPanel = require('../../js/components/adPanel');
 const Spinner = require('../../js/components/spinner');
 
-describe('AdScreen', function() {
-  var mockController, mockSkinConfig;
+describe('AdScreen', () => {
+  let mockController, mockSkinConfig;
 
   beforeEach(function() {
     mockController = {
@@ -45,9 +45,10 @@ describe('AdScreen', function() {
       }
     };
   });
-  it('creates an ad screen', function() {
+
+  it('creates an ad screen', () => {
     // Render ad screen into DOM
-    var wrapper = Enzyme.mount(
+    Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -55,16 +56,16 @@ describe('AdScreen', function() {
 
   });
 
-  it('handles mouseover and mouseout', function() {
+  it('handles mouseover and mouseout', () => {
     // Render ad screen into DOM
-    var controlBarVisible = true;
+    let controlBarVisible = true;
     mockController.hideControlBar = function() {
       controlBarVisible = false;
     };
     mockController.showControlBar = function() {
       controlBarVisible = true;
     };
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -80,17 +81,17 @@ describe('AdScreen', function() {
     expect(controlBarVisible).toBe(true);
   });
 
-  it('checks that ad marquee is shown/not shown when appropriate', function() {
+  it('checks that ad marquee is shown/not shown when appropriate', () => {
     // showing ad marquee
     mockController.state.showAdMarquee = true;
 
-    var wrapper = Enzyme.mount(
+    let wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
       />);
 
-    var adPanel = wrapper.find('.oo-ad-panel');
+    const adPanel = wrapper.find('.oo-ad-panel');
     expect(adPanel.at(0).children().length).not.toBe(0);
 
     // not showing ad marquee
@@ -103,7 +104,7 @@ describe('AdScreen', function() {
         skinConfig={mockSkinConfig}
       />);
 
-    var adPanel1 = wrapper.find('.oo-ad-panel');
+    const adPanel1 = wrapper.find('.oo-ad-panel');
     expect(adPanel1.at(0).children().length).toBe(0);
 
     // not showing ad marquee
@@ -116,7 +117,7 @@ describe('AdScreen', function() {
         skinConfig={mockSkinConfig}
       />);
 
-    var adPanel2 = wrapper.find('.oo-ad-panel');
+    const adPanel2 = wrapper.find('.oo-ad-panel');
     expect(adPanel2.at(0).children().length).toBe(0);
 
   });
@@ -124,16 +125,16 @@ describe('AdScreen', function() {
   it('handles mousemove', function() {
 
     // Render ad screen into DOM
-    var controlBarVisible = true;
-    mockController.hideControlBar = function() {
+    let controlBarVisible = true;
+    mockController.hideControlBar = () => {
       controlBarVisible = false;
     };
-    mockController.showControlBar = function() {
+    mockController.showControlBar = () => {
       controlBarVisible = true;
     };
-    mockController.startHideControlBarTimer = function() {};
+    mockController.startHideControlBarTimer = () => {};
     mockController.state.controlBarVisible = false;
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <AdScreen
         playerState={"playing"}
         controller={mockController}
@@ -146,10 +147,10 @@ describe('AdScreen', function() {
     expect(wrapper.instance().state.controlBarVisible).toBe(false);
   });
 
-  it('test player clicks', function() {
+  it('test player clicks', () => {
     // Render ad screen into DOM
     mockController.state.accessibilityControlsEnabled = false;
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -162,13 +163,13 @@ describe('AdScreen', function() {
     expect(mockController.onAdsClicked).toBeCalled();
   });
 
-  it('tests ad componentWill*', function() {
-    mockController.cancelTimer = function() {};
-    mockController.startHideControlBarTimer = function() {};
+  it('tests ad componentWill*', () => {
+    mockController.cancelTimer = () => {};
+    mockController.startHideControlBarTimer = () => {};
     mockController.state.accessibilityControlsEnabled = false;
     mockController.state.controlBarVisible = false;
 
-    var mockController2 = {
+    const mockController2 = {
       state: {
         isMobile: true,
         accessibilityControlsEnabled: false,
@@ -181,8 +182,8 @@ describe('AdScreen', function() {
       startHideControlBarTimer: function() {}
     };
 
-    var node = document.createElement('div');
-    var wrapper = Enzyme.mount(
+    const node = document.createElement('div');
+    const wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
@@ -198,7 +199,7 @@ describe('AdScreen', function() {
         fullscreen={false} />, node
     );
 
-    var event = {
+    const event = {
       stopPropagation: function() {},
       cancelBubble: function() {},
       type: 'touchend'
@@ -217,16 +218,16 @@ describe('AdScreen', function() {
       mutingForAutoplay: true
     };
 
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={defaultSkinConfig}
       />);
-    var unmuteIcon = wrapper.find(UnmuteIcon);
+    const unmuteIcon = wrapper.find(UnmuteIcon);
     expect(unmuteIcon).toBeTruthy();
   });
 
-  describe('Spinner tests', function() {
+  describe('Spinner tests', () => {
     const createAdScreen = (buffered, buffering) => {
       mockController.state.buffering = buffering;
       return (
@@ -261,7 +262,7 @@ describe('AdScreen', function() {
     });
   });
 
-  it('should not display unmute icon when not muted', function() {
+  it('should not display unmute icon when not muted', () => {
     mockController.state.upNextInfo = {
       showing: false
     };
@@ -270,13 +271,44 @@ describe('AdScreen', function() {
       mutingForAutoplay: true
     };
 
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={defaultSkinConfig}
       />);
-    var unmuteIcons = wrapper.find(UnmuteIcon);
+    const unmuteIcons = wrapper.find(UnmuteIcon);
     expect(unmuteIcons.length).toBe(0);
+  });
+
+  it('should hide controlBar after resize', () => {
+    let controlBarVisible = true;
+
+    mockController.startHideControlBarTimer = () => {
+      controlBarVisible = false;
+    };
+
+    expect(controlBarVisible).toBe(true);
+
+    const node = document.createElement('div');
+    Enzyme.mount(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        componentWidth={400}
+        fullscreen={false}
+      />, node
+    );
+
+    Enzyme.mount(
+      <AdScreen
+        controller={mockController}
+        skinConfig={mockSkinConfig}
+        componentWidth={800}
+        fullscreen={true}
+      />, node
+    );
+
+    expect(controlBarVisible).toBe(false);
   });
 
 });

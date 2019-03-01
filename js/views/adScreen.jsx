@@ -15,6 +15,8 @@ import Utils from '../components/utils';
  * The screen to be displayed on advertising
  */
 class AdScreen extends React.Component {
+  isMounted = false;
+
   constructor(props) {
     super(props);
     this.isMobile = this.props.controller.state.isMobile;
@@ -24,6 +26,7 @@ class AdScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.isMounted = true;
     // for mobile or desktop fullscreen, hide control bar after 3 seconds
     if (this.isMobile || this.props.fullscreen) {
       this.props.controller.startHideControlBarTimer();
@@ -65,6 +68,7 @@ class AdScreen extends React.Component {
   }
 
   componentWillUnmount() {
+    this.isMounted = false;
     this.props.controller.cancelTimer();
   }
 
@@ -135,7 +139,7 @@ class AdScreen extends React.Component {
         this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
       }
     }
-  }
+  };
 
   /**
    * Update the state with controlBar visible
@@ -143,7 +147,7 @@ class AdScreen extends React.Component {
   showControlBar = () => {
     this.setState({ controlBarVisible: true });
     this.props.controller.showControlBar();
-  }
+  };
 
   /**
    * Update the state with controlBar invisible
@@ -154,7 +158,7 @@ class AdScreen extends React.Component {
       this.setState({ controlBarVisible: false });
       this.props.controller.hideControlBar();
     }
-  }
+  };
 
   /**
    * Update the state with controlBar invisible
@@ -172,7 +176,7 @@ class AdScreen extends React.Component {
     // Even if our action was to start showing the control bar, we should still handle
     // the click to prevent the need to double tap.
     this.handlePlayerClicked(event);
-  }
+  };
 
   /**
    * Update the state with controlBar invisible
@@ -183,24 +187,25 @@ class AdScreen extends React.Component {
       this.showControlBar();
       this.props.controller.startHideControlBarTimer();
     }
-  }
+  };
 
   /**
    * Update the state with controlBar invisible
    * @param {Object} event object
    */
   handleResize = () => {
-    if (this.isMounted()) { // eslint-disable-line
+    console.log('***********************************************************************');
+    if (this.isMounted) {
       this.props.controller.startHideControlBarTimer();
     }
-  }
+  };
 
   /**
    * Bubble up unmute clicked
    */
   unmuteClick = () => {
     this.props.controller.handleMuteClick();
-  }
+  };
 
   render() {
     const actionIconStyle = {
