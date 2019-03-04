@@ -68,6 +68,10 @@ var skinControllerMock = {
       connected: false,
       device: "",
       isReceiver: false
+    },
+    markers: {
+      types: {},
+      list: [],
     }
   },
   addBlur: function() {},

@@ -376,7 +376,7 @@ class ScrubberBar extends React.Component {
 
     const { scrubberBarWidth } = this.state;
 
-    const markers = controller.state.markers.list;
+    const markers = controller.state.markers ? controller.state.markers.list : [];
     const markerTypes = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types : [];
     return markers.map((marker, index) => (
       <MarkerIcon
@@ -543,7 +543,7 @@ class ScrubberBar extends React.Component {
     const ariaValueText = this.getAriaValueText();
 
     // Markers
-    const markers = controller.state.markers.list;
+    const markers = controller.state.markers ? controller.state.markers.list : [];
     const markersType = skinConfig.markers && skinConfig.markers.types ? skinConfig.markers.types : {};
     const markerList = markers.map((marker, index) => (
       <Marker
@@ -568,7 +568,7 @@ class ScrubberBar extends React.Component {
         onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}
       >
-        {controller.state.markers.list.length > 0 && (
+        {controller.state.markers && controller.state.markers.list.length > 0 && (
           <div id="oo-marker-container">
             {markerIcons}
           </div>

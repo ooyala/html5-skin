@@ -100,6 +100,10 @@ describe('PlayingScreen', function() {
           promo_image: 'image.png',
           description: 'description',
           title: 'title'
+        },
+        markers: {
+          types: {},
+          list: [],
         }
       },
       cancelTimer: function() {},

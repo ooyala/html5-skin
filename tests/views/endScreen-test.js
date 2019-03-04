@@ -53,6 +53,10 @@ describe('EndScreen', function() {
           showButton: false,
           connected: false,
           device: ""
+        },
+        markers: {
+          types: {},
+          list: [],
         }
       },
       cancelTimer: function() {},

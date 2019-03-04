@@ -87,6 +87,10 @@ describe('ControlBar', function() {
           modules: {
             'discovery-ui': {}
           }
+        },
+        markers: {
+          types: {},
+          list: [],
         }
       },
       cancelTimer: function() {},
