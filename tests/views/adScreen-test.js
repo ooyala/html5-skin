@@ -281,34 +281,20 @@ describe('AdScreen', () => {
   });
 
   it('should hide controlBar after resize', () => {
-    let controlBarVisible = true;
 
-    mockController.startHideControlBarTimer = () => {
-      controlBarVisible = false;
-    };
+    mockController.startHideControlBarTimer = jest.fn();
 
-    expect(controlBarVisible).toBe(true);
-
-    const node = document.createElement('div');
-    Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <AdScreen
         controller={mockController}
         skinConfig={mockSkinConfig}
         componentWidth={400}
-        fullscreen={false}
-      />, node
+      />
     );
 
-    Enzyme.mount(
-      <AdScreen
-        controller={mockController}
-        skinConfig={mockSkinConfig}
-        componentWidth={800}
-        fullscreen={true}
-      />, node
-    );
+    wrapper.setProps({ componentWidth: 600 });
 
-    expect(controlBarVisible).toBe(false);
+    expect(mockController.startHideControlBarTimer).toBeCalledTimes(1);
   });
 
 });
