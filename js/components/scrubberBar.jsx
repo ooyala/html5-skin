@@ -93,7 +93,6 @@ class ScrubberBar extends React.Component {
   }
 
   handleResize = () => {
-    console.log(ReactDOM.findDOMNode(this.refs.playhead).clientWidth)
     this.setState({
       scrubberBarWidth: ReactDOM.findDOMNode(this.refs.scrubberBar).clientWidth, // eslint-disable-line
       playheadWidth: ReactDOM.findDOMNode(this.refs.playhead).clientWidth, // eslint-disable-line
