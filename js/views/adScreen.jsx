@@ -30,12 +30,6 @@ class AdScreen extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.componentWidth !== this.props.componentWidth) {
-      this.handleResize();
-    }
-  }
-
   /**
    * Handle show/hide controlBar logic based on nextProps object
    * @param {Object} nextProps props object
@@ -61,6 +55,16 @@ class AdScreen extends React.Component {
         this.showControlBar();
         this.props.controller.startHideControlBarTimer();
       }
+    }
+  }
+
+  /**
+   * Change the behavior if width of the element was changed
+   * @param {Object} prevProps - props object
+   */
+  componentDidUpdate(prevProps) {
+    if (prevProps.componentWidth !== this.props.componentWidth) {
+      this.handleResize();
     }
   }
 
