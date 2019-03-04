@@ -581,11 +581,14 @@ describe('ScrubberBar', function() {
       playheadWidth: 10
     });
 
+    const handleResize = jest.spyOn(wrapper.instance(), 'handleResize');
     const playhead = wrapper.find('.oo-playhead-padding').getDOMNode();
     let leftPos = parseInt(playhead.style.left);
     expect(leftPos).toBe(300);
-
+    wrapper.setProps({ componentWidth: 1900 });
     wrapper.setState({ scrubberBarWidth: 1900 });
+
+    expect(handleResize).toHaveBeenCalled();
     leftPos = parseInt(playhead.style.left);
     expect(leftPos).toBe(950);
   })

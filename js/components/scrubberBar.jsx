@@ -54,7 +54,7 @@ class ScrubberBar extends React.Component {
       this.setState({ transitionedDuringSeek: false });
     }
     if (nextProps.componentWidth !== componentWidth) {
-      this.handleResize(nextProps);
+      this.handleResize();
     }
   }
 
@@ -93,6 +93,7 @@ class ScrubberBar extends React.Component {
   }
 
   handleResize = () => {
+    console.log(ReactDOM.findDOMNode(this.refs.playhead).clientWidth)
     this.setState({
       scrubberBarWidth: ReactDOM.findDOMNode(this.refs.scrubberBar).clientWidth, // eslint-disable-line
       playheadWidth: ReactDOM.findDOMNode(this.refs.playhead).clientWidth, // eslint-disable-line
@@ -560,12 +561,13 @@ ScrubberBar.propTypes = {
   currentPlayhead: PropTypes.number,
   seeking: PropTypes.bool,
   skinConfig: PropTypes.shape({}),
-  componentWidth: PropTypes.number.isRequired,
+  componentWidth: PropTypes.number,
 };
 
 ScrubberBar.defaultProps = {
   audioOnly: false,
   buffered: 0,
+  componentWidth: 0,
   currentPlayhead: 0,
   duration: 0,
   forceResize: false,
