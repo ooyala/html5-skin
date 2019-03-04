@@ -88,18 +88,20 @@ class CountDownClock extends React.Component {
   drawBackground = () => {
     const { beginPath, arc, fill } = this.context;
     const { clockContainerWidth, clockRadius } = this.state;
-    beginPath();
+    beginPath.call(this.context);
     this.context.globalAlpha = 1;
     this.context.fillStyle = 'gray';
-    arc(
+    arc.call(
+      this.context,
       clockContainerWidth / 2,
       clockRadius,
       clockRadius,
       0,
       Math.PI * 2,
-      false
+      false,
     );
-    arc(
+    arc.call(
+      this.context,
       clockContainerWidth / 2,
       clockRadius,
       clockRadius / 1.2, // eslint-disable-line
@@ -107,7 +109,7 @@ class CountDownClock extends React.Component {
       0,
       true
     );
-    fill();
+    fill.call(this.context);
   }
 
   updateClockSize = () => {
@@ -145,31 +147,34 @@ class CountDownClock extends React.Component {
       controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN
       || controller.state.screenToShow === CONSTANTS.SCREEN.PAUSE_SCREEN
     ) {
-      fillText(
+      fillText.call(
+        this.context,
         remainSeconds.toFixed(decimals),
         clockContainerWidth / 2,
         clockRadius,
-        100 // eslint-disable-line
+        100,
       );
     }
-    beginPath();
-    arc(
+    beginPath.call(this.context);
+    arc.call(
+      this.context,
       clockContainerWidth / 2,
       clockRadius,
       clockRadius,
       Math.PI * 1.5, // eslint-disable-line
       Math.PI * percent,
-      false
+      false,
     );
-    arc(
+    arc.call(
+      this.context,
       clockContainerWidth / 2,
       clockRadius,
       clockRadius / 1.2, // eslint-disable-line
       Math.PI * percent,
       Math.PI * 1.5, // eslint-disable-line
-      true
+      true,
     );
-    fill();
+    fill.call(this.context);
   }
 
   startTimer = () => {
@@ -218,7 +223,7 @@ class CountDownClock extends React.Component {
   clearCanvas = () => {
     this.context = this.canvas.getContext('2d');
     const { clearRect } = this.context;
-    clearRect(0, 0, this.canvas.width, this.canvas.height);
+    clearRect.call(this.context, 0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();
   }
 
