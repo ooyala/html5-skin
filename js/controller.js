@@ -300,14 +300,14 @@ function controller(OO, _, $) {
         this.onAirplayAvailabilityChanged.bind(this)
       );
       this.mb.subscribe(
-        OO.EVENTS.AIRPLAY.CONNECTED_CHANGED,
+        OO.EVENTS.AIRPLAY.CONNECTION_CHANGED,
         'customerUi',
-        this.onAirplayConnectedChanged.bind(this)
+        this.onAirplayConnectionChanged.bind(this)
       );
       this.mb.subscribe(
         OO.EVENTS.AIRPLAY.SESSION_RESUMED,
         'customerUi',
-        this.onAirplaySessionResumedWhenPageWasReloaded.bind(this)
+        this.onAirplaySessionResumed.bind(this)
       );
       this.state.isPlaybackReadySubscribed = true;
     },
@@ -554,16 +554,13 @@ function controller(OO, _, $) {
       this.renderSkin();
     },
 
-    onAirplayConnectedChanged(eventName, isConnected) {
-      if (isConnected) {
-        this.state.airplay.statusIcon = CONSTANTS.AIRPLAY_STATE.CONNECTED;
-      } else {
-        this.state.airplay.statusIcon = CONSTANTS.AIRPLAY_STATE.DISCONNECTED;
-      }
+    onAirplayConnectionChanged(eventName, isConnected) {
+      const { CONNECTED, DISCONNECTED } = CONSTANTS.AIRPLAY_STATE;
+      this.state.airplay.statusIcon = isConnected ? CONNECTED : DISCONNECTED;
       this.renderSkin();
     },
 
-    onAirplaySessionResumedWhenPageWasReloaded() {
+    onAirplaySessionResumed() {
       this.state.airplay.statusIcon = CONSTANTS.AIRPLAY_STATE.CONNECTED;
       this.renderSkin();
       // emulate airplay button click to show targetPicker
