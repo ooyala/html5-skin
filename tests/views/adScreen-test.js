@@ -8,7 +8,6 @@ var Enzyme = require('enzyme');
 var AdScreen = require('../../js/views/adScreen');
 var defaultSkinConfig = require('../../config/skin.json');
 var UnmuteIcon = require('../../js/components/unmuteIcon');
-var AdPanel = require('../../js/components/adPanel');
 const Spinner = require('../../js/components/spinner');
 
 describe('AdScreen', () => {
@@ -241,25 +240,33 @@ describe('AdScreen', () => {
       );
     };
 
-    it('Spinner should not be shown when buffering is false and buffered !== 0', function(){
-      let wrapper = createAdScreen(2, false);
+    it('Spinner should not be shown when buffering is false and buffered !== 0', () => {
+      const wrapper = createAdScreen(2, false);
       expect(wrapper.find(Spinner).length).toBe(0);
     });
 
-    it('Spinner should not be shown when buffering is false and buffered === null', function(){
-      let wrapper = createAdScreen(null, false);
+    it('Spinner should not be shown when buffering is false and buffered === null', () => {
+      const wrapper = createAdScreen(null, false);
       expect(wrapper.find(Spinner).length).toBe(0);
     });
 
-    it('Spinner should be shown when buffered === 0', function(){
-      let wrapper = createAdScreen(0, false);
+    it('Spinner should be shown when buffered === 0', () => {
+      const wrapper = createAdScreen(0, false);
       expect(wrapper.find(Spinner).length).toBe(1);
     });
 
-    it('Spinner should be shown when buffering is true even if buffered !== 0', function(){
-      let wrapper = createAdScreen(2, true);
+    it('Spinner should be shown when buffering is true even if buffered !== 0', () => {
+      const wrapper = createAdScreen(2, true);
       expect(wrapper.find(Spinner).length).toBe(1);
     });
+
+    it('Spinner should be shown when buffered === 0 but selectedEncoding is ima', () => {
+      mockController.selectedEncoding = 'ima';
+      const wrapper = createAdScreen(0, false);
+      expect(wrapper.find(Spinner).length).toBe(0);
+      mockController.selectedEncoding = '';
+    });
+
   });
 
   it('should not display unmute icon when not muted', () => {

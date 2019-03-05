@@ -205,36 +205,46 @@ class AdScreen extends React.Component {
   };
 
   render() {
+    const {
+      controller,
+      skinConfig,
+      playerState,
+      buffered,
+    } = this.props;
     const actionIconStyle = {
-      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity,
+      color: skinConfig.pauseScreen.PauseIconStyle.color,
+      opacity: skinConfig.pauseScreen.PauseIconStyle.opacity,
     };
     const actionIconClass = ClassNames({
-      'oo-action-icon-pause': !this.props.controller.state.adPauseAnimationDisabled,
-      'oo-action-icon': this.props.controller.state.adPauseAnimationDisabled,
-      'oo-animate-pause': !this.props.controller.state.adPauseAnimationDisabled,
+      'oo-action-icon-pause': !controller.state.adPauseAnimationDisabled,
+      'oo-action-icon': controller.state.adPauseAnimationDisabled,
+      'oo-animate-pause': !controller.state.adPauseAnimationDisabled,
       'oo-action-icon-top':
-        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('top') > -1,
+        skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('top') > -1,
       'oo-action-icon-bottom':
-        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('bottom') > -1,
+        skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('bottom') > -1,
       'oo-action-icon-left':
-        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
+        skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('left') > -1,
       'oo-action-icon-right':
-        this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
-      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon,
-      'oo-icon-hidden': this.props.playerState !== CONSTANTS.STATE.PAUSE,
+        skinConfig.pauseScreen.pauseIconPosition.toLowerCase().indexOf('right') > -1,
+      'oo-hidden': !skinConfig.pauseScreen.showPauseIcon,
+      'oo-icon-hidden': playerState !== CONSTANTS.STATE.PAUSE,
     });
     let adPanel = null;
-    if (this.props.skinConfig.adScreen.showAdMarquee && this.props.controller.state.showAdMarquee) {
+    if (skinConfig.adScreen.showAdMarquee && controller.state.showAdMarquee) {
       adPanel = <AdPanel {...this.props} />;
     }
     let playbackControlItems = null;
-    if (this.props.skinConfig.adScreen.showControlBar) {
+    if (skinConfig.adScreen.showControlBar) {
       playbackControlItems = this.getPlaybackControlItems();
     }
 
-    const showUnmute = this.props.controller.state.volumeState.mutingForAutoplay
-      && this.props.controller.state.volumeState.muted;
+    const showUnmute = controller.state.volumeState.mutingForAutoplay
+      && controller.state.volumeState.muted;
+
+    const isIMA = controller.selectedEncoding === CONSTANTS.ENCODINGS.IMA;
+    const isShowSpinner = this.props.controller.state.buffering
+      || (!isIMA && buffered === 0); // buffered for IMA is always 0, so we can not use the property
 
     return (
       <div // eslint-disable-line jsx-a11y/mouse-events-have-key-events
@@ -247,8 +257,8 @@ class AdScreen extends React.Component {
         onMouseUp={this.handleClick}
       >
         {
-          this.props.controller.state.buffering || this.props.buffered === 0
-            ? <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+          isShowSpinner
+            ? <Spinner loadingImage={skinConfig.general.loadingImage.imageResource.url} />
             : null
         }
 

@@ -32,7 +32,7 @@ function controller(OO, _, $) {
   const UNSUPPORTED_PLAYER_VERSION = 3;
 
   if (!OO.playerParams.core_version || OO.playerParams.core_version <= UNSUPPORTED_PLAYER_VERSION) {
-    console.error('Html5Skin requires at least player version 4.');
+    console.error('Html5Skin requires at least player version 4.'); // eslint-disable-line
     return null;
   }
 
@@ -60,6 +60,7 @@ function controller(OO, _, $) {
     this.toggleButtons = {};
     this.handleVrMobileOrientation = this.handleVrMobileOrientation.bind(this);
     this.languageList = [];
+    this.selectedEncoding = '';
     this.state = {
       playerParam: {},
       skinMetaData: {},
@@ -1052,7 +1053,8 @@ function controller(OO, _, $) {
       }
     },
 
-    onPlaying(event, source) {
+    onPlaying(event, source, selectedEncoding) {
+      this.selectedEncoding = selectedEncoding;
       if (source === OO.VIDEO.MAIN) {
         // set mainVideoElement if not set during video plugin initialization
         if (!this.state.mainVideoMediaType) {

@@ -302,6 +302,10 @@ const CONSTANTS = {
     END: 'End',
   },
 
+  ENCODINGS: {
+    IMA: 'ima',
+  },
+
   UI: {
     defaultScrubberBarHeight: 4,
     POPOVER_SCROLL_RATE: 0.6,
