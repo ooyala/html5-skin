@@ -683,7 +683,7 @@ class ControlBar extends React.Component {
           className="oo-airplay"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.AIRPLAY}
           ariaLabel={CONSTANTS.ARIA_LABELS.AIRPLAY}
-          icon={controller.state.airplay.statusIcon}
+          icon={controller.state.airplay && controller.state.airplay.statusIcon}
           tooltip={CONSTANTS.SKIN_TEXT.AIRPLAY}
           onClick={this.handleAirPlayClick}
         />
@@ -955,7 +955,7 @@ class ControlBar extends React.Component {
         )
         && (
           item.name !== 'airPlay'
-          || controller.state.airplay.available
+          || (controller.state.airplay && controller.state.airplay.available)
         );
     });
 
