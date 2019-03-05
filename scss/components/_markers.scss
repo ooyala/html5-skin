@@ -56,11 +56,11 @@
       height: 18px;
       width: 70px;
       margin: 0;
-      padding: 0;
+      padding: 2px;
+      line-height: 1;
       text-align: center;
       p {
         @include text-truncate();
-        padding: 0px 2px 0px 2px;
         margin: 0;
       }
       &:hover {

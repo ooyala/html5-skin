@@ -59,25 +59,27 @@ class MarkerIcon extends Component {
       data,
       config,
       accentColor,
+      level,
     } = this.props;
 
     const { hover } = this.state;
 
-    const hoverColor = data.hover_color ? data.hover_color : accentColor;
+    const marker = Object.assign({}, config, data);
 
-    const backgroundColor = data.background_color
-      ? data.background_color
+    const hoverColor = marker.hover_color ? marker.hover_color : accentColor;
+
+    const backgroundColor = marker.background_color
+      ? marker.background_color
       : accentColor;
 
-    const marker = Object.assign({}, config, data);
     const styles = {
       left: getPosition(duration, scrubberBarWidth, data.start),
-      zIndex: hover ? CONSTANTS.MARKERS.ZINDEX : CONSTANTS.MARKERS.ZINDEX - marker.index,
-      backgroundColor: hover ? hoverColor : backgroundColor,
+      zIndex: hover ? CONSTANTS.MARKERS.ZINDEX : CONSTANTS.MARKERS.ZINDEX - level,
     };
 
     if (data.type === CONSTANTS.MARKERS.TYPE.TEXT) {
       styles.left -= hover ? CONSTANTS.MARKERS.OFFSET.TEXT_HOVER : CONSTANTS.MARKERS.OFFSET.TEXT;
+      styles.backgroundColor = hover ? hoverColor : backgroundColor;
     }
 
     if (data.type === CONSTANTS.MARKERS.TYPE.ICON) {
@@ -203,7 +205,10 @@ MarkerIcon.propTypes = {
     hover_color: PropTypes.string,
   }),
   accentColor: PropTypes.string,
-  controller: PropTypes.shape,
+  controller: PropTypes.shape({
+    seek: PropTypes.func,
+  }),
+  level: PropTypes.number,
 };
 
 MarkerIcon.defaultProps = {
@@ -213,6 +218,7 @@ MarkerIcon.defaultProps = {
   config: {},
   accentColor: '',
   controller: {},
+  level: 0,
 };
 
 export default MarkerIcon;
