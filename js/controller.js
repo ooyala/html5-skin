@@ -32,7 +32,7 @@ function controller(OO, _, $) {
   const UNSUPPORTED_PLAYER_VERSION = 3;
 
   if (!OO.playerParams.core_version || OO.playerParams.core_version <= UNSUPPORTED_PLAYER_VERSION) {
-    console.error('Html5Skin requires at least player version 4.'); // eslint-disable-line
+    console.error('Html5Skin requires at least player version 4.');
     return null;
   }
 
