@@ -83,6 +83,9 @@ describe('ControlBar', function() {
           connected: false,
           device: ""
         },
+        airplay: {
+          available: false,
+        },
         metadata: {
           modules: {
             'discovery-ui': {}
@@ -1355,14 +1358,14 @@ describe('ControlBar', function() {
 
   describe('AirPlay button', () => {
     it('Should show airPlay button when the airPlay is available', () => {
-      baseMockController.state.isAirPlayAvailable = true;
+      baseMockController.state.airplay.available = true;
       const wrapper = Enzyme.mount(getControlBar());
       const airPlayBtn = wrapper.find('.oo-airplay').hostNodes();
       expect(airPlayBtn.length).toBe(1);
     });
 
     it('Should not show airPlay button when the airPlay is not available', () => {
-      baseMockController.state.isAirPlayAvailable = false;
+      baseMockController.state.airplay.available = false;
       const wrapper = Enzyme.mount(getControlBar());
       const airPlayBtn = wrapper.find('.oo-airplay').hostNodes();
       expect(airPlayBtn.length).toBe(0);
