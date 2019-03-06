@@ -19,6 +19,7 @@ class MarkerIcon extends Component {
     this.state = {
       hover: false,
     };
+    this.isMobile = this.props.controller.state.isMobile;
   }
 
   // eslint-disable-next-line require-jsdoc-except/require-jsdoc
@@ -134,15 +135,27 @@ class MarkerIcon extends Component {
 
   onMarkerClick = () => {
     const { controller, data } = this.props;
+    if (this.isMobile) {
+      if (this.state.hover) {
+        this.setState({ hover:false });
+      } else {
+        this.setState({ hover: true });
+        return; 
+      }
+    }
     controller.seek(data.start);
   }
 
   onMouseEnter = () => {
-    this.setState({ hover: true });
+    if (!this.isMobile) {
+      this.setState({ hover: true });
+    }
   }
 
   onMouseLeave = () => {
-    this.setState({ hover: false });
+    if (!this.isMobile) {
+      this.setState({ hover: false });
+    }
   }
 
   /**
@@ -164,7 +177,7 @@ class MarkerIcon extends Component {
     const markerClass = classNames({
       'oo-marker-bubble': true,
       [`oo-marker-${data.type || 'text'}`]: true,
-      'oo-marker-expanded': hover && data.type === CONSTANTS.MARKERS.TYPE.ICON && this.hasCoverImage(),
+      'oo-marker-expanded': hover && ((data.type === CONSTANTS.MARKERS.TYPE.ICON && this.hasCoverImage()) || data.type === CONSTANTS.MARKERS.TYPE.TEXT),
     });
 
     const content = this.getContent();
@@ -205,10 +218,7 @@ MarkerIcon.propTypes = {
     hover_color: PropTypes.string,
   }),
   accentColor: PropTypes.string,
-  controller: PropTypes.shape({
-    seek: PropTypes.func,
-  }),
-  level: PropTypes.number,
+  controller: PropTypes.object,
 };
 
 MarkerIcon.defaultProps = {
@@ -217,7 +227,7 @@ MarkerIcon.defaultProps = {
   data: {},
   config: {},
   accentColor: '',
-  controller: {},
+  controller: null,
   level: 0,
 };
 

@@ -62,15 +62,30 @@
       p {
         @include text-truncate();
         margin: 0;
+        max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
-      &:hover {
+      &.oo-marker-expanded {
         height: 80px;
         width: 140px;
+        p {
+          white-space: initial;
+          text-overflow: initial;
+          white-space: initial;
+        }
+        
+      }
+      &:hover {
+        //height: 80px;
+        //width: 140px;
         cursor: pointer;
         p {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: normal;
+          //overflow: hidden;
+          //text-overflow: ellipsis;
+          //white-space: normal;
         }
       }
     }
