@@ -16,20 +16,17 @@ import CONSTANTS from '../../constants/constants';
 class MarkerIcon extends Component {
   constructor(props) {
     super(props);
+    const { controller } = this.props;
     this.state = {
       hover: false,
     };
-    this.isMobile = this.props.controller.state.isMobile;
+    this.isMobile = controller.state.isMobile;
   }
 
   // eslint-disable-next-line require-jsdoc-except/require-jsdoc
   shouldComponentUpdate(nextProps, nextState) {
-    const { data, duration, scrubberBarWidth } = this.props;
+    const { duration, scrubberBarWidth } = this.props;
     const { hover } = this.state;
-
-    if (data.start !== nextProps.data.start) {
-      return true;
-    }
 
     if (duration !== nextProps.duration) {
       return true;
@@ -103,15 +100,18 @@ class MarkerIcon extends Component {
 
     switch (data.type) {
       case CONSTANTS.MARKERS.TYPE.TEXT: {
-        const truncatedText = data.text.length <= CONSTANTS.MARKERS.MAXCHAR
-          ? data.text : data.text.slice(0, CONSTANTS.MARKERS.MAXCHAR).concat(' ...');
         if (!data.text || data.text.length === 0) {
           return null;
         }
+        const truncatedText = data.text.length <= CONSTANTS.MARKERS.MAXCHAR
+          ? data.text : data.text.slice(0, CONSTANTS.MARKERS.MAXCHAR).concat(' ...');
         content = <p>{truncatedText}</p>;
         break;
       }
       case CONSTANTS.MARKERS.TYPE.ICON: {
+        if (!data.icon_url || data.icon_url.length === 0) {
+          return null;
+        }
         const iconClass = classNames({
           'oo-hidden': hover && this.hasCoverImage(),
         });
@@ -126,7 +126,7 @@ class MarkerIcon extends Component {
         break;
       }
       default:
-        content = (<div />);
+        content = null;
         break;
     }
 
@@ -135,12 +135,13 @@ class MarkerIcon extends Component {
 
   onMarkerClick = () => {
     const { controller, data } = this.props;
+    const { hover } = this.state;
     if (this.isMobile) {
-      if (this.state.hover) {
-        this.setState({ hover:false });
+      if (hover) {
+        this.setState({ hover: false });
       } else {
         this.setState({ hover: true });
-        return; 
+        return;
       }
     }
     controller.seek(data.start);
@@ -177,7 +178,8 @@ class MarkerIcon extends Component {
     const markerClass = classNames({
       'oo-marker-bubble': true,
       [`oo-marker-${data.type || 'text'}`]: true,
-      'oo-marker-expanded': hover && ((data.type === CONSTANTS.MARKERS.TYPE.ICON && this.hasCoverImage()) || data.type === CONSTANTS.MARKERS.TYPE.TEXT),
+      'oo-marker-expanded': hover && ((data.type === CONSTANTS.MARKERS.TYPE.ICON
+        && this.hasCoverImage()) || data.type === CONSTANTS.MARKERS.TYPE.TEXT),
     });
 
     const content = this.getContent();
@@ -218,7 +220,13 @@ MarkerIcon.propTypes = {
     hover_color: PropTypes.string,
   }),
   accentColor: PropTypes.string,
-  controller: PropTypes.object,
+  controller: PropTypes.shape({
+    seek: PropTypes.func,
+    state: PropTypes.shape({
+      isMobile: PropTypes.bool,
+    }),
+  }),
+  level: PropTypes.number,
 };
 
 MarkerIcon.defaultProps = {

@@ -9,7 +9,7 @@ const MAXSIZE = 2;
  * @returns {number} position in pixels
  */
 function getPosition(duration, width, init) {
-  if (!duration || !width) {
+  if (!duration || !width || !init) {
     return 0;
   }
   return parseFloat(init) / parseFloat(duration) * width;
