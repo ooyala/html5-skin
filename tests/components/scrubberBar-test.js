@@ -561,4 +561,40 @@ describe('ScrubberBar', function() {
     expect(wrapper.find('.oo-scrubber-bar-video').length).toBe(0);
   });
 
+  it('should handle resize after entering fullscreen', () => {
+
+    const mockController = {
+      state: {
+        isMobile: false
+      }
+    };
+    const wrapper = Enzyme.mount(
+      <ScrubberBar
+        componentWidth={600}
+        currentPlayhead={50}
+        duration={100}
+        controlBarVisible={true}
+        seeking={false}
+        controller={mockController}
+        skinConfig={skinConfig}
+      />
+    );
+
+    wrapper.setState({
+      scrubberBarWidth: 600,
+      playheadWidth: 10
+    });
+
+    const handleResize = jest.spyOn(wrapper.instance(), 'handleResize');
+    const playhead = wrapper.find('.oo-playhead-padding').getDOMNode();
+    let leftPos = parseInt(playhead.style.left);
+    expect(leftPos).toBe(300);
+    wrapper.setProps({ componentWidth: 1900 });
+    wrapper.setState({ scrubberBarWidth: 1900 });
+
+    expect(handleResize).toHaveBeenCalled();
+    leftPos = parseInt(playhead.style.left);
+    expect(leftPos).toBe(950);
+  })
+
 });
