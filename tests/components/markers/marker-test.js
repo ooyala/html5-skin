@@ -5,64 +5,75 @@ jest
 import React from 'react';
 import Enzyme from 'enzyme';
 import Marker from '../../../js/components/markers/marker';
+import _ from 'underscore';
+import sinon from 'sinon';
 
 describe('Marker component', function () {
 
-  let baseProps;
-
-  function renderComponent() {
-    return Enzyme.mount(<Marker {...baseProps}/>);
+  const baseProps = {
+    duration: 0,
+    scrubberBarWidth: 0,
+    data: {},
+    config: {},
+    accentColor: ''
   };
 
-  beforeEach(() => {
-    baseProps = {
-      duration: 0,
-      scrubberBarWidth: 0,
-      data: {},
-      config: {},
-      accentColor: ''
-    };
-  });
+  function renderComponent(props) {
+    return Enzyme.mount(<Marker {...props}/>);
+  };
 
   it('Shouldn\'t render a marker when the type is not defined', function () {
-    const marker = renderComponent();
+    const marker = renderComponent(baseProps);
     expect(marker.isEmptyRender()).toBeTruthy();
   });
 
   it('Shouldn\'t render a marker when the type is \'text\' and the text property is empty', function () {
-    baseProps.data.type = 'text';
-    baseProps.data.text = '';
-    const marker = renderComponent();
+    const data = {
+      type: 'text',
+      text: ''
+    };
+    const props = _.extend({}, baseProps, {data: data});
+    const marker = renderComponent(props);
     expect(marker.isEmptyRender()).toBeTruthy();
   });
 
   it('Shouldn\'t render a marker when the type is \'text\' and the text property is not defined', function () {
-    baseProps.data.type = 'text';
-    const marker = renderComponent();
+    const data = {
+      type: 'text'
+    };
+    const props = _.extend({}, baseProps, {data: data});
+    const marker = renderComponent(props);
     expect(marker.isEmptyRender()).toBeTruthy();
   });
 
   it('Shouldn\'t render a marker when the type is \'icon\' and the start property is not defined', function () {
-    baseProps.data.type = 'icon';
-    const marker = renderComponent();
+    const data = {
+      type: 'icon'
+    };
+    const props = _.extend({}, baseProps, {data: data});
+    const marker = renderComponent(props);
     expect(marker.isEmptyRender()).toBeTruthy();
   });
 
   it('Should render a marker with the oo-marker class', function () {
-    baseProps.data.type = 'text';
-    baseProps.data.text = 'test';
-    baseProps.data.start = 60;
-    const marker = renderComponent();
+    const data = {
+      type: 'text',
+      text: 'test',
+      start: 60
+    };
+    const props = _.extend({}, baseProps, {data: data});
+    const marker = renderComponent(props);
     expect(marker.find('div').hasClass('oo-marker')).toBeTruthy();
   });
 
   it('Should render a marker and update his position', function () {
-    baseProps.data.type = 'text';
-    baseProps.data.text = 'test';
-    baseProps.data.start = 60;
-    baseProps.duration = 300;
-    baseProps.scrubberBarWidth = 800;
-    const marker = renderComponent();
+    const data = {
+      type: 'text',
+      text: 'test',
+      start: 60
+    };
+    const props = _.extend({}, baseProps, {data: data, scrubberBarWidth: 800, duration: 300});
+    const marker = renderComponent(props);
     expect(marker.find('div').hasClass('oo-marker')).toBeTruthy();
     expect(marker.getDOMNode().style).toHaveProperty('left', '160px');
 
@@ -70,41 +81,38 @@ describe('Marker component', function () {
     expect(marker.getDOMNode().style).toHaveProperty('left', '180px');
   });
 
-  it('Shouldn\'t render again the marker when the props are the same', function () {
-    baseProps.data.type = 'text';
-    baseProps.data.text = 'test';
-    baseProps.data.start = 60;
-    baseProps.duration = 300;
-    baseProps.scrubberBarWidth = 800;
-    const marker = renderComponent();
-    expect(marker.find('div').hasClass('oo-marker')).toBeTruthy();
-    expect(marker.getDOMNode().style).toHaveProperty('left', '160px');
-
-    marker.setProps({scrubberBarWidth:800});
-    expect(marker.getDOMNode().style).toHaveProperty('left', '160px');
-  });
-
   it('Should render a marker with the accentcolor as background color', function () {
-    baseProps.data.type = 'text';
-    baseProps.data.text = 'test';
-    baseProps.data.start = 60;
-    baseProps.accentColor = "#ffff";
-    baseProps.duration = 300;
-    baseProps.scrubberBarWidth = 800;
-    const marker = renderComponent();
+    const data = {
+      type: 'text',
+      text: 'test',
+      start: 60
+    };
+    const props = _.extend({}, baseProps,
+      {
+        data: data,
+        scrubberBarWidth: 800,
+        duration: 300,
+        accentColor: '#ffff'
+      });
+    const marker = renderComponent(props);
     expect(marker.find('div').hasClass('oo-marker')).toBeTruthy();
     expect(marker.find('div').prop('style')).toHaveProperty('backgroundColor', '#ffff');
   });
 
   it('Should render a marker with the custom background color ', function () {
-    baseProps.data.type = 'text';
-    baseProps.data.text = 'test';
-    baseProps.data.start = 60;
-    baseProps.data.marker_color = '#0000';
-    baseProps.accentColor = "#ffff";
-    baseProps.duration = 300;
-    baseProps.scrubberBarWidth = 800;
-    const marker = renderComponent();
+    const data = {
+      type: 'text',
+      text: 'test',
+      start: 60,
+      marker_color: '#0000'
+    };
+    const props = _.extend({}, baseProps,
+      {
+        data: data,
+        scrubberBarWidth: 800,
+        duration: 300
+      });
+    const marker = renderComponent(props);
     expect(marker.find('div').hasClass('oo-marker')).toBeTruthy();
     expect(marker.find('div').prop('style')).toHaveProperty('backgroundColor', '#0000');
   });
