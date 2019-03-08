@@ -52,7 +52,6 @@ describe('ScrubberBar', function() {
         controlBarVisible: true,
         isLiveStream: false,
         markers: {
-          types: {},
           list: [],
         }
       },

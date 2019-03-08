@@ -127,7 +127,6 @@ describe('SkipControls', function() {
             isHovering: false
           },
           markers: {
-            types: {},
             list: [],
           }
         },

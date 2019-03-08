@@ -102,7 +102,6 @@ describe('PlayingScreen', function() {
           title: 'title'
         },
         markers: {
-          types: {},
           list: [],
         }
       },

@@ -80,7 +80,6 @@ describe('PauseScreen', function() {
           device: ""
         },
         markers: {
-          types: {},
           list: [],
         }
       },

@@ -293,7 +293,7 @@ describe('MarkerIcon component', function () {
 
     markerIcon.unmount().mount();
     markerIcon.find('div.oo-marker-bubble.oo-marker-icon').simulate('mouseenter');
-    expect(markerIcon.find('div.oo-marker-bubble').prop('style')).toHaveProperty('left', 90);
+    expect(markerIcon.find('div.oo-marker-bubble').prop('style')).toHaveProperty('left', 110);
   });
 
 

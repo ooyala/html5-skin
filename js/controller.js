@@ -221,7 +221,6 @@ function controller(OO, _, $) {
       },
 
       markers: {
-        type: '',
         list: [],
       },
 
@@ -779,7 +778,7 @@ function controller(OO, _, $) {
     },
 
     onMarkersAvailable(event, data) {
-      this.state.markers.list = data.marker_list;
+      this.state.markers.list = data.list;
       this.renderSkin();
     },
 

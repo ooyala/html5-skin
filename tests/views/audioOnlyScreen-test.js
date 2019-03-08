@@ -91,7 +91,6 @@ describe('Audio Only Screen', () => {
           availableBitrates: null
         },
         markers: {
-          types: {},
           list: [],
         },
       },

@@ -70,7 +70,6 @@ var skinControllerMock = {
       isReceiver: false
     },
     markers: {
-      types: {},
       list: [],
     }
   },

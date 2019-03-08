@@ -92,7 +92,6 @@ describe('ControlBar', function() {
           }
         },
         markers: {
-          types: {},
           list: [],
         }
       },

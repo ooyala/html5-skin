@@ -41,8 +41,8 @@
         display: block;
       }
       &.oo-marker-expanded {
-        height: 80px;
-        width: 140px;
+        height: 70px;
+        width: 100px;
         padding: 0;
       }
       &:hover{
@@ -79,14 +79,7 @@
         
       }
       &:hover {
-        //height: 80px;
-        //width: 140px;
         cursor: pointer;
-        p {
-          //overflow: hidden;
-          //text-overflow: ellipsis;
-          //white-space: normal;
-        }
       }
     }
   }

@@ -55,7 +55,6 @@ describe('EndScreen', function() {
           device: ""
         },
         markers: {
-          types: {},
           list: [],
         }
       },

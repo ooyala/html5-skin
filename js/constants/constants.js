@@ -610,7 +610,7 @@ const CONSTANTS = {
       TEXT: 35,
       ICON: 16,
       TEXT_HOVER: 70,
-      ICON_HOVER: 70,
+      ICON_HOVER: 50,
     },
     ZINDEX: 12000,
     MAXCHAR: 78,
