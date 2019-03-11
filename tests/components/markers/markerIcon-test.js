@@ -9,7 +9,7 @@ import _ from 'underscore';
 
 describe('MarkerIcon component', function () {
   const baseProps = {
-    duration: 10,
+    duration: 0,
     scrubberBarWidth: 0,
     data: {},
     config: {},
@@ -27,7 +27,7 @@ describe('MarkerIcon component', function () {
     return Enzyme.mount(<MarkerIcon {...props}/>);
   };
 
-  it('Shouldn\'t render a markerIcon', function () {
+  it('Shouldn\'t render a markerIcon when there is no information about type, start, scrubberBarWidth or duration', function () {
     const markerIcon = renderComponent(baseProps);
     expect(markerIcon.isEmptyRender()).toBeTruthy();
   });
@@ -86,7 +86,7 @@ describe('MarkerIcon component', function () {
     expect(markerIcon.find('div.oo-marker-bubble').prop('style')).toHaveProperty('backgroundColor', '#ffff');
   });
 
-  it('Should render a markerIcon wtih a default background color (accentColor)', function () {
+  it('Should render a markerIcon with a default background color (accentColor)', function () {
     const data = {
       type: 'text',
       text: 'test'

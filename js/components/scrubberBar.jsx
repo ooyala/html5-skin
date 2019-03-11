@@ -285,7 +285,6 @@ class ScrubberBar extends React.Component {
    */
   handleScrubberBarMouseOver = (event) => {
     const { controller, skinConfig } = this.props;
-    let offsetX;
     if (!skinConfig.controlBar.scrubberBar.thumbnailPreview) return;
     if (controller.state.screenToShow === CONSTANTS.SCREEN.AD_SCREEN) return;
     if (this.isMobile) {
@@ -305,8 +304,7 @@ class ScrubberBar extends React.Component {
     }
 
     controller.setScrubberBarHoverState(true);
-    // eslint-disable-next-line prefer-destructuring
-    offsetX = event.nativeEvent.offsetX;
+    let { offsetX } = event.nativeEvent;
     if (event.target.className.match('oo-marker')) {
       offsetX += event.target.offsetLeft;
     }
@@ -572,8 +570,8 @@ class ScrubberBar extends React.Component {
         onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}
       >
-        {controller.state.markers && controller.state.markers.list.length > 0 && (
-          <div id="oo-marker-container">
+        {!!controller.state.markers && controller.state.markers.list.length > 0 && (
+          <div className="oo-marker-container">
             {markerIcons}
           </div>
         )}
