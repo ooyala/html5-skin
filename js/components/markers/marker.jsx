@@ -27,8 +27,8 @@ class Marker extends React.Component {
     } = this.props;
 
     const marker = Object.assign({}, config, data);
-    const backgroundColor = marker.marker_color
-      ? marker.marker_color
+    const backgroundColor = marker.markerColor
+      ? marker.markerColor
       : accentColor;
     return {
       left: getPosition(duration, scrubberBarWidth, data.start),
@@ -69,15 +69,15 @@ Marker.propTypes = {
     start: PropTypes.number,
     end: PropTypes.number,
     text: PropTypes.string,
-    icon_url: PropTypes.string,
-    image_url: PropTypes.string,
-    background_color: PropTypes.string,
-    hover_color: PropTypes.string,
+    iconUrl: PropTypes.string,
+    imageUrl: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    hoverColor: PropTypes.string,
   }),
   config: PropTypes.shape({
-    icon_url: PropTypes.string,
-    background_color: PropTypes.string,
-    hover_color: PropTypes.string,
+    iconUrl: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    hoverColor: PropTypes.string,
   }),
   accentColor: PropTypes.string,
 };

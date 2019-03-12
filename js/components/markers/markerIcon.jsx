@@ -64,10 +64,10 @@ class MarkerIcon extends Component {
 
     const marker = Object.assign({}, config, data);
 
-    const hoverColor = marker.hover_color ? marker.hover_color : accentColor;
+    const hoverColor = marker.hoverColor ? marker.hoverColor : accentColor;
 
-    const backgroundColor = marker.background_color
-      ? marker.background_color
+    const backgroundColor = marker.backgroundColor
+      ? marker.backgroundColor
       : accentColor;
 
     const styles = {
@@ -109,7 +109,7 @@ class MarkerIcon extends Component {
         break;
       }
       case CONSTANTS.MARKERS.TYPE.ICON: {
-        if (!data.icon_url || data.icon_url.length === 0) {
+        if (!data.iconUrl || data.iconUrl.length === 0) {
           return null;
         }
         const iconClass = classNames({
@@ -120,8 +120,8 @@ class MarkerIcon extends Component {
         });
         content = (
           <>
-            <img className={iconClass} src={data.icon_url} alt={data.text} />
-            { this.hasCoverImage() && <img className={coverImgClass} src={data.image_url} alt={data.text} />}
+            <img className={iconClass} src={data.iconUrl} alt={data.text} />
+            { this.hasCoverImage() && <img className={coverImgClass} src={data.imageUrl} alt={data.text} />}
           </>);
         break;
       }
@@ -167,7 +167,7 @@ class MarkerIcon extends Component {
    */
   hasCoverImage() {
     const { data } = this.props;
-    return data.image_url && data.image_url !== '';
+    return data.imageUrl && data.imageUrl !== '';
   }
 
   render() {
@@ -209,15 +209,15 @@ MarkerIcon.propTypes = {
     start: PropTypes.number,
     end: PropTypes.number,
     text: PropTypes.string,
-    icon_url: PropTypes.string,
-    image_url: PropTypes.string,
-    background_color: PropTypes.string,
-    hover_color: PropTypes.string,
+    iconUrl: PropTypes.string,
+    imageUrl: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    hoverColor: PropTypes.string,
   }),
   config: PropTypes.shape({
-    icon_url: PropTypes.string,
-    background_color: PropTypes.string,
-    hover_color: PropTypes.string,
+    iconUrl: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    hoverColor: PropTypes.string,
   }),
   accentColor: PropTypes.string,
   controller: PropTypes.shape({

@@ -55,7 +55,7 @@ describe('MarkerIcon component', function () {
     expect(markerIcon.isEmptyRender()).toBeTruthy();
   });
 
-  it('Shouldn\'t render a markerIcon of type: icon if there is no icon_url property available', function () {
+  it('Shouldn\'t render a markerIcon of type: icon if there is no iconUrl property available', function () {
     const data = {
       type: 'icon'
     }
@@ -78,7 +78,7 @@ describe('MarkerIcon component', function () {
     const data = {
       type: 'text',
       text: 'test',
-      background_color: "#ffff"
+      backgroundColor: "#ffff"
     }
     const props = _.extend({}, baseProps, {data: data, duration: 300, scrubberBarWidth: 800});
     const markerIcon = renderComponent(props);
@@ -114,7 +114,7 @@ describe('MarkerIcon component', function () {
         duration: 300,
         scrubberBarWidth: 800,
         config: {
-          background_color: '#d60000'
+          backgroundColor: '#d60000'
         }
       });
     const markerIcon = renderComponent(props);
@@ -142,7 +142,7 @@ describe('MarkerIcon component', function () {
       data: {
         type: 'icon',
         start: 60,
-        icon_url: 'www.mysite.com/images/icon.png'
+        iconUrl: 'www.mysite.com/images/icon.png'
       }
     });
 
@@ -171,7 +171,7 @@ describe('MarkerIcon component', function () {
   it('Should render a markerIcon wtih an icon image', function () {
     const data = {
       type: 'icon',
-      icon_url: 'test.jpg'
+      iconUrl: 'test.jpg'
     }
     const props = _.extend({}, baseProps,
       {
@@ -187,8 +187,8 @@ describe('MarkerIcon component', function () {
   it('Should render a markerIcon wtih an icon image and a cover image', function () {
     const data = {
       type: 'icon',
-      icon_url: 'test.jpg',
-      image_url: 'cover.jpg'
+      iconUrl: 'test.jpg',
+      imageUrl: 'cover.jpg'
     }
     const props = _.extend({}, baseProps,
       {
@@ -226,7 +226,7 @@ describe('MarkerIcon component', function () {
     const data = {
       type: 'text',
       text: 'test',
-      hover_color: '#ff0000'
+      hoverColor: '#ff0000'
     }
     const props = _.extend({}, baseProps,
       {
@@ -406,8 +406,8 @@ describe('MarkerIcon component', function () {
       data: {
         type: 'icon',
         start: 60,
-        icon_url: 'www.mysite.com/images/icon.png',
-        image_url: 'www.mysite.com/images/cover.png'
+        iconUrl: 'www.mysite.com/images/icon.png',
+        imageUrl: 'www.mysite.com/images/cover.png'
       }
     });
 

@@ -104,7 +104,7 @@ describe('Marker component', function () {
       type: 'text',
       text: 'test',
       start: 60,
-      marker_color: '#0000'
+      markerColor: '#0000'
     };
     const props = _.extend({}, baseProps,
       {
