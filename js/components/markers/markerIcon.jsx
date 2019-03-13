@@ -95,21 +95,22 @@ class MarkerIcon extends Component {
    */
   getContent() {
     let content;
-    const { data } = this.props;
+    const { data, config } = this.props;
     const { hover } = this.state;
+    const marker = Object.assign({}, config, data);
 
-    switch (data.type) {
+    switch (marker.type) {
       case CONSTANTS.MARKERS.TYPE.TEXT: {
-        if (!data.text || data.text.length === 0) {
+        if (!marker.text || marker.text.length === 0) {
           return null;
         }
-        const truncatedText = data.text.length <= CONSTANTS.MARKERS.MAXCHAR
-          ? data.text : data.text.slice(0, CONSTANTS.MARKERS.MAXCHAR).concat(' ...');
+        const truncatedText = marker.text.length <= CONSTANTS.MARKERS.MAXCHAR
+          ? marker.text : marker.text.slice(0, CONSTANTS.MARKERS.MAXCHAR).concat(' ...');
         content = <p>{truncatedText}</p>;
         break;
       }
       case CONSTANTS.MARKERS.TYPE.ICON: {
-        if (!data.iconUrl || data.iconUrl.length === 0) {
+        if (!marker.iconUrl || marker.iconUrl.length === 0) {
           return null;
         }
         const iconClass = classNames({
@@ -120,8 +121,9 @@ class MarkerIcon extends Component {
         });
         content = (
           <>
-            <img className={iconClass} src={data.iconUrl} alt={data.text} />
-            { this.hasCoverImage() && <img className={coverImgClass} src={data.imageUrl} alt={data.text} />}
+            <img className={iconClass} src={marker.iconUrl} alt={marker.text} />
+            { this.hasCoverImage()
+              && <img className={coverImgClass} src={marker.imageUrl} alt={marker.text} />}
           </>);
         break;
       }
@@ -166,8 +168,9 @@ class MarkerIcon extends Component {
    * @memberof MarkerIcon
    */
   hasCoverImage() {
-    const { data } = this.props;
-    return data.imageUrl && data.imageUrl !== '';
+    const { data, config } = this.props;
+    const marker = Object.assign({}, config, data);
+    return marker.imageUrl && marker.imageUrl !== '';
   }
 
   render() {
