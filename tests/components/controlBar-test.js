@@ -90,6 +90,9 @@ describe('ControlBar', function() {
           modules: {
             'discovery-ui': {}
           }
+        },
+        markers: {
+          list: [],
         }
       },
       cancelTimer: function() {},

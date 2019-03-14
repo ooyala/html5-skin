@@ -125,6 +125,9 @@ describe('SkipControls', function() {
           duration: 60,
           scrubberBar: {
             isHovering: false
+          },
+          markers: {
+            list: [],
           }
         },
         rewindOrRequestPreviousVideo: () => {},

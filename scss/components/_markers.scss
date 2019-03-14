@@ -1,0 +1,86 @@
+.oo-marker-container {
+  width: 100%;
+  bottom: 20px;
+  position: absolute;
+  opacity: 0.5;
+  &:hover {
+    opacity: 1;
+  }
+  .oo-marker-bubble {
+    position: absolute;
+    height: 30px;
+    bottom: 6px;
+    background-color: rgb(63, 134, 255);
+    z-index: 1000;
+    border-radius: 2px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid #4E4E4E;
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border: 6px solid transparent;
+      border-top-color: inherit;
+      border-bottom: 0;
+      margin-left: -6px;
+      margin-bottom: -6px;
+    }
+    &.oo-marker-icon {
+      height: 32px;
+      width: 32px;
+      vertical-align: middle;
+      padding: 4px;
+      background-color: rgb(0, 0, 0);
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        margin: auto;
+        display: block;
+      }
+      &.oo-marker-expanded {
+        height: 70px;
+        width: 100px;
+        padding: 0;
+      }
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    &.oo-marker-text {
+      font-size: 13px;
+      color: white;
+      background-color: #000000;
+      height: 18px;
+      width: 70px;
+      margin: 0;
+      padding: 2px;
+      line-height: 1;
+      text-align: center;
+      p {
+        @include text-truncate();
+        margin: 0;
+        max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      &.oo-marker-expanded {
+        height: 80px;
+        width: 140px;
+        p {
+          white-space: initial;
+          text-overflow: initial;
+          white-space: initial;
+        }
+        
+      }
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
