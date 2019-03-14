@@ -94,7 +94,6 @@ class MarkerIcon extends Component {
    * @memberof MarkerIcon
    */
   getContent() {
-    let content;
     const { data, config } = this.props;
     const { hover } = this.state;
     const marker = Object.assign({}, config, data);
@@ -106,8 +105,7 @@ class MarkerIcon extends Component {
         }
         const truncatedText = marker.text.length <= CONSTANTS.MARKERS.MAXCHAR
           ? marker.text : marker.text.slice(0, CONSTANTS.MARKERS.MAXCHAR).concat(' ...');
-        content = <p>{truncatedText}</p>;
-        break;
+        return <p>{truncatedText}</p>;
       }
       case CONSTANTS.MARKERS.TYPE.ICON: {
         if (!marker.iconUrl || marker.iconUrl.length === 0) {
@@ -119,20 +117,16 @@ class MarkerIcon extends Component {
         const coverImgClass = classNames({
           'oo-hidden': !hover && this.hasCoverImage(),
         });
-        content = (
+        return (
           <>
             <img className={iconClass} src={marker.iconUrl} alt={marker.text} />
             { this.hasCoverImage()
               && <img className={coverImgClass} src={marker.imageUrl} alt={marker.text} />}
           </>);
-        break;
       }
       default:
-        content = null;
-        break;
+        return null;
     }
-
-    return content;
   }
 
   onMarkerClick = () => {
