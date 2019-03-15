@@ -106,7 +106,7 @@ class PauseScreen extends React.Component {
       event.preventDefault();
     }
     if (
-      ( !isVrMouseMove && !controller.state.isMobile )
+      (!isVrMouseMove && !controller.state.isMobile)
       || typeof controller.state.playerParam.onTogglePlayPause === 'function'
     ) {
       controller.togglePlayPause(event);
