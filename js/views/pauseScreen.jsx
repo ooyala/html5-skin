@@ -76,7 +76,6 @@ class PauseScreen extends React.Component {
    * @private
    */
   startAnimation = () => {
-    console.log('BBB startAnimation');
     this.setState({
       animate: true,
     });
