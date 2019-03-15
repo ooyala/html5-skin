@@ -231,11 +231,15 @@ class PlayingScreen extends React.Component {
    * @param {Event} event - event object
    */
   handlePlayerClicked = (event) => {
-    if (!this.props.isVrMouseMove && !this.isMobile) {
-      this.props.controller.togglePlayPause(event);
+    const { isVrMouseMove, controller, handleVrPlayerClick } = this.props;
+    if (
+      (!isVrMouseMove && !this.isMobile)
+      || typeof controller.state.playerParam.onTogglePlayPause === 'function'
+    ) {
+      controller.togglePlayPause(event);
     }
-    this.props.handleVrPlayerClick();
-  }
+    handleVrPlayerClick();
+  };
 
   /**
    * call handlePlayerFocus when the player is in focus

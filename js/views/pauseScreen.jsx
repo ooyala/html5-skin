@@ -76,6 +76,7 @@ class PauseScreen extends React.Component {
    * @private
    */
   startAnimation = () => {
+    console.log('BBB startAnimation');
     this.setState({
       animate: true,
     });
@@ -101,16 +102,20 @@ class PauseScreen extends React.Component {
    * @param {Event} event - event object
    */
   handleClick = (event) => {
-    if (this.props.controller.videoVr) {
+    const { controller, handleVrPlayerClick, isVrMouseMove } = this.props;
+    if (controller.videoVr) {
       event.preventDefault();
     }
-    if (!this.props.isVrMouseMove && !this.props.controller.state.isMobile) {
-      this.props.controller.togglePlayPause(event);
+    if (
+      ( !isVrMouseMove && !controller.state.isMobile )
+      || typeof controller.state.playerParam.onTogglePlayPause === 'function'
+    ) {
+      controller.togglePlayPause(event);
     }
-    this.props.controller.state.accessibilityControlsEnabled = true;
-    this.props.controller.state.isClickedOutside = false;
-    this.props.handleVrPlayerClick();
-  }
+    controller.state.accessibilityControlsEnabled = true;
+    controller.state.isClickedOutside = false;
+    handleVrPlayerClick();
+  };
 
   /**
    * remove the button on pause screen for correct checking mouse movement
