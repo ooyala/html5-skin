@@ -9,4 +9,8 @@
   .oo-text-track-container.oo-in-background {
     z-index: $zindex-background-captions;
   }
+
+  &.oo-hide-cursor *{
+    cursor: none !important;
+  }
 }

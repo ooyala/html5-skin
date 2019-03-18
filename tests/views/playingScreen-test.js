@@ -100,6 +100,9 @@ describe('PlayingScreen', function() {
           promo_image: 'image.png',
           description: 'description',
           title: 'title'
+        },
+        markers: {
+          list: [],
         }
       },
       cancelTimer: function() {},
@@ -385,28 +388,22 @@ describe('PlayingScreen', function() {
     expect(clicked).toBe(false);
   });
 
-  it('creates a PlayingScreen and check play&pause on mobile with click', function() {
-    let clicked = false;
-    let isMouseMove = true;
-
+  it('creates a PlayingScreen and check play&pause on mobile with click', () => {
     mockController.state.videoVr = true;
     mockController.state.isMobile = true;
     mockController.state.isVrMouseDown = false;
     mockController.state.isMouseMove = false;
-    mockController.togglePlayPause = function() {
-      clicked = !clicked;
-    };
-    mockController.startHideControlBarTimer = function() {};
+    mockController.state.playerParam = {};
+    mockController.togglePlayPause = jest.fn();
+    mockController.startHideControlBarTimer = () => {};
 
-    const handleVrPlayerClick = () => {
-      isMouseMove = false;
-    };
+    const handleVrPlayerClick = jest.fn();
+
     const handleTouchEndOnPlayer = () => {
       mockController.togglePlayPause();
     };
     const handleTouchEndOnWindow = () => {};
 
-    // Render pause screen into DOM
     const wrapper = Enzyme.mount(
       <PlayingScreen
         controller = {mockController}
@@ -425,11 +422,40 @@ describe('PlayingScreen', function() {
     const screen = wrapper.find('.oo-state-screen-selectable');
 
     screen.simulate('click');
-    expect(clicked).toBe(false);
-    expect(isMouseMove).toBe(false);
+    expect(mockController.togglePlayPause).not.toHaveBeenCalled();
+    expect(handleVrPlayerClick).toHaveBeenCalled();
 
     screen.simulate('touchEnd');
-    expect(clicked).toBe(true);
+    expect(mockController.togglePlayPause).toHaveBeenCalled();
+  });
+
+  it('should call togglePlayPause if the device is a mobile and onTogglePlayPause is a function', () => {
+    mockController.state.isMobile = true;
+    mockController.state.playerParam = {
+      onTogglePlayPause: jest.fn(),
+    };
+    mockController.togglePlayPause = jest.fn();
+    mockController.startHideControlBarTimer = jest.fn();
+
+    const handleVrPlayerClick = jest.fn();
+
+    const wrapper = Enzyme.mount(
+      <PlayingScreen
+        controller = {mockController}
+        skinConfig={mockSkinConfig}
+        closedCaptionOptions = {closedCaptionOptions}
+        handleVrPlayerClick={handleVrPlayerClick}
+        handleVrPlayerMouseUp={handleVrPlayerMouseUp}
+        playerState={CONSTANTS.STATE.PLAYING}
+        totalTime={"60:00"}
+        playheadTime={"00:00"}
+        contentTree={mockController.state.contentTree}
+      />
+    );
+    const screen = wrapper.find('.oo-state-screen-selectable');
+
+    screen.simulate('click');
+    expect(mockController.togglePlayPause).toHaveBeenCalled();
   });
 
   it('creates a PlayingScreen and check play&pause with click', function() {

@@ -23,10 +23,10 @@
   @include vendor-prefixes(user-select, none);
 
   .oo-scrubber-bar-padding {
-    height: 100%;
     left: 0;
     right: 0;
     position: absolute;
+    bottom: 50%;
 
     .oo-scrubber-bar {
       background-color: $gray-lighter;
@@ -92,6 +92,11 @@
 
     .oo-played-ad-indicator {
       background: #FF3F80;
+    }
+
+    .oo-marker {
+      position: absolute;
+      height: 100%;
     }
 
     .oo-playhead-padding {

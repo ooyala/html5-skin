@@ -78,6 +78,9 @@ describe('PauseScreen', function() {
           showButton: false,
           connected: false,
           device: ""
+        },
+        markers: {
+          list: [],
         }
       },
       addBlur: function() {},
@@ -121,25 +124,35 @@ describe('PauseScreen', function() {
     expect(clicked).toBe(true);
   });
 
-  it('toggles play pause on touch end instead of click on mobile', function() {
-    let clicked = false;
-
+  it('toggles play pause on touch end instead of click on mobile', () => {
     mockController.state.isMobile = true;
-    mockController.togglePlayPause = function() {
-      clicked = true;
-    };
-
+    mockController.togglePlayPause = jest.fn();
+    mockController.state.playerParam = {};
 
     // Render pause screen into DOM
     const wrapper = Enzyme.mount(getPauseScreen());
-
     const stateScreen = wrapper.find('.oo-state-screen-selectable');
 
     stateScreen.simulate('click');
-    expect(clicked).toBe(false);
+    expect(mockController.togglePlayPause).not.toHaveBeenCalled();
 
     stateScreen.simulate('touchEnd');
-    expect(clicked).toBe(true);
+    expect(mockController.togglePlayPause).toHaveBeenCalled();
+  });
+
+  it('should call togglePlayPause if the device is a mobile and onTogglePlayPause is a function', () => {
+    mockController.state.isMobile = true;
+    mockController.togglePlayPause = jest.fn();
+    mockController.state.playerParam = {
+      onTogglePlayPause: jest.fn(),
+    };
+
+    // Render pause screen into DOM
+    const wrapper = Enzyme.mount(getPauseScreen());
+    const stateScreen = wrapper.find('.oo-state-screen-selectable');
+
+    stateScreen.simulate('click');
+    expect(mockController.togglePlayPause).toHaveBeenCalled();
   });
 
   it('does show the fade underlay when there is a title', function() {

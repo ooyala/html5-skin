@@ -50,7 +50,10 @@ describe('ScrubberBar', function() {
         duration: 120,
         playerState: CONSTANTS.STATE.PLAYING,
         controlBarVisible: true,
-        isLiveStream: false
+        isLiveStream: false,
+        markers: {
+          list: [],
+        }
       },
       setScrubberBarHoverState: () => {}
     };
