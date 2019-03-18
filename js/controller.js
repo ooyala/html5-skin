@@ -220,6 +220,10 @@ function controller(OO, _, $) {
         isReceiver: false,
       },
 
+      markers: {
+        list: [],
+      },
+
       airplay: {
         available: false,
         statusIcon: CONSTANTS.AIRPLAY_STATE.DISCONNECTED,
@@ -294,6 +298,7 @@ function controller(OO, _, $) {
         _.bind(this.onChromecastStartCast, this),
       );
       this.mb.subscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi', _.bind(this.onChromecastEndCast, this));
+      this.mb.subscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi', _.bind(this.onMarkersAvailable, this));
       this.mb.subscribe(
         OO.EVENTS.AIRPLAY.AVAILABILITY_CHANGED,
         'customerUi',
@@ -770,6 +775,11 @@ function controller(OO, _, $) {
       if (this.state.audioOnly && contentTree.promo_image) {
         this.state.mainVideoContainer.height(CONSTANTS.UI.AUDIO_ONLY_WITH_COVER_HEIGHT);
       }
+    },
+
+    onMarkersAvailable(event, data) {
+      this.state.markers.list = data.list;
+      this.renderSkin();
     },
 
     onSkinMetaDataFetched(event, skinMetaData) {
@@ -2211,6 +2221,7 @@ function controller(OO, _, $) {
       this.mb.unsubscribe(OO.EVENTS.POSITION_IN_PLAYLIST_DETERMINED, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHROMECAST_START_CAST, 'customerUi');
       this.mb.unsubscribe(OO.EVENTS.CHROMECAST_END_CAST, 'customerUi');
+      this.mb.unsubscribe(OO.EVENTS.MARKER_DATA_AVAILABLE, 'customerUi');
     },
 
     unsubscribeBasicPlaybackEvents() {

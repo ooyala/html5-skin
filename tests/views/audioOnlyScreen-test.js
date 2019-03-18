@@ -89,7 +89,10 @@ describe('Audio Only Screen', () => {
         playbackSpeedOptions: { currentSpeed: 1 },
         videoQualityOptions: {
           availableBitrates: null
-        }
+        },
+        markers: {
+          list: [],
+        },
       },
       cancelTimer: function() {},
       hideVolumeSliderBar: function() {},

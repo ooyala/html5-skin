@@ -78,6 +78,9 @@ describe('PauseScreen', function() {
           showButton: false,
           connected: false,
           device: ""
+        },
+        markers: {
+          list: [],
         }
       },
       addBlur: function() {},

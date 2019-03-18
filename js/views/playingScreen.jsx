@@ -364,6 +364,8 @@ class PlayingScreen extends React.Component {
     );
     const className = ClassNames('oo-state-screen oo-playing-screen', {
       'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible,
+      'oo-hide-cursor': !this.props.controller.state.controlBarVisible
+        && this.props.controller.state.fullscreen,
     });
 
     // Always show the poster image on cast session
