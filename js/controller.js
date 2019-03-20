@@ -1121,7 +1121,7 @@ function controller(OO, _, $) {
         }
         if (
           !this.state.pauseAnimationDisabled
-          && this.state.metadata.modules['discovery-ui']
+          && (this.state.metadata && this.state.metadata.modules['discovery-ui'])
           && this.state.discoveryData
           && this.skin.props.skinConfig.pauseScreen.screenToShowOnPause === 'discovery'
           && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
@@ -1189,7 +1189,7 @@ function controller(OO, _, $) {
         this.state.upNextInfo.delayedSetEmbedCodeEvent = false;
         this.state.upNextInfo.delayedContentData = null;
       } else if (
-        this.state.metadata.modules['discovery-ui']
+        (this.state.metadata && this.state.metadata.modules['discovery-ui'])
         && this.state.discoveryData
         && this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'discovery'
         && !(!Utils.canRenderSkin() || (Utils.isIos() && this.state.fullscreen))
@@ -2168,7 +2168,7 @@ function controller(OO, _, $) {
       if (
         showUpNext
         && this.state.playerState === CONSTANTS.STATE.END
-        && this.state.metadata.modules['discovery-ui']
+        && (this.state.metadata && this.state.metadata.modules['discovery-ui'])
         && this.state.discoveryData
       ) {
         this.state.forceCountDownTimerOnEndScreen = true;

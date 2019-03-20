@@ -263,6 +263,10 @@ class ScrubberBar extends React.Component {
         : event.nativeEvent.offsetX;
     }
 
+    if (event.target.className.match('oo-marker')) {
+      offsetX += event.target.offsetLeft;
+    }
+
     this.setState({
       scrubbingPlayheadX: offsetX,
     });
