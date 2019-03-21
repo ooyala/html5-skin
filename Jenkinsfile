@@ -4,7 +4,7 @@
 def nodeLabel = 'ops-alfred3-aws'
 
 // variables
-def repositoryKey = 'mjolnir'
+def repositoryKey = 'html5-skin'
 def numToKeepStr = '10'
 def eventKeyStatic
 
