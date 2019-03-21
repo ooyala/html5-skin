@@ -244,10 +244,14 @@ describe('MarkerIcon component', function () {
   it('Should render a markerIcon (text), hover it and click to seek to the marker start', function () {
     let seeked = false;
     let seekTime = 0;
+    let playheadUpdated = false;
     const controller = {
       seek : (time) => {
         seeked = true;
         seekTime = time;
+      },
+      updateSeekingPlayhead: () => {
+        playheadUpdated = true;
       },
       state: {
         isMobile: false
@@ -273,7 +277,8 @@ describe('MarkerIcon component', function () {
     
     markerIcon.find('div.oo-marker-bubble.oo-marker-text').simulate('click');
     expect(seeked).toBe(true);
-    expect(seekTime).toBe(markerIcon.props().data.start);    
+    expect(seekTime).toBe(markerIcon.props().data.start);
+    expect(playheadUpdated).toBe(true);  
   });
 
   it('Should render a markerIcon (text), on mobile browsers it will not react to hover event', function () {
@@ -328,10 +333,14 @@ describe('MarkerIcon component', function () {
   it('Should render a markerIcon (text), on mobile browsers it will react to second click and perform the seek action', function () {
     let seeked = false;
     let seekTime = 0;
+    let playheadUpdated = false;
     const controller = {
       seek : (time) => {
         seeked = true;
         seekTime = time;
+      },
+      updateSeekingPlayhead: () => {
+        playheadUpdated = true;
       },
       state: {
         isMobile: true
@@ -358,6 +367,7 @@ describe('MarkerIcon component', function () {
     markerIcon.find('div.oo-marker-bubble.oo-marker-text').simulate('click');
     expect(seeked).toBe(true);
     expect(seekTime).toBe(markerIcon.props().data.start);
+    expect(playheadUpdated).toBe(true);
   });
 
   it('Should render a markerIcon and update the position on resize', function () {
