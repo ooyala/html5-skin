@@ -141,6 +141,7 @@ class MarkerIcon extends Component {
       }
     }
     controller.seek(data.start);
+    controller.updateSeekingPlayhead(data.start);
   }
 
   onMouseEnter = () => {
@@ -219,6 +220,7 @@ MarkerIcon.propTypes = {
   accentColor: PropTypes.string,
   controller: PropTypes.shape({
     seek: PropTypes.func,
+    updateSeekingPlayhead: PropTypes.func,
     state: PropTypes.shape({
       isMobile: PropTypes.bool,
     }),
