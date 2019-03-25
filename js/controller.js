@@ -829,7 +829,9 @@ function controller(OO, _, $) {
       this.state.contentTree = contentTree;
       this.state.playerState = CONSTANTS.STATE.START;
       // Make sure playhead is reset when we switch to a new video
-      this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
+      if (this.skin) {
+        this.skin.updatePlayhead(0, contentTree.duration, 0, 0);
+      }
     },
 
     onAssetUpdated(event, asset) {
