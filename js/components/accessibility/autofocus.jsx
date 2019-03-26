@@ -1,0 +1,54 @@
+/**
+ * Set, get autofocus btn, configure autofocus
+ * @param {Object} controller - controller props
+ * @constructor
+ */
+function Autofocus(controller) {
+  /**
+   * @description It gets value of toggleButtons from controller.js by popoverName
+   * @param {string} popoverName - the name of the popover
+   * @private
+   * @returns {Object} - if toggleButtons (object) has key = popoverName it returns the value,
+   * otherwise it returns {}
+   */
+  this.getToggleButtons = (popoverName) => {
+    console.log('BBB getToggleButtons popoverName', popoverName);
+    if (controller && controller.toggleButtons) {
+      return controller.toggleButtons[popoverName];
+    }
+    return {};
+  };
+
+  /**
+   * @description It sets this.props.controller.toggleButtons value (menu) for key = popoverName
+   * @param {string} popoverName - the name of the popover
+   * @param {HTMLElement} menu - an accessible button
+   */
+  this.setToggleButtons = (popoverName, menu) => {
+    if (controller && controller.toggleButtons) {
+      controller.toggleButtons[popoverName] = menu; // eslint-disable-line no-param-reassign
+    }
+  };
+
+  /**
+   * Configure the autofocus for menu
+   * @param {Array} menu - an array of menu items
+   */
+  this.configureMenuAutofocus = (menu) => {
+    const menuOptions = controller.state[menu] || {};
+    const menuToggleButton = this.getToggleButtons(menu);
+
+    console.log('BBB menu', menu, 'menuToggleButton', menuToggleButton);
+
+    if (menuOptions.showPopover) {
+      // Reset autoFocus property when closing the menu
+      menuOptions.autoFocus = false;
+    } else if (menuToggleButton) {
+      // If the menu was activated via keyboard we should
+      // autofocus on the first element
+      menuOptions.autoFocus = menuToggleButton.wasTriggeredWithKeyboard();
+    }
+  };
+}
+
+module.exports = Autofocus;

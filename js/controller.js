@@ -151,6 +151,10 @@ function controller(OO, _, $) {
         autoFocus: false,
       },
 
+      moreOptionsOptions: {
+        autoFocus: false,
+      },
+
       volumeState: {
         volume: 1,
         muted: false,
