@@ -22,19 +22,19 @@ describe('Autofocus', () => {
     autofocus = new Autofocus(controllerMock);
   });
 
-  it('tests function getToggleButtons', () => {
+  it('tests function getToggleButtons: should return correct value or empty object ', () => {
     const popover = autofocus.getToggleButtons('popover');
     const notPopover = autofocus.getToggleButtons('notPopover');
     expect(popover).toEqual(popoverObj);
     expect(notPopover).toEqual({});
   });
 
-  it('tests function setToggleButtons', () => {
+  it('tests function setToggleButtons: should set a value to menu', () => {
     autofocus.setToggleButtons('test', true);
     expect(controllerMock.toggleButtons.test).toBe(true);
   });
 
-  it('tests function configureMenuAutofocus', () => {
+  it('tests function configureMenuAutofocus: should call wasTriggeredWithKeyboard or set autoFocus to false', () => {
     autofocus.configureMenuAutofocus('showPopoverOptions');
     expect(controllerMock.state.showPopoverOptions.autoFocus).toBe(false);
     autofocus.configureMenuAutofocus('popover');
