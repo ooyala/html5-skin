@@ -12,7 +12,6 @@ import MACROS from '../constants/macros';
 class PlaybackSpeedPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.ref = React.createRef();
     this.onMenuItemClick = this.onMenuItemClick.bind(this);
   }
 
@@ -118,7 +117,6 @@ class PlaybackSpeedPanel extends React.Component {
 
     return (
       <MenuPanel
-        ref={this.ref}
         className="oo-playback-speed-panel"
         title={title}
         selectedValue={selectedValue}
