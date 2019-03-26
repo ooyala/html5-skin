@@ -37,8 +37,6 @@ describe('Autofocus', () => {
   });
 
   it('tests function setToggleButtons: should set a value to menu', () => {
-    autofocus.setToggleButtons('test', true);
-    expect(controllerMock.toggleButtons.test).toEqual(true);
     autofocus.setToggleButtons('test', Button);
     expect(controllerMock.toggleButtons.test).toEqual(Button);
   });
