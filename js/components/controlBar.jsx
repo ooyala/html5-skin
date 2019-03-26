@@ -236,7 +236,6 @@ class ControlBar extends React.Component {
    * @param {String} menuOptionsId A string that identifies the menu options object of the menu we want to toggle
    */
   handleMenuToggleClick = (menuOptionsId) => {
-    console.log('BBB handleMenuToggleClick menuOptionsId', menuOptionsId);
     this.configureMenuAutofocus(menuOptionsId);
     const { controller, responsiveView, skinConfig } = this.props;
     if (controller.state.isMobile
@@ -304,7 +303,6 @@ class ControlBar extends React.Component {
     const { controller } = this.props;
     const menuOptions = controller.state[menu];
     const menuToggleButton = this.getToggleButtons(menu);
-    console.log('BBB menuToggleButton', menuToggleButton);
     // Reset button flag that tracks keyboard interaction
     if (
       menuToggleButton
@@ -544,13 +542,13 @@ class ControlBar extends React.Component {
             className="oo-more-options"
             style={moreOptionsStyle}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            ariaLabel={CONSTANTS.ARIA_LABELS.MORE_OPTIONS}
             icon="ellipsis"
             tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
             onClick={this.handleMoreOptionsClick}
           />
         </div>
       ),
-
 
       quality: (
         <div key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY} className="oo-popover-button-container">

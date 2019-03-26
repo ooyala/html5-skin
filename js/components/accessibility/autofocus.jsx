@@ -12,7 +12,6 @@ function Autofocus(controller) {
    * otherwise it returns {}
    */
   this.getToggleButtons = (popoverName) => {
-    console.log('BBB getToggleButtons popoverName', popoverName);
     if (controller && controller.toggleButtons) {
       return controller.toggleButtons[popoverName];
     }
@@ -37,8 +36,6 @@ function Autofocus(controller) {
   this.configureMenuAutofocus = (menu) => {
     const menuOptions = controller.state[menu] || {};
     const menuToggleButton = this.getToggleButtons(menu);
-
-    console.log('BBB menu', menu, 'menuToggleButton', menuToggleButton);
 
     if (menuOptions.showPopover) {
       // Reset autoFocus property when closing the menu

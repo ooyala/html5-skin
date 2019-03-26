@@ -841,10 +841,6 @@ class Skin extends React.Component {
             );
             break;
           case CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN:
-            console.log(
-              'BBB CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN playbackSpeedOptions.autoFocus',
-              playbackSpeedOptions.autoFocus
-            );
             screen = (
               <ContentScreen
                 {...this.props}
