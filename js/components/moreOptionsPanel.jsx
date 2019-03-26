@@ -90,6 +90,7 @@ class MoreOptionsPanel extends React.Component {
         onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, menu)}
         className="oo-quality"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
+        ariaLabel={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
         icon="quality"
         onClick={() => this.handleMenuClick(
           CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN,
@@ -104,6 +105,7 @@ class MoreOptionsPanel extends React.Component {
         key={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
         className="oo-discovery"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
+        ariaHidden
         icon="discovery"
         onClick={this.handleDiscoveryClick}
       />
@@ -116,6 +118,7 @@ class MoreOptionsPanel extends React.Component {
         onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO, menu)}
         className="oo-multiaudio"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
+        ariaLabel={CONSTANTS.ARIA_LABELS.MULTI_AUDIO}
         icon="audioAndCC"
         onClick={() => this.handleMenuClick(
           CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN,
@@ -131,6 +134,7 @@ class MoreOptionsPanel extends React.Component {
         onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, menu)}
         className="oo-closed-caption"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
+        ariaLabel={CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS}
         icon="cc"
         onClick={() => this.handleMenuClick(
           CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN,
@@ -145,6 +149,7 @@ class MoreOptionsPanel extends React.Component {
         key={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
         onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED, menu)}
         focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+        ariaLabel={CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED}
         onClick={() => this.handleMenuClick(
           CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN,
           CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED

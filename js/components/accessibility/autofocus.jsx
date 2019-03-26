@@ -12,10 +12,14 @@ function Autofocus(controller) {
    * otherwise it returns {}
    */
   this.getToggleButtons = (popoverName) => {
-    if (controller && controller.toggleButtons) {
-      return controller.toggleButtons[popoverName];
+    if (
+      !controller
+      || !controller.toggleButtons
+      || typeof controller.toggleButtons[popoverName] === 'undefined'
+    ) {
+      return {};
     }
-    return {};
+    return controller.toggleButtons[popoverName];
   };
 
   /**
