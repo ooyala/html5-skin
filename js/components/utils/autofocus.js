@@ -3,7 +3,7 @@
  * @param {Object} controller - controller props
  * @constructor
  */
-function Autofocus(controller) {
+function Autofocus(state, toggleButtons) {
   /**
    * @description It gets value of toggleButtons from controller.js by popoverName
    * @param {string} popoverName - the name of the popover
@@ -13,13 +13,12 @@ function Autofocus(controller) {
    */
   this.getToggleButtons = (popoverName) => {
     if (
-      !controller
-      || !controller.toggleButtons
-      || typeof controller.toggleButtons[popoverName] === 'undefined'
+      !toggleButtons
+      || typeof toggleButtons[popoverName] === 'undefined'
     ) {
       return {};
     }
-    return controller.toggleButtons[popoverName];
+    return toggleButtons[popoverName];
   };
 
   /**
@@ -28,8 +27,8 @@ function Autofocus(controller) {
    * @param {HTMLElement} menu - an accessible button
    */
   this.setToggleButtons = (popoverName, menu) => {
-    if (controller && controller.toggleButtons) {
-      controller.toggleButtons[popoverName] = menu; // eslint-disable-line no-param-reassign
+    if (toggleButtons) {
+      toggleButtons[popoverName] = menu; // eslint-disable-line no-param-reassign
     }
   };
 
@@ -38,7 +37,7 @@ function Autofocus(controller) {
    * @param {Array} menu - an array of menu items
    */
   this.configureMenuAutofocus = (menu) => {
-    const menuOptions = controller.state[menu] || {};
+    const menuOptions = state[menu] || {};
     const menuToggleButton = this.getToggleButtons(menu);
 
     if (menuOptions.showPopover) {

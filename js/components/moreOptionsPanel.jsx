@@ -3,7 +3,7 @@ import ClassNames from 'classnames';
 import CONSTANTS from '../constants/constants';
 import ControlButton from './controlButton';
 import PlaybackSpeedButton from './playbackSpeedButton';
-import Autofocus from './accessibility/autofocus';
+import Autofocus from './utils/autofocus';
 
 /**
  * More options panel
@@ -12,7 +12,7 @@ class MoreOptionsPanel extends React.Component {
   constructor(props) {
     super(props);
 
-    this.autofocus = new Autofocus(props.controller);
+    this.autofocus = new Autofocus(props.controller.state, props.controller.toggleButtons);
 
     this.getToggleButtons = this.autofocus.getToggleButtons.bind(this);
     this.setToggleButtons = this.autofocus.setToggleButtons.bind(this);

@@ -15,7 +15,7 @@ import ClosedCaptionMultiAudioMenu from './closed-caption-multi-audio-menu/close
 import preserveKeyboardFocus from './higher-order/preserveKeyboardFocus';
 import Logo from './logo';
 import SkipControls from './skipControls';
-import Autofocus from './accessibility/autofocus';
+import Autofocus from './utils/autofocus';
 
 /**
  * The controlBar Component
@@ -29,7 +29,7 @@ class ControlBar extends React.Component {
     this.moreOptionsItems = null;
     this.vr = null;
 
-    this.autofocus = new Autofocus(props.controller);
+    this.autofocus = new Autofocus(props.controller.state, props.controller.toggleButtons);
 
     this.getToggleButtons = this.autofocus.getToggleButtons.bind(this);
     this.setToggleButtons = this.autofocus.setToggleButtons.bind(this);

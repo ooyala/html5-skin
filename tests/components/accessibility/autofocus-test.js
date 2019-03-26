@@ -1,6 +1,6 @@
-jest.dontMock('../../../js/components/accessibility/autofocus');
+jest.dontMock('../../../js/components/utils/autofocus');
 
-const Autofocus = require('../../../js/components/accessibility/autofocus');
+const Autofocus = require('../../../js/components/utils/autofocus');
 
 describe('Autofocus', () => {
 
@@ -19,7 +19,7 @@ describe('Autofocus', () => {
         }
       }
     };
-    autofocus = new Autofocus(controllerMock);
+    autofocus = new Autofocus(controllerMock.state, controllerMock.toggleButtons);
   });
 
   it('tests function getToggleButtons: should return correct value or empty object ', () => {
