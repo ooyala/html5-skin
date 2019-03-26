@@ -1,12 +1,15 @@
 jest.dontMock('../../../js/components/utils/autofocus');
 
 const Autofocus = require('../../../js/components/utils/autofocus');
+import React from 'react';
+
+class Button extends React.Component {}
 
 describe('Autofocus', () => {
 
   let autofocus, controllerMock, popoverObj;
   beforeEach(() => {
-    popoverObj = { 'test': true, wasTriggeredWithKeyboard: jest.fn() };
+    popoverObj = { 'test': true, wasTriggeredWithKeyboard: jest.fn().mockReturnValue(true) };
     controllerMock = {
       toggleButtons: {
         popover: popoverObj,
@@ -16,6 +19,10 @@ describe('Autofocus', () => {
         showPopoverOptions: {
           showPopover: true,
           autoFocus: true,
+        },
+        popover: {
+          showPopover: false,
+          autoFocus: false,
         }
       }
     };
@@ -31,14 +38,16 @@ describe('Autofocus', () => {
 
   it('tests function setToggleButtons: should set a value to menu', () => {
     autofocus.setToggleButtons('test', true);
-    expect(controllerMock.toggleButtons.test).toBe(true);
+    expect(controllerMock.toggleButtons.test).toEqual(true);
+    autofocus.setToggleButtons('test', Button);
+    expect(controllerMock.toggleButtons.test).toEqual(Button);
   });
 
-  it('tests function configureMenuAutofocus: should call wasTriggeredWithKeyboard or set autoFocus to false', () => {
+  it('tests function configureMenuAutofocus: should set autoFocus to false if the event was not triggered with keyboard', () => {
     autofocus.configureMenuAutofocus('showPopoverOptions');
     expect(controllerMock.state.showPopoverOptions.autoFocus).toBe(false);
     autofocus.configureMenuAutofocus('popover');
-    expect(popoverObj.wasTriggeredWithKeyboard).toHaveBeenCalled();
+    expect(controllerMock.state.popover.autoFocus).toBe(true);
   });
 
 });

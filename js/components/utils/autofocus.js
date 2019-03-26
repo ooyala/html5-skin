@@ -24,7 +24,7 @@ function Autofocus(state, toggleButtons) {
   /**
    * @description It sets this.props.controller.toggleButtons value (menu) for key = popoverName
    * @param {string} popoverName - the name of the popover
-   * @param {HTMLElement} menu - an accessible button
+   * @param {ReactElement} menu - an accessible button
    */
   this.setToggleButtons = (popoverName, menu) => {
     if (toggleButtons) {
