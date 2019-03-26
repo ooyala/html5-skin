@@ -64,7 +64,7 @@ describe('MoreOptionsPanel', function() {
   });
 
   it('creates more options panel', function() {
-    var wrapper = Enzyme.mount(
+    const wrapper = Enzyme.mount(
       <MoreOptionsPanel {...mockProps}
         playerState={CONSTANTS.STATE.PLAYING}
         controlBarVisible={true}
@@ -72,16 +72,20 @@ describe('MoreOptionsPanel', function() {
     );
 
     // test mouseover highlight
-    var span = wrapper.find('span');
-    for (var i=0; i<span.length; i++) {
+    const span = wrapper.find('span');
+    for (let i = 0; i < span.length; i++) {
       span.at(i).simulate('mouseOver');
       span.at(i).simulate('mouseOut');
     }
 
     // test btn clicks
-    var button = wrapper.find('a');
-    for (var j=0; j<button.length; j++) {
+    const button = wrapper.find('button');
+    const a = wrapper.find('a');
+    for (let j = 0; j < button.length; j++) {
       button.at(j).simulate('click');
+    }
+    for (let menuIndex = 0; menuIndex < a.length; menuIndex++) {
+      a.at(menuIndex).simulate('click');
     }
     expect(toggleScreenClicked).toBe(true);
     expect(shareScreenToggled).toBe(true);

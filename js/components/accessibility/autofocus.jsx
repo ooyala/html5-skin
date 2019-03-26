@@ -40,7 +40,7 @@ function Autofocus(controller) {
     if (menuOptions.showPopover) {
       // Reset autoFocus property when closing the menu
       menuOptions.autoFocus = false;
-    } else if (menuToggleButton) {
+    } else if (menuToggleButton && typeof menuToggleButton.wasTriggeredWithKeyboard === 'function') {
       // If the menu was activated via keyboard we should
       // autofocus on the first element
       menuOptions.autoFocus = menuToggleButton.wasTriggeredWithKeyboard();
