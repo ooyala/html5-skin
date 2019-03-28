@@ -1,0 +1,86 @@
+.oo-control-bar,
+.oo-more-options-items {
+
+  a.oo-control-bar-item {
+    display: block;
+  }
+
+  a.oo-control-bar-item,
+  button.oo-control-bar-item {
+    @include hide-button();
+
+    // Workaround for Safari clipping text shadows
+    // inside buttons
+    .oo-icon {
+      @include vendor-prefixes(transform, translateZ(0));
+    }
+  }
+
+  .oo-control-bar-item {
+    height: 100%;
+    font-weight: bold;
+    text-align: center;
+    padding: 0 12.5px;
+    cursor: pointer;
+    opacity: 1;
+
+    &.oo-selected > span {
+      color: inherit !important;
+      opacity:1 !important;
+    }
+
+    &:focus {
+      .oo-icon {
+        @include highlight-tab();
+        opacity: 1 !important;
+      }
+    }
+
+    &:hover:active {
+      .oo-icon {
+        @include remove-highlight-tab();
+      }
+    }
+
+    &.oo-focusable-btn {
+      @include remove-highlight-tab();
+    }
+
+    &.oo-mute-unmute {
+      height: auto;
+      padding: 0;
+    }
+
+    &.oo-logo {
+      cursor: auto;
+    }
+
+    &.oo-skip-controls {
+      max-width: 200px;
+    }
+  }
+
+  & > .oo-control-bar-item {
+    &:first-child {
+      padding-left: 0 !important;
+    }
+
+    &:last-child {
+      padding-right: 0 !important;
+    }
+  }
+}
+
+.oo-control-bar {
+  .oo-control-bar-item {
+    font-size: 23px;
+  }
+}
+
+.oo-more-options-items {
+  .oo-control-bar-item {
+    line-height: 1;
+    padding: 0 13px;
+    margin: 0 auto;
+  }
+}

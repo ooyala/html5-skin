@@ -521,6 +521,7 @@ class Skin extends React.Component {
       isVrMouseMove,
       fullscreen,
       multiAudioOptions,
+      moreOptionsOptions,
       pauseAnimationDisabled,
       playbackSpeedOptions,
       playerParam,
@@ -782,7 +783,11 @@ class Skin extends React.Component {
             break;
           case CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN:
             screen = (
-              <ContentScreen {...this.props} screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}>
+              <ContentScreen
+                {...this.props}
+                screen={CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN}
+                autoFocus={moreOptionsOptions.autoFocus}
+              >
                 <MoreOptionsPanel
                   {...this.props}
                   responsiveView={responsiveId}

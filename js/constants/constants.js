@@ -50,6 +50,7 @@ const CONSTANTS = {
     CLOSED_CAPTIONS: 'closedCaptionOptions',
     MULTI_AUDIO: 'multiAudioOptions',
     PLAYBACK_SPEED: 'playbackSpeedOptions',
+    MORE_OPTIONS: 'moreOptionsOptions',
   },
 
   SKIN_TEXT: {
