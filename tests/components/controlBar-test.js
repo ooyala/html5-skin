@@ -1372,6 +1372,17 @@ describe('ControlBar', function() {
       const wrapper = Enzyme.mount(getControlBar());
       const airPlayBtn = wrapper.find('.oo-airplay').hostNodes();
       expect(airPlayBtn.length).toBe(0);
+    });
+
+    it('Should not display the AirPlay button on Iphones', () => {
+      OO_setWindowNavigatorProperty('userAgent', 'phone');
+      OO_setWindowNavigatorProperty('platform', 'iPhone');
+      baseMockController.state.airplay.available = true;
+      const wrapper = Enzyme.mount(getControlBar());
+      const airPlayBtn = wrapper.find('.oo-airplay').hostNodes();
+      expect(airPlayBtn.length).toBe(0);
+      OO_setWindowNavigatorProperty('userAgent', 'desktop');
+      OO_setWindowNavigatorProperty('platform', '');
     })
   })
 });
