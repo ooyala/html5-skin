@@ -12,15 +12,8 @@
   pointer-events: auto;
 
   .oo-control-bar-items-wrapper {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    flex-direction: row;
+    @include flex-center-children(row);
     flex-flow: row nowrap;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-justify-content: center;
-    justify-content: center;
     white-space: nowrap;
     margin-top: 5px;
 
@@ -30,71 +23,6 @@
       border:0;
       margin:0;
       padding:0;
-    }
-
-    .oo-control-bar-item {
-      height: 100%;
-      font-weight: bold;
-      font-size: 23px;
-      text-align: center;
-      padding: 0 12.5px;
-      cursor: pointer;
-      opacity: 1;
-    }
-
-    & > .oo-control-bar-item:first-child {
-      padding-left:0 !important;
-    }
-
-    & > .oo-control-bar-item:last-child {
-      padding-right:0 !important;
-    }
-
-    a.oo-control-bar-item,
-    button.oo-control-bar-item {
-      @include hide-button();
-
-      // Workaround for Safari clipping text shadows
-      // inside buttons
-      .oo-icon {
-        @include vendor-prefixes(transform, translateZ(0));
-      }
-    }
-
-    .oo-control-bar-item.oo-selected > span {
-      color:$blue-light !important;
-      color: inherit !important;
-      opacity:1 !important;
-    }
-
-    .oo-control-bar-item:focus .oo-icon {
-      @include highlight-tab();
-      opacity: 1 !important;
-    }
-
-    .oo-control-bar-item:hover:active .oo-icon {
-      @include remove-highlight-tab();
-    }
-
-    .oo-control-bar-item.oo-focusable-btn {
-      @include remove-highlight-tab();
-    }
-
-    .oo-control-bar-item.oo-mute-unmute {
-      height: auto;
-      padding: 0;
-    }
-
-    .oo-control-bar-item.oo-logo {
-      cursor: auto;
-    }
-
-    .oo-control-bar-item.oo-skip-controls {
-      max-width: 200px;
-    }
-
-    a.oo-control-bar-item {
-      display: block;
     }
 
     .oo-control-bar-duration {

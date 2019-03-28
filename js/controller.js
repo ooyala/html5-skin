@@ -32,7 +32,7 @@ function controller(OO, _, $) {
   const UNSUPPORTED_PLAYER_VERSION = 3;
 
   if (!OO.playerParams.core_version || OO.playerParams.core_version <= UNSUPPORTED_PLAYER_VERSION) {
-    console.error('Html5Skin requires at least player version 4.');
+    console.error('Html5Skin requires at least player version 4.'); // eslint-disable-line no-console
     return null;
   }
 
@@ -148,6 +148,10 @@ function controller(OO, _, $) {
         availableBitrates: null,
         selectedBitrate: null,
         showPopover: false,
+        autoFocus: false,
+      },
+
+      moreOptionsOptions: {
         autoFocus: false,
       },
 
@@ -2298,13 +2302,13 @@ function controller(OO, _, $) {
     toggleDiscoveryScreen() {
       switch (this.state.playerState) {
         case CONSTANTS.STATE.PLAYING:
-          this.pausedCallback = function() {
+          this.pausedCallback = () => {
             this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
             this.state.playerState = CONSTANTS.STATE.PAUSE;
             this.state.pluginsElement.addClass('oo-overlay-blur');
             this.renderSkin();
             OO.log('finished toggleDiscoveryScreen');
-          }.bind(this);
+          };
           this.togglePlayPause();
           this.sendDiscoveryDisplayEventRelatedVideos('pauseScreen');
           this.state.discoverySource = CONSTANTS.SCREEN.PAUSE_SCREEN;
@@ -2425,11 +2429,11 @@ function controller(OO, _, $) {
       } else if (
         this.state.playerState === CONSTANTS.STATE.PLAYING
       ) {
-        this.pausedCallback = function() {
+        this.pausedCallback = () => {
           this.state.pluginsElement.addClass('oo-overlay-blur');
           this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
           this.renderSkin();
-        }.bind(this);
+        };
         this.mb.publish(OO.EVENTS.PAUSE);
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
@@ -2449,11 +2453,11 @@ function controller(OO, _, $) {
       if (this.state.screenToShow === screen) {
         this.closeScreen();
       } else if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.pausedCallback = function() {
+        this.pausedCallback = () => {
           this.state.pluginsElement.addClass('oo-overlay-blur');
           this.state.screenToShow = screen;
           this.renderSkin();
-        }.bind(this);
+        };
         if (doNotPause) {
           this.pausedCallback();
           this.pausedCallback = null;
@@ -2861,11 +2865,11 @@ function controller(OO, _, $) {
 
     displayMoreOptionsScreen(moreOptionsItems) {
       if (this.state.playerState === CONSTANTS.STATE.PLAYING) {
-        this.pausedCallback = function() {
+        this.pausedCallback = () => {
           this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
           this.state.pluginsElement.addClass('oo-overlay-blur');
           this.renderSkin();
-        }.bind(this);
+        };
         this.mb.publish(OO.EVENTS.PAUSE);
       } else {
         this.state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;

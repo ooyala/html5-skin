@@ -279,7 +279,7 @@
 }
 
 @mixin flex-center-children($flex-direction) {
-  @include flexbox;
+  @include flexbox();
   @include flex-direction($flex-direction);
   @include justify-content(center);
   @include align-items(center);

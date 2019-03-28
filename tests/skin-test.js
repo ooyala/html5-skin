@@ -52,6 +52,7 @@ var skinControllerMock = {
       }
     },
     multiAudioOptions: {},
+    moreOptionsOptions: { autoFocus: false },
     playbackSpeedOptions: { currentSpeed: 1 },
     closedCaptionOptions: {},
     config: {},
@@ -91,10 +92,10 @@ var skinControllerMock = {
   onTouchMove: () => {}
 };
 
-var getMockController = function() {
+const getMockController = () => {
   // Deep clone nested properties and then add the functions which were
   // removed during JSON.stringify
-  var mockController = JSON.parse(JSON.stringify(skinControllerMock));
+  const mockController = JSON.parse(JSON.stringify(skinControllerMock));
   _.extend(mockController, skinControllerMock);
   return mockController;
 };
@@ -194,6 +195,9 @@ describe('Skin screenToShow state', function() {
 
   it('tests MORE OPTIONS SCREEN', function() {
     state.screenToShow = CONSTANTS.SCREEN.MORE_OPTIONS_SCREEN;
+    state.moreOptionsOptions = {
+      autoFocus: false,
+    };
     skin.switchComponent(state);
   });
 

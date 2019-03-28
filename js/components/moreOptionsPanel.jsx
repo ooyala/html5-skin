@@ -3,6 +3,7 @@ import ClassNames from 'classnames';
 import CONSTANTS from '../constants/constants';
 import ControlButton from './controlButton';
 import PlaybackSpeedButton from './playbackSpeedButton';
+import Autofocus from './utils/autofocus';
 
 /**
  * More options panel
@@ -10,6 +11,13 @@ import PlaybackSpeedButton from './playbackSpeedButton';
 class MoreOptionsPanel extends React.Component {
   constructor(props) {
     super(props);
+
+    this.autofocus = new Autofocus(props.controller.state, props.controller.toggleButtons);
+
+    this.getToggleButtons = this.autofocus.getToggleButtons.bind(this);
+    this.setToggleButtons = this.autofocus.setToggleButtons.bind(this);
+    this.configureMenuAutofocus = this.autofocus.configureMenuAutofocus.bind(this);
+
     this.state = {
       animate: false,
     };
@@ -25,43 +33,31 @@ class MoreOptionsPanel extends React.Component {
 
   startAnimation = () => {
     this.setState({ animate: true });
-  }
+  };
 
   handleShareClick = () => {
     const { controller } = this.props;
     controller.toggleShareScreen();
-  }
+  };
 
-  handleQualityClick = () => {
+  /**
+   * Configure autofocus for accessibility and show current screen
+   * @param {String} elementScreen screen to show
+   * @param {String} menuElement - element to autofocus configure
+   */
+  handleMenuClick = (elementScreen, menuElement) => {
     const { controller } = this.props;
-    controller.toggleScreen(CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN);
-  }
+    if (!controller || typeof controller.toggleScreen !== 'function' || !elementScreen) {
+      return;
+    }
+    this.configureMenuAutofocus(menuElement);
+    controller.toggleScreen(elementScreen);
+  };
 
   handleDiscoveryClick = () => {
     const { controller } = this.props;
     controller.toggleDiscoveryScreen();
-  }
-
-  handleClosedCaptionClick = () => {
-    const { controller } = this.props;
-    controller.toggleScreen(CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN);
-  }
-
-  handleMultiAudioClick = () => {
-    const { controller } = this.props;
-    if (controller && typeof controller.toggleScreen === 'function') {
-      controller.toggleScreen(CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN);
-    }
-  }
-
-  /**
-   * Opens the Playback Speed menu in screen mode when the playback speed button is clicked
-   * @private
-   */
-  handlePlaybackSpeedClick = () => {
-    const { controller } = this.props;
-    controller.toggleScreen(CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN);
-  }
+  };
 
   /**
    * Build list of items for more options panel
@@ -86,15 +82,20 @@ class MoreOptionsPanel extends React.Component {
     };
 
     const optionsItemsTemplates = {};
+
     optionsItemsTemplates[CONSTANTS.CONTROL_BAR_KEYS.QUALITY] = (
       <ControlButton
         {...commonButtonProps}
         key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
+        onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY, menu)}
         className="oo-quality"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.QUALITY}
-        ariaHidden
+        ariaLabel={CONSTANTS.ARIA_LABELS.VIDEO_QUALITY}
         icon="quality"
-        onClick={this.handleQualityClick}
+        onClick={() => this.handleMenuClick(
+          CONSTANTS.SCREEN.VIDEO_QUALITY_SCREEN,
+          CONSTANTS.MENU_OPTIONS.VIDEO_QUALITY
+        )}
       />
     );
 
@@ -114,11 +115,15 @@ class MoreOptionsPanel extends React.Component {
       <ControlButton
         {...commonButtonProps}
         key={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
+        onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO, menu)}
         className="oo-multiaudio"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.AUDIO_AND_CC}
-        ariaHidden
+        ariaLabel={CONSTANTS.ARIA_LABELS.MULTI_AUDIO}
         icon="audioAndCC"
-        onClick={this.handleMultiAudioClick}
+        onClick={() => this.handleMenuClick(
+          CONSTANTS.SCREEN.MULTI_AUDIO_SCREEN,
+          CONSTANTS.MENU_OPTIONS.MULTI_AUDIO
+        )}
       />
     );
 
@@ -126,11 +131,15 @@ class MoreOptionsPanel extends React.Component {
       <ControlButton
         {...commonButtonProps}
         key={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
+        onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS, menu)}
         className="oo-closed-caption"
         focusId={CONSTANTS.CONTROL_BAR_KEYS.CLOSED_CAPTION}
-        ariaHidden
+        ariaLabel={CONSTANTS.ARIA_LABELS.CLOSED_CAPTIONS}
         icon="cc"
-        onClick={this.handleClosedCaptionClick}
+        onClick={() => this.handleMenuClick(
+          CONSTANTS.SCREEN.CLOSED_CAPTION_SCREEN,
+          CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS
+        )}
       />
     );
 
@@ -138,9 +147,13 @@ class MoreOptionsPanel extends React.Component {
       <PlaybackSpeedButton
         {...commonButtonProps}
         key={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
+        onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED, menu)}
         focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
-        ariaHidden
-        onClick={this.handlePlaybackSpeedClick}
+        ariaLabel={CONSTANTS.ARIA_LABELS.PLAYBACK_SPEED}
+        onClick={() => this.handleMenuClick(
+          CONSTANTS.SCREEN.PLAYBACK_SPEED_SCREEN,
+          CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED
+        )}
       />
     );
 
@@ -159,7 +172,7 @@ class MoreOptionsPanel extends React.Component {
     const items = controller.state.moreOptionsItems;
     const moreOptionsItems = items.map(item => optionsItemsTemplates[item.name]);
     return moreOptionsItems;
-  }
+  };
 
   render() {
     const { animate } = this.state;

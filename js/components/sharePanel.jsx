@@ -115,7 +115,7 @@ class SharePanel extends React.Component {
           const test = emailWindow.location.href; // eslint-disable-line
           emailWindow.close();
         } catch (error) {
-          console.log('email send error - ', error);
+          console.log('email send error - ', error); // eslint-disable-line no-console
         }
         // Generous 2 second timeout to give the window time to redirect if it's going to a web client
       }, twoSeconds);

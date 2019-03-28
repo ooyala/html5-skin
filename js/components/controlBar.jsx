@@ -15,6 +15,7 @@ import ClosedCaptionMultiAudioMenu from './closed-caption-multi-audio-menu/close
 import preserveKeyboardFocus from './higher-order/preserveKeyboardFocus';
 import Logo from './logo';
 import SkipControls from './skipControls';
+import Autofocus from './utils/autofocus';
 
 /**
  * The controlBar Component
@@ -27,6 +28,14 @@ class ControlBar extends React.Component {
     this.responsiveUIMultiple = this.getResponsiveUIMultiple(props.responsiveView);
     this.moreOptionsItems = null;
     this.vr = null;
+
+    this.autofocus = new Autofocus(props.controller.state, props.controller.toggleButtons);
+
+    this.getToggleButtons = this.autofocus.getToggleButtons.bind(this);
+    this.setToggleButtons = this.autofocus.setToggleButtons.bind(this);
+    this.configureMenuAutofocus = this.autofocus.configureMenuAutofocus.bind(this);
+
+
     if (
       props.controller
       && props.controller.videoVrSource
@@ -262,53 +271,6 @@ class ControlBar extends React.Component {
   };
 
   /**
-   * Configure the autofocus for menu
-   * @param {Array} menu - an array of menu items
-   */
-  configureMenuAutofocus = (menu) => {
-    const { controller } = this.props;
-    const menuOptions = controller.state[menu] || {};
-    const menuToggleButton = this.getToggleButtons(menu);
-
-    if (menuOptions.showPopover) {
-      // Reset autoFocus property when closing the menu
-      menuOptions.autoFocus = false;
-    } else if (menuToggleButton) {
-      // If the menu was activated via keyboard we should
-      // autofocus on the first element
-      menuOptions.autoFocus = menuToggleButton.wasTriggeredWithKeyboard();
-    }
-  };
-
-  /**
-   * @description It gets value of toggleButtons from controller.js by popoverName
-   * @param {string} popoverName - the name of the popover
-   * @private
-   * @returns {Object} - if toggleButtons (object) has key = popoverName it returns the value,
-   * otherwise it returns {}
-   */
-  getToggleButtons = (popoverName) => {
-    const { controller } = this.props;
-    if (controller && controller.toggleButtons) {
-      return controller.toggleButtons[popoverName];
-    }
-    return {};
-  };
-
-  /**
-   * @description It sets this.props.controller.toggleButtons value (menu) for key = popoverName
-   * @param {string} popoverName - the name of the popover
-   * @param {HTMLElement} menu - an accessible button
-   * @private
-   */
-  setToggleButtons = (popoverName, menu) => {
-    const { controller } = this.props;
-    if (controller && controller.toggleButtons) {
-      controller.toggleButtons[popoverName] = menu;
-    }
-  };
-
-  /**
    * @description It calls function closePopover from controller.js
    * @param {string} menu - the name of the popover to be closed
    * @param {Object} [params] - params for closePopover function
@@ -359,6 +321,7 @@ class ControlBar extends React.Component {
 
   handleMoreOptionsClick = () => {
     const { controller } = this.props;
+    this.configureMenuAutofocus(CONSTANTS.MENU_OPTIONS.MORE_OPTIONS);
     controller.toggleMoreOptionsScreen(this.moreOptionsItems);
   };
 
@@ -575,17 +538,17 @@ class ControlBar extends React.Component {
           <ControlButton
             {...commonButtonProps}
             key={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
+            onRef={menu => this.setToggleButtons(CONSTANTS.MENU_OPTIONS.MORE_OPTIONS, menu)}
             className="oo-more-options"
             style={moreOptionsStyle}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.MORE_OPTIONS}
-            ariaHidden={true} // eslint-disable-line
+            ariaLabel={CONSTANTS.ARIA_LABELS.MORE_OPTIONS}
             icon="ellipsis"
             tooltip={CONSTANTS.SKIN_TEXT.MORE_OPTIONS}
             onClick={this.handleMoreOptionsClick}
           />
         </div>
       ),
-
 
       quality: (
         <div key={CONSTANTS.CONTROL_BAR_KEYS.QUALITY} className="oo-popover-button-container">
