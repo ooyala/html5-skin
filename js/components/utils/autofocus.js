@@ -1,6 +1,7 @@
 /**
  * Set, get autofocus btn, configure autofocus
- * @param {Object} controller - controller props
+ * @param {Object} state - the controller state
+ * @param {Object} toggleButtons – map of buttons to get toggled
  * @constructor
  */
 function Autofocus(state, toggleButtons) {
