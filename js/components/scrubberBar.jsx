@@ -388,7 +388,6 @@ class ScrubberBar extends React.Component {
       <MarkerIcon
         // eslint-disable-next-line react/no-array-index-key
         key={index}
-        level={index}
         data={marker}
         config={markerTypes[marker.type]}
         duration={duration}

@@ -57,7 +57,6 @@ class MarkerIcon extends Component {
       data,
       config,
       accentColor,
-      level,
     } = this.props;
 
     const { hover } = this.state;
@@ -72,7 +71,6 @@ class MarkerIcon extends Component {
 
     const styles = {
       left: getPosition(duration, scrubberBarWidth, data.start),
-      zIndex: hover ? CONSTANTS.MARKERS.ZINDEX : CONSTANTS.MARKERS.ZINDEX - level,
     };
 
     if (data.type === CONSTANTS.MARKERS.TYPE.TEXT) {
@@ -83,6 +81,10 @@ class MarkerIcon extends Component {
     if (data.type === CONSTANTS.MARKERS.TYPE.ICON) {
       styles.left -= hover && this.hasCoverImage()
         ? CONSTANTS.MARKERS.OFFSET.ICON_HOVER : CONSTANTS.MARKERS.OFFSET.ICON;
+    }
+
+    if (hover) {
+      styles.zIndex = CONSTANTS.MARKERS.ZINDEX;
     }
     return styles;
   }
@@ -225,7 +227,6 @@ MarkerIcon.propTypes = {
       isMobile: PropTypes.bool,
     }),
   }),
-  level: PropTypes.number,
 };
 
 MarkerIcon.defaultProps = {
@@ -235,7 +236,6 @@ MarkerIcon.defaultProps = {
   config: {},
   accentColor: '',
   controller: null,
-  level: 0,
 };
 
 export default MarkerIcon;
