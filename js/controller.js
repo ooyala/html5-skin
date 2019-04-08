@@ -667,12 +667,7 @@ function controller(OO, _, $) {
         // make sure that we don't leave the oo-blur class on the wrong element (since
         // the skin can pick the container rather than the video due to a race condition).
         // Note that this could end up being the video itself, but it shouldn't matter.
-        let videoElementContainer = params.videoElement;
-        if (videoElementContainer && videoElementContainer.length) {
-          [videoElementContainer] = videoElementContainer;
-        }
-        this.state.mainVideoElementContainer = videoElementContainer;
-
+        this.state.mainVideoElementContainer = videoElement[0] || videoElement;
         this.state.mainVideoElement = videoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
