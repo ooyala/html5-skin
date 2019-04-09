@@ -1200,6 +1200,7 @@ function controller(OO, _, $) {
         OO.log('Should display DISCOVERY_SCREEN on end');
         this.sendDiscoveryDisplayEventRelatedVideos('endScreen');
         this.state.screenToShow = CONSTANTS.SCREEN.DISCOVERY_SCREEN;
+        this.renderSkin();
       } else if (this.skin.props.skinConfig.endScreen.screenToShowOnEnd === 'share') {
         this.state.screenToShow = CONSTANTS.SCREEN.SHARE_SCREEN;
       } else {
