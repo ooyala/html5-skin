@@ -649,16 +649,16 @@ function controller(OO, _, $) {
     },
 
     onVcVideoElementCreated(event, params) {
-      let { videoElement } = params;
-      videoElement = this.findMainVideoElement(videoElement);
+      const { videoElement } = params;
+      const mainVideoElement = this.findMainVideoElement(videoElement);
 
       // add loadedmetadata event listener to main video element
-      if (videoElement) {
-        videoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
+      if (mainVideoElement) {
+        mainVideoElement.addEventListener('loadedmetadata', this.metaDataLoaded.bind(this));
       }
 
       if (Utils.isIE10()) {
-        videoElement.attr('controls', 'controls');
+        mainVideoElement.attr('controls', 'controls');
       }
 
       if (params.videoId === OO.VIDEO.MAIN) {
@@ -667,8 +667,10 @@ function controller(OO, _, $) {
         // make sure that we don't leave the oo-blur class on the wrong element (since
         // the skin can pick the container rather than the video due to a race condition).
         // Note that this could end up being the video itself, but it shouldn't matter.
-        this.state.mainVideoElementContainer = videoElement[0] || videoElement;
-        this.state.mainVideoElement = videoElement;
+        this.state.mainVideoElementContainer = videoElement
+          ? videoElement[0] || videoElement
+          : videoElement;
+        this.state.mainVideoElement = mainVideoElement;
         this.enableFullScreen();
         this.updateAspectRatio();
       }
