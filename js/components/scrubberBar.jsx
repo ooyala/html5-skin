@@ -210,7 +210,6 @@ class ScrubberBar extends React.Component {
     controller.seek(currentPlayhead);
     if (this._isMounted) { // eslint-disable-line
       this.setState({ currentPlayhead, scrubbingPlayheadX: 0 }); // eslint-disable-line
-      controller.endSeeking();
     }
     this.touchInitiated = false;
   }
