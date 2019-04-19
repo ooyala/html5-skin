@@ -178,4 +178,15 @@ describe('Audio Only Screen', () => {
     expect(dvrText.innerHTML).toBe("-15:00")
   });
 
+  it('renders audio only screen with cover Image', () => {
+    mockContentTree.promo_image = 'url';
+    mockSkinConfig.audio.displayTitleOnVideoCanvas = true;
+    let wrapper = renderAudioOnlyScreen();
+    expect(wrapper.find('.oo-audio-only-coverImg').length).toBe(1);
+
+    mockSkinConfig.audio.displayTitleOnVideoCanvas = false;
+    wrapper = renderAudioOnlyScreen();
+    expect(wrapper.find('.oo-audio-only-coverImg').length).toBe(0);
+  })
+
 });

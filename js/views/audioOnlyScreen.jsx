@@ -117,10 +117,13 @@ class AudioOnlyScreen extends React.Component {
     const coverImageHeight = `${CONSTANTS.UI.AUDIO_ONLY_WITH_COVER_HEIGHT.slice(0, shift)
       - CONSTANTS.UI.AUDIO_ONLY_DEFAULT_HEIGHT.slice(0, shift)}px`;
 
+    const shouldRenderCoverImage = this.props.contentTree.promo_image
+      && this.props.skinConfig.audio.displayTitleOnVideoCanvas;
+
     // TODO: Consider multiple styling options for the control bar. We are restricted to a single row at this moment
     return (
       <div>
-        {this.props.contentTree.promo_image
+        {shouldRenderCoverImage
           && (
             <img
               height={coverImageHeight}
