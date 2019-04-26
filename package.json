@@ -39,7 +39,7 @@
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scrollbar": "^0.5.4",
-    "screenfull": "3.3.3",
+    "screenfull": "4.2.0",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
