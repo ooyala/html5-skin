@@ -1784,9 +1784,18 @@ function controller(OO, _, $) {
         this.state.config.shareScreen.shareContent = shareContent;
       }
 
+      const { config, playerParam } = this.state;
+      const uiLanguage = Utils.getLanguageToUse(config, playerParam);
+      this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
+
+
       // load config language json if exist
       if (this.state.config.localization.availableLanguageFile) {
         this.state.config.localization.availableLanguageFile.forEach((languageObj) => {
+          // prevent loading unneeded localization
+          if (languageObj.language !== uiLanguage) {
+            return;
+          }
           if (languageObj.languageFile) {
             $.getJSON(languageObj.languageFile, (response) => {
               Localization.languageFiles[languageObj.language] = response;
@@ -1800,10 +1809,6 @@ function controller(OO, _, $) {
       this.state.config.discoveryScreen.countDownTime = Utils.convertStringToNumber(
         this.state.config.discoveryScreen.countDownTime
       );
-
-      const { config, playerParam } = this.state;
-      const uiLanguage = Utils.getLanguageToUse(config, playerParam);
-      this.mb.publish(OO.EVENTS.SKIN_UI_LANGUAGE, uiLanguage);
 
       this.state.audioOnly = params.playerType === OO.CONSTANTS.PLAYER_TYPE.AUDIO;
       this.state.cast.showButton = this.isChromecastEnabled(params);
