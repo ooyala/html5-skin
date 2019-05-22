@@ -412,23 +412,26 @@ class Skin extends React.Component {
     if (focusableElements.length) {
       const firstFocusableElement = focusableElements[0];
       const lastFocusableElement = focusableElements[focusableElements.length - 1];
+      const hasAttribute = event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
       // This indicates we're tabbing over the focusable player elements
-      if (event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR)) {
-        event.preventDefault();
-        if (event.shiftKey) {
-          // Shift + tabbing on first element, focus on last
-          if (event.target === firstFocusableElement) {
-            lastFocusableElement.focus();
-          }
-        } else if (event.target === lastFocusableElement) {
+      if (hasAttribute) {
+        // Shift + tabbing on first element, focus on last
+        if (event.shiftKey && event.target === firstFocusableElement) {
+          event.preventDefault();
+          lastFocusableElement.focus();
+        } else if (!event.shiftKey && event.target === lastFocusableElement) {
           // Tabbing on last element, focus on first
+          event.preventDefault();
           firstFocusableElement.focus();
         }
-        // Keydown happened on a non-player element
-      } else if (event.shiftKey) {
-        lastFocusableElement.focus();
       } else {
-        firstFocusableElement.focus();
+        // Keydown happened on a non-player element
+        event.preventDefault();
+        if (event.shiftKey) {
+          lastFocusableElement.focus();
+        } else {
+          firstFocusableElement.focus();
+        }
       }
     } else {
       OO.log('Skin: No focusable elements found');
