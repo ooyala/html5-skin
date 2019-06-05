@@ -22,21 +22,14 @@ class ScrubberBar extends React.Component {
     const { controller } = this.props;
     this.isMobile = controller.state.isMobile;
     this.touchInitiated = false;
+    this.targetPlayhead = 0;
 
     this.state = {
       scrubberBarWidth: 0,
       playheadWidth: 0,
       scrubbingPlayheadX: 0,
       hoveringX: 0,
-      transitionedDuringSeek: false,
     };
-  }
-
-  componentWillMount() {
-    const { seeking } = this.props;
-    if (seeking) {
-      this.setState({ transitionedDuringSeek: true });
-    }
   }
 
   componentDidMount() {
@@ -49,12 +42,7 @@ class ScrubberBar extends React.Component {
    * @param {Object} nextProps - the next props react object
    */
   componentWillReceiveProps(nextProps) {
-    const { transitionedDuringSeek } = this.state;
-    const { seeking } = nextProps;
     const { componentWidth } = this.props;
-    if (transitionedDuringSeek && !seeking) {
-      this.setState({ transitionedDuringSeek: false });
-    }
     if (nextProps.componentWidth !== componentWidth) {
       this.handleResize();
     }
@@ -168,6 +156,7 @@ class ScrubberBar extends React.Component {
       }
       const deltaX = event.clientX - this.lastScrubX;
       const scrubbingPlayheadX = currentPlayhead * scrubberBarWidth / duration + deltaX;
+      this.targetPlayhead = scrubbingPlayheadX / scrubberBarWidth * duration;
       controller.updateSeekingPlayhead(
         scrubbingPlayheadX / scrubberBarWidth * duration
       );
@@ -186,7 +175,8 @@ class ScrubberBar extends React.Component {
     if (!this._isMounted) { // eslint-disable-line
       return;
     }
-    const { controller, currentPlayhead } = this.props;
+    const { controller } = this.props;
+    const { targetPlayhead } = this;
     controller.startHideControlBarTimer();
     event.preventDefault();
     // stop propagation to prevent it from bubbling up to the skin and pausing
@@ -207,9 +197,9 @@ class ScrubberBar extends React.Component {
       ReactDOM.findDOMNode(this).parentNode.removeEventListener('touchmove', this.handlePlayheadMouseMove); // eslint-disable-line
       document.removeEventListener('touchend', this.handlePlayheadMouseUp, true);
     }
-    controller.seek(currentPlayhead);
+    controller.seek(targetPlayhead);
     if (this._isMounted) { // eslint-disable-line
-      this.setState({ currentPlayhead, scrubbingPlayheadX: 0 }); // eslint-disable-line
+      this.setState({ scrubbingPlayheadX: 0 }); // eslint-disable-line
     }
     this.touchInitiated = false;
   }
@@ -270,7 +260,7 @@ class ScrubberBar extends React.Component {
       scrubbingPlayheadX: offsetX,
     });
     const { scrubberBarWidth } = this.state;
-    controller.updateSeekingPlayhead(offsetX / scrubberBarWidth * duration);
+    this.targetPlayhead = offsetX / scrubberBarWidth * duration;
     this.handlePlayheadMouseDown(event);
   }
 
@@ -430,30 +420,24 @@ class ScrubberBar extends React.Component {
 
     const {
       hoveringX,
-      transitionedDuringSeek,
       scrubbingPlayheadX,
       scrubberBarWidth,
       playheadWidth,
     } = this.state;
-    if (!transitionedDuringSeek) {
-      if (scrubbingPlayheadX && scrubbingPlayheadX !== 0) {
-        playheadPaddingStyle.left = scrubbingPlayheadX;
-      } else {
-        playheadPaddingStyle.left = parseFloat(currentPlayhead)
-          / parseFloat(duration)
-          * scrubberBarWidth;
-      }
 
-      playheadPaddingStyle.left = Math.max(
-        Math.min(
-          scrubberBarWidth - Number.parseInt(playheadWidth, 0) / 2,
-          playheadPaddingStyle.left
-        ),
-        0
-      );
+    playheadPaddingStyle.left = parseFloat(currentPlayhead)
+      / parseFloat(duration)
+      * scrubberBarWidth;
 
-      if (Number.isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
-    }
+    playheadPaddingStyle.left = Math.max(
+      Math.min(
+        scrubberBarWidth - Number.parseInt(playheadWidth, 0) / 2,
+        playheadPaddingStyle.left
+      ),
+      0
+    );
+
+    if (Number.isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
 
     let playheadMouseDown = this.handlePlayheadMouseDown;
     const scrubberBarMouseDown = this.handleScrubberBarMouseDown;
