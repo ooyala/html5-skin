@@ -218,42 +218,12 @@ describe('ScrubberBar', function() {
     expect(wrapper.ref('playhead').style.backgroundColor).toBe('green');
   });
 
-  it('handles a mousedown', function() {
-    var scrubberBarClicked = false;
-    var mockController = {
-      state: {
-        isMobile: false
-      },
-      updateSeekingPlayhead: function() {
-        scrubberBarClicked = true;
-      },
-      startHideControlBarTimer: function() {},
-      beginSeeking: function() {},
-      renderSkin: function() {}
-    };
-    var wrapper = Enzyme.mount(
-      <ScrubberBar
-        controlBarVisible={true}
-        seeking={false}
-        controller={mockController}
-        skinConfig={skinConfig}
-        />
-    );
-
-    var scrubberBar = wrapper.find('.oo-scrubber-bar-padding');
-    scrubberBar.simulate('mouseDown');
-    expect(scrubberBarClicked).toBe(true);
-  });
-
   it('handles a mouseup', function() {
     var scrubberBarClicked = false;
     var seekTriggered = false;
     var mockController = {
       state: {
         isMobile: false
-      },
-      updateSeekingPlayhead: function() {
-        scrubberBarClicked = true;
       },
       startHideControlBarTimer: function() {},
       beginSeeking: function() {},
@@ -278,7 +248,6 @@ describe('ScrubberBar', function() {
       preventDefault: function() {},
       stopPropagation: function() {}
     });
-    expect(scrubberBarClicked).toBe(true);
     expect(seekTriggered).toBe(true);
   });
 
