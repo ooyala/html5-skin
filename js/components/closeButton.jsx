@@ -6,12 +6,16 @@ import CONSTANTS from '../constants/constants';
 
 class CloseButton extends React.Component { // eslint-disable-line
   render() {
+    let { cssClass } = this.props;
     const {
       className,
-      cssClass,
+      controller,
       role,
       closeAction,
     } = this.props;
+    if (controller.state.readDirection === 'rtl') {
+      cssClass += ' oo-close-button-left';
+    }
     return (
       <AccessibleButton
         className={cssClass}

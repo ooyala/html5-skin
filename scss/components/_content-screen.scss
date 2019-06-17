@@ -22,6 +22,11 @@
     margin-left: 12px;
     font-size: 0.8em;
   }
+
+  &-element {
+    margin: 0 30px;
+    display: inline-block;
+  }
 }
 
 .oo-content-panel {
@@ -33,6 +38,12 @@
   position: absolute;
   top: $panel-padding;
   right: $panel-padding;
+}
+
+.oo-content-screen .oo-close-button-left {
+  position: absolute;
+  top: $panel-padding;
+  left: $panel-padding;
 }
 
 .oo-content-screen.oo-menu-content-screen {

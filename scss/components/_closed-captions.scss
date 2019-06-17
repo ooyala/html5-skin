@@ -42,11 +42,10 @@
   height: 21px;
   width: 105px;
   position: relative;
-  display: inline-block;
-  margin-left:30px;
   font-size: initial;
   font-weight:normal;
   line-height:1.5;
+  display: inline-block;
 
   .oo-switch-container-selectable {
     @extend .oo-expand;
@@ -56,17 +55,11 @@
     border: none;
   }
   .oo-switch-captions {
-    position: absolute;
     display: inline-block;
+    width: 23%;
     color: $gray;
     font-size: $font-size-base;
     font-family: $font-family-roboto-condensed;
-  }
-  .oo-switch-captions-on {
-    right: 0;
-  }
-  .oo-switch-captions-off {
-    left: 0;
   }
   .oo-switch-captions-active {
     color: $white;
@@ -77,8 +70,9 @@
     width: 33%;
     height: 100%;
     position: relative;
-    margin-left: 33%;
     border-radius: 100%;
+    vertical-align: middle;
+    margin: 0 10px;
   }
   .oo-switch-thumb {
     display: block;

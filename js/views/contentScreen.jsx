@@ -86,7 +86,9 @@ class ContentScreen extends React.Component {
         {this.props.icon
           && <Icon {...this.props} icon={this.props.icon} />
         }
-        {this.props.element}
+        <div className="oo-content-screen-title-element">
+          {this.props.element}
+        </div>
       </div>
     ) : null;
 

@@ -96,10 +96,10 @@ class TextTrackPanel extends React.Component {
    * @param {string} fontType - the type of a font
    * @param {string} fontSize - the type of a font
    * @param {string} textEnhancement - the text enhancement
-   * @param {string} direction - the direction
+   * @param {string} readDirection - the direction
    * @returns {Object} CSS rules
    */
-  buildTextStyle = (color, opacity, fontType, fontSize, textEnhancement, direction) => {
+  buildTextStyle = (color, opacity, fontType, fontSize, textEnhancement, readDirection) => {
     const { responsiveView } = this.props;
     const styles = {
       color: `rgba(${this.colorMap[color]},${opacity})`,
@@ -107,10 +107,8 @@ class TextTrackPanel extends React.Component {
       fontVariant: this.fontVariantMap[fontType],
       fontSize: this.fontSizeMap[fontSize][responsiveView],
       textShadow: this.textEnhancementMap[textEnhancement],
+      direction: readDirection === 'rtl' ? 'rtl' : '',
     };
-    if (direction) {
-      styles.direction = direction;
-    }
     return styles;
   }
 
@@ -118,16 +116,17 @@ class TextTrackPanel extends React.Component {
     const {
       closedCaptionOptions,
       cueText,
-      direction,
       isInBackground,
+      readDirection,
     } = this.props;
     if (!cueText) {
       return null;
     }
+
     const className = classNames('oo-text-track-container', {
       'oo-in-background': isInBackground,
+      'oo-text-track-container-left': readDirection === 'rtl',
     });
-
     return (
       <div className={className}>
         <div
@@ -153,7 +152,7 @@ class TextTrackPanel extends React.Component {
                 closedCaptionOptions.fontType,
                 closedCaptionOptions.fontSize,
                 closedCaptionOptions.textEnhancement,
-                direction
+                readDirection
               )}
             >
               <span dangerouslySetInnerHTML={Utils.createMarkup(cueText)} />
@@ -179,7 +178,7 @@ TextTrackPanel.propTypes = {
     fontSize: PropTypes.string,
     textEnhancement: PropTypes.string,
   }),
-  direction: PropTypes.string,
+  readDirection: PropTypes.string,
   responsiveView: PropTypes.string,
 };
 
@@ -197,7 +196,7 @@ TextTrackPanel.defaultProps = {
     fontSize: 'Medium',
     textEnhancement: 'Uniform',
   },
-  direction: '',
+  readDirection: 'ltr',
   responsiveView: 'md',
 };
 

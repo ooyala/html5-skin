@@ -416,7 +416,7 @@ class ScrubberBar extends React.Component {
         ? skinConfig.controlBar.scrubberBar.playedColor
         : skinConfig.general.accentColor,
     };
-    const playheadPaddingStyle = {};
+    
 
     const {
       hoveringX,
@@ -425,19 +425,25 @@ class ScrubberBar extends React.Component {
       playheadWidth,
     } = this.state;
 
-    playheadPaddingStyle.left = parseFloat(currentPlayhead)
+    let padding = parseFloat(currentPlayhead)
       / parseFloat(duration)
       * scrubberBarWidth;
 
-    playheadPaddingStyle.left = Math.max(
+    padding = Math.max(
       Math.min(
         scrubberBarWidth - Number.parseInt(playheadWidth, 0) / 2,
-        playheadPaddingStyle.left
+        padding
       ),
       0
     );
 
-    if (Number.isNaN(playheadPaddingStyle.left)) playheadPaddingStyle.left = 0;
+    if (Number.isNaN(padding)) {
+      padding = 0;
+    }
+    const playheadPaddingStyle = {};
+    playheadPaddingStyle.left = controller.state.readDirection === 'rtl'
+      ? scrubberBarWidth - padding
+      : padding;
 
     let playheadMouseDown = this.handlePlayheadMouseDown;
     const scrubberBarMouseDown = this.handleScrubberBarMouseDown;
