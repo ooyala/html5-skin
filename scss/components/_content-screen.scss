@@ -40,9 +40,7 @@
   right: $panel-padding;
 }
 
-.oo-content-screen .oo-close-button-left {
-  position: absolute;
-  top: $panel-padding;
+.oo-content-screen .oo-close-button[dir=rtl] {
   left: $panel-padding;
 }
 

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Utils from '../components/utils';
 import CONSTANTS from '../constants/constants';
-/* eslint-disable react/destructuring-assignment */
 /* global document */
 
 /**
@@ -13,8 +12,9 @@ class Popover extends React.Component {
     // We listen to the event on the document instead of the element in order to
     // allow closing the popover with ESC even when it doesn't have focus.
     document.addEventListener('keydown', this.onKeyDown);
+    const { autoFocus } = this.props;
 
-    if (this.props.autoFocus) {
+    if (autoFocus) {
       Utils.autoFocusFirstElement(this.domElement);
     }
   }
@@ -29,7 +29,8 @@ class Popover extends React.Component {
    * @param {event} event description
    */
   onKeyDown = (event) => {
-    if (!this.props.closeActionEnabled || typeof this.props.closeAction !== 'function') {
+    const { closeActionEnabled, closeAction } = this.props;
+    if (!closeActionEnabled || typeof closeAction !== 'function') {
       return;
     }
     if (event.which === CONSTANTS.KEYCODES.ESCAPE_KEY || event.keyCode === CONSTANTS.KEYCODES.ESCAPE_KEY) {
@@ -37,19 +38,21 @@ class Popover extends React.Component {
       // popover if the ESC key was pressed while the focus was inside this element.
       // If the focus was outside the popover we shouldn't re-focus the toggle button.
       const targetIsChildElement = this.domElement ? this.domElement.contains(event.target) : false; // eslint-disable-line
-      this.props.closeAction({
+      closeAction({
         restoreToggleButtonFocus: targetIsChildElement,
       });
     }
   }
 
   render() {
+    const { children, dir, popoverClassName } = this.props;
     return (
       <div
+        dir={dir}
         ref={(error) => { this.domElement = error; }}
-        className={this.props.popoverClassName}
+        className={popoverClassName}
       >
-        {this.props.children}
+        {children}
       </div>
     );
   }
@@ -58,6 +61,7 @@ class Popover extends React.Component {
 Popover.propTypes = {
   autoFocus: PropTypes.bool,
   popoverClassName: PropTypes.string,
+  dir: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -68,6 +72,7 @@ Popover.propTypes = {
 
 Popover.defaultProps = {
   autoFocus: false,
+  dir: 'ltr',
   popoverClassName: 'oo-popover',
   closeActionEnabled: false,
   closeAction() {},

@@ -472,13 +472,7 @@ class ControlBar extends React.Component {
       ? controller.state.multiAudio.tracks
       : [];
 
-    const popoverClasses = ClassNames(
-      'oo-popover',
-      {
-        'oo-popover-pull-left': controller.state.readDirection === 'rtl',
-        'oo-popover-pull-right': controller.state.readDirection === 'ltr',
-      }
-    );
+    const popoverClasses = ClassNames('oo-popover');
     const audioPopoverClasses = ClassNames(popoverClasses, 'oo-cc-ma-container');
 
     const controlItemTemplates = {
@@ -621,6 +615,7 @@ class ControlBar extends React.Component {
           {controller.state.closedCaptionOptions.showPopover && (
             <Popover
               popoverClassName={popoverClasses}
+              dir={controller.state.readDirection}
               autoFocus={controller.state.closedCaptionOptions.autoFocus}
               closeActionEnabled={controller.state.accessibilityControlsEnabled}
               closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
@@ -684,6 +679,7 @@ class ControlBar extends React.Component {
               && (
               <Popover
                 popoverClassName={audioPopoverClasses}
+                dir={controller.state.readDirection}
                 autoFocus={controller.state.multiAudioOptions.autoFocus}
                 closeActionEnabled={controller.state.accessibilityControlsEnabled}
                 closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}

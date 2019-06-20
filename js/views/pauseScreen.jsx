@@ -298,13 +298,15 @@ class PauseScreen extends React.Component {
       'oo-info-panel-cast-bottom': skipControlsEnabled,
     });
 
-    const { buffering, cast, isLiveStream } = this.props.controller.state;
+    const {
+      buffering,
+      cast,
+      isLiveStream,
+      readDirection,
+    } = this.props.controller.state;
 
     const showSpinner = buffering || (!cast.connected && this.props.buffered === 0 && !isLiveStream);
-    const interactiveContainerClasses = ClassNames(
-      'oo-interactive-container',
-      { 'oo-interactive-container-left': this.props.controller.state.readDirection === 'rtl' }
-    );
+    const interactiveContainerClasses = ClassNames('oo-interactive-container');
 
     return (
       <div className="oo-state-screen oo-pause-screen">
@@ -382,12 +384,12 @@ class PauseScreen extends React.Component {
           )
         }
 
-        <div className={interactiveContainerClasses} onFocus={this.handleFocus}>
+        <div className={interactiveContainerClasses} onFocus={this.handleFocus} dir={readDirection}>
           {this.props.closedCaptionOptions.enabled && (
             <TextTrackPanel
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
-              readDirection={this.props.controller.state.readDirection}
+              readDirection={readDirection}
               responsiveView={this.props.responsiveView}
               isInBackground={isTextTrackInBackground}
             />

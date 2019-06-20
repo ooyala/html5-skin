@@ -125,10 +125,9 @@ class TextTrackPanel extends React.Component {
 
     const className = classNames('oo-text-track-container', {
       'oo-in-background': isInBackground,
-      'oo-text-track-container-left': readDirection === 'rtl',
     });
     return (
-      <div className={className}>
+      <div className={className} dir={readDirection}>
         <div
           className="oo-text-track-window"
           style={this.buildWindowBackgroundStyle(

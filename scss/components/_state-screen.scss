@@ -245,11 +245,11 @@
     bottom:0;
     width:100%;
     pointer-events: none;
-  }
 
-  .oo-interactive-container-left {
-    left:auto;
-    right: 0;
+    &[dir=rtl]{
+      left:auto;
+      right: 0;
+    }
   }
 }
 

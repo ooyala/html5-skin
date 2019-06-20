@@ -8,13 +8,13 @@
   z-index: $zindex-popover;
   @include horizontal-center;
 
-  &.oo-popover-pull-right {
+  &[dir=ltr] {
     left: auto;
     right: 0;
     @include vendor-prefixes(transform, none);
   }
 
-  &.oo-popover-pull-left {
+  &[dir=rtl] {
     left: 0;
     right: auto;
     @include vendor-prefixes(transform, none);
