@@ -245,11 +245,11 @@
     bottom:0;
     width:100%;
     pointer-events: none;
+  }
 
-    &[dir=rtl]{
-      left:auto;
-      right: 0;
-    }
+  @at-root[dir=rtl] .oo-interactive-container{
+    left:auto;
+    right: 0;
   }
 }
 

@@ -402,7 +402,7 @@ class PlayingScreen extends React.Component {
       'oo-animate-fade': true,
     });
 
-    const { buffering, isLiveStream, readDirection } = this.props.controller.state;
+    const { buffering, isLiveStream } = this.props.controller.state;
     const showSpinner = buffering || (this.props.buffered === 0 && !isLiveStream);
 
     const interactiveContainerClasses = ClassNames('oo-interactive-container');
@@ -470,10 +470,9 @@ class PlayingScreen extends React.Component {
           )
         }
 
-        <div className={interactiveContainerClasses} onFocus={this.handleFocus} dir={readDirection}>
+        <div className={interactiveContainerClasses} onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled && (
             <TextTrackPanel
-              readDirection={readDirection}
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
               responsiveView={this.props.responsiveView}

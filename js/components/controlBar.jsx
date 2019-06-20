@@ -615,7 +615,6 @@ class ControlBar extends React.Component {
           {controller.state.closedCaptionOptions.showPopover && (
             <Popover
               popoverClassName={popoverClasses}
-              dir={controller.state.readDirection}
               autoFocus={controller.state.closedCaptionOptions.autoFocus}
               closeActionEnabled={controller.state.accessibilityControlsEnabled}
               closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.CLOSED_CAPTIONS)}
@@ -679,7 +678,6 @@ class ControlBar extends React.Component {
               && (
               <Popover
                 popoverClassName={audioPopoverClasses}
-                dir={controller.state.readDirection}
                 autoFocus={controller.state.multiAudioOptions.autoFocus}
                 closeActionEnabled={controller.state.accessibilityControlsEnabled}
                 closeAction={() => this.closePopover(CONSTANTS.MENU_OPTIONS.MULTI_AUDIO)}

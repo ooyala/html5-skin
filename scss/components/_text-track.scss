@@ -24,10 +24,10 @@
       }
     }
   }
+}
 
-  &[dir=rtl] {
-    left: auto;
-    right: 50%;
-    @include vendor-prefixes(transform, translateX(50%));
-  }
+@at-root[dir=rtl] .oo-text-track-container{
+  left: auto;
+  right: 50%;
+  @include vendor-prefixes(transform, translateX(50%));
 }

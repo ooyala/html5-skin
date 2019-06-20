@@ -302,7 +302,6 @@ class PauseScreen extends React.Component {
       buffering,
       cast,
       isLiveStream,
-      readDirection,
     } = this.props.controller.state;
 
     const showSpinner = buffering || (!cast.connected && this.props.buffered === 0 && !isLiveStream);
@@ -384,12 +383,11 @@ class PauseScreen extends React.Component {
           )
         }
 
-        <div className={interactiveContainerClasses} onFocus={this.handleFocus} dir={readDirection}>
+        <div className={interactiveContainerClasses} onFocus={this.handleFocus}>
           {this.props.closedCaptionOptions.enabled && (
             <TextTrackPanel
               closedCaptionOptions={this.props.closedCaptionOptions}
               cueText={this.props.closedCaptionOptions.cueText}
-              readDirection={readDirection}
               responsiveView={this.props.responsiveView}
               isInBackground={isTextTrackInBackground}
             />

@@ -96,10 +96,9 @@ class TextTrackPanel extends React.Component {
    * @param {string} fontType - the type of a font
    * @param {string} fontSize - the type of a font
    * @param {string} textEnhancement - the text enhancement
-   * @param {string} readDirection - the direction
    * @returns {Object} CSS rules
    */
-  buildTextStyle = (color, opacity, fontType, fontSize, textEnhancement, readDirection) => {
+  buildTextStyle = (color, opacity, fontType, fontSize, textEnhancement) => {
     const { responsiveView } = this.props;
     const styles = {
       color: `rgba(${this.colorMap[color]},${opacity})`,
@@ -107,7 +106,6 @@ class TextTrackPanel extends React.Component {
       fontVariant: this.fontVariantMap[fontType],
       fontSize: this.fontSizeMap[fontSize][responsiveView],
       textShadow: this.textEnhancementMap[textEnhancement],
-      direction: readDirection === 'rtl' ? 'rtl' : '',
     };
     return styles;
   }
@@ -117,7 +115,6 @@ class TextTrackPanel extends React.Component {
       closedCaptionOptions,
       cueText,
       isInBackground,
-      readDirection,
     } = this.props;
     if (!cueText) {
       return null;
@@ -127,7 +124,7 @@ class TextTrackPanel extends React.Component {
       'oo-in-background': isInBackground,
     });
     return (
-      <div className={className} dir={readDirection}>
+      <div className={className}>
         <div
           className="oo-text-track-window"
           style={this.buildWindowBackgroundStyle(
@@ -144,14 +141,12 @@ class TextTrackPanel extends React.Component {
           >
             <div
               className="oo-text-track"
-              dir="auto"
               style={this.buildTextStyle(
                 closedCaptionOptions.textColor,
                 closedCaptionOptions.textOpacity,
                 closedCaptionOptions.fontType,
                 closedCaptionOptions.fontSize,
                 closedCaptionOptions.textEnhancement,
-                readDirection
               )}
             >
               <span dangerouslySetInnerHTML={Utils.createMarkup(cueText)} />
@@ -177,7 +172,6 @@ TextTrackPanel.propTypes = {
     fontSize: PropTypes.string,
     textEnhancement: PropTypes.string,
   }),
-  readDirection: PropTypes.string,
   responsiveView: PropTypes.string,
 };
 
@@ -195,7 +189,6 @@ TextTrackPanel.defaultProps = {
     fontSize: 'Medium',
     textEnhancement: 'Uniform',
   },
-  readDirection: 'ltr',
   responsiveView: 'md',
 };
 

@@ -98,7 +98,6 @@ class AccessibleButton extends React.Component {
     const {
       autoFocus,
       children,
-      dir,
       style,
       className,
       focusId,
@@ -129,7 +128,6 @@ class AccessibleButton extends React.Component {
         autoFocus={autoFocus} // eslint-disable-line
         style={style}
         className={ClassNames(className, 'oo-focusable-btn')}
-        dir={dir}
         tabIndex="0"
         data-focus-id={focusId}
         aria-label={ariaLabel}
@@ -165,7 +163,6 @@ AccessibleButton.propTypes = {
     PropTypes.node,
   ]),
   style: PropTypes.shape({}),
-  dir: PropTypes.string,
   className: PropTypes.string,
   focusId: PropTypes.string,
   ariaLabel: PropTypes.string.isRequired,

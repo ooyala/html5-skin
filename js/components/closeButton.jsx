@@ -8,7 +8,6 @@ class CloseButton extends React.Component { // eslint-disable-line
   render() {
     const {
       className,
-      controller,
       cssClass,
       role,
       closeAction,
@@ -19,7 +18,6 @@ class CloseButton extends React.Component { // eslint-disable-line
         focusId={`${CONSTANTS.FOCUS_IDS.CLOSE}-${Date.now()}`}
         ariaLabel={CONSTANTS.ARIA_LABELS.CLOSE}
         role={role}
-        dir={controller.state.readDirection}
         onClick={closeAction}
       >
         <Icon {...this.props} icon="dismiss" className={className} />
