@@ -45,10 +45,9 @@ class Popover extends React.Component {
   }
 
   render() {
-    const { children, dir, popoverClassName } = this.props;
+    const { children, popoverClassName } = this.props;
     return (
       <div
-        dir={dir}
         ref={(error) => { this.domElement = error; }}
         className={popoverClassName}
       >
@@ -61,7 +60,6 @@ class Popover extends React.Component {
 Popover.propTypes = {
   autoFocus: PropTypes.bool,
   popoverClassName: PropTypes.string,
-  dir: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -72,7 +70,6 @@ Popover.propTypes = {
 
 Popover.defaultProps = {
   autoFocus: false,
-  dir: 'ltr',
   popoverClassName: 'oo-popover',
   closeActionEnabled: false,
   closeAction() {},
