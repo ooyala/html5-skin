@@ -319,9 +319,10 @@ function controller(OO, _, $) {
         this.onAirplaySessionResumed.bind(this)
       );
       this.state.isPlaybackReadySubscribed = true;
-      
+
       try {
-        this.state.readDirection = document.getElementsByTagName('html')[0].getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr';
+        const htmlTag = document.getElementsByTagName('html')[0];
+        this.state.readDirection = htmlTag.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr';
       } catch (error) {
         this.state.readDirection = 'ltr';
       }

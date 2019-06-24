@@ -416,7 +416,6 @@ class ScrubberBar extends React.Component {
         ? skinConfig.controlBar.scrubberBar.playedColor
         : skinConfig.general.accentColor,
     };
-    
 
     const {
       hoveringX,
