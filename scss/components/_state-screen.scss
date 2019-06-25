@@ -246,6 +246,11 @@
     width:100%;
     pointer-events: none;
   }
+
+  @at-root[dir=rtl] .oo-interactive-container{
+    left:auto;
+    right: 0;
+  }
 }
 
 .oo-state-screen-vr-notification {

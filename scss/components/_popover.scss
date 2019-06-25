@@ -7,12 +7,9 @@
   border-radius: 4px;
   z-index: $zindex-popover;
   @include horizontal-center;
-
-  &.oo-popover-pull-right {
-    left: auto;
-    right: 0;
-    @include vendor-prefixes(transform, none);
-  }
+  left: auto;
+  right: 0;
+  @include vendor-prefixes(transform, none);
 
   ul.oo-popover-horizontal {
     display: inline-block;
@@ -55,4 +52,10 @@
     }
 
   }
+}
+
+@at-root[dir=rtl] .oo-popover {
+  left: 0;
+  right: auto;
+  @include vendor-prefixes(transform, none);
 }

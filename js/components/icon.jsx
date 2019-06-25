@@ -32,6 +32,7 @@ class Icon extends React.Component {
     const iconStyle = Utils.extend({ fontFamily: fontFamilyName }, style);
     const fontStyleClass = skinIcon ? skinIcon.fontStyleClass : '';
     const fontString = skinIcon ? skinIcon.fontString : '';
+
     return (
       <span // eslint-disable-line
         className={`${fontStyleClass} ${className}`}

@@ -349,6 +349,7 @@
   }
 
   //Volume Controls
+
   .oo-volume-controls:focus::before {
     $focus-padding: 2px;
     top: -$focus-padding;
