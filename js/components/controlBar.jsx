@@ -923,7 +923,10 @@ class ControlBar extends React.Component {
         )
         && (
           item.name !== 'airPlay'
-          || (controller.state.airplay && controller.state.airplay.available && !Utils.isIPhone())
+          || (
+            controller.state.airplay
+            && controller.state.airplay.available
+            && !Utils.isIos())
         );
     });
 
