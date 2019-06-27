@@ -514,6 +514,11 @@ const CONSTANTS = {
       title: 'DRM SERVER ERROR',
       description: 'DRM server error',
     },
+    drm_token_expired: {
+      name: 'OO.ERROR.API.SAS.ERROR_DRM_TOKEN_EXPIRED',
+      title: 'LICENSE REQUEST FAILED',
+      description: 'Token expired',
+    },
     invalid_entitlements: {
       name: 'OO.ERROR.API.SAS.ERROR_INVALID_ENTITLEMENTS',
       title: 'INVALID ENTITLEMENTS ERROR',
