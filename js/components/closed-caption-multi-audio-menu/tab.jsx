@@ -10,15 +10,15 @@ import CONSTANTS from '../../constants/constants';
 /**
  * Manage tab
  */
-class TabProto extends React.Component { // eslint-disable-line
-
+class TabProto extends React.Component {
   /**
    * Handle click on tab
    * @param {number} id - the tab id
    */
   handleClick(id) {
-    if (typeof this.props.handleClick === 'function') { // eslint-disable-line
-      this.props.handleClick(id); // eslint-disable-line
+    const { handleClick } = this.props;
+    if (typeof handleClick === 'function') {
+      handleClick(id);
     }
   }
 

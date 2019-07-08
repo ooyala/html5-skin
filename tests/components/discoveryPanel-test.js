@@ -34,7 +34,7 @@ describe('DiscoveryPanel', function() {
     }
 
     // test discovery video click
-    var video = wrapper.find('a');
+    var video = wrapper.find('[data-testid="left-button"]');
     var vid1 = video.at(0);
     vid1.simulate('click');
   });

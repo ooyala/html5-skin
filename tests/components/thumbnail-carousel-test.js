@@ -147,9 +147,9 @@ describe('ThumbnailCarousel', function() {
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(wrapper.ref('thumbnail')).style._values['background-image'];
-    centerImage = centerImage.slice(centerImage.indexOf('url(') + 4, -1);
-    expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime][width]['url']); // 50 is present in the data, so hoverTime of 50 should find exact match
+    const centerImage = wrapper.find('[data-testid="centerThumbnail"]').prop('style').backgroundImage;
+    const centerImageUrl = centerImage.replace(/url\(\'(.*)\'\)/g, '$1');
+    expect(centerImageUrl).toBe(thumbnails.data.thumbnails[hoverTime][width]['url']); // 50 is present in the data, so hoverTime of 50 should find exact match
   });
 
   it('creates a ThumbnailCarousel at 45 sec', function() {
@@ -177,8 +177,8 @@ describe('ThumbnailCarousel', function() {
         thumbnailStyle={thumbnailStyle}
         thumbnails={thumbnails}/>
     );
-    var centerImage = ReactDOM.findDOMNode(wrapper.ref('thumbnail')).style._values['background-image'];
-    centerImage = centerImage.slice(centerImage.indexOf('url(') + 4, -1);
-    expect(centerImage).toBe(thumbnails.data.thumbnails[hoverTime - 5][width]['url']);// 45 is not present in the data, so hoverTime of 45 should find previous value
+    const centerImage = wrapper.find('[data-testid="centerThumbnail"]').prop('style').backgroundImage;
+    const centerImageUrl = centerImage.replace(/url\(\'(.*)\'\)/g, '$1');
+    expect(centerImageUrl).toBe(thumbnails.data.thumbnails[hoverTime - 5][width]['url']);// 45 is not present in the data, so hoverTime of 45 should find previous value
   });
 });

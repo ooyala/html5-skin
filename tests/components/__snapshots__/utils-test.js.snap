@@ -1,0 +1,1641 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Utils arrayDeepMerge 1`] = `
+Object {
+  "adScreen": Object {
+    "showAdCountDown": true,
+    "showAdMarquee": true,
+    "showControlBar": false,
+  },
+  "animationDurations": Object {
+    "vrIcon": 4,
+    "vrNotification": 5,
+  },
+  "audio": Object {
+    "audioLanguage": "none",
+  },
+  "buttons": Object {
+    "audioOnly": Object {
+      "desktop": Array [
+        Object {
+          "location": "controlBar",
+          "minWidth": 200,
+          "name": "volume",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 200,
+          "name": "skipControls",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 50,
+          "name": "moreOptions",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "share",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "playbackSpeed",
+        },
+      ],
+      "mobile": Array [
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "volume",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "seekBackwards",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "playPause",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "seekForward",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 50,
+          "name": "moreOptions",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "share",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "playbackSpeed",
+        },
+      ],
+    },
+    "desktopAd": Array [
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "playPause",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 240,
+        "name": "volume",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 1,
+        "name": "flexibleSpace",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 125,
+        "name": "logo",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "fullscreen",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "moreOptions",
+        "whenDoesNotFit": "keep",
+      },
+    ],
+    "desktopContent": Array [
+      Object {
+        "location": "ooyala",
+        "minWidth": 85,
+        "name": "ooyala",
+        "whenDoesNotFit": "ooyala",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 85,
+        "name": "quality",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+    ],
+    "mobileAd": Array [
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "volume",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 1,
+        "name": "flexibleSpace",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "fullscreen",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "moreOptions",
+        "whenDoesNotFit": "keep",
+      },
+    ],
+    "mobileContent": Array [
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "volume",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "live",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 60,
+        "name": "timeDuration",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 1,
+        "name": "flexibleSpace",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "chromecast",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "airPlay",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "moreOptions",
+        "name": "share",
+      },
+      Object {
+        "location": "moreOptions",
+        "name": "discovery",
+      },
+      Object {
+        "location": "moreOptions",
+        "name": "closedCaption",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "stereoscopic",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "audioAndCC",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "fullscreen",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "moreOptions",
+        "whenDoesNotFit": "keep",
+      },
+    ],
+  },
+  "closedCaptionOptions": Object {
+    "backgroundColor": "Green",
+    "backgroundOpacity": "0.2",
+    "enabled": true,
+    "fontSize": "Large",
+    "fontType": "Proportional Sans-Serif",
+    "language": "en",
+    "textColor": "Blue",
+    "textEnhancement": "Uniform",
+    "textOpacity": "1",
+    "windowColor": "Yellow",
+    "windowOpacity": 0.5,
+  },
+  "controlBar": Object {
+    "adScrubberBar": Object {
+      "backgroundColor": "rgba(175,175,175,1)",
+      "bufferedColor": "rgba(127,127,127,1)",
+      "playedColor": "rgba(255,63,128,1)",
+      "scrubberHandleBorderColor": "rgba(255,255,255,1)",
+      "scrubberHandleColor": "rgba(67,137,255,1)",
+    },
+    "autoHide": true,
+    "enabled": true,
+    "height": 90,
+    "iconStyle": Object {
+      "active": Object {
+        "color": "#FFFFFF",
+        "opacity": 1,
+      },
+      "inactive": Object {
+        "color": "#FFFFFF",
+        "opacity": 0.95,
+      },
+    },
+    "logo": Object {
+      "clickUrl": "http://www.ooyala.com",
+      "height": 24,
+      "imageResource": Object {
+        "androidResource": "logo",
+        "iosResource": "logo",
+        "url": "",
+      },
+      "target": "_blank",
+      "width": 96,
+    },
+    "qualitySelection": Object {
+      "format": "bitrate",
+    },
+    "scrubberBar": Object {
+      "backgroundColor": "rgba(175,175,175,0.5)",
+      "bufferedColor": "rgba(175,175,175,0.7)",
+      "playedColor": "",
+      "scrubberHandleBorderColor": "rgba(255,255,255,1)",
+      "scrubberHandleColor": "rgba(67,137,255,1)",
+      "thumbnailPreview": true,
+    },
+    "tooltips": Object {
+      "enabled": false,
+    },
+    "volumeControl": Object {
+      "color": "",
+    },
+  },
+  "discoveryScreen": Object {
+    "contentTitle": Object {
+      "font": Object {
+        "color": "white",
+        "fontFamily": "Roboto Condensed",
+      },
+      "show": true,
+    },
+    "countDownTime": 10,
+    "panelTitle": Object {
+      "titleFont": Object {
+        "color": "white",
+        "fontFamily": "Roboto Condensed",
+      },
+    },
+    "showCountDownTimerOnEndScreen": true,
+  },
+  "endScreen": Object {
+    "infoPanelPosition": "topLeft",
+    "replayIconStyle": Object {
+      "color": "white",
+      "opacity": 1,
+    },
+    "screenToShowOnEnd": "discovery",
+    "showDescription": false,
+    "showReplayButton": true,
+    "showTitle": false,
+  },
+  "general": Object {
+    "accentColor": "#448aff",
+    "bufferingSpinnerDelay": 750,
+    "loadingImage": Object {
+      "imageResource": Object {
+        "url": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/loader_svg.svg",
+      },
+    },
+    "watermark": Object {
+      "clickUrl": "",
+      "imageResource": Object {
+        "androidResource": "logo",
+        "iosResource": "logo",
+        "url": "http://ak.c.ooyala.com/Uzbm46asiensk3opIgwfFn5KFemv/watermark147585568",
+      },
+      "position": "top-left",
+      "scalingOption": "none",
+      "scalingPercentage": 0,
+      "target": "_blank",
+      "transparency": 0.51,
+    },
+  },
+  "icons": Object {
+    "airPlay-connected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "|",
+      "fontStyleClass": "oo-icon",
+    },
+    "airPlay-disconnected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "{",
+      "fontStyleClass": "oo-icon",
+    },
+    "arrowsBlack": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "R",
+      "fontStyleClass": "oo-icon",
+    },
+    "arrowsWhite": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "R",
+      "fontStyleClass": "oo-icon",
+    },
+    "audioAndCC": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "_",
+      "fontStyleClass": "oo-icon oo-icon-audio-and-cc",
+    },
+    "auto": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "d",
+      "fontStyleClass": "oo-icon oo-icon-system-auto",
+    },
+    "cc": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "k",
+      "fontStyleClass": "oo-icon oo-icon-cc",
+    },
+    "chromecast-connected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ";",
+      "fontStyleClass": "oo-icon",
+    },
+    "chromecast-disconnected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ":",
+      "fontStyleClass": "oo-icon",
+    },
+    "circleArrowsBlack": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "]",
+      "fontStyleClass": "oo-icon",
+    },
+    "circleArrowsWhite": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "]",
+      "fontStyleClass": "oo-icon",
+    },
+    "compress": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "j",
+      "fontStyleClass": "oo-icon oo-icon-system-minimizescreen",
+    },
+    "discovery": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "l",
+      "fontStyleClass": "oo-icon oo-icon-discovery-binoculars",
+    },
+    "dismiss": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "e",
+      "fontStyleClass": "oo-icon oo-icon-system-close",
+    },
+    "ellipsis": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "f",
+      "fontStyleClass": "oo-icon oo-icon-system-menu",
+    },
+    "expand": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "i",
+      "fontStyleClass": "oo-icon oo-icon-system-fullscreen",
+    },
+    "forward": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "(",
+      "fontStyleClass": "oo-icon oo-icon-forward",
+    },
+    "learn": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "t",
+      "fontStyleClass": "oo-icon oo-icon-system-more-information",
+    },
+    "left": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "r",
+      "fontStyleClass": "oo-icon oo-icon-system-left-arrow",
+    },
+    "next": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "D",
+      "fontStyleClass": "oo-icon oo-icon-next",
+    },
+    "pause": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "g",
+      "fontStyleClass": "oo-icon oo-icon-pause-slick",
+    },
+    "play": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ">",
+      "fontStyleClass": "oo-icon oo-icon-play-slick",
+    },
+    "previous": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "<",
+      "fontStyleClass": "oo-icon oo-icon-previous",
+    },
+    "quality": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "m",
+      "fontStyleClass": "oo-icon oo-icon-bitrate",
+    },
+    "replay": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "c",
+      "fontStyleClass": "oo-icon oo-icon-system-replay",
+    },
+    "right": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "s",
+      "fontStyleClass": "oo-icon oo-icon-system-right-arrow",
+    },
+    "selected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "@",
+      "fontStyleClass": "oo-icon oo-icon-selected",
+    },
+    "setting": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "n",
+      "fontStyleClass": "oo-icon oo-icon-system-settings",
+    },
+    "share": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "o",
+      "fontStyleClass": "oo-icon oo-icon-share",
+    },
+    "skip": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "u",
+      "fontStyleClass": "oo-icon oo-icon-skip-slick",
+    },
+    "stereoOff": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "W",
+      "fontStyleClass": "oo-icon oo-icon-system-auto",
+    },
+    "stereoOn": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "W",
+      "fontStyleClass": "oo-icon oo-icon-system-auto",
+    },
+    "stereoscopic": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "W",
+      "fontStyleClass": "oo-icon",
+    },
+    "toggleOff": Object {
+      "fontFamilyName": "fontawesome",
+      "fontString": "",
+      "fontStyleClass": "",
+    },
+    "toggleOn": Object {
+      "fontFamilyName": "fontawesome",
+      "fontString": "",
+      "fontStyleClass": "",
+    },
+    "volume": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "b",
+      "fontStyleClass": "oo-icon oo-icon-volume-on-ooyala-default",
+    },
+    "volumeOff": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "p",
+      "fontStyleClass": "oo-icon oo-icon-volume-mute-ooyala-default",
+    },
+    "vrIcon": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "Y",
+      "fontStyleClass": "oo-icon",
+    },
+    "warning": Object {
+      "fontFamilyName": "fontawesome",
+      "fontString": "",
+      "fontStyleClass": "",
+    },
+  },
+  "isVrAnimationEnabled": Object {
+    "vrIcon": false,
+    "vrNotification": true,
+  },
+  "languageDirections": Object {
+    "ar": "rtl",
+    "dv": "rtl",
+    "fa": "rtl",
+    "he": "rtl",
+    "ks": "rtl",
+    "ku": "rtl",
+    "pa": "rtl",
+    "ps": "rtl",
+    "sd": "rtl",
+    "tk": "rtl",
+    "ug": "rtl",
+    "ur": "rtl",
+    "yi": "rtl",
+  },
+  "live": Object {
+    "forceDvrDisabled": false,
+  },
+  "localization": Object {
+    "availableLanguageFile": Array [
+      Object {
+        "androidResource": "skin-config/languageFiles/en.json",
+        "iosResource": "en",
+        "language": "en",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/es.json",
+        "iosResource": "es",
+        "language": "es",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/zh.json",
+        "iosResource": "zh",
+        "language": "zh",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/ja.json",
+        "iosResource": "ja",
+        "language": "ja",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/ko.json",
+        "iosResource": "ko",
+        "language": "ko",
+        "languageFile": "",
+      },
+    ],
+    "defaultLanguage": "en",
+  },
+  "moreOptionsScreen": Object {
+    "brightOpacity": 1,
+    "color": "white",
+    "darkOpacity": 0.4,
+    "iconSize": 30,
+    "iconStyle": Object {
+      "active": Object {
+        "color": "#FFFFFF",
+        "opacity": 1,
+      },
+      "inactive": Object {
+        "color": "#FFFFFF",
+        "opacity": 0.95,
+      },
+    },
+  },
+  "pauseScreen": Object {
+    "PauseIconStyle": Object {
+      "color": "white",
+      "opacity": 1,
+    },
+    "infoPanelPosition": "topLeft",
+    "pauseIconPosition": "center",
+    "screenToShowOnPause": "default",
+    "showDescription": true,
+    "showPauseIcon": true,
+    "showTitle": true,
+  },
+  "playbackSpeed": Object {
+    "options": Array [
+      0.5,
+      0.75,
+      1,
+      1.25,
+      1.5,
+      2,
+    ],
+  },
+  "responsive": Object {
+    "aspectRatio": "auto",
+    "breakpoints": Object {
+      "audio-only-xs": Object {
+        "id": "audio-only-xs",
+        "multiplier": 0.7,
+        "name": "oo-xsmall",
+      },
+      "lg": Object {
+        "id": "lg",
+        "minWidth": 1280,
+        "multiplier": 1.2,
+        "name": "oo-large",
+      },
+      "md": Object {
+        "id": "md",
+        "maxWidth": 1279,
+        "minWidth": 840,
+        "multiplier": 1,
+        "name": "oo-medium",
+      },
+      "sm": Object {
+        "id": "sm",
+        "maxWidth": 839,
+        "minWidth": 560,
+        "multiplier": 1,
+        "name": "oo-small",
+      },
+      "xs": Object {
+        "id": "xs",
+        "maxWidth": 559,
+        "multiplier": 0.7,
+        "name": "oo-xsmall",
+      },
+    },
+  },
+  "shareScreen": Object {
+    "embed": Object {
+      "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>",
+    },
+    "shareContent": Array [
+      "social",
+      "embed",
+      "ooyala",
+    ],
+    "socialContent": Array [
+      "twitter",
+      "facebook",
+      "google+",
+      "email",
+      "lisa",
+      "jason",
+    ],
+  },
+  "skipControls": Object {
+    "buttons": Object {
+      "nextVideo": Object {
+        "enabled": true,
+        "index": 4,
+      },
+      "previousVideo": Object {
+        "enabled": true,
+        "index": 1,
+      },
+      "skipBackward": Object {
+        "enabled": true,
+        "index": 2,
+      },
+      "skipForward": Object {
+        "enabled": true,
+        "index": 3,
+      },
+    },
+    "controlBarSkipControls": Object {
+      "nextVideo": Object {
+        "enabled": true,
+        "index": 5,
+      },
+      "playPause": Object {
+        "enabled": true,
+        "index": 3,
+      },
+      "previousVideo": Object {
+        "enabled": true,
+        "index": 1,
+      },
+      "skipBackward": Object {
+        "enabled": true,
+        "index": 2,
+      },
+      "skipForward": Object {
+        "enabled": true,
+        "index": 4,
+      },
+    },
+    "enabled": false,
+    "skipBackwardTime": 10,
+    "skipForwardTime": 10,
+  },
+  "startScreen": Object {
+    "descriptionFont": Object {
+      "color": "white",
+    },
+    "infoPanelPosition": "topLeft",
+    "playButtonPosition": "center",
+    "playIconStyle": Object {
+      "color": "white",
+      "opacity": 1,
+    },
+    "promoImageSize": "default",
+    "showDescription": true,
+    "showPlayButton": true,
+    "showPromo": true,
+    "showTitle": true,
+    "titleFont": Object {
+      "color": "white",
+    },
+  },
+  "upNext": Object {
+    "showUpNext": true,
+    "timeToShow": 10,
+  },
+}
+`;
+
+exports[`Utils arrayDeepMerge 2`] = `
+Object {
+  "adScreen": Object {
+    "showAdCountDown": true,
+    "showAdMarquee": true,
+    "showControlBar": false,
+  },
+  "animationDurations": Object {
+    "vrIcon": 4,
+    "vrNotification": 5,
+  },
+  "audio": Object {
+    "audioLanguage": "none",
+  },
+  "buttons": Object {
+    "audioOnly": Object {
+      "desktop": Array [
+        Object {
+          "location": "controlBar",
+          "minWidth": 200,
+          "name": "volume",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 200,
+          "name": "skipControls",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 50,
+          "name": "moreOptions",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "share",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "playbackSpeed",
+        },
+      ],
+      "mobile": Array [
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "volume",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "seekBackwards",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "playPause",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 60,
+          "name": "seekForward",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "controlBar",
+          "minWidth": 50,
+          "name": "moreOptions",
+          "whenDoesNotFit": "keep",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "share",
+        },
+        Object {
+          "location": "moreOptions",
+          "name": "playbackSpeed",
+        },
+      ],
+    },
+    "desktopAd": Array [
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "playPause",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 240,
+        "name": "volume",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 1,
+        "name": "flexibleSpace",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 125,
+        "name": "logo",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "fullscreen",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "moreOptions",
+        "whenDoesNotFit": "keep",
+      },
+    ],
+    "desktopContent": Array [
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "playPause",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "enabled": true,
+        "location": "controlBar",
+        "minWidth": 240,
+        "name": "volume",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 65,
+        "name": "live",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 145,
+        "name": "timeDuration",
+        "whenDoesNotFit": "drop",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 1,
+        "name": "flexibleSpace",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "ooyala",
+        "minWidth": 85,
+        "name": "ooyala",
+        "whenDoesNotFit": "ooyala",
+      },
+      Object {
+        "location": "alice",
+        "minWidth": 53,
+        "name": "alice",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "chromecast",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "airPlay",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "enabled": true,
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "share",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "discovery",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "closedCaption",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "alice": "video",
+        "enabled": true,
+        "location": "controlBar",
+        "minWidth": 85,
+        "name": "quality",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 125,
+        "name": "logo",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "stereoscopic",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "audioAndCC",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "enabled": true,
+        "location": "controlBar",
+        "minWidth": 55,
+        "name": "fullscreen",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "moreOptions",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "mainView",
+        "minWidth": 45,
+        "name": "arrowsBlack",
+        "whenDoesNotFit": "keep",
+      },
+    ],
+    "mobileAd": Array [
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "volume",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 1,
+        "name": "flexibleSpace",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "fullscreen",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "moreOptions",
+        "whenDoesNotFit": "keep",
+      },
+    ],
+    "mobileContent": Array [
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "volume",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 45,
+        "name": "live",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 60,
+        "name": "timeDuration",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 1,
+        "name": "flexibleSpace",
+        "whenDoesNotFit": "keep",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "chromecast",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "airPlay",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "moreOptions",
+        "name": "share",
+      },
+      Object {
+        "location": "moreOptions",
+        "name": "discovery",
+      },
+      Object {
+        "location": "moreOptions",
+        "name": "closedCaption",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "stereoscopic",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "audioAndCC",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "fullscreen",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "moreOptions",
+        "whenDoesNotFit": "keep",
+      },
+    ],
+  },
+  "closedCaptionOptions": Object {
+    "backgroundColor": "Green",
+    "backgroundOpacity": "0.2",
+    "enabled": true,
+    "fontSize": "Large",
+    "fontType": "Proportional Sans-Serif",
+    "language": "en",
+    "textColor": "Blue",
+    "textEnhancement": "Uniform",
+    "textOpacity": "1",
+    "windowColor": "Yellow",
+    "windowOpacity": 0.5,
+  },
+  "controlBar": Object {
+    "adScrubberBar": Object {
+      "backgroundColor": "rgba(175,175,175,1)",
+      "bufferedColor": "rgba(127,127,127,1)",
+      "playedColor": "rgba(255,63,128,1)",
+      "scrubberHandleBorderColor": "rgba(255,255,255,1)",
+      "scrubberHandleColor": "rgba(67,137,255,1)",
+    },
+    "autoHide": true,
+    "enabled": true,
+    "height": 90,
+    "iconStyle": Object {
+      "active": Object {
+        "color": "#FFFFFF",
+        "opacity": 1,
+      },
+      "inactive": Object {
+        "color": "#FFFFFF",
+        "opacity": 0.95,
+      },
+    },
+    "logo": Object {
+      "clickUrl": "http://www.ooyala.com",
+      "height": 24,
+      "imageResource": Object {
+        "androidResource": "logo",
+        "iosResource": "logo",
+        "url": "",
+      },
+      "target": "_blank",
+      "width": 96,
+    },
+    "qualitySelection": Object {
+      "format": "bitrate",
+    },
+    "scrubberBar": Object {
+      "backgroundColor": "rgba(175,175,175,0.5)",
+      "bufferedColor": "rgba(175,175,175,0.7)",
+      "playedColor": "",
+      "scrubberHandleBorderColor": "rgba(255,255,255,1)",
+      "scrubberHandleColor": "rgba(67,137,255,1)",
+      "thumbnailPreview": true,
+    },
+    "tooltips": Object {
+      "enabled": false,
+    },
+    "volumeControl": Object {
+      "color": "",
+    },
+  },
+  "discoveryScreen": Object {
+    "contentTitle": Object {
+      "font": Object {
+        "color": "white",
+        "fontFamily": "Roboto Condensed",
+      },
+      "show": true,
+    },
+    "countDownTime": 10,
+    "panelTitle": Object {
+      "titleFont": Object {
+        "color": "white",
+        "fontFamily": "Roboto Condensed",
+      },
+    },
+    "showCountDownTimerOnEndScreen": true,
+  },
+  "endScreen": Object {
+    "infoPanelPosition": "topLeft",
+    "replayIconStyle": Object {
+      "color": "white",
+      "opacity": 1,
+    },
+    "screenToShowOnEnd": "discovery",
+    "showDescription": false,
+    "showReplayButton": true,
+    "showTitle": false,
+  },
+  "general": Object {
+    "accentColor": "#448aff",
+    "bufferingSpinnerDelay": 750,
+    "loadingImage": Object {
+      "imageResource": Object {
+        "url": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/loader_svg.svg",
+      },
+    },
+    "watermark": Object {
+      "clickUrl": "",
+      "imageResource": Object {
+        "androidResource": "logo",
+        "iosResource": "logo",
+        "url": "http://ak.c.ooyala.com/Uzbm46asiensk3opIgwfFn5KFemv/watermark147585568",
+      },
+      "position": "top-left",
+      "scalingOption": "none",
+      "scalingPercentage": 0,
+      "target": "_blank",
+      "transparency": 0.51,
+    },
+  },
+  "icons": Object {
+    "airPlay-connected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "|",
+      "fontStyleClass": "oo-icon",
+    },
+    "airPlay-disconnected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "{",
+      "fontStyleClass": "oo-icon",
+    },
+    "arrowsBlack": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "R",
+      "fontStyleClass": "oo-icon",
+    },
+    "arrowsWhite": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "R",
+      "fontStyleClass": "oo-icon",
+    },
+    "audioAndCC": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "_",
+      "fontStyleClass": "oo-icon oo-icon-audio-and-cc",
+    },
+    "auto": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "d",
+      "fontStyleClass": "oo-icon oo-icon-system-auto",
+    },
+    "cc": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "k",
+      "fontStyleClass": "oo-icon oo-icon-cc",
+    },
+    "chromecast-connected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ";",
+      "fontStyleClass": "oo-icon",
+    },
+    "chromecast-disconnected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ":",
+      "fontStyleClass": "oo-icon",
+    },
+    "circleArrowsBlack": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "]",
+      "fontStyleClass": "oo-icon",
+    },
+    "circleArrowsWhite": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "]",
+      "fontStyleClass": "oo-icon",
+    },
+    "compress": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "j",
+      "fontStyleClass": "oo-icon oo-icon-system-minimizescreen",
+    },
+    "discovery": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "l",
+      "fontStyleClass": "oo-icon oo-icon-discovery-binoculars",
+    },
+    "dismiss": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "e",
+      "fontStyleClass": "oo-icon oo-icon-system-close",
+    },
+    "ellipsis": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "f",
+      "fontStyleClass": "oo-icon oo-icon-system-menu",
+    },
+    "expand": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "i",
+      "fontStyleClass": "oo-icon oo-icon-system-fullscreen",
+    },
+    "forward": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "(",
+      "fontStyleClass": "oo-icon oo-icon-forward",
+    },
+    "learn": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "t",
+      "fontStyleClass": "oo-icon oo-icon-system-more-information",
+    },
+    "left": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "r",
+      "fontStyleClass": "oo-icon oo-icon-system-left-arrow",
+    },
+    "next": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "D",
+      "fontStyleClass": "oo-icon oo-icon-next",
+    },
+    "pause": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "g",
+      "fontStyleClass": "oo-icon oo-icon-pause-slick",
+    },
+    "play": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ">",
+      "fontStyleClass": "oo-icon oo-icon-play-slick",
+    },
+    "previous": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "<",
+      "fontStyleClass": "oo-icon oo-icon-previous",
+    },
+    "quality": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "m",
+      "fontStyleClass": "oo-icon oo-icon-bitrate",
+    },
+    "replay": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "c",
+      "fontStyleClass": "oo-icon oo-icon-system-replay",
+    },
+    "right": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "s",
+      "fontStyleClass": "oo-icon oo-icon-system-right-arrow",
+    },
+    "selected": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "@",
+      "fontStyleClass": "oo-icon oo-icon-selected",
+    },
+    "setting": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "n",
+      "fontStyleClass": "oo-icon oo-icon-system-settings",
+    },
+    "share": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "o",
+      "fontStyleClass": "oo-icon oo-icon-share",
+    },
+    "skip": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "u",
+      "fontStyleClass": "oo-icon oo-icon-skip-slick",
+    },
+    "stereoOff": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "W",
+      "fontStyleClass": "oo-icon oo-icon-system-auto",
+    },
+    "stereoOn": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "W",
+      "fontStyleClass": "oo-icon oo-icon-system-auto",
+    },
+    "stereoscopic": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "W",
+      "fontStyleClass": "oo-icon",
+    },
+    "toggleOff": Object {
+      "fontFamilyName": "fontawesome",
+      "fontString": "",
+      "fontStyleClass": "",
+    },
+    "toggleOn": Object {
+      "fontFamilyName": "fontawesome",
+      "fontString": "",
+      "fontStyleClass": "",
+    },
+    "volume": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "b",
+      "fontStyleClass": "oo-icon oo-icon-volume-on-ooyala-default",
+    },
+    "volumeOff": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "p",
+      "fontStyleClass": "oo-icon oo-icon-volume-mute-ooyala-default",
+    },
+    "vrIcon": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "Y",
+      "fontStyleClass": "oo-icon",
+    },
+    "warning": Object {
+      "fontFamilyName": "fontawesome",
+      "fontString": "",
+      "fontStyleClass": "",
+    },
+  },
+  "isVrAnimationEnabled": Object {
+    "vrIcon": false,
+    "vrNotification": true,
+  },
+  "languageDirections": Object {
+    "ar": "rtl",
+    "dv": "rtl",
+    "fa": "rtl",
+    "he": "rtl",
+    "ks": "rtl",
+    "ku": "rtl",
+    "pa": "rtl",
+    "ps": "rtl",
+    "sd": "rtl",
+    "tk": "rtl",
+    "ug": "rtl",
+    "ur": "rtl",
+    "yi": "rtl",
+  },
+  "live": Object {
+    "forceDvrDisabled": false,
+  },
+  "localization": Object {
+    "availableLanguageFile": Array [
+      Object {
+        "androidResource": "skin-config/languageFiles/en.json",
+        "iosResource": "en",
+        "language": "en",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/es.json",
+        "iosResource": "es",
+        "language": "es",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/zh.json",
+        "iosResource": "zh",
+        "language": "zh",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/ja.json",
+        "iosResource": "ja",
+        "language": "ja",
+        "languageFile": "",
+      },
+      Object {
+        "androidResource": "skin-config/languageFiles/ko.json",
+        "iosResource": "ko",
+        "language": "ko",
+        "languageFile": "",
+      },
+    ],
+    "defaultLanguage": "en",
+  },
+  "moreOptionsScreen": Object {
+    "brightOpacity": 1,
+    "color": "white",
+    "darkOpacity": 0.4,
+    "iconSize": 30,
+    "iconStyle": Object {
+      "active": Object {
+        "color": "#FFFFFF",
+        "opacity": 1,
+      },
+      "inactive": Object {
+        "color": "#FFFFFF",
+        "opacity": 0.95,
+      },
+    },
+  },
+  "pauseScreen": Object {
+    "PauseIconStyle": Object {
+      "color": "white",
+      "opacity": 1,
+    },
+    "infoPanelPosition": "topLeft",
+    "pauseIconPosition": "center",
+    "screenToShowOnPause": "default",
+    "showDescription": true,
+    "showPauseIcon": true,
+    "showTitle": true,
+  },
+  "playbackSpeed": Object {
+    "options": Array [
+      0.5,
+      0.75,
+      1,
+      1.25,
+      1.5,
+      2,
+    ],
+  },
+  "responsive": Object {
+    "aspectRatio": "auto",
+    "breakpoints": Object {
+      "audio-only-xs": Object {
+        "id": "audio-only-xs",
+        "multiplier": 0.7,
+        "name": "oo-xsmall",
+      },
+      "lg": Object {
+        "id": "lg",
+        "minWidth": 1280,
+        "multiplier": 1.2,
+        "name": "oo-large",
+      },
+      "md": Object {
+        "id": "md",
+        "maxWidth": 1279,
+        "minWidth": 840,
+        "multiplier": 1,
+        "name": "oo-medium",
+      },
+      "sm": Object {
+        "id": "sm",
+        "maxWidth": 839,
+        "minWidth": 560,
+        "multiplier": 1,
+        "name": "oo-small",
+      },
+      "xs": Object {
+        "id": "xs",
+        "maxWidth": 559,
+        "multiplier": 0.7,
+        "name": "oo-xsmall",
+      },
+    },
+  },
+  "shareScreen": Object {
+    "embed": Object {
+      "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>",
+    },
+    "shareContent": Array [
+      "social",
+      "ooyala",
+    ],
+    "socialContent": Array [
+      "twitter",
+      "lisa",
+      "google+",
+      "jason",
+    ],
+  },
+  "skipControls": Object {
+    "buttons": Object {
+      "nextVideo": Object {
+        "enabled": true,
+        "index": 4,
+      },
+      "previousVideo": Object {
+        "enabled": true,
+        "index": 1,
+      },
+      "skipBackward": Object {
+        "enabled": true,
+        "index": 2,
+      },
+      "skipForward": Object {
+        "enabled": true,
+        "index": 3,
+      },
+    },
+    "controlBarSkipControls": Object {
+      "nextVideo": Object {
+        "enabled": true,
+        "index": 5,
+      },
+      "playPause": Object {
+        "enabled": true,
+        "index": 3,
+      },
+      "previousVideo": Object {
+        "enabled": true,
+        "index": 1,
+      },
+      "skipBackward": Object {
+        "enabled": true,
+        "index": 2,
+      },
+      "skipForward": Object {
+        "enabled": true,
+        "index": 4,
+      },
+    },
+    "enabled": false,
+    "skipBackwardTime": 10,
+    "skipForwardTime": 10,
+  },
+  "startScreen": Object {
+    "descriptionFont": Object {
+      "color": "white",
+    },
+    "infoPanelPosition": "topLeft",
+    "playButtonPosition": "center",
+    "playIconStyle": Object {
+      "color": "white",
+      "opacity": 1,
+    },
+    "promoImageSize": "default",
+    "showDescription": true,
+    "showPlayButton": true,
+    "showPromo": true,
+    "showTitle": true,
+    "titleFont": Object {
+      "color": "white",
+    },
+  },
+  "upNext": Object {
+    "showUpNext": true,
+    "timeToShow": 10,
+  },
+}
+`;

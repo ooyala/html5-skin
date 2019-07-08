@@ -7,18 +7,11 @@ import AccessibleMenu from '../higher-order/accessibleMenu';
 import CONSTANTS from '../../constants/constants';
 import SelectionContainer from './selectionContainer';
 
+const TEXT_ENHANCEMENTS = ['Uniform', 'Depressed', 'Raised', 'Shadow'];
 /**
  * Manage text enhancements
  */
 class TextEnhancementsTabProto extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTextEnhancement: this.props.closedCaptionOptions.textEnhancement, // eslint-disable-line
-      textEnhancements: ['Uniform', 'Depressed', 'Raised', 'Shadow'],
-    };
-  }
-
   /**
    * Update the classes of the element where the component is binded to
    * @param {*} item - the item
@@ -50,9 +43,6 @@ class TextEnhancementsTabProto extends React.Component {
       controller.toggleClosedCaptionEnabled();
     }
     controller.onClosedCaptionChange('textEnhancement', textEnhancement);
-    this.setState({
-      selectedTextEnhancement: textEnhancement, // eslint-disable-line
-    });
   }
 
   render() {
@@ -62,7 +52,6 @@ class TextEnhancementsTabProto extends React.Component {
       localizableStrings,
       skinConfig,
     } = this.props;
-    const { textEnhancements } = this.state;
     const textEnhancementTitle = Utils.getLocalizedString(
       language,
       CONSTANTS.SKIN_TEXT.TEXT_ENHANCEMENT,
@@ -74,7 +63,7 @@ class TextEnhancementsTabProto extends React.Component {
       localizableStrings
     );
     const textEnhancementItems = [];
-    textEnhancements.forEach((textEnhancement, index) => {
+    TEXT_ENHANCEMENTS.forEach((textEnhancement) => {
       // accent color
       const isSelected = closedCaptionOptions.textEnhancement === textEnhancement;
       let selectedTextEnhancementStyle = {};
@@ -93,7 +82,7 @@ class TextEnhancementsTabProto extends React.Component {
 
       textEnhancementItems.push(
         <AccessibleButton
-          key={index} // eslint-disable-line
+          key={textEnhancement}
           className="oo-text-enhancements-container"
           ariaLabel={itemLabel}
           ariaChecked={isSelected}

@@ -50,7 +50,16 @@
       font-family: $font-family-roboto;
       color: $white;
       margin: auto 15px auto auto;
+      padding: 0;
       text-align: center;
+
+      // opacity: 0.6;
+      line-height: 1;
+      -webkit-appearance: none;
+      background-color: transparent;
+      border: 0;
+      outline: none;
+
       cursor: pointer;
 
       .oo-button-icon {

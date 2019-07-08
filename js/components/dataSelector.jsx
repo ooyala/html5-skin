@@ -36,7 +36,7 @@ class DataSelectorProto extends React.Component {
    * @param {String} dataItem The value of the data button whose ref we want to store.
    * @returns {Function} A callback that will store the ref of the corresponding item button.
    */
-  getItemButtonRefCallback = dataItem => (component) => { // eslint-disable-line
+  getItemButtonRefCallback = dataItem => (component) => {
     this.itemButtons[dataItem] = component;
   }
 

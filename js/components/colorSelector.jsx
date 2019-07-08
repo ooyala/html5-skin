@@ -35,8 +35,7 @@ class ColorSelectorProto extends React.Component {
       onColorChange,
       colors,
     } = this.props;
-    const colorItems = [];
-    colors.forEach((color, index) => {
+    const colorItems = colors.map((color) => {
       // accent color
       const isSelected = selectedColor === color;
       let activeColorStyle = {};
@@ -47,9 +46,9 @@ class ColorSelectorProto extends React.Component {
       }
       const currentAriaLabel = `${ariaLabel} ${color}`;
 
-      colorItems.push(
+      return (
         <div
-          key={index} // eslint-disable-line
+          key={color}
           className={this.setClassname(color)}
           style={activeColorStyle}
           role={CONSTANTS.ARIA_ROLES.PRESENTATION}

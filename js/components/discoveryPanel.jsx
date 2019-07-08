@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
 
@@ -16,9 +15,9 @@ class DiscoveryPanel extends React.Component {
   constructor(props) {
     super(props);
     const { forceCountDownTimer, skinConfig } = this.props;
+    this.discoveryPanel = null;
     this.state = {
-      showDiscoveryCountDown:
-        skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || forceCountDownTimer,
+      showDiscoveryCountDown: skinConfig.discoveryScreen.showCountDownTimerOnEndScreen || forceCountDownTimer,
       currentPage: 1,
       componentHeight: null,
       shownAssets: -1,
@@ -54,14 +53,32 @@ class DiscoveryPanel extends React.Component {
     this.detectHeight();
   }
 
+  goToPrevPage = () => {
+    this.setState(({ currentPage }) => ({ currentPage: currentPage - 1 }));
+  }
+
+  goToNextPage = () => {
+    this.setState(({ currentPage }) => ({ currentPage: currentPage + 1 }));
+  }
+
   /**
    * Handle click on left button
    * @param {Object} event - the click event object
    */
   handleLeftButtonClick = (event) => {
     event.preventDefault();
-    const { currentPage } = this.state;
-    this.setState({ currentPage: currentPage - 1 });
+    this.goToPrevPage();
+  }
+
+  /**
+   * Handle keyup on left button
+   * @param {Object} event - the click event object
+   */
+  handleLeftButtonKeyUp = (event) => {
+    if (event.keyCode === CONSTANTS.KEYCODES.SPACE_KEY) {
+      event.stopPropagation();
+      this.goToPrevPage();
+    }
   }
 
   /**
@@ -70,8 +87,18 @@ class DiscoveryPanel extends React.Component {
    */
   handleRightButtonClick = (event) => {
     event.preventDefault();
-    const { currentPage } = this.state;
-    this.setState({ currentPage: currentPage + 1 });
+    this.goToNextPage();
+  }
+
+  /**
+   * Handle keyup on right button
+   * @param {Object} event - the click event object
+   */
+  handleRightButtonKeyUp = (event) => {
+    if (event.keyCode === CONSTANTS.KEYCODES.SPACE_KEY) {
+      event.stopPropagation();
+      this.goToNextPage();
+    }
   }
 
   /**
@@ -126,14 +153,13 @@ class DiscoveryPanel extends React.Component {
   handleDiscoveryCountDownClick = (event) => {
     event.preventDefault();
     this.setState({ showDiscoveryCountDown: false });
-    this.refs.CountDownClock.handleClick(event); // eslint-disable-line
+    this.countDownClock.handleClick(event);
   }
 
   // detect height of component
   detectHeight = () => {
-    const discoveryPanel = ReactDOM.findDOMNode(this.refs.discoveryPanel); // eslint-disable-line
     this.setState({
-      componentHeight: discoveryPanel.getBoundingClientRect().height,
+      componentHeight: this.discoveryPanel.getBoundingClientRect().height,
     });
   }
 
@@ -146,6 +172,7 @@ class DiscoveryPanel extends React.Component {
       responsiveView,
       videosPerPage,
     } = this.props;
+    const { shownAssets } = this.state;
     const { relatedVideos } = discoveryData;
 
     // if no discovery data render message
@@ -163,7 +190,7 @@ class DiscoveryPanel extends React.Component {
     let position = 1;
     // Send impression events for each discovery asset shown
     for (let index = startAt; index < endAt; index += 1) {
-      if (index > this.state.shownAssets && index < relatedVideos.length) { // eslint-disable-line
+      if (index > shownAssets && index < relatedVideos.length) {
         controller.sendDiscoveryDisplayEvent(
           position,
           videosPerPageView,
@@ -206,17 +233,21 @@ class DiscoveryPanel extends React.Component {
     });
     const countDownClock = this.shouldShowCountdownTimer() ? (
       <div className={discoveryCountDownWrapperStyle}>
-        <a // eslint-disable-line
+        {/* TODO: make accessible from keyboard */}
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+        <div
           className="oo-discovery-count-down-icon-style"
           onClick={this.handleDiscoveryCountDownClick}
+          role="button"
+          tabIndex={0}
         >
           <CountDownClock
             {...this.props}
             timeToShow={skinConfig.discoveryScreen.countDownTime}
-            ref="CountDownClock" // eslint-disable-line
+            ref={(node) => { this.countDownClock = node; }}
           />
           <Icon {...this.props} icon="pause" />
-        </a>
+        </div>
       </div>
     ) : null;
 
@@ -242,29 +273,33 @@ class DiscoveryPanel extends React.Component {
     return (
       <div
         className="oo-content-panel oo-discovery-panel"
-        ref="discoveryPanel" // eslint-disable-line
+        ref={(node) => { this.discoveryPanel = node; }}
       >
         <div
           className={discoveryToaster}
-          ref="DiscoveryToasterContainer" // eslint-disable-line
         >
           {discoveryContentBlocks}
         </div>
 
-        <a // eslint-disable-line
+        <div
           className={leftButtonClass}
-          ref="ChevronLeftButton" // eslint-disable-line
           onClick={this.handleLeftButtonClick}
+          onKeyUp={this.handleLeftButtonKeyUp}
+          role="button"
+          tabIndex={0}
+          data-testid="left-button"
         >
           <Icon {...this.props} icon="left" />
-        </a>
-        <a // eslint-disable-line
+        </div>
+        <div
           className={rightButtonClass}
-          ref="ChevronRightButton" // eslint-disable-line
           onClick={this.handleRightButtonClick}
+          onKeyUp={this.handleRightButtonKeyUp}
+          role="button"
+          tabIndex={0}
         >
           <Icon {...this.props} icon="right" />
-        </a>
+        </div>
       </div>
     );
   }

@@ -56,6 +56,7 @@ describe('Tabs', function() {
     props.ariaLabel = 'customAriaLabel';
     renderComponent();
     var mainElement = component.getDOMNode();
+
     expect(mainElement.getAttribute('role')).toBe(CONSTANTS.ARIA_ROLES.MENU);
     expect(mainElement.getAttribute('aria-label')).toBe(props.ariaLabel);
   });

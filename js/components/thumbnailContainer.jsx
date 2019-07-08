@@ -225,7 +225,7 @@ class ThumbnailContainer extends React.Component {
    */
   getCurrentYawVr = (yaw) => {
     const direction = yaw <= -360 ? -1 : 1;
-    const ratio = ~~( direction * yaw / 360 ); // eslint-disable-line
+    const ratio = Math.floor(direction * yaw / 360);
     const coef = yaw - direction * ratio * 360;
     return coef;
   }

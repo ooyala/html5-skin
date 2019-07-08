@@ -112,10 +112,10 @@ class SharePanel extends React.Component {
         try {
           // If we can't access href, a web client has taken over and this will throw
           // an exception, preventing the window from being closed.
-          const test = emailWindow.location.href; // eslint-disable-line
           emailWindow.close();
         } catch (error) {
-          console.log('email send error - ', error); // eslint-disable-line no-console
+          // eslint-disable-next-line no-console
+          console.error('email send error - ', error);
         }
         // Generous 2 second timeout to give the window time to redirect if it's going to a web client
       }, twoSeconds);

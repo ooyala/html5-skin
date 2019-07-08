@@ -38,7 +38,7 @@ function controller(OO, _, $) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = { releaseVersion: '<SKIN_VERSION>', rev: '<SKIN_REV>' }; // eslint-disable-line
+    OO.publicApi.VERSION.skin = { releaseVersion: '<SKIN_VERSION>', rev: '<SKIN_REV>' };
   }
 
   /**
@@ -1359,7 +1359,7 @@ function controller(OO, _, $) {
       this.state.seeking = false;
       if (this.state.queuedPlayheadUpdate) {
         OO.log('popping queued update');
-        this.skin.updatePlayhead.apply(this.skin, this.state.queuedPlayheadUpdate).then(() => { // eslint-disable-line
+        this.skin.updatePlayhead(...this.state.queuedPlayheadUpdate).then(() => {
           this.state.queuedPlayheadUpdate = null;
         }).catch(() => { OO.log('onSeeked: Could not set new state for skin'); });
       }
@@ -1957,7 +1957,7 @@ function controller(OO, _, $) {
         // when displaying only bitrates we need to give priority to bitrates over
         // resolutions when sorting, otherwise the quality display might appear unsorted to the user.
         if (qualityFormat === CONSTANTS.QUALITY_SELECTION.FORMAT.BITRATE) {
-          bitrates.bitrates = Utils.sortQualitiesByBitrate(bitrates.bitrates); // eslint-disable-line
+          bitrates.bitrates = Utils.sortQualitiesByBitrate(bitrates.bitrates);
         }
 
         this.state.videoQualityOptions.availableBitrates = bitrates.bitrates;
@@ -2052,13 +2052,13 @@ function controller(OO, _, $) {
      * @public
      */
     closeOtherPopovers(popoverOptionsName) {
-      for (const menuName in CONSTANTS.MENU_OPTIONS) { // eslint-disable-line
+      Object.keys(CONSTANTS.MENU_OPTIONS).forEach((menuName) => {
         const currentOptionsName = CONSTANTS.MENU_OPTIONS[menuName];
 
         if (currentOptionsName !== popoverOptionsName) {
           this.closePopover(currentOptionsName);
         }
-      }
+      });
     },
 
     /**
@@ -2601,7 +2601,7 @@ function controller(OO, _, $) {
     },
 
     sendDiscoveryDisplayEvent(assetPosition, pageSize, uiTag, asset, customData) {
-      customData.source = this.state.discoverySource; // eslint-disable-line
+      customData.source = this.state.discoverySource;
       // With "Up Next" panel we only pass the data of the asset
       // that is currently shown
       if (asset.embed_code) {
@@ -3017,32 +3017,37 @@ function controller(OO, _, $) {
 
     // find descendant video element
     findMainVideoElement(element) {
-      let elements = [];
       // use actual element
       if (element[0]) {
-        element = element[0]; // eslint-disable-line
+        // eslint-disable-next-line prefer-destructuring, no-param-reassign
+        element = element[0];
       }
 
       // find html5 video
       if (element.tagName && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.VIDEO) !== -1) {
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
-      } else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
+        return element;
+      }
+      if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO).length) {
+        const elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.VIDEO);
         if (elements.length) {
-          element = elements[0]; // eslint-disable-line
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.HTML5;
+          return elements[0];
         }
-      } else if (
+      }
+      if (
         element.tagName
         && element.tagName.toLowerCase().indexOf(CONSTANTS.MEDIA_TYPE.OBJECT) !== -1
       ) {
         // find flash object
         this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
-      } else if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
-        elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
+        return element;
+      }
+      if (element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT).length) {
+        const elements = element.getElementsByTagName(CONSTANTS.MEDIA_TYPE.OBJECT);
         if (elements.length) {
-          element = elements[0]; // eslint-disable-line
           this.state.mainVideoMediaType = CONSTANTS.MEDIA_TYPE.FLASH;
+          return elements[0];
         }
       }
       return element;

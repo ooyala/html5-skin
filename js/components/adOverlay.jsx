@@ -57,7 +57,6 @@ class AdOverlay extends React.Component {
           cssClass={closeButtonClass}
           closeAction={this.closeOverlay}
           className="oo-ad-overlay-close-button-icon"
-          ref="adOverlayCloseButton" // eslint-disable-line
         />
       </div>
     );

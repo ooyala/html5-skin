@@ -120,7 +120,7 @@ describe('PlayingScreen', function() {
       addBlur: () => {},
       removeBlur: () => {}
     };
-    mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
     closedCaptionOptions = {
       cueText: 'cue text'
     };

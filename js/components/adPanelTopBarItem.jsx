@@ -4,23 +4,39 @@ import PropTypes from 'prop-types';
 /**
  * One item in ad panel component
  */
-class AdPanelTopBarItem extends React.Component { // eslint-disable-line
-  render() {
-    const { itemClassName, onButtonClicked, children } = this.props;
+
+const AdPanelTopBarItem = ({
+  itemClassName,
+  onButtonClick,
+  onButtonKeyUp,
+  children,
+}) => {
+  if (!onButtonClick) {
     return (
-      <a // eslint-disable-line
+      <div
         className={itemClassName}
-        onClick={onButtonClicked}
       >
         {children}
-      </a>
+      </div>
     );
   }
-}
+  return (
+    <div
+      className={itemClassName}
+      onClick={onButtonClick}
+      onKeyUp={onButtonKeyUp}
+      role="button"
+      tabIndex={0}
+    >
+      {children}
+    </div>
+  );
+};
 
 AdPanelTopBarItem.propTypes = {
   itemClassName: PropTypes.string,
-  onButtonClicked: PropTypes.func,
+  onButtonClick: PropTypes.func,
+  onButtonKeyUp: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -29,7 +45,8 @@ AdPanelTopBarItem.propTypes = {
 
 AdPanelTopBarItem.defaultProps = {
   itemClassName: '',
-  onButtonClicked: () => {},
+  onButtonClick: null,
+  onButtonKeyUp: () => {},
   children: [],
 };
 

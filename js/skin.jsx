@@ -652,7 +652,6 @@ class Skin extends React.Component {
                 videoQualityOptions={videoQualityOptions}
                 closedCaptionOptions={closedCaptionOptions}
                 captionDirection={controller.captionDirection}
-                ref="playScreen" // eslint-disable-line
               />
             );
             break;
@@ -714,7 +713,6 @@ class Skin extends React.Component {
                 componentWidth={componentWidth}
                 videoQualityOptions={videoQualityOptions}
                 captionDirection={controller.captionDirection}
-                ref="pauseScreen" // eslint-disable-line
               />
             );
             break;
@@ -736,7 +734,6 @@ class Skin extends React.Component {
                 responsiveView={responsiveId}
                 videoQualityOptions={videoQualityOptions}
                 componentWidth={componentWidth}
-                ref="endScreen" // eslint-disable-line
               />
             );
             break;
@@ -758,7 +755,6 @@ class Skin extends React.Component {
                 componentWidth={componentWidth}
                 videoQualityOptions={videoQualityOptions}
                 adStartTime={adStartTime}
-                ref="adScreen" // eslint-disable-line
               />
             );
             break;

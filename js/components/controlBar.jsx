@@ -101,7 +101,6 @@ class ControlBar extends React.Component {
     // has gone full screen, clicking on a different UI element. So we prevent
     // the following click.
     event.stopPropagation();
-    event.cancelBubble = true; // eslint-disable-line
     event.preventDefault();
     const { controller } = this.props;
     if (controller) {
@@ -121,7 +120,6 @@ class ControlBar extends React.Component {
       return;
     }
     event.stopPropagation();
-    event.cancelBubble = true; // eslint-disable-line
     event.preventDefault();
 
     this.toggleStereoVr();
@@ -164,14 +162,15 @@ class ControlBar extends React.Component {
    * @private
    */
   unlockScreenOrientation = () => {
-    if (screen.orientation && screen.orientation.unlock) { // eslint-disable-line
-      screen.orientation.unlock(); // eslint-disable-line
-    } else if (screen.unlockOrientation) { // eslint-disable-line
-      screen.unlockOrientation(); // eslint-disable-line
-    } else if (screen.mozUnlockOrientation) { // eslint-disable-line
-      screen.mozUnlockOrientation(); // eslint-disable-line
-    } else if (screen.msUnlockOrientation) { // eslint-disable-line
-      screen.msUnlockOrientation(); // eslint-disable-line
+    const { screen } = window;
+    if (screen.orientation && screen.orientation.unlock) {
+      screen.orientation.unlock();
+    } else if (screen.unlockOrientation) {
+      screen.unlockOrientation();
+    } else if (screen.mozUnlockOrientation) {
+      screen.mozUnlockOrientation();
+    } else if (screen.msUnlockOrientation) {
+      screen.msUnlockOrientation();
     }
   };
 
@@ -182,17 +181,30 @@ class ControlBar extends React.Component {
     }
   };
 
+  seekToLivePoint = () => {
+    const { controller, duration } = this.props;
+    controller.onLiveClick();
+    controller.seek(duration);
+  }
+
   /**
    * Handle click on live button
    * @param {Object} event – event object
    */
   handleLiveClick = (event) => {
     event.stopPropagation();
-    event.cancelBubble = true; // eslint-disable-line
-    event.preventDefault();
-    const { controller, duration } = this.props;
-    controller.onLiveClick();
-    controller.seek(duration);
+    this.seekToLivePoint();
+  };
+
+  /**
+   * Handle keyup on live button
+   * @param {Object} event – event object
+   */
+  handleLiveKeyUp = (event) => {
+    if (event.keyCode === CONSTANTS.KEYCODES.SPACE_KEY) {
+      event.stopPropagation();
+      this.seekToLivePoint();
+    }
   };
 
   /**
@@ -350,13 +362,12 @@ class ControlBar extends React.Component {
       if (item.location !== 'none') {
         return;
       }
-      defaultConfig.filter(
-        field => field.name === item.name
-      ).forEach(
-        (field) => {
-          field.location = 'none'; // eslint-disable-line
-        }
-      );
+      defaultConfig
+        .filter(field => field.name === item.name)
+        .map(field => ({
+          ...field,
+          location: 'none',
+        }));
     });
     return defaultConfig;
   };
@@ -415,6 +426,7 @@ class ControlBar extends React.Component {
     // we rewinded and then went live may take some time
     const isLiveNow = Math.abs(timeShift) < 1;
     const liveClick = isLiveNow ? null : this.handleLiveClick;
+    const liveKeyUp = isLiveNow ? null : this.handleLiveKeyUp;
     const totalTimeContent = isLiveStream ? null : <span className="oo-total-time">{totalTime}</span>;
 
     const liveText = Utils.getLocalizedString(
@@ -491,15 +503,17 @@ class ControlBar extends React.Component {
       ),
 
       live: (
-        <a // eslint-disable-line
+        <div
           key={CONSTANTS.CONTROL_BAR_KEYS.LIVE}
           className={liveClass}
-          ref="LiveButton" // eslint-disable-line
           onClick={liveClick}
+          onKeyUp={liveKeyUp}
+          role="button"
+          tabIndex={0}
         >
           <div className="oo-live-circle" />
           <span className="oo-live-text">{liveText}</span>
-        </a>
+        </div>
       ),
 
       volume: (
@@ -519,14 +533,14 @@ class ControlBar extends React.Component {
       ),
 
       timeDuration: (
-        <a // eslint-disable-line
+        <div
           key={CONSTANTS.CONTROL_BAR_KEYS.TIME_DURATION}
           className="oo-time-duration oo-control-bar-duration"
           style={durationSetting}
         >
           <span>{playheadTime}</span>
           {totalTimeContent}
-        </a>
+        </div>
       ),
 
       flexibleSpace: (
@@ -590,7 +604,7 @@ class ControlBar extends React.Component {
           key={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
           className="oo-discovery"
           focusId={CONSTANTS.CONTROL_BAR_KEYS.DISCOVERY}
-          ariaHidden={true} // eslint-disable-line
+          ariaHidden
           icon="discovery"
           tooltip={CONSTANTS.SKIN_TEXT.DISCOVER}
           onClick={this.handleDiscoveryClick}
@@ -707,7 +721,7 @@ class ControlBar extends React.Component {
             className={playbackSpeedClass}
             style={controller.state.playbackSpeedOptions.showPopover ? selectedStyle : null}
             focusId={CONSTANTS.CONTROL_BAR_KEYS.PLAYBACK_SPEED}
-            ariaHasPopup={true} // eslint-disable-line
+            ariaHasPopup
             ariaExpanded={controller.state.playbackSpeedOptions.showPopover ? true : null}
             tooltip={CONSTANTS.SKIN_TEXT.PLAYBACK_SPEED}
             onClick={() => this.handleMenuToggleClick(CONSTANTS.MENU_OPTIONS.PLAYBACK_SPEED)}
@@ -835,16 +849,17 @@ class ControlBar extends React.Component {
         || (volumeItem && Utils.isIos())
         ? +volumeItem.minWidth
         : 0;
-      const extraSpaceVolumeBar = this.isMobile ? 0 : +volumeItem.minWidth / 2; // eslint-disable-line
+      const extraSpaceVolumeBar = this.isMobile ? 0 : +volumeItem.minWidth / 2;
       extraSpaceVolume = extraSpaceVolumeSlider + extraSpaceVolumeBar;
     }
 
     // if no hours, add extra space to control bar width:
     const hourInSec = 3600;
     const hours = parseInt(duration / hourInSec, 10);
-    const extraSpaceDuration = hours > 0 ? 0 : 45; // eslint-disable-line
+    // eslint-disable-next-line no-magic-numbers
+    const extraSpaceDuration = hours > 0 ? 0 : 45;
 
-    const controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2; // eslint-disable-line
+    const controlBarLeftRightPadding = CONSTANTS.UI.DEFAULT_SCRUBBERBAR_LEFT_RIGHT_PADDING * 2;
 
     const defaultControlBarItems = defaultItems.filter((item) => {
       const shareContent = Utils.getPropertyValue(skinConfig, 'shareScreen.shareContent', []);
@@ -940,29 +955,24 @@ class ControlBar extends React.Component {
     const collapsedMoreOptionsItems = collapsedResult.overflow || {};
     this.moreOptionsItems = collapsedMoreOptionsItems;
 
-    const finalControlBarItems = [];
-    const lastItem = (controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)
-      ? collapsedControlBarItems.length - 2 // eslint-disable-line
+    const lastItemIndex = (controller.state.isOoyalaAds || collapsedMoreOptionsItems.length === 0)
+      ? collapsedControlBarItems.length - 2
       : collapsedControlBarItems.length - 1;
-    for (let index = 0; index < collapsedControlBarItems.length; index += 1) {
-      if (collapsedControlBarItems[index].name === 'moreOptions'
-        && (controller.state.isOoyalaAds
-        || collapsedMoreOptionsItems.length === 0)
-      ) {
-        continue; // eslint-disable-line
-      }
-      let alignment = CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
-      if (index === lastItem) {
-        alignment = CONSTANTS.TOOLTIP_ALIGNMENT.RIGHT;
-      } else if (index === 0) {
-        alignment = CONSTANTS.TOOLTIP_ALIGNMENT.LEFT;
-      }
-      tooltipAlignments[collapsedControlBarItems[index].name] = alignment;
-      const item = controlItemTemplates[collapsedControlBarItems[index].name];
-      finalControlBarItems.push(item);
-    }
 
-    return finalControlBarItems;
+    return collapsedControlBarItems
+      // eslint-disable-next-line max-len
+      .filter(({ name }) => name !== 'moreOptions' || (!controller.state.isOoyalaAds && collapsedMoreOptionsItems.length !== 0))
+      .map((item, index) => {
+        let alignment = CONSTANTS.TOOLTIP_ALIGNMENT.CENTER;
+        if (index === lastItemIndex) {
+          alignment = CONSTANTS.TOOLTIP_ALIGNMENT.RIGHT;
+        }
+        if (index === 0) {
+          alignment = CONSTANTS.TOOLTIP_ALIGNMENT.LEFT;
+        }
+        tooltipAlignments[item.name] = alignment;
+        return controlItemTemplates[item.name];
+      });
   };
 
   render() {

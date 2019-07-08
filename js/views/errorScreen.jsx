@@ -10,6 +10,8 @@ import Utils from '../components/utils';
  */
 class ErrorScreen extends React.Component {
   componentDidMount() {
+    // violation of IOC
+    // TODO: remove this ugly hack
     this.props.controller.state.accessibilityControlsEnabled = false;
   }
 
@@ -21,29 +23,31 @@ class ErrorScreen extends React.Component {
     let errorTitle;
     let errorDescription;
     let errorAction;
-    if (CONSTANTS.ERROR_MESSAGE.hasOwnProperty(this.props.errorCode.code)) { // eslint-disable-line
+    const { errorCode, language, localizableStrings } = this.props;
+
+    if (CONSTANTS.ERROR_MESSAGE[errorCode.code]) {
       errorAction = CONSTANTS.SKIN_TEXT.ERROR_ACTION;
-      if (CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].action) {
-        errorAction = CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].action;
+      if (CONSTANTS.ERROR_MESSAGE[errorCode.code].action) {
+        errorAction = CONSTANTS.ERROR_MESSAGE[errorCode.code].action;
       }
 
       errorTitle = Utils.getLocalizedString(
-        this.props.language,
-        CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].title,
-        this.props.localizableStrings
+        language,
+        CONSTANTS.ERROR_MESSAGE[errorCode.code].title,
+        localizableStrings
       );
 
       errorDescription = Utils.getLocalizedString(
-        this.props.language,
-        CONSTANTS.ERROR_MESSAGE[this.props.errorCode.code].description,
-        this.props.localizableStrings
+        language,
+        CONSTANTS.ERROR_MESSAGE[errorCode.code].description,
+        localizableStrings
       );
 
       // TODO - need to make countdown functionality display for all languages
-      const startTime = this.props.errorCode.flight_start_time;
+      const startTime = errorCode.flight_start_time;
       if (
-        this.props.errorCode.code === CONSTANTS.ERROR_CODE.FUTURE
-        && this.props.language === CONSTANTS.LANGUAGE.ENGLISH
+        errorCode.code === CONSTANTS.ERROR_CODE.FUTURE
+        && language === CONSTANTS.LANGUAGE.ENGLISH
         && startTime !== null
         && !Number.isNaN(startTime)
       ) {
@@ -51,12 +55,12 @@ class ErrorScreen extends React.Component {
         errorDescription = 'This video will be available in '
           + `${Utils.getStartCountdown(startTime * second - Date.now())}`;
       }
-      errorAction = Utils.getLocalizedString(this.props.language, errorAction, this.props.localizableStrings);
+      errorAction = Utils.getLocalizedString(language, errorAction, localizableStrings);
     } else {
       errorDescription = Utils.getLocalizedString(
-        this.props.language,
+        language,
         CONSTANTS.SKIN_TEXT.UNKNOWN_ERROR,
-        this.props.localizableStrings
+        localizableStrings
       );
       errorTitle = null;
       errorAction = null;
@@ -90,7 +94,7 @@ ErrorScreen.propTypes = {
     flight_start_time: PropTypes.number,
   }).isRequired,
   language: PropTypes.string,
-  localizableStrings: PropTypes.object, // eslint-disable-line
+  localizableStrings: PropTypes.shape({}),
 };
 
 ErrorScreen.defaultProps = {

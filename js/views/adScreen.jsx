@@ -83,27 +83,16 @@ class AdScreen extends React.Component {
       || this.props.controller.state.forceControlBarVisible
       || this.state.controlBarVisible;
 
-    const playbackControlItemTemplates = {
-      controlBar: (
-        <ControlBar
-          {...this.props}
-          height={this.props.skinConfig.controlBar.height}
-          animatingControlBar
-          controlBarVisible={showControlBar}
-          playerState={this.props.playerState}
-          key="controlBar"
-        />
-      ),
-    };
-
-    const playbackControlItems = [];
-    for (const item in playbackControlItemTemplates) { // eslint-disable-line no-restricted-syntax
-      if (playbackControlItemTemplates.hasOwnProperty(item)) { // eslint-disable-line no-prototype-builtins
-        playbackControlItems.push(playbackControlItemTemplates[item]);
-      }
-    }
-
-    return playbackControlItems;
+    return (
+      <ControlBar
+        {...this.props}
+        height={this.props.skinConfig.controlBar.height}
+        animatingControlBar
+        controlBarVisible={showControlBar}
+        playerState={this.props.playerState}
+        key="controlBar"
+      />
+    );
   }
 
   /**
@@ -111,8 +100,7 @@ class AdScreen extends React.Component {
    * @param {Object} event object
    */
   handleClick = (event) => {
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; /* IE specific */ // eslint-disable-line
+    event.stopPropagation();
 
     this.props.controller.state.accessibilityControlsEnabled = true;
     if ((event.type === 'click' || !this.isMobile) && !this.props.skinConfig.adScreen.showAdMarquee) {
@@ -134,8 +122,7 @@ class AdScreen extends React.Component {
       if (!Utils.canRenderSkin() && this.state.playerState === CONSTANTS.STATE.PAUSE) {
         this.props.controller.togglePlayPause();
       } else {
-        event.stopPropagation(); // W3C
-        event.cancelBubble = true; /* IE specific */ // eslint-disable-line
+        event.stopPropagation();
         this.props.controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.VIDEO_WINDOW);
       }
     }
@@ -239,7 +226,6 @@ class AdScreen extends React.Component {
     return (
       <div // eslint-disable-line jsx-a11y/mouse-events-have-key-events
         className="oo-state-screen oo-ad-screen"
-        ref="adScreen" // eslint-disable-line
         role="presentation"
         onMouseOver={this.showControlBar}
         onMouseOut={this.hideControlBar}
@@ -260,7 +246,6 @@ class AdScreen extends React.Component {
         <div // eslint-disable-line jsx-a11y/mouse-events-have-key-events
           className="oo-ad-panel"
           role="presentation"
-          ref="adPanel" // eslint-disable-line
           onClick={this.handlePlayerClicked}
           onTouchEnd={this.handleTouchEnd}
         >

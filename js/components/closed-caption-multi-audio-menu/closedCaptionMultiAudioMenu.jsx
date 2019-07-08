@@ -11,24 +11,19 @@ const ClosedCaptionMultiAudioMenu = (props) => {
   /**
    * Fetch closedCaptions from languageList
    * @param {Array} languageList - list of available languages
-   * @param {String} language - the selected language
+   * @param {String} currentLanguage - the selected language
    * @returns {Array<{id: String, label: String, enabled: Boolean}>} an array of languages info objects
    * @private
    */
-  const getClosedCaptions = (languageList, language) => {
-    const closedCaptionList = [];
-    if (Array.isArray(languageList)) {
-      for (let index = 0; index < languageList.length; index++) { // eslint-disable-line
-        const isSelectedCc = languageList[index] === language;
-        const cc = {
-          id: languageList[index],
-          label: languageList[index],
-          enabled: isSelectedCc,
-        };
-        closedCaptionList.push(cc);
-      }
+  const getClosedCaptions = (languageList, currentLanguage) => {
+    if (!Array.isArray(languageList)) {
+      return [];
     }
-    return closedCaptionList;
+    return languageList.map(language => ({
+      id: language,
+      label: language,
+      enabled: language === currentLanguage,
+    }));
   };
 
   /**

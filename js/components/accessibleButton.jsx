@@ -39,14 +39,14 @@ class AccessibleButton extends React.Component {
    */
   onKeyDown = (event) => {
     switch (event.key) {
-      case CONSTANTS.KEY_VALUES.SPACE:
-      case CONSTANTS.KEY_VALUES.ENTER:
       // Ctrl and Alt are needed as a workaround for VoiceOver, which uses the
       // CTRL + OPTION + SPACE combination to activate buttons. VoiceOver actually
       // suppresses the spacebar keyboard event when this combination is used, so we
       // can only detect either CTRL or OPTION. This can obviously fail if the user
       // presses a different key after CTRL + OPTION, but a false positive is preferred.
-      case CONSTANTS.KEY_VALUES.CONTROL: // eslint-disable-line
+      case CONSTANTS.KEY_VALUES.SPACE:
+      case CONSTANTS.KEY_VALUES.ENTER:
+      case CONSTANTS.KEY_VALUES.CONTROL:
       case CONSTANTS.KEY_VALUES.ALT:
         this.triggeredWithKeyboard = true;
         break;
@@ -112,6 +112,7 @@ class AccessibleButton extends React.Component {
       onMouseDown,
       onMouseOver,
       onMouseOut,
+      onBlur,
       onMouseEnter,
       onMouseLeave,
       onFocus,
@@ -120,12 +121,13 @@ class AccessibleButton extends React.Component {
       onTouchEnd,
     } = this.props;
     return (
-      <button // eslint-disable-line
+      <button
         ref={(event) => {
           this.domElement = event;
         }}
         type="button"
-        autoFocus={autoFocus} // eslint-disable-line
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus={autoFocus}
         style={style}
         className={ClassNames(className, 'oo-focusable-btn')}
         tabIndex="0"
@@ -143,6 +145,7 @@ class AccessibleButton extends React.Component {
         onMouseUp={this.onMouseUp}
         onMouseOver={onMouseOver}
         onMouseOut={onMouseOut}
+        onBlur={onBlur}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onTouchStart={onTouchStart}
@@ -178,6 +181,7 @@ AccessibleButton.propTypes = {
   onMouseUp: PropTypes.func,
   onMouseOver: PropTypes.func,
   onMouseOut: PropTypes.func,
+  onBlur: PropTypes.func,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   onFocus: PropTypes.func,

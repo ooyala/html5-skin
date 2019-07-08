@@ -69,11 +69,9 @@ class VideoQualityPanel extends React.Component {
         }
       });
       // sort by ascending bitrate
-      for (const res in resolutions) { // eslint-disable-line
-        if (resolutions.hasOwnProperty(res)) { // eslint-disable-line
-          resolutions[res].sort((current, next) => current.bitrate - next.bitrate);
-        }
-      }
+      Object.keys(resolutions).forEach((res) => {
+        resolutions[res].sort((current, next) => current.bitrate - next.bitrate);
+      });
     }
 
     // available bitrates

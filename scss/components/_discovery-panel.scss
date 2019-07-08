@@ -80,13 +80,13 @@
   color: white;
 }
 
-a.oo-left-button {
+.oo-left-button {
   @extend .oo-discover-btn;
   left: 0;
   text-align: right;
 }
 
-a.oo-right-button {
+.oo-right-button {
   @extend .oo-discover-btn;
   right: 0;
   text-align: left;

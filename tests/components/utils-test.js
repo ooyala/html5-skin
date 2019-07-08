@@ -24,12 +24,6 @@ describe('Utils', function() {
     var truncateText = Utils.truncateTextToWidth(div, text);
     expect(truncateText).toContain(text);
 
-    var cloned = Utils.clone({player: 'v4'});
-    expect(cloned.player).toEqual('v4');
-
-    var extended = Utils.extend({player: 'v4'}, {player: 'v3'});
-    expect(extended.player).toEqual('v3');
-
     var formatedSeconds = Utils.formatSeconds(888.031);
     expect(formatedSeconds).toEqual('14:48');
     formatedSeconds = Utils.formatSeconds(80088.031);
@@ -877,7 +871,7 @@ describe('Utils', function() {
     expect(sanitizedConfigData.skin.config).toBe('v4');
   });
 
-  it('tests deep merge', function() {
+  it('arrayDeepMerge', function() {
     var localSettings = {
       'closedCaptionOptions':{'windowColor':'Yellow','enabled':true, 'backgroundOpacity':'0.2','textOpacity':'1'}
     };
@@ -897,38 +891,25 @@ describe('Utils', function() {
     var buttonArrayFusion = 'replace';
 
     var mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:'deepmerge'});
-    var finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', arrayFusion:'deepmerge', buttonArrayFusion:buttonArrayFusion});
+    var finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {
+      arrayMerge: Utils.arrayDeepMerge.bind(Utils),
+      arrayUnionBy:'name',
+      arrayFusion:'deepmerge',
+      buttonArrayFusion,
+    });
 
     // test merge hierarchy, keys from 5 objects should be merged into one object with correct priority
-    expect(finalConfig.closedCaptionOptions.textColor).toBe('Blue'); // from inlinePageParams
-    expect(finalConfig.closedCaptionOptions.windowOpacity).toBe(0.5); // from inlinePageParams
-    expect(finalConfig.closedCaptionOptions.backgroundColor).toBe('Green'); // from inlinePageParams
-    expect(finalConfig.closedCaptionOptions.windowColor).toBe('Yellow'); // from localSettings
-    expect(finalConfig.closedCaptionOptions.fontType).toBe('Proportional Sans-Serif'); // from customSkinJSON
-    expect(finalConfig.closedCaptionOptions.fontSize).toBe('Large'); // from metaDataSettings
-    expect(finalConfig.closedCaptionOptions.textEnhancement).toBe('Uniform'); // from SkinJSON
-
-    // test array merge for buttons (replace)
-    expect(finalConfig.buttons.desktopContent.length).toBe(inlinePageParams.buttons.desktopContent.length);
-    // test basic array merge
-    expect(finalConfig.shareScreen.shareContent[1]).toBe(SkinJSON.shareScreen.shareContent[1]);
-    expect(finalConfig.shareScreen.shareContent[2]).toBe(metaDataSettings.shareScreen.shareContent[1]);
-    expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'embed', 'ooyala']);
+    expect(finalConfig).toMatchSnapshot();
 
     buttonArrayFusion = 'prepend';
     mergedMetaData = DeepMerge(SkinJSON, metaDataSettings, {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name'});
-    finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {arrayMerge: Utils.arrayDeepMerge.bind(Utils), arrayUnionBy:'name', buttonArrayFusion:buttonArrayFusion});
+    finalConfig = DeepMerge.all([mergedMetaData, customSkinJSON, inlinePageParams, localSettings], {
+      arrayMerge: Utils.arrayDeepMerge.bind(Utils),
+      arrayUnionBy:'name',
+      buttonArrayFusion,
+    });
 
-    // test basic array replace
-    expect(finalConfig.shareScreen.shareContent[1]).not.toBe(SkinJSON.shareScreen.shareContent[1]);
-    expect(finalConfig.shareScreen.shareContent).toEqual(['social', 'ooyala']);
-    // test array merge for buttons (prepend)
-    expect(finalConfig.buttons.desktopContent.length).toBe(19);
-    // test new buttons are placed after flexibleSpace
-    expect(finalConfig.buttons.desktopContent[4].name).toBe('flexibleSpace');
-    expect(finalConfig.buttons.desktopContent[5].name).toBe('ooyala');
-    expect(finalConfig.buttons.desktopContent[6].name).toBe('alice');
-    expect(finalConfig.buttons.desktopContent[12].alice).toBe('video');
+    expect(finalConfig).toMatchSnapshot();
   });
 
   it('tests getUserDevice', function() {

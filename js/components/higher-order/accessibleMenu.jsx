@@ -2,16 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CONSTANTS from '../../constants/constants';
 
-const AccessibleMenu = (ComposedComponent, dirtyOptions) => {
-  const options = dirtyOptions || {};
-
+const AccessibleMenu = (ComposedComponent, options = {}) => {
   /**
    * Element accessibility is a routine that could be gather in one HOC
    * Done it here
    */
   class Hoc extends React.Component {
     componentDidMount() {
-      this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent); // eslint-disable-line
+      // eslint-disable-next-line react/no-find-dom-node
+      this.menuDomElement = ReactDOM.findDOMNode(this.composedComponent);
       this.applyOptions();
 
       if (this.menuDomElement) {
@@ -84,7 +83,7 @@ const AccessibleMenu = (ComposedComponent, dirtyOptions) => {
      * @param {Boolean} useNextSibling Chooses the sibling next to menuItem when true and the previous one when false.
      * @returns {Number} The index where the sibling menu items is located in the list, -1 if menuItem is absent from the list.
      */
-    getMenuItemSiblingIndex = (menuItemList, menuItem, useNextSibling) => { // eslint-disable-line
+    getMenuItemSiblingIndex = (menuItemList, menuItem, useNextSibling) => {
       if (!menuItemList || !menuItemList.length) {
         return -1;
       }

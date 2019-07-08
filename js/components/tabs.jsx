@@ -17,18 +17,6 @@ class TabsProto extends React.Component {
     this.state = { tabActive };
   }
 
-  componentDidMount() {
-    const { tabActive } = this.state;
-    const { onMount } = this.props;
-    const index = tabActive;
-    const selectedPanel = this.refs['tab-panel']; // eslint-disable-line
-    const selectedMenu = this.refs[`tab-menu-${index}`]; // eslint-disable-line
-
-    if (onMount) {
-      onMount(index, selectedPanel, selectedMenu);
-    }
-  }
-
   /**
    * Change the state if active tab changed
    * @param {Object} newProps - new props object
@@ -52,7 +40,6 @@ class TabsProto extends React.Component {
 
     return (
       <div
-        ref="tab-panel" // eslint-disable-line
         className="tab-panel"
         role={CONSTANTS.ARIA_ROLES.TAB_PANEL}
       >
@@ -77,7 +64,6 @@ class TabsProto extends React.Component {
       .map(
         (panel, index) => {
           const tabIndex = index + 1;
-          const ref = `tab-menu-${tabIndex}`;
           const { title } = panel.props;
           let activeTabStyle = {};
           const { tabActive } = this.state;
@@ -96,12 +82,12 @@ class TabsProto extends React.Component {
 
           return (
             <li
-              ref={ref}
-              key={index} // eslint-disable-line
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
               className={classes}
               role={CONSTANTS.ARIA_ROLES.PRESENTATION}
             >
-              <AccessibleButton // eslint-disable-line
+              <AccessibleButton
                 style={activeTabStyle}
                 className="tabs-menu-item-btn"
                 ariaLabel={title}
@@ -110,6 +96,7 @@ class TabsProto extends React.Component {
                 onClick={event => this.setActive(tabIndex, event)}
                 onMouseOver={this.highlight}
                 onMouseOut={this.removeHighlight}
+                onBlur={this.removeHighlight}
                 onFocus={this.onMenuItemFocus}
               >
                 {title}
@@ -145,7 +132,7 @@ class TabsProto extends React.Component {
   highlight = (event) => {
     const { skinConfig } = this.props;
     if (skinConfig.general.accentColor) {
-      event.target.style.color = skinConfig.general.accentColor; // eslint-disable-line
+      event.target.style.color = skinConfig.general.accentColor;
     }
   }
 
@@ -156,7 +143,7 @@ class TabsProto extends React.Component {
   removeHighlight = (event) => {
     const { skinConfig } = this.props;
     if (skinConfig.general.accentColor) {
-      event.target.style.color = ''; // eslint-disable-line
+      event.target.style.color = '';
     }
   }
 
@@ -177,23 +164,7 @@ class TabsProto extends React.Component {
    */
   setActive = (index, event) => {
     event.preventDefault();
-
-    const { onAfterChange, onBeforeChange } = this.props;
-    const selectedPanel = this.refs['tab-panel']; // eslint-disable-line
-    const selectedTabMenu = this.refs[`tab-menu-${index}`]; // eslint-disable-line
-
-    if (onBeforeChange) {
-      const cancel = onBeforeChange(index, selectedPanel, selectedTabMenu);
-      if (cancel === false) {
-        return;
-      }
-    }
-
-    this.setState({ tabActive: index }, () => {
-      if (onAfterChange) {
-        onAfterChange(index, selectedPanel, selectedTabMenu);
-      }
-    });
+    this.setState({ tabActive: index });
   }
 
   /**
@@ -266,22 +237,20 @@ class TabsProto extends React.Component {
       <div className={classNames}>
         {this.getMenuItems()}
         {this.getSelectedPanel()}
-        <a // eslint-disable-line
+        <div
           className={leftScrollButton}
-          ref="leftChevron" // eslint-disable-line
-          role={CONSTANTS.ARIA_ROLES.PRESENTATION}
+          role="presentation"
           onClick={this.handleLeftChevronClick}
         >
           <Icon {...this.props} icon="left" />
-        </a>
-        <a // eslint-disable-line
+        </div>
+        <div
           className={rightScrollButton}
-          ref="rightChevron" // eslint-disable-line
-          role={CONSTANTS.ARIA_ROLES.PRESENTATION}
+          role="presentation"
           onClick={this.handleRightChevronClick}
         >
           <Icon {...this.props} icon="right" />
-        </a>
+        </div>
       </div>
     );
   }
@@ -294,17 +263,11 @@ TabsProto.propTypes = {
     PropTypes.object,
   ]),
   tabActive: PropTypes.number,
-  onMount: PropTypes.func,
-  onBeforeChange: PropTypes.func,
-  onAfterChange: PropTypes.func,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired,
 };
 
 TabsProto.defaultProps = {
   className: '',
-  onMount: () => {},
-  onBeforeChange: () => {},
-  onAfterChange: () => {},
   tabActive: 1,
 };
 
@@ -320,6 +283,7 @@ Tabs.Panel = (props) => {
 };
 
 Tabs.Panel.propTypes = {
-  title: PropTypes.string.isRequired, // eslint-disable-line
+  // eslint-disable-next-line react/no-unused-prop-types
+  title: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired,
 };

@@ -29,7 +29,7 @@ function Autofocus(state, toggleButtons) {
    */
   this.setToggleButtons = (popoverName, menu) => {
     if (toggleButtons) {
-      toggleButtons[popoverName] = menu; // eslint-disable-line no-param-reassign
+      toggleButtons[popoverName] = menu;
     }
   };
 

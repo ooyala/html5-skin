@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ClassNames from 'classnames';
 import ControlBar from '../components/controlBar';
 import Watermark from '../components/watermark';
@@ -7,46 +6,50 @@ import Icon from '../components/icon';
 import CastPanel from '../components/castPanel';
 import CONSTANTS from '../constants/constants';
 import Utils from '../components/utils';
-/* eslint-disable react/destructuring-assignment */
 
 /**
  * The screen to be displayed when asset has finished playing
  */
 class EndScreen extends React.Component {
+  description = null;
+
   constructor(props) {
     super(props);
     this.state = {
       controlBarVisible: true,
-      descriptionText: this.props.contentTree.description,
+      descriptionText: props.contentTree.description,
     };
   }
 
   componentDidMount() {
-    this.handleResize();
+    this.truncateText();
   }
 
   /**
-   * Launch handle resize if width changed
+   * Launch truncateText if width changed
    * @param {Object} nextProps - next props object
    */
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps.componentWidth !== this.props.componentWidth) {
-      this.handleResize();
+    const { componentWidth } = this.props;
+    if (nextProps.componentWidth !== componentWidth) {
+      this.truncateText();
     }
   }
 
   /**
-   * Proceed the view after the width has been changed
+   * Truncate description text
    */
-  handleResize = () => {
-    if (ReactDOM.findDOMNode(this.refs.description)) { // eslint-disable-line
-      this.setState({
-        descriptionText: Utils.truncateTextToWidth(
-          ReactDOM.findDOMNode(this.refs.description), // eslint-disable-line
-          this.props.contentTree.description
-        ),
-      });
+  truncateText = () => {
+    if (!this.description) {
+      return;
     }
+    const { contentTree } = this.props;
+    const descriptionText = Utils.truncateTextToWidth(
+      this.description,
+      contentTree.description
+    );
+
+    this.setState({ descriptionText });
   }
 
   /**
@@ -55,33 +58,49 @@ class EndScreen extends React.Component {
    */
   handleClick = (event) => {
     event.preventDefault();
-    this.props.controller.state.accessibilityControlsEnabled = true;
-    this.props.controller.togglePlayPause();
+    const { controller } = this.props;
+    controller.state.accessibilityControlsEnabled = true;
+    controller.togglePlayPause();
   }
 
   render() {
+    const {
+      skinConfig,
+      contentTree,
+      controller,
+      language,
+      localizableStrings,
+      playerState,
+      isLiveStream,
+    } = this.props;
+
+    const {
+      descriptionText,
+      controlBarVisible,
+    } = this.state;
+
     const actionIconStyle = {
-      color: this.props.skinConfig.endScreen.replayIconStyle.color,
-      opacity: this.props.skinConfig.endScreen.replayIconStyle.opacity,
+      color: skinConfig.endScreen.replayIconStyle.color,
+      opacity: skinConfig.endScreen.replayIconStyle.opacity,
     };
 
-    if (this.props.controller.state.cast.connected) {
+    if (controller.state.cast.connected) {
       actionIconStyle.fontSize = '125px';
     }
 
     const titleStyle = {
-      color: this.props.skinConfig.startScreen.titleFont.color,
+      color: skinConfig.startScreen.titleFont.color,
     };
     const descriptionStyle = {
-      color: this.props.skinConfig.startScreen.descriptionFont.color,
+      color: skinConfig.startScreen.descriptionFont.color,
     };
 
     const actionIconClass = ClassNames({
       'oo-action-icon': true,
-      'oo-hidden': !this.props.skinConfig.endScreen.showReplayButton,
+      'oo-hidden': !skinConfig.endScreen.showReplayButton,
     });
 
-    const infoPanelPosition = Utils.getPropertyValue(this.props.skinConfig, 'endScreen.infoPanelPosition');
+    const infoPanelPosition = Utils.getPropertyValue(skinConfig, 'endScreen.infoPanelPosition');
     const infoPanelClass = infoPanelPosition
       ? ClassNames({
         'oo-state-screen-info': true,
@@ -96,14 +115,14 @@ class EndScreen extends React.Component {
         'oo-state-screen-title': true,
         'oo-text-truncate': true,
         'oo-pull-right': infoPanelPosition.toLowerCase().indexOf('right') > -1,
-        'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showTitle'),
+        'oo-hidden': !Utils.getPropertyValue(skinConfig, 'endScreen.showTitle'),
       })
       : undefined;
     const descriptionClass = infoPanelPosition
       ? ClassNames({
         'oo-state-screen-description': true,
         'oo-pull-right': infoPanelPosition.toLowerCase().indexOf('right') > -1,
-        'oo-hidden': !Utils.getPropertyValue(this.props.skinConfig, 'endScreen.showDescription'),
+        'oo-hidden': !Utils.getPropertyValue(skinConfig, 'endScreen.showDescription'),
       })
       : undefined;
 
@@ -114,16 +133,16 @@ class EndScreen extends React.Component {
 
     const titleMetadata = (
       <div className={titleClass} style={titleStyle}>
-        {this.props.contentTree.title}
+        {contentTree.title}
       </div>
     );
     const descriptionMetadata = (
       <div
         className={descriptionClass}
-        ref="description" // eslint-disable-line
+        ref={(node) => { this.description = node; }}
         style={descriptionStyle}
       >
-        {this.state.descriptionText}
+        {descriptionText}
       </div>
     );
 
@@ -136,7 +155,7 @@ class EndScreen extends React.Component {
           onClick={this.handleClick}
         />
 
-        <Watermark {...this.props} controlBarVisible={this.state.controlBarVisible} />
+        <Watermark {...this.props} controlBarVisible={controlBarVisible} />
 
         <div className={infoPanelClass}>
           {titleMetadata}
@@ -155,12 +174,12 @@ class EndScreen extends React.Component {
         </button>
 
         {
-          this.props.controller.state.cast.connected
+          controller.state.cast.connected
           && (
           <CastPanel
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            device={this.props.controller.state.cast.device}
+            language={language}
+            localizableStrings={localizableStrings}
+            device={controller.state.cast.device}
             className={castPanelClass}
           />
           )
@@ -169,11 +188,11 @@ class EndScreen extends React.Component {
         <div className="oo-interactive-container">
           <ControlBar
             {...this.props}
-            height={this.props.skinConfig.controlBar.height}
+            height={skinConfig.controlBar.height}
             animatingControlBar
-            controlBarVisible={this.state.controlBarVisible}
-            playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
+            controlBarVisible={controlBarVisible}
+            playerState={playerState}
+            isLiveStream={isLiveStream}
           />
         </div>
       </div>

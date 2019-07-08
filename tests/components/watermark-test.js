@@ -100,8 +100,8 @@ describe('Watermark', function() {
     );
 
     // test watermark width is default
-    var image = wrapper.ref('watermark');
-    expect(image.style.width).toBe('10%');
+    var image = wrapper.find('[data-testid="watermark"]');
+    expect(image.prop('style').width).toBe('10%');
   });
 
   it('tests watermark image with set width', function() {
@@ -112,8 +112,8 @@ describe('Watermark', function() {
     );
 
     // test watermark width
-    var image = wrapper.ref('watermark');
-    expect(image.style.width).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
+    var image = wrapper.find('[data-testid="watermark"]');
+    expect(image.prop('style').width).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
   });
 
   it('tests watermark image with set height', function() {
@@ -124,8 +124,8 @@ describe('Watermark', function() {
     );
 
     // test watermark height
-    var image = wrapper.ref('watermark');
-    expect(image.style.height).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
+    var image = wrapper.find('[data-testid="watermark"]');
+    expect(image.prop('style').height).toBe(mockProps.skinConfig.general.watermark.scalingPercentage +'%');
   });
 
   it('tests watermark image with no scaling option', function() {
@@ -136,8 +136,9 @@ describe('Watermark', function() {
     );
 
     // test watermark width is not changed
-    var image = wrapper.ref('watermark');
-    var check = (image.style.width == 'auto' || image.style.width == '');
+    var image = wrapper.find('[data-testid="watermarkImage"]');
+    const width = image.prop('style').width;
+    var check = (width == 'auto' || !width);
     expect(check).toBe(true);
   });
 

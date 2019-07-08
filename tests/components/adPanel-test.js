@@ -92,7 +92,7 @@ describe('AdPanel', function() {
         componentWidth={600}
       />);
 
-    expect(wrapper.ref('adTitle')).toBeDefined();
+    expect(wrapper.find('[data-testid="adTitle"]')).toBeDefined();
 
     wrapper = Enzyme.mount(
       <AdPanel
@@ -128,7 +128,8 @@ describe('AdPanel', function() {
         componentWidth={600}
       />);
 
-    expect(wrapper.ref('adPlaybackInfo')).toBeDefined();
+
+    expect(wrapper.find('[data-testid="adPlaybackInfo"]')).toBeDefined();
   });
 
 });

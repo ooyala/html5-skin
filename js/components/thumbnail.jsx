@@ -43,7 +43,10 @@ class Thumbnail extends React.Component {
       <div className="oo-scrubber-thumbnail-container">
         <div
           className={thumbnailClassName}
-          ref="thumbnail" // eslint-disable-line
+          // this ref is used in the parent component to set image size
+          // TODO: get rid of this ugly violation of IOC
+          // eslint-disable-next-line react/no-string-refs
+          ref="thumbnail"
           style={thumbnailStyle}
         >
           <div className="oo-thumbnail-time">{time}</div>
@@ -57,22 +60,16 @@ Thumbnail.defaultProps = {
   thumbnails: {},
   thumbnailStyle: {},
   hoverPosition: 0,
-  duration: 0,
-  hoverTime: 0,
   vrViewingDirection: { yaw: 0, roll: 0, pitch: 0 },
   videoVr: false,
   fullscreen: false,
   onRef: () => {},
-  positionY: 0,
-  positionX: 0,
   imageWidth: 0,
   time: '',
 };
 
 Thumbnail.propTypes = {
-  duration: PropTypes.number, // eslint-disable-line
   hoverPosition: PropTypes.number,
-  hoverTime: PropTypes.number, // eslint-disable-line
   onRef: PropTypes.func,
   thumbnails: PropTypes.shape({}),
   thumbnailStyle: PropTypes.shape({}),
@@ -82,8 +79,6 @@ Thumbnail.propTypes = {
     pitch: PropTypes.number,
   }),
   time: PropTypes.string,
-  positionY: PropTypes.number, // eslint-disable-line
-  positionX: PropTypes.number, // eslint-disable-line
   imageWidth: PropTypes.number,
   videoVr: PropTypes.bool,
   fullscreen: PropTypes.bool,

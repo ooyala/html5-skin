@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// ControlButton uses refs which can't be used with stateless components
+/* eslint-disable react/prefer-stateless-function */
+
 /**
  * Template component that is used for buttons that don't have accessibility enabled.
  * The component is picked at runtime by ControlButton depending on the props that
@@ -8,7 +11,7 @@ import PropTypes from 'prop-types';
  * @param {Object} props Component's props
  * @returns {Component} React component
  */
-class NonAccessibleButton extends React.Component { // eslint-disable-line
+class NonAccessibleButton extends React.Component {
   render() {
     const {
       style,

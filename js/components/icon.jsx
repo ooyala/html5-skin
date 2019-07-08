@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Utils from './utils';
 
 /**
  * Create and manage icon element
@@ -21,25 +20,19 @@ class Icon extends React.Component {
     const {
       className,
       icon,
-      onMouseOver,
-      onMouseOut,
-      onClick,
       skinConfig,
       style,
     } = this.props;
     const skinIcon = skinConfig.icons ? skinConfig.icons[icon] : null;
-    const fontFamilyName = skinIcon ? skinIcon.fontFamilyName : '';
-    const iconStyle = Utils.extend({ fontFamily: fontFamilyName }, style);
+    const fontFamily = skinIcon ? skinIcon.fontFamilyName : '';
+    const iconStyle = { fontFamily, ...style };
     const fontStyleClass = skinIcon ? skinIcon.fontStyleClass : '';
     const fontString = skinIcon ? skinIcon.fontString : '';
 
     return (
-      <span // eslint-disable-line
+      <span
         className={`${fontStyleClass} ${className}`}
         style={iconStyle}
-        onMouseOver={onMouseOver}
-        onMouseOut={onMouseOut}
-        onClick={onClick}
       >
         {fontString}
       </span>
@@ -52,9 +45,6 @@ Icon.propTypes = {
   skinConfig: PropTypes.shape({}),
   className: PropTypes.string,
   style: PropTypes.shape({}),
-  onMouseOver: PropTypes.func,
-  onMouseOut: PropTypes.func,
-  onClick: PropTypes.func,
 };
 
 Icon.defaultProps = {
@@ -62,9 +52,6 @@ Icon.defaultProps = {
   skinConfig: {},
   className: '',
   style: {},
-  onMouseOver: () => {},
-  onMouseOut: () => {},
-  onClick: () => {},
 };
 
 module.exports = Icon;

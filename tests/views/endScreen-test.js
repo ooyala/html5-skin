@@ -67,7 +67,7 @@ describe('EndScreen', function() {
       togglePopover: () => {},
       toggleScreen: () => {},
     };
-    mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
     mockContentTree = {'description': 'description', 'title': 'title', promo_image: 'image.png'};
   });
 

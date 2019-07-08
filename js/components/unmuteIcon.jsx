@@ -41,7 +41,7 @@ class UnmuteIcon extends React.Component {
    * otherwise stopping propagation on the click event should've been enough
    * @param {Object} event - the mouseUp event object
    */
-  onMouseUp(event) { // eslint-disable-line
+  static onMouseUp(event) {
     event.stopPropagation();
   }
 
@@ -78,7 +78,7 @@ class UnmuteIcon extends React.Component {
       <button
         className={myClass}
         onClick={this.unmuteClick}
-        onMouseUp={this.onMouseUp}
+        onMouseUp={this.constructor.onMouseUp}
         type="button"
         tabIndex="0"
         aria-label={volumeAriaLabel}
@@ -87,7 +87,6 @@ class UnmuteIcon extends React.Component {
           <Icon
             {...this.props}
             icon={volumeIcon}
-            ref="volumeIcon" // eslint-disable-line
           />
         </div>
 

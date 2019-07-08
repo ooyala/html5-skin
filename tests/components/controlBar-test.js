@@ -857,7 +857,7 @@ describe('ControlBar', function() {
   });
 
   it('shows/hides the live indicator appropriately', function() {
-    var oneButtonSkinConfig = Utils.clone(skinConfig);
+    var oneButtonSkinConfig = JSON.parse(JSON.stringify(skinConfig));
     baseMockProps.skinConfig.buttons.desktopContent = [
       {'name':'live', 'location':'controlBar', 'whenDoesNotFit':'keep', 'minWidth':35 }
     ];

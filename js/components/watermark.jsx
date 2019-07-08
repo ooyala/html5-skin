@@ -96,7 +96,7 @@ class Watermark extends React.Component {
         className={watermarkImageClass}
         style={watermarkImageStyle}
         src={watermarkUrl}
-        ref="watermarkImage" // eslint-disable-line
+        data-testid="watermarkImage"
         alt="watermark"
       />
     );
@@ -104,7 +104,7 @@ class Watermark extends React.Component {
       return (
         <div
           className={watermarkClass}
-          ref="watermark" // eslint-disable-line
+          data-testid="watermark"
           style={watermarkStyle}
         >
           {watermarkImage}
@@ -114,7 +114,7 @@ class Watermark extends React.Component {
     return (
       <a
         className={watermarkClass}
-        ref="watermark" // eslint-disable-line
+        data-testid="watermark"
         style={watermarkStyle}
         href={skinConfig.general.watermark.clickUrl}
         target={watermarkTarget}
