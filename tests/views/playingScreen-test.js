@@ -677,6 +677,7 @@ describe('PlayingScreen', function() {
             playheadTime={ "00:00" }
             contentTree={ mockController.state.contentTree }
             buffered={ buffered }
+            isLiveStream={ isLiveStream }
           />
         )
       );
