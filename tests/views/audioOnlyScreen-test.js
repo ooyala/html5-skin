@@ -107,7 +107,7 @@ describe('Audio Only Screen', () => {
       togglePopover: () => {},
       toggleScreen: () => {},
     };
-    mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
     mockContentTree = {
       title: 'title'
     };

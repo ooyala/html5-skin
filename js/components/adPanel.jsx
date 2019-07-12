@@ -1,5 +1,6 @@
 import React from 'react';
 import ClassNames from 'classnames';
+import PropTypes from 'prop-types';
 
 import CONSTANTS from '../constants/constants';
 import Utils from './utils';
@@ -21,9 +22,29 @@ class AdPanel extends React.Component {
     controller.onSkipAdClicked();
   }
 
+  /**
+   * @param {Object} event – the event object
+   */
+  handleSkipAdButtonKeyUp = (event) => {
+    if (event.keyCode === CONSTANTS.KEYCODES.SPACE_KEY) {
+      event.stopPropagation();
+      this.handleSkipAdButtonClick();
+    }
+  }
+
   handleLearnMoreButtonClick = () => {
     const { controller } = this.props;
     controller.onAdsClicked(CONSTANTS.AD_CLICK_SOURCE.LEARN_MORE_BUTTON);
+  }
+
+  /**
+   * @param {Object} event – the event object
+   */
+  handleLearnMoreButtonKeyUp = (event) => {
+    if (event.keyCode === CONSTANTS.KEYCODES.SPACE_KEY) {
+      event.stopPropagation();
+      this.handleLearnMoreButtonClick();
+    }
   }
 
   /**
@@ -34,8 +55,7 @@ class AdPanel extends React.Component {
     if (event.type === 'touchend' || !this.isMobile) {
       // since mobile would fire both click and touched events,
       // we need to make sure only one actually does the work
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; // eslint-disable-line
+      event.stopPropagation();
     }
   }
 
@@ -83,7 +103,7 @@ class AdPanel extends React.Component {
       const adTitleDiv = (
         <AdPanelTopBarItem
           key="adTitle"
-          ref="adTitle" // eslint-disable-line
+          data-testid="adTitle"
           itemClassName="oo-ad-title"
         >
           {adTitle}
@@ -117,9 +137,9 @@ class AdPanel extends React.Component {
 
     const adPlaybackInfoDiv = (
       <AdPanelTopBarItem
-        ref="adPlaybackInfo" // eslint-disable-line
         key="adPlaybackInfo"
         itemClassName="oo-ad-playback-info"
+        data-testid="adPlaybackInfo"
       >
         {adPlaybackInfo}
       </AdPanelTopBarItem>
@@ -147,11 +167,15 @@ class AdPanel extends React.Component {
       const learnMoreButtonDiv = (
         <AdPanelTopBarItem
           key="learnMoreButton"
-          ref="learnMoreButton" // eslint-disable-line
-          onButtonClicked={this.handleLearnMoreButtonClick}
+          onButtonClick={this.handleLearnMoreButtonClick}
+          onButtonKeyUp={this.handleLearnMoreButtonKeyUp}
           itemClassName={learnMoreClass}
         >
-          <Icon {...this.props} icon="learn" className="oo-button-icon" />
+          <Icon
+            icon="learn"
+            className="oo-button-icon"
+            skinConfig={skinConfig}
+          />
           {learnMoreText}
         </AdPanelTopBarItem>
       );
@@ -172,11 +196,15 @@ class AdPanel extends React.Component {
     const skipButtonDiv = (
       <AdPanelTopBarItem
         key="skipButton"
-        ref="skipButton" // eslint-disable-line
-        onButtonClicked={this.handleSkipAdButtonClick}
+        onButtonClick={this.handleSkipAdButtonClick}
+        onButtonKeyUp={this.handleSkipAdButtonKeyUp}
         itemClassName={skipButtonClass}
       >
-        <Icon {...this.props} icon="skip" className="oo-button-icon" />
+        <Icon
+          icon="skip"
+          className="oo-button-icon"
+          skinConfig={skinConfig}
+        />
         {skipButtonText}
       </AdPanelTopBarItem>
     );
@@ -190,9 +218,11 @@ class AdPanel extends React.Component {
     return (
       <div className="oo-ad-screen-panel">
         <div className="oo-ad-screen-panel-click-layer" />
-        <div // eslint-disable-line
+        {/* click and touchEnd handlers are only for preventing event propagation */}
+        {/* eslint-disable-next-line max-len */}
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+        <div
           className="oo-ad-top-bar"
-          ref="adTopBar" // eslint-disable-line
           onClick={this.handleAdTopBarClick}
           onTouchEnd={this.handleAdTopBarClick}
         >
@@ -203,11 +233,40 @@ class AdPanel extends React.Component {
   }
 }
 
+
+AdPanel.propTypes = {
+  currentAdsInfo: PropTypes.shape({
+    currentAdItem: PropTypes.shape({
+      hasClickUrl: PropTypes.bool,
+      name: PropTypes.string,
+      indexInPod: PropTypes.number,
+      isLive: PropTypes.bool,
+    }),
+    numberOfAds: 0,
+    skipAdButtonEnabled: false,
+  }),
+  contentTree: PropTypes.shape({
+    title: PropTypes.string,
+  }),
+  controller: PropTypes.shape({
+    setCurrentAudio: PropTypes.func,
+    onClosedCaptionChange: PropTypes.func,
+    state: PropTypes.shape({
+      closedCaptionOptions: PropTypes.shape({}),
+      multiAudio: PropTypes.shape({
+        tracks: PropTypes.array,
+      }),
+    }),
+    languageList: PropTypes.array,
+  }).isRequired,
+  componentWidth: PropTypes.number,
+  language: PropTypes.string,
+  localizableStrings: PropTypes.shape({}),
+  skinConfig: PropTypes.shape({}),
+};
+
+
 AdPanel.defaultProps = {
-  currentPlayhead: 0,
-  currentAdPlayhead: 0,
-  adVideoDuration: 0,
-  adStartTime: 0,
   currentAdsInfo: {
     numberOfAds: 0,
     skipAdButtonEnabled: false,
@@ -218,7 +277,13 @@ AdPanel.defaultProps = {
       isLive: false,
     },
   },
-  adEndTime: 0,
+  contentTree: {
+    title: '',
+  },
+  componentWidth: null,
+  language: '',
+  localizableStrings: { en: {} },
+  skinConfig: {},
 };
 
 module.exports = AdPanel;

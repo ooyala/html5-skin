@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CONSTANTS from '../constants/constants';
 import Utils from './utils';
 
 /**
@@ -19,6 +20,17 @@ class DiscoverItem extends React.Component {
     img.onerror = () => {
       this.setState({ imgError: true });
     };
+  }
+
+  /**
+   * @param {Object} event – the event object
+   */
+  handleKeyUp = (event) => {
+    const { onClickAction } = this.props;
+    if (event.keyCode === CONSTANTS.KEYCODES.SPACE_KEY) {
+      event.stopPropagation();
+      onClickAction();
+    }
   }
 
   render() {
@@ -50,11 +62,14 @@ class DiscoverItem extends React.Component {
     return (
       <div className="oo-discovery-image-wrapper-style">
         <div className="oo-discovery-wrapper">
-          <a // eslint-disable-line
+          <div
             onClick={onClickAction}
+            onKeyUp={this.handleKeyUp}
+            role="button"
+            tabIndex={0}
           >
             <div className="oo-image-style" style={thumbnailStyle} />
-          </a>
+          </div>
           {children}
         </div>
         <div

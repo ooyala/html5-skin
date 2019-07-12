@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
 import CONSTANTS from '../constants/constants';
@@ -7,43 +6,51 @@ import Watermark from '../components/watermark';
 import Icon from '../components/icon';
 import Spinner from '../components/spinner';
 import Utils from '../components/utils';
-/* eslint-disable react/destructuring-assignment */
 
 /**
  * The screen to be displayed on initial stage
  */
 class StartScreen extends React.Component {
+  description = null;
+
   constructor(props) {
     super(props);
 
     this.state = {
       playButtonClicked: false,
-      descriptionText: this.props.contentTree.description,
+      descriptionText: props.contentTree.description,
     };
   }
 
   componentDidMount() {
-    this.handleResize();
+    this.truncateText();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.contentTree.description !== this.props.contentTree.description
-      || nextProps.componentWidth !== this.props.componentWidth) {
-      this.handleResize(nextProps);
+  /**
+   * Launch truncateText if width changed
+   * @param {Object} nextProps - next props object
+   */
+  componentWillReceiveProps = (nextProps) => {
+    const { componentWidth } = this.props;
+    if (nextProps.componentWidth !== componentWidth) {
+      this.truncateText();
     }
   }
 
   /**
-   * Update description test on resize
-   * @param {Object} nextProps - props object
+   * Truncate description text
    */
-  handleResize = (nextProps) => {
-    const description = nextProps ? nextProps.contentTree.description : this.props.contentTree.description;
-    if (ReactDOM.findDOMNode(this.refs.description)) { // eslint-disable-line
-      this.setState({
-        descriptionText: Utils.truncateTextToWidth(ReactDOM.findDOMNode(this.refs.description), description), // eslint-disable-line
-      });
+  truncateText = () => {
+    if (!this.description) {
+      return;
     }
+    const { contentTree } = this.props;
+    const descriptionText = Utils.truncateTextToWidth(
+      this.description,
+      contentTree.description
+    );
+
+    this.setState({ descriptionText });
   }
 
   /**
@@ -52,29 +59,46 @@ class StartScreen extends React.Component {
    * @param {Object} event click object
    */
   handleClick = (event) => {
-    if (this.props.isInitializing) {
+    const {
+      isInitializing,
+      controller,
+    } = this.props;
+    if (isInitializing) {
       return;
     }
     event.preventDefault();
-    this.props.controller.togglePlayPause();
-    this.props.controller.state.accessibilityControlsEnabled = true;
+    controller.togglePlayPause();
+    controller.state.accessibilityControlsEnabled = true;
     this.setState({ playButtonClicked: true });
   }
 
   render() {
+    const {
+      skinConfig,
+      contentTree,
+      controller,
+      isInitializing,
+      showSpinner,
+    } = this.props;
+
+    const {
+      descriptionText,
+      playButtonClicked,
+    } = this.state;
+
     // inline style for config/skin.json elements only
     const titleStyle = {
-      color: this.props.skinConfig.startScreen.titleFont.color,
+      color: skinConfig.startScreen.titleFont.color,
     };
     const descriptionStyle = {
-      color: this.props.skinConfig.startScreen.descriptionFont.color,
+      color: skinConfig.startScreen.descriptionFont.color,
     };
     const actionIconStyle = {
-      color: this.props.skinConfig.startScreen.playIconStyle.color,
-      opacity: this.props.skinConfig.startScreen.playIconStyle.opacity,
+      color: skinConfig.startScreen.playIconStyle.color,
+      opacity: skinConfig.startScreen.playIconStyle.opacity,
     };
-    const posterImageUrl = this.props.skinConfig.startScreen.showPromo
-      ? this.props.contentTree.promo_image
+    const posterImageUrl = skinConfig.startScreen.showPromo
+      ? contentTree.promo_image
       : '';
     const posterStyle = {};
     if (Utils.isValidString(posterImageUrl)) {
@@ -83,11 +107,11 @@ class StartScreen extends React.Component {
 
     // CSS class manipulation from config/skin.json
     const stateScreenPosterClass = ClassNames({
-      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
-      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small',
+      'oo-state-screen-poster': skinConfig.startScreen.promoImageSize !== 'small',
+      'oo-state-screen-poster-small': skinConfig.startScreen.promoImageSize === 'small',
     });
-    const infoPanelPosition = this.props.skinConfig.startScreen.infoPanelPosition.toLowerCase();
-    const playButtonPosition = this.props.skinConfig.startScreen.playButtonPosition.toLowerCase();
+    const infoPanelPosition = skinConfig.startScreen.infoPanelPosition.toLowerCase();
+    const playButtonPosition = skinConfig.startScreen.playButtonPosition.toLowerCase();
     const infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
       'oo-info-panel-top': infoPanelPosition.indexOf('top') > -1,
@@ -110,32 +134,32 @@ class StartScreen extends React.Component {
       'oo-action-icon-bottom': playButtonPosition.indexOf('bottom') > -1,
       'oo-action-icon-left': playButtonPosition.indexOf('left') > -1,
       'oo-action-icon-right': playButtonPosition.indexOf('right') > -1,
-      'oo-hidden': !this.props.skinConfig.startScreen.showPlayButton,
+      'oo-hidden': !skinConfig.startScreen.showPlayButton,
     });
 
     const titleMetadata = (
       <div className={titleClass} style={titleStyle}>
-        {this.props.contentTree.title}
+        {contentTree.title}
       </div>
     );
-    const iconName = this.props.controller.state.playerState === CONSTANTS.STATE.END ? 'replay' : 'play';
+    const iconName = controller.state.playerState === CONSTANTS.STATE.END ? 'replay' : 'play';
     // The descriptionText value doesn't react to changes in contentTree.description since
     // it's being handled as internal state in order to allow truncating it on player resize.
     // We need to migrate truncateTextToWidth to a CSS solution in order to avoid this.
     const descriptionMetadata = (
       <div
         className={descriptionClass}
-        ref="description" // eslint-disable-line
+        ref={(node) => { this.description = node; }}
         style={descriptionStyle}
       >
-        {this.state.descriptionText || this.props.contentTree.description}
+        {descriptionText || contentTree.description}
       </div>
     );
 
     let actionIcon; let
       infoPanel;
     // We do not show the action icon, title or description when the player is initializing
-    if (!this.props.isInitializing) {
+    if (!isInitializing) {
       actionIcon = (
         <button
           type="button"
@@ -150,8 +174,8 @@ class StartScreen extends React.Component {
       );
       infoPanel = (
         <div className={infoPanelClass}>
-          {this.props.skinConfig.startScreen.showTitle ? titleMetadata : null}
-          {this.props.skinConfig.startScreen.showDescription ? descriptionMetadata : null}
+          {skinConfig.startScreen.showTitle ? titleMetadata : null}
+          {skinConfig.startScreen.showDescription ? descriptionMetadata : null}
         </div>
       );
     }
@@ -167,11 +191,11 @@ class StartScreen extends React.Component {
         </div>
         <Watermark {...this.props} controlBarVisible={false} />
         {infoPanel}
-        {(this.state.playButtonClicked
-          && this.props.controller.state.playerState === CONSTANTS.STATE.START)
-        || this.props.controller.state.buffering
-        || this.props.showSpinner ? (
-          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+        {(playButtonClicked
+          && controller.state.playerState === CONSTANTS.STATE.START)
+        || controller.state.buffering
+        || showSpinner ? (
+          <Spinner loadingImage={skinConfig.general.loadingImage.imageResource.url} />
           ) : (
             actionIcon
           )}

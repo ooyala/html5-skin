@@ -12,7 +12,7 @@ const ControlButton = require('../../js/components/controlButton');
 const CONSTANTS = require('../../js/constants/constants');
 
 describe('PlaybackSpeedButton', function() {
-  let wrapper, component, props;
+  let wrapper, props;
 
   const renderComponent = (children) => {
     wrapper = Enzyme.mount(
@@ -20,12 +20,10 @@ describe('PlaybackSpeedButton', function() {
         {children}
       </PlaybackSpeedButton>
     );
-    component = wrapper.instance();
   };
 
   beforeEach(function() {
     wrapper = null;
-    component = null;
     props = {
       className: '',
       responsiveView: 'md',
@@ -39,11 +37,6 @@ describe('PlaybackSpeedButton', function() {
       },
       skinConfig: {},
     };
-  });
-
-  it('should render a PlaybackSpeedButton', function() {
-    renderComponent();
-    expect(component).toBeTruthy();
   });
 
   it('should render className', function() {

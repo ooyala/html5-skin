@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Utils from './utils';
 import CONSTANTS from '../constants/constants';
@@ -7,18 +6,21 @@ import CONSTANTS from '../constants/constants';
  * ThumbnailCarousel component
  */
 class ThumbnailCarousel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.carouselPositionX = 0;
-    this.carouselPositionY = 0;
-    this.state = {
-      thumbnailWidth: 0,
-      thumbnailHeight: 0,
-      centerThumbnailWidth: 0,
-      centerThumbnailHeight: 0,
-      thumbnailPadding: 6,
-    };
-  }
+  state = {
+    thumbnailWidth: 0,
+    thumbnailHeight: 0,
+    centerThumbnailWidth: 0,
+    centerThumbnailHeight: 0,
+    thumbnailPadding: 6,
+  };
+
+  carouselPositionX = 0;
+
+  carouselPositionY = 0;
+
+  centerThumbnail = null;
+
+  thumbnail = null;
 
   componentDidMount() {
     const {
@@ -30,8 +32,7 @@ class ThumbnailCarousel extends React.Component {
     } = this.props;
     onRef(this);
 
-    const thumbnail = ReactDOM.findDOMNode(this.refs.thumbnailCarousel); // eslint-disable-line
-    const carousel = ReactDOM.findDOMNode(this.refs.thumbnail); // eslint-disable-line
+    const { centerThumbnail, thumbnail } = this;
     let thumbnailStylePadding = thumbnail
       ? window.getComputedStyle(thumbnail, null).getPropertyValue('padding')
       : 0;
@@ -41,15 +42,15 @@ class ThumbnailCarousel extends React.Component {
       ? thumbnailStylePadding
       : thumbnailPadding;
 
-    if (!thumbnail || !carousel) {
+    if (!thumbnail || !centerThumbnail) {
       return;
     }
-    if (thumbnail.clientWidth && carousel.clientWidth) {
+    if (thumbnail.clientWidth && centerThumbnail.clientWidth) {
       this.setState({
         thumbnailWidth: thumbnail.clientWidth,
         thumbnailHeight: thumbnail.clientHeight,
-        centerThumbnailWidth: carousel.clientWidth,
-        centerThumbnailHeight: carousel.clientHeight,
+        centerThumbnailWidth: centerThumbnail.clientWidth,
+        centerThumbnailHeight: centerThumbnail.clientHeight,
         thumbnailPadding: thumbnailPaddingSanitized,
       });
       return;
@@ -70,14 +71,14 @@ class ThumbnailCarousel extends React.Component {
       : parseInt(thumbnailHeight, 0);
 
     const carouselStyleWidth = Number.parseFloat(
-      window.getComputedStyle(carousel, null).getPropertyValue('width'),
+      window.getComputedStyle(centerThumbnail, null).getPropertyValue('width'),
     ); // convert css px to number
     const carouselWidth = !Number.isNaN(carouselStyleWidth)
       ? carouselStyleWidth
       : Number.parseInt(thumbnailCarouselWidth, 0);
 
     const carouselStyleHeight = Number.parseFloat(
-      window.getComputedStyle(carousel, null).getPropertyValue('height')
+      window.getComputedStyle(centerThumbnail, null).getPropertyValue('height')
     ); // convert css px to number
     const carouselHeight = !Number.isNaN(carouselStyleHeight)
       ? carouselStyleHeight
@@ -176,7 +177,7 @@ class ThumbnailCarousel extends React.Component {
           <div
             className="oo-thumbnail-carousel-image"
             key={position}
-            ref="thumbnailCarousel" // eslint-disable-line
+            ref={(node) => { this.thumbnail = node; }}
             style={thumbStyle}
           />
         );
@@ -206,7 +207,7 @@ class ThumbnailCarousel extends React.Component {
           <div
             className="oo-thumbnail-carousel-image"
             key={position}
-            ref="thumbnailCarousel" // eslint-disable-line
+            ref={(node) => { this.thumbnail = node; }}
             style={thumbStyle}
           />
         );
@@ -262,8 +263,9 @@ class ThumbnailCarousel extends React.Component {
         {thumbnailsBefore}
         <div
           className={thumbnailClassName}
-          ref="thumbnail" // eslint-disable-line
+          ref={(node) => { this.centerThumbnail = node; }}
           style={thumbnailStyleSanitized}
+          data-testid="centerThumbnail"
         >
           <div className="oo-thumbnail-carousel-time">{time}</div>
         </div>

@@ -88,7 +88,7 @@ describe('withAutoHide', function() {
       showControlBar: function() {},
       setVolume: function() {}
     };
-    mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
     closedCaptionOptions = {
       cueText: 'cue text'
     };

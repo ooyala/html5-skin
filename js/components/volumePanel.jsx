@@ -6,44 +6,43 @@ import ControlBar from './controlBar';
  * Volume menu. This component is used for both the Popover and
  * Screen modes of the menu.
  */
-class VolumePanel extends React.Component { // eslint-disable-line
-  render() {
-    const {
-      a11yControls,
-      buffered,
-      componentWidth,
-      currentPlayhead,
-      duration,
-      isLiveStream,
-      playerState,
-      playheadTime,
-      responsiveId,
-      totalTime,
-    } = this.props;
-    return (
-      <div className="oo-absolute-centered oo-volume-panel">
-        <ControlBar
-          {...this.props}
-          hideScrubberBar
-          controlBarVisible
-          playerState={playerState}
-          isLiveStream={isLiveStream}
-          a11yControls={a11yControls}
-          currentPlayhead={currentPlayhead}
-          duration={duration}
-          totalTime={totalTime}
-          playheadTime={playheadTime}
-          buffered={buffered}
-          responsiveView={responsiveId}
-          componentWidth={componentWidth}
-          controlBarItems={[{
-            name: 'volume', location: 'controlBar', whenDoesNotFit: 'keep', minWidth: 200,
-          }]}
-        />
-      </div>
-    );
-  }
-}
+
+const VolumePanel = (props) => {
+  const {
+    a11yControls,
+    buffered,
+    componentWidth,
+    currentPlayhead,
+    duration,
+    isLiveStream,
+    playerState,
+    playheadTime,
+    responsiveId,
+    totalTime,
+  } = props;
+  return (
+    <div className="oo-absolute-centered oo-volume-panel">
+      <ControlBar
+        {...props}
+        hideScrubberBar
+        controlBarVisible
+        playerState={playerState}
+        isLiveStream={isLiveStream}
+        a11yControls={a11yControls}
+        currentPlayhead={currentPlayhead}
+        duration={duration}
+        totalTime={totalTime}
+        playheadTime={playheadTime}
+        buffered={buffered}
+        responsiveView={responsiveId}
+        componentWidth={componentWidth}
+        controlBarItems={[{
+          name: 'volume', location: 'controlBar', whenDoesNotFit: 'keep', minWidth: 200,
+        }]}
+      />
+    </div>
+  );
+};
 
 VolumePanel.propTypes = {
   totalTime: PropTypes.string.isRequired,

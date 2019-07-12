@@ -7,19 +7,11 @@ import AccessibleMenu from '../higher-order/accessibleMenu';
 import CONSTANTS from '../../constants/constants';
 import SelectionContainer from './selectionContainer';
 
+const FONT_SIZES = ['Small', 'Medium', 'Large', 'Extra Large'];
 /**
  * Manage font size tuning
  */
 class FontSizeTabProto extends React.Component {
-  constructor(props) {
-    super(props);
-    const { closedCaptionOptions } = this.props;
-    this.state = {
-      selectedFontSize: closedCaptionOptions.fontSize, // eslint-disable-line
-      fontSizes: ['Small', 'Medium', 'Large', 'Extra Large'],
-    };
-  }
-
   /**
    * Set up classname attribute of the element
    * @param {*} item - element where the component get's mounted
@@ -51,9 +43,6 @@ class FontSizeTabProto extends React.Component {
       controller.toggleClosedCaptionEnabled();
     }
     controller.onClosedCaptionChange('fontSize', fontSize);
-    this.setState({
-      selectedFontSize: fontSize, // eslint-disable-line
-    });
   }
 
   render() {
@@ -63,7 +52,6 @@ class FontSizeTabProto extends React.Component {
       closedCaptionOptions,
       skinConfig,
     } = this.props;
-    const { fontSizes } = this.state;
     const fontSizeTitle = Utils.getLocalizedString(
       language,
       CONSTANTS.SKIN_TEXT.FONT_SIZE,
@@ -75,7 +63,7 @@ class FontSizeTabProto extends React.Component {
       localizableStrings
     );
     const fontItems = [];
-    fontSizes.forEach((fontSize, index) => {
+    FONT_SIZES.forEach((fontSize) => {
       // accent color
       const isSelected = closedCaptionOptions.fontSize === fontSize;
       let selectedFontSizeStyle = {};
@@ -94,7 +82,7 @@ class FontSizeTabProto extends React.Component {
 
       fontItems.push(
         <AccessibleButton
-          key={index} // eslint-disable-line
+          key={fontSize}
           className="oo-font-size-container"
           ariaLabel={itemLabel}
           ariaChecked={isSelected}

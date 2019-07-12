@@ -42,32 +42,34 @@ class TextTrackPanel extends React.Component {
     'Small Capitals': 'small-caps',
   }
 
+  /* eslint-disable no-magic-numbers */
   fontSizeMap = {
     Small: {
-      xs: `${baseFontSize * 0.8}em`, // eslint-disable-line no-magic-numbers
-      sm: `${baseFontSize * 1.0}em`, // eslint-disable-line no-magic-numbers
-      md: `${baseFontSize * 1.2}em`, // eslint-disable-line no-magic-numbers
-      lg: `${baseFontSize * 1.4}em`, // eslint-disable-line no-magic-numbers
+      xs: `${baseFontSize * 0.8}em`,
+      sm: `${baseFontSize * 1.0}em`,
+      md: `${baseFontSize * 1.2}em`,
+      lg: `${baseFontSize * 1.4}em`,
     },
     Medium: {
-      xs: `${baseFontSize * 1.2}em`, // eslint-disable-line no-magic-numbers
-      sm: `${baseFontSize * 1.4}em`, // eslint-disable-line no-magic-numbers
-      md: `${baseFontSize * 1.6}em`, // eslint-disable-line no-magic-numbers
-      lg: `${baseFontSize * 1.8}em`, // eslint-disable-line no-magic-numbers
+      xs: `${baseFontSize * 1.2}em`,
+      sm: `${baseFontSize * 1.4}em`,
+      md: `${baseFontSize * 1.6}em`,
+      lg: `${baseFontSize * 1.8}em`,
     },
     Large: {
-      xs: `${baseFontSize * 1.6}em`, // eslint-disable-line no-magic-numbers
-      sm: `${baseFontSize * 1.8}em`, // eslint-disable-line no-magic-numbers
-      md: `${baseFontSize * 2.0}em`, // eslint-disable-line no-magic-numbers
-      lg: `${baseFontSize * 2.2}em`, // eslint-disable-line no-magic-numbers
+      xs: `${baseFontSize * 1.6}em`,
+      sm: `${baseFontSize * 1.8}em`,
+      md: `${baseFontSize * 2.0}em`,
+      lg: `${baseFontSize * 2.2}em`,
     },
     'Extra Large': {
-      xs: `${baseFontSize * 2.0}em`, // eslint-disable-line no-magic-numbers
-      sm: `${baseFontSize * 2.2}em`, // eslint-disable-line no-magic-numbers
-      md: `${baseFontSize * 2.4}em`, // eslint-disable-line no-magic-numbers
-      lg: `${baseFontSize * 2.6}em`, // eslint-disable-line no-magic-numbers
+      xs: `${baseFontSize * 2.0}em`,
+      sm: `${baseFontSize * 2.2}em`,
+      md: `${baseFontSize * 2.4}em`,
+      lg: `${baseFontSize * 2.6}em`,
     },
   }
+  /* eslint-enable no-magic-numbers */
 
   textEnhancementMap = {
     Uniform: 'none',

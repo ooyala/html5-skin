@@ -102,7 +102,7 @@ describe('PauseScreen', function() {
       description: 'description',
       title: 'title'
     };
-    mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
   });
 
   it('creates an PauseScreen', function() {
@@ -246,6 +246,7 @@ describe('PauseScreen', function() {
             totalTime={ "60:00" }
             playheadTime={ "00:00" }
             buffered={ buffered }
+            isLiveStream={ isLiveStream }
           />
         )
       );

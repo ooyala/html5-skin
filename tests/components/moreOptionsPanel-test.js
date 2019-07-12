@@ -111,7 +111,7 @@ describe('MoreOptionsPanel', function() {
 describe('MoreOptionsPanel', function() {
   var oneButtonSkinConfig, mockController, mockProps;
   beforeEach(function() {
-    oneButtonSkinConfig = Utils.clone(skinConfig);
+    oneButtonSkinConfig = JSON.parse(JSON.stringify(skinConfig));
     oneButtonSkinConfig.buttons.desktopContent = [];
 
     mockController = {

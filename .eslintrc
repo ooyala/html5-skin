@@ -16,7 +16,7 @@
     "space-before-function-paren": ["error", "never"],
     "comma-dangle": ["error", "always-multiline"],
     "default-case": ["error"],
-    "id-length": ["error", { "exceptions": ["_", "$"] }],
+    "id-length": ["error", { "exceptions": ["_", "$", "x", "y"] }],
     "max-len": [
       "error", 110,
       {
@@ -28,7 +28,7 @@
     ],
     "no-continue": ["warn"],
     "no-magic-numbers": ["error", { "ignore": [-360, -1, 0, 1, 2, 10, 100, 360] }],
-    "no-param-reassign": ["error"],
+    "no-param-reassign": ["error", { "ignorePropertyModificationsFor": ["OO"] }],
     "no-var": ["error"],
     "one-var-declaration-per-line": ["error"],
     "require-jsdoc-except/require-jsdoc": [
@@ -43,6 +43,7 @@
           "constructor",
           "componentWillMount",
           "componentDidMount",
+          "componentDidUpdate",
           "componentWillUnmount",
           "componentWillReceiveProps",
           "render"

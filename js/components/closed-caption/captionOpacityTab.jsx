@@ -4,7 +4,6 @@ import Utils from '../utils';
 import CONSTANTS from '../../constants/constants';
 import SelectionContainer from './selectionContainer';
 import Slider from '../slider';
-/* eslint-disable react/destructuring-assignment */
 
 /**
  * view to manage caption opacity
@@ -15,10 +14,11 @@ class CaptionOpacityTab extends React.Component {
    * @param {string} value - the text opacity value
    */
   changeTextOpacity = (value) => {
-    if (!this.props.closedCaptionOptions.enabled) {
-      this.props.controller.toggleClosedCaptionEnabled();
+    const { closedCaptionOptions, controller } = this.props;
+    if (!closedCaptionOptions.enabled) {
+      controller.toggleClosedCaptionEnabled();
     }
-    this.props.controller.onClosedCaptionChange('textOpacity', value);
+    controller.onClosedCaptionChange('textOpacity', value);
   }
 
   /**
@@ -26,10 +26,11 @@ class CaptionOpacityTab extends React.Component {
    * @param {string} value - the background opacity value
    */
   changeBackgroundOpacity = (value) => {
-    if (!this.props.closedCaptionOptions.enabled) {
-      this.props.controller.toggleClosedCaptionEnabled();
+    const { closedCaptionOptions, controller } = this.props;
+    if (!closedCaptionOptions.enabled) {
+      controller.toggleClosedCaptionEnabled();
     }
-    this.props.controller.onClosedCaptionChange('backgroundOpacity', value);
+    controller.onClosedCaptionChange('backgroundOpacity', value);
   }
 
   /**
@@ -37,10 +38,11 @@ class CaptionOpacityTab extends React.Component {
    * @param {string} value – the window opacity value
    */
   changeWindowOpacity = (value) => {
-    if (!this.props.closedCaptionOptions.enabled) {
-      this.props.controller.toggleClosedCaptionEnabled();
+    const { closedCaptionOptions, controller } = this.props;
+    if (!closedCaptionOptions.enabled) {
+      controller.toggleClosedCaptionEnabled();
     }
-    this.props.controller.onClosedCaptionChange('windowOpacity', value);
+    controller.onClosedCaptionChange('windowOpacity', value);
   }
 
   /**
@@ -48,23 +50,29 @@ class CaptionOpacityTab extends React.Component {
    * @param {number} number - percent
    * @returns {Object} React element
    */
-  percentString = number => `${(number * 100).toString()}%`; // eslint-disable-line
+  percentString = number => `${(number * 100).toString()}%`;
 
   render() {
+    const {
+      language,
+      localizableStrings,
+      closedCaptionOptions,
+    } = this.props;
+
     const textOpacityTitle = Utils.getLocalizedString(
-      this.props.language,
+      language,
       CONSTANTS.SKIN_TEXT.TEXT_OPACITY,
-      this.props.localizableStrings
+      localizableStrings
     );
     const backgroundOpacityTitle = Utils.getLocalizedString(
-      this.props.language,
+      language,
       CONSTANTS.SKIN_TEXT.BACKGROUND_OPACITY,
-      this.props.localizableStrings
+      localizableStrings
     );
     const windowOpacityTitle = Utils.getLocalizedString(
-      this.props.language,
+      language,
       CONSTANTS.SKIN_TEXT.WINDOW_OPACITY,
-      this.props.localizableStrings
+      localizableStrings
     );
 
     return (
@@ -76,10 +84,10 @@ class CaptionOpacityTab extends React.Component {
         >
           <SelectionContainer
             title={textOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.textOpacity)}
+            selectionText={this.percentString(closedCaptionOptions.textOpacity)}
           >
             <Slider
-              value={parseFloat(this.props.closedCaptionOptions.textOpacity)}
+              value={parseFloat(closedCaptionOptions.textOpacity)}
               onChange={this.changeTextOpacity}
               className="oo-slider-caption-opacity"
               itemRef="textOpacitySlider"
@@ -94,10 +102,10 @@ class CaptionOpacityTab extends React.Component {
 
           <SelectionContainer
             title={backgroundOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.backgroundOpacity)}
+            selectionText={this.percentString(closedCaptionOptions.backgroundOpacity)}
           >
             <Slider
-              value={parseFloat(this.props.closedCaptionOptions.backgroundOpacity)}
+              value={parseFloat(closedCaptionOptions.backgroundOpacity)}
               onChange={this.changeBackgroundOpacity}
               className="oo-slider-caption-opacity"
               itemRef="backgroundOpacitySlider"
@@ -112,10 +120,10 @@ class CaptionOpacityTab extends React.Component {
 
           <SelectionContainer
             title={windowOpacityTitle}
-            selectionText={this.percentString(this.props.closedCaptionOptions.windowOpacity)}
+            selectionText={this.percentString(closedCaptionOptions.windowOpacity)}
           >
             <Slider
-              value={parseFloat(this.props.closedCaptionOptions.windowOpacity)}
+              value={parseFloat(closedCaptionOptions.windowOpacity)}
               onChange={this.changeWindowOpacity}
               className="oo-slider-caption-opacity"
               itemRef="windowOpacitySlider"

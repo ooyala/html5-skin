@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import ClassNames from 'classnames';
-import ThumbnailsContainer from './thumbnailContainer';
+import ThumbnailContainer from './thumbnailContainer';
 import Utils from './utils';
 import MACROS from '../constants/macros';
 import CONSTANTS from '../constants/constants';
@@ -13,8 +12,12 @@ import MarkerIcon from './markers/markerIcon';
  * Scrubbler bar implementation
  */
 class ScrubberBar extends React.Component {
-  // Using temporary isMounted strategy mentioned in https://reactjs.org/blog/2015/12/16/ismounted-antipattern.html
-  _isMounted = false;
+  state = {
+    scrubberBarWidth: 0,
+    playheadWidth: 0,
+    scrubbingPlayheadX: 0,
+    hoveringX: 0,
+  };
 
   constructor(props) {
     super(props);
@@ -23,17 +26,12 @@ class ScrubberBar extends React.Component {
     this.isMobile = controller.state.isMobile;
     this.touchInitiated = false;
     this.targetPlayhead = 0;
-
-    this.state = {
-      scrubberBarWidth: 0,
-      playheadWidth: 0,
-      scrubbingPlayheadX: 0,
-      hoveringX: 0,
-    };
+    this.root = null;
+    this.scrubberBar = null;
+    this.playhead = null;
   }
 
   componentDidMount() {
-    this._isMounted = true; // eslint-disable-line
     this.handleResize();
   }
 
@@ -48,12 +46,9 @@ class ScrubberBar extends React.Component {
     }
   }
 
-  /**
-   * Trigger resize if requested
-   */
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { forceResize } = this.props;
-    if (forceResize) {
+    if (forceResize && !prevProps.forceResize) {
       this.handleResize();
     }
   }
@@ -62,12 +57,11 @@ class ScrubberBar extends React.Component {
    * Remove event listeners for mobile devices
    */
   componentWillUnmount() {
-    this._isMounted = false; // eslint-disable-line
     if (!this.isMobile) {
-      ReactDOM.findDOMNode(this).parentNode.removeEventListener('mousemove', this.handlePlayheadMouseMove); // eslint-disable-line
+      this.root.parentNode.removeEventListener('mousemove', this.handlePlayheadMouseMove);
       document.removeEventListener('mouseup', this.handlePlayheadMouseUp, true);
     } else {
-      ReactDOM.findDOMNode(this).parentNode.removeEventListener('touchmove', this.handlePlayheadMouseMove); // eslint-disable-line
+      this.root.parentNode.removeEventListener('touchmove', this.handlePlayheadMouseMove);
       document.removeEventListener('touchend', this.handlePlayheadMouseUp, true);
     }
   }
@@ -84,8 +78,8 @@ class ScrubberBar extends React.Component {
 
   handleResize = () => {
     this.setState({
-      scrubberBarWidth: ReactDOM.findDOMNode(this.refs.scrubberBar).clientWidth, // eslint-disable-line
-      playheadWidth: ReactDOM.findDOMNode(this.refs.playhead).clientWidth, // eslint-disable-line
+      scrubberBarWidth: this.scrubberBar.clientWidth,
+      playheadWidth: this.playhead.clientWidth,
     });
   }
 
@@ -111,9 +105,7 @@ class ScrubberBar extends React.Component {
       // we need to make sure only one actually does the work
 
       event.preventDefault();
-      if (this.touchInitiated) {
-        event = event.touches[0]; // eslint-disable-line
-      }
+      const currentEvent = this.touchInitiated ? event.touches[0] : event;
 
       // we enter the scrubbing state to prevent constantly seeking while dragging
       // the playhead icon
@@ -121,16 +113,16 @@ class ScrubberBar extends React.Component {
       controller.renderSkin();
 
       if (!this.lastScrubX) {
-        this.lastScrubX = event.clientX;
+        this.lastScrubX = currentEvent.clientX;
       }
 
       if (!this.touchInitiated) {
-        ReactDOM.findDOMNode(this).parentNode.addEventListener('mousemove', this.handlePlayheadMouseMove); // eslint-disable-line
+        this.root.parentNode.addEventListener('mousemove', this.handlePlayheadMouseMove);
         // attach a mouseup listener to the document for usability, otherwise scrubbing
         // breaks if your cursor leaves the player element
         document.addEventListener('mouseup', this.handlePlayheadMouseUp, true);
       } else {
-        ReactDOM.findDOMNode(this).parentNode.addEventListener('touchmove', this.handlePlayheadMouseMove); // eslint-disable-line
+        this.root.parentNode.addEventListener('touchmove', this.handlePlayheadMouseMove);
         document.addEventListener('touchend', this.handlePlayheadMouseUp, true);
       }
     }
@@ -151,10 +143,9 @@ class ScrubberBar extends React.Component {
     controller.startHideControlBarTimer();
     event.preventDefault();
     if (seeking && duration > 0) {
-      if (this.touchInitiated) {
-        event = event.touches[0]; // eslint-disable-line
-      }
-      const deltaX = event.clientX - this.lastScrubX;
+      const currentEvent = this.touchInitiated ? event.touches[0] : event;
+
+      const deltaX = currentEvent.clientX - this.lastScrubX;
       const scrubbingPlayheadX = currentPlayhead * scrubberBarWidth / duration + deltaX;
       this.targetPlayhead = scrubbingPlayheadX / scrubberBarWidth * duration;
       controller.updateSeekingPlayhead(
@@ -163,7 +154,7 @@ class ScrubberBar extends React.Component {
       this.setState({
         scrubbingPlayheadX,
       });
-      this.lastScrubX = event.clientX;
+      this.lastScrubX = currentEvent.clientX;
     }
   }
 
@@ -172,35 +163,28 @@ class ScrubberBar extends React.Component {
    * @param {Object} event - the event object
    */
   handlePlayheadMouseUp = (event) => {
-    if (!this._isMounted) { // eslint-disable-line
-      return;
-    }
     const { controller } = this.props;
     const { targetPlayhead } = this;
     controller.startHideControlBarTimer();
     event.preventDefault();
     // stop propagation to prevent it from bubbling up to the skin and pausing
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; // eslint-disable-line
+    event.stopPropagation();
 
     // Remove keyboard focus when clicking on scrubber bar
-    const scrubberBar = ReactDOM.findDOMNode(this.refs.scrubberBar); // eslint-disable-line
-    if (scrubberBar && typeof scrubberBar.blur === 'function') {
-      scrubberBar.blur();
+    if (this.scrubberBar) {
+      this.scrubberBar.blur();
     }
 
     this.lastScrubX = null;
     if (!this.touchInitiated) {
-      ReactDOM.findDOMNode(this).parentNode.removeEventListener('mousemove', this.handlePlayheadMouseMove); // eslint-disable-line
+      this.root.parentNode.removeEventListener('mousemove', this.handlePlayheadMouseMove);
       document.removeEventListener('mouseup', this.handlePlayheadMouseUp, true);
     } else {
-      ReactDOM.findDOMNode(this).parentNode.removeEventListener('touchmove', this.handlePlayheadMouseMove); // eslint-disable-line
+      this.root.parentNode.removeEventListener('touchmove', this.handlePlayheadMouseMove);
       document.removeEventListener('touchend', this.handlePlayheadMouseUp, true);
     }
     controller.seek(targetPlayhead);
-    if (this._isMounted) { // eslint-disable-line
-      this.setState({ scrubbingPlayheadX: 0 }); // eslint-disable-line
-    }
+    this.setState({ scrubbingPlayheadX: 0 });
     this.touchInitiated = false;
   }
 
@@ -473,28 +457,19 @@ class ScrubberBar extends React.Component {
       controller.state.thumbnails
       && (scrubbingPlayheadX || this.lastScrubX || hoveringX)
     ) {
-      let vrViewingDirection = { yaw: 0, roll: 0, pitch: 0 };
-      if (
-        controller
-        && controller.state
-        && controller.state.vrViewingDirection
-      ) {
-        vrViewingDirection = controller.state.vrViewingDirection; // eslint-disable-line
-      }
-      let fullscreen = false;
-      if (controller && controller.state && controller.state.fullscreen) {
-        fullscreen = controller.state.fullscreen; // eslint-disable-line
-      }
-      let videoVr = false;
-      if (controller && controller.videoVr) {
-        videoVr = controller.videoVr; // eslint-disable-line
-      }
-      let isCarousel = false;
+      const vrViewingDirection = Utils.getPropertyValue(
+        controller,
+        'state.vrViewingDirection',
+        { yaw: 0, roll: 0, pitch: 0 },
+      );
+      const fullscreen = Utils.getPropertyValue(controller, 'state.fullscreen', false);
+      const videoVr = Utils.getPropertyValue(controller, 'state.videoVr', false);
+      const isCarousel = !!scrubbingPlayheadX;
+
       if (scrubbingPlayheadX) {
         hoverPosition = scrubbingPlayheadX;
         hoverTime = scrubbingPlayheadX / scrubberBarWidth * duration;
         playheadClassName += ' oo-playhead-scrubbing';
-        isCarousel = true;
       } else if (this.lastScrubX) {
         // to show thumbnail when clicking on playhead
         hoverPosition = currentPlayhead * scrubberBarWidth / duration;
@@ -514,7 +489,7 @@ class ScrubberBar extends React.Component {
       }
 
       thumbnailsContainer = (
-        <ThumbnailsContainer
+        <ThumbnailContainer
           isCarousel={isCarousel}
           thumbnails={controller.state.thumbnails}
           duration={duration}
@@ -556,11 +531,11 @@ class ScrubberBar extends React.Component {
     return (
       <div // eslint-disable-line
         className="oo-scrubber-bar-container"
-        ref="scrubberBarContainer" // eslint-disable-line
         onMouseOver={scrubberBarMouseOver}
         onMouseOut={scrubberBarMouseOut}
         onMouseLeave={this.handleScrubberBarMouseLeave}
         onMouseMove={scrubberBarMouseMove}
+        ref={(node) => { this.root = node; }}
       >
         {!!controller.state.markers && controller.state.markers.list.length > 0 && (
           <div className="oo-marker-container">
@@ -570,12 +545,11 @@ class ScrubberBar extends React.Component {
         {thumbnailsContainer}
         <div // eslint-disable-line
           className="oo-scrubber-bar-padding"
-          ref="scrubberBarPadding" // eslint-disable-line
           onMouseDown={scrubberBarMouseDown}
           onTouchStart={scrubberBarMouseDown}
         >
           <div
-            ref="scrubberBar" // eslint-disable-line
+            ref={(node) => { this.scrubberBar = node; }}
             className={scrubberBarClass}
             style={scrubberBarStyle}
             role="slider"
@@ -601,9 +575,10 @@ class ScrubberBar extends React.Component {
               onTouchStart={playheadMouseDown}
             >
               <div
-                ref="playhead" // eslint-disable-line
+                ref={(node) => { this.playhead = node; }}
                 className={playheadClassName}
                 style={playheadStyle}
+                data-testid="playhead"
               />
             </div>
           </div>

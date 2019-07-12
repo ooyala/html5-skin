@@ -1,57 +1,48 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import deepmerge from 'deepmerge';
 import PropTypes from 'prop-types';
 import Utils from './utils';
 import CONSTANTS from '../constants/constants';
 
+const VERTICAL_OFFSET = 80;
+const POINTER_ALIGNMENT = {
+  left: '10%',
+  center: '45%',
+  right: '85%',
+};
+
 /**
  * The tooltip component
  */
 class Tooltip extends React.Component {
-  verticalOffset = 80; // eslint-disable-line
-
-  pointerAlignment = {
-    left: '10%',
-    center: '45%',
-    right: '85%',
-  };
-
   constructor(props) {
     super(props);
     this.state = { visible: false };
-    this.onMouseOver = this.onMouseOver.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.showTooltip = this.showTooltip.bind(this);
+    this.hideTooltip = this.hideTooltip.bind(this);
     this.getAlignment = this.getAlignment.bind(this);
+
+    this.element = null;
   }
 
   componentDidMount() {
-    this.parentElement = (ReactDOM.findDOMNode(this) || {}).parentElement; // eslint-disable-line
-    if (this.parentElement) {
-      this.parentElement.addEventListener('mouseover', this.onMouseOver);
-      this.parentElement.addEventListener('mouseleave', this.onMouseLeave);
+    if (this.element) {
+      const { parentElement } = this.element;
+      parentElement.addEventListener('mouseover', this.showTooltip);
+      parentElement.addEventListener('mouseleave', this.hideTooltip);
+      parentElement.addEventListener('focus', this.showTooltip);
+      parentElement.addEventListener('blur', this.hideTooltip);
     }
   }
 
   componentWillUnmount() {
-    if (this.parentElement) {
-      this.parentElement.removeEventListener('mouseover', this.onMouseOver);
-      this.parentElement.removeEventListener('mouseleave', this.onMouseLeave);
+    if (this.element) {
+      const { parentElement } = this.element;
+      parentElement.removeEventListener('mouseover', this.showTooltip);
+      parentElement.removeEventListener('mouseleave', this.hideTooltip);
+      parentElement.removeEventListener('focus', this.showTooltip);
+      parentElement.removeEventListener('blur', this.hideTooltip);
     }
-  }
-
-  /**
-   * Change visiblity on mouse over
-   */
-  onMouseOver() {
-    this.setState({ visible: true });
-  }
-
-  /**
-   * Change visiblity on mouse out
-   */
-  onMouseLeave() {
-    this.setState({ visible: false });
   }
 
   /**
@@ -74,8 +65,8 @@ class Tooltip extends React.Component {
    * @param {string} alignment - the alignment
    * @returns {Object} the CSS object
    */
-  getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
-    const verticalAlignment = this.verticalOffset * responsivenessMultiplier;
+  static getContainerStyle(bottom, visible, responsivenessMultiplier, alignment) {
+    const verticalAlignment = VERTICAL_OFFSET * responsivenessMultiplier;
     const alignmentStyle = {
       left: {
         left: 0,
@@ -113,16 +104,18 @@ class Tooltip extends React.Component {
    * @param {number} responsivenessMultiplier - the multiplier of a responsive design
    * @returns {Object} the CSS object
    */
-  getBoxStyle(responsivenessMultiplier) { // eslint-disable-line
+  static getBoxStyle(responsivenessMultiplier) {
     return {
       borderRadius: '3px',
       fontSize: '15px',
       textShadow: 'none',
       background: 'black',
-      paddingTop: 8 * responsivenessMultiplier, // eslint-disable-line
-      paddingRight: 20 * responsivenessMultiplier, // eslint-disable-line
-      paddingBottom: 8 * responsivenessMultiplier, // eslint-disable-line
-      paddingLeft: 20 * responsivenessMultiplier, // eslint-disable-line
+      /* eslint-disable no-magic-numbers */
+      paddingTop: 8 * responsivenessMultiplier,
+      paddingRight: 20 * responsivenessMultiplier,
+      paddingBottom: 8 * responsivenessMultiplier,
+      paddingLeft: 20 * responsivenessMultiplier,
+      /* eslint-enable no-magic-numbers */
     };
   }
 
@@ -131,14 +124,28 @@ class Tooltip extends React.Component {
    * @param {string} alignment - the alignment of a tooltip
    * @returns {Object} the CSS object
    */
-  getPointerStyle(alignment) {
+  static getPointerStyle(alignment) {
     return {
       position: 'absolute',
       borderLeft: '5px solid transparent',
       borderRight: '5px solid transparent',
       borderTop: '5px solid black',
-      left: this.pointerAlignment[alignment],
+      left: POINTER_ALIGNMENT[alignment],
     };
+  }
+
+  /**
+   * Change visiblity on mouse out
+   */
+  hideTooltip() {
+    this.setState({ visible: false });
+  }
+
+  /**
+   * Change visiblity on mouse over
+   */
+  showTooltip() {
+    this.setState({ visible: true });
   }
 
   render() {
@@ -157,24 +164,28 @@ class Tooltip extends React.Component {
     const alignment = this.getAlignment();
 
     return (
-      <div className="oo-tooltip-container" style={{ position: 'relative' }}>
+      <div
+        className="oo-tooltip-container"
+        style={{ position: 'relative' }}
+        ref={(node) => { this.element = node; }}
+      >
         <div
           className="oo-tooltip"
-          style={this.getContainerStyle(
+          style={this.constructor.getContainerStyle(
             bottom,
             visible,
             responsivenessMultiplier,
             alignment
           )}
         >
-          <div style={this.getBoxStyle(responsivenessMultiplier)}>
+          <div style={this.constructor.getBoxStyle(responsivenessMultiplier)}>
             {Utils.getLocalizedString(
               language,
               text,
               localizableStrings
             )}
           </div>
-          <div style={this.getPointerStyle(alignment)} />
+          <div style={this.constructor.getPointerStyle(alignment)} />
         </div>
       </div>
     );

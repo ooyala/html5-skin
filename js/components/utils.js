@@ -129,10 +129,10 @@ Utils.ensureNumber = (value, defaultValue) => {
  * min if it falls below, max if it falls above.
  */
 Utils.constrainToRange = (value, min, max) => {
-  value = Utils.ensureNumber(value, 0); // eslint-disable-line
-  min = Utils.ensureNumber(min, 0); // eslint-disable-line
-  max = Utils.ensureNumber(max, 0); // eslint-disable-line
-  return Math.min(Math.max(min, value), max);
+  const valueNumber = Utils.ensureNumber(value, 0);
+  const minNumber = Utils.ensureNumber(min, 0);
+  const maxNumber = Utils.ensureNumber(max, 0);
+  return Math.min(Math.max(minNumber, valueNumber), maxNumber);
 };
 
 /**
@@ -168,16 +168,16 @@ Utils.toFixedNumber = (value, digits) => {
  * Either property can be returned as an empty string if the parameters don't match the requirements.
  *
  * @function getTimeDisplayValues
- * @param {Number} currentPlayhead The current value of the playhead in seconds.
- * @param {Number} duration The total duration of the video in seconds. Should be -0 or Infinity for Live videos with no DVR.
+ * @param {Number} currentPlayheadValue The current value of the playhead in seconds.
+ * @param {Number} durationValue The total duration of the video in seconds. Should be -0 or Infinity for Live videos with no DVR.
  * @param {Boolean} isLiveStream Indicates whether the video is a livestream or not.
  * @param {Number} useNegativeDvrOffset Whether to display DVR progress as a negative offset value or not.
  * @returns {Object} An object with currentTime and totalTime properties in HH:MM format. Either of these
  * might be an empty string depending on the conditions above.
  */
-Utils.getTimeDisplayValues = (currentPlayhead, duration, isLiveStream, useNegativeDvrOffset) => {
-  currentPlayhead = Utils.ensureNumber(currentPlayhead); // eslint-disable-line
-  duration = Utils.ensureNumber(duration, 0); // eslint-disable-line
+Utils.getTimeDisplayValues = (currentPlayheadValue, durationValue, isLiveStream, useNegativeDvrOffset) => {
+  const currentPlayhead = Utils.ensureNumber(currentPlayheadValue);
+  const duration = Utils.ensureNumber(durationValue, 0);
 
   let currentTime = '';
   let totalTime = '';
@@ -450,53 +450,18 @@ Utils.truncateTextToWidth = (element, text) => {
   const actualWidth = element.clientWidth || element.getBoundingClientRect().width;
   const textWidth = testText.scrollWidth;
   let truncatedText = '';
-  if (textWidth > actualWidth * 1.8) { // eslint-disable-line
+  // no idea what 1.8 is, just don't touch it
+  // eslint-disable-next-line no-magic-numbers
+  if (textWidth > actualWidth * 1.8) {
     const truncPercent = actualWidth / textWidth;
-    const newWidth = Math.floor(truncPercent * text.length) * 1.8 - 3; // eslint-disable-line
+    // eslint-disable-next-line no-magic-numbers
+    const newWidth = Math.floor(truncPercent * text.length) * 1.8 - 3;
     truncatedText = `${text.slice(0, newWidth)}...`;
   } else {
     truncatedText = text;
   }
   element.removeChild(testText);
   return truncatedText;
-};
-
-/**
- * Returns a shallow clone of the object given
- *
- * @function clone
- * @param {Object} object - Object to be cloned
- * @returns {Object} Clone of the given object
- */
-
-Utils.clone = (object) => {
-  const clonedObj = {};
-  for (const key in object) { // eslint-disable-line
-    if (object.hasOwnProperty(key)) { // eslint-disable-line
-      clonedObj[key] = object[key];
-    }
-  }
-  return clonedObj;
-};
-
-/**
- * Clones the given object and merges in the keys and values of the second object.
- * Attributes in the cloned original will be overwritten.
- *
- * @function extend
- * @param {Object} original - Object to be extended
- * @param {Object} toMerge - Object with properties to be merged in
- * @returns {Object} Cloned and merged object
- */
-
-Utils.extend = (original, toMerge) => {
-  const extendedObject = Utils.clone(original);
-  for (const key in toMerge) { // eslint-disable-line
-    if (toMerge.hasOwnProperty(key)) { // eslint-disable-line
-      extendedObject[key] = toMerge[key];
-    }
-  }
-  return extendedObject;
 };
 
 /**
@@ -644,7 +609,7 @@ Utils.getLanguageToUse = (skinConfig, playerParam) => {
   let userBrowserLanguage;
   let isLanguageCodeInAvailablelLanguageFile = false;
 
-  const isUseBrowserLanguage = playerParam && playerParam['useBrowserLanguage']; // eslint-disable-line
+  const isUseBrowserLanguage = playerParam && playerParam.useBrowserLanguage;
 
   // if useUserBrowserLanguage is set to true, use language from user browser settings
   if (isUseBrowserLanguage) {
@@ -792,7 +757,8 @@ Utils.getPropertyValue = (object, propertyPath, defaultValue) => {
 
     for (let index = 0; index < props.length; index += 1) {
       currentProp = props[index];
-      currentObject = value = currentObject[currentProp]; // eslint-disable-line
+      value = currentObject[currentProp];
+      currentObject = currentObject[currentProp];
     }
 
     if (typeof value === 'undefined') {
@@ -873,16 +839,18 @@ Utils.getEventIconElement = (domEvent, iconClass) => {
  * @param {number} opacity - opacity of the element
  * @param {string} color - color of the element
  */
+/* eslint-disable no-param-reassign */
 Utils.highlight = (target, opacity, color) => {
-  target.style.opacity = opacity; // eslint-disable-line
-  target.style.color = color; // eslint-disable-line
+  target.style.opacity = opacity;
+  target.style.color = color;
   // HEADSUP
   // This is currently the same style as the one used in _mixins.scss.
   // We should change both styles whenever we update Utils.
-  target.style.textShadow = '0px 0px 3px rgba(255, 255, 255, 0.5), ' // eslint-disable-line
+  target.style.textShadow = '0px 0px 3px rgba(255, 255, 255, 0.5), '
     + '0px 0px 6px rgba(255, 255, 255, 0.5), '
     + '0px 0px 9px rgba(255, 255, 255, 0.5)';
 };
+/* eslint-enable no-param-reassign */
 
 /**
  * Remove the highlight effect of the given element
@@ -892,11 +860,13 @@ Utils.highlight = (target, opacity, color) => {
  * @param {number} opacity - The opacity to return the element to
  * @param {string} color - The color to return the element to
  */
+/* eslint-disable no-param-reassign */
 Utils.removeHighlight = (target, opacity, color) => {
-  target.style.opacity = opacity; // eslint-disable-line
-  target.style.color = color; // eslint-disable-line
-  target.style.textShadow = ''; // eslint-disable-line
+  target.style.opacity = opacity;
+  target.style.color = color;
+  target.style.textShadow = '';
 };
+/* eslint-enable no-param-reassign */
 
 /**
  * Determine which buttons should be shown in the control bar given the width of the player<br/>
@@ -910,7 +880,7 @@ Utils.removeHighlight = (target, opacity, color) => {
  *   an array of buttons that fit in the control bar and overflow are the ones that should be hidden
  */
 Utils.collapse = (barWidth, orderedItems, responsiveUIMultiple) => {
-  if (window.isNaN(barWidth) || barWidth === undefined) { // eslint-disable-line
+  if (typeof barWidth !== 'number' || Number.isNaN(barWidth) || barWidth === undefined) {
     return orderedItems;
   }
   if (!orderedItems) {
@@ -1056,15 +1026,16 @@ Utils.arrayDeepMerge = (target, source, optionsArgument) => {
               && uniqueSourceArray
               && uniqueSourceArray.length
             ) {
-              for (const x in uniqueSourceArray) { // eslint-disable-line
+              Object.keys(uniqueSourceArray).some((key) => {
                 if (
-                  uniqueSourceArray[x][optionsArgument.arrayUnionBy]
+                  uniqueSourceArray[key][optionsArgument.arrayUnionBy]
                   === sourceItem[optionsArgument.arrayUnionBy]
                 ) {
-                  uniqueSourceArray.splice(x, 1);
-                  break;
+                  uniqueSourceArray.splice(key, 1);
+                  return true;
                 }
-              }
+                return false;
+              });
             }
           }
         });
@@ -1079,19 +1050,20 @@ Utils.arrayDeepMerge = (target, source, optionsArgument) => {
   if (optionsArgument.buttonArrayFusion === 'prepend' && uniqueSourceArray && uniqueSourceArray.length) {
     let flexibleSpaceIndex = null;
     // find flexibleSpace btn index
-    for (const y in destination) { // eslint-disable-line
-      if (destination[y][optionsArgument.arrayUnionBy] === 'flexibleSpace') {
-        flexibleSpaceIndex = Number.parseInt(y, 0);
-        break;
+    Object.keys(destination).some((key) => {
+      if (destination[key][optionsArgument.arrayUnionBy] === 'flexibleSpace') {
+        flexibleSpaceIndex = Number.parseInt(key, 0);
+        return true;
       }
-    }
+      return false;
+    });
     // loop through uniqueSourceArray array, add unique objects
     // to destination array after flexible space btn
     if (flexibleSpaceIndex) {
       flexibleSpaceIndex += 1; // after flexible space
-      for (const z in uniqueSourceArray) { // eslint-disable-line
-        destination.splice(flexibleSpaceIndex, 0, uniqueSourceArray[z]);
-      }
+      Object.keys(uniqueSourceArray).forEach((key) => {
+        destination.splice(flexibleSpaceIndex, 0, uniqueSourceArray[key]);
+      });
     } else {
       destination = destination.concat(uniqueSourceArray);
     }
@@ -1139,11 +1111,11 @@ Utils.getCoords = (event) => {
   const isMobileTouhes = (OO.isIos || OO.isAndroid) && event.touches && !!event.touches.length;
 
   if (isMobileTouhes) {
-    coords.x = event.touches[0].pageX; // eslint-disable-line
-    coords.y = event.touches[0].pageY; // eslint-disable-line
+    coords.x = event.touches[0].pageX;
+    coords.y = event.touches[0].pageY;
   } else {
-    coords.x = event.pageX; // eslint-disable-line
-    coords.y = event.pageY; // eslint-disable-line
+    coords.x = event.pageX;
+    coords.y = event.pageY;
   }
 
   return coords;

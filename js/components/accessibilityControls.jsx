@@ -180,13 +180,17 @@ AccessibilityControls.prototype = {
         this.prevKeyPressedArr.splice(inPrevKeyPressedArrIndex, 1);
       }
     }
+
+    let isKeyDownFinal = isKeyDown;
+    let charCodeFinal = charCode;
     if (this.prevKeyPressedArr.length) {
-      isKeyDown = true; // eslint-disable-line
-      charCode = this.prevKeyPressedArr[this.prevKeyPressedArr.length - 1]; // eslint-disable-line
+      isKeyDownFinal = true;
+      charCodeFinal = this.prevKeyPressedArr[this.prevKeyPressedArr.length - 1];
     }
+
     // rotate if a button is pressed, stop rotate if other case
-    this.controller.moveVrToDirection(isKeyDown, keyDirectionMap[charCode]);
-    return isKeyDown;
+    this.controller.moveVrToDirection(isKeyDownFinal, keyDirectionMap[charCodeFinal]);
+    return isKeyDownFinal;
   },
 
   /**

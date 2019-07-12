@@ -87,7 +87,7 @@ describe('ScrubberBar', function() {
         isMobile: false
       }
     };
-    var mockSkinConfig = Utils.clone(skinConfig);
+    var mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
     mockSkinConfig.general.accentColor = 'blue';
     mockSkinConfig.controlBar.scrubberBar.playedColor = '';
 
@@ -99,9 +99,8 @@ describe('ScrubberBar', function() {
         skinConfig={mockSkinConfig}
         />
     );
-    var playheadBar = wrapper.find('.oo-playhead');
-    expect(playheadBar.getDOMNode().style.backgroundColor).toBe('blue');
-    expect(wrapper.ref('playhead').style.backgroundColor).toBe('blue');
+    var playheadBar = wrapper.find('[data-testid="playhead"]');
+    expect(playheadBar.prop('style').backgroundColor).toBe('blue');
   });
 
   it('should render ARIA attributes', function() {
@@ -202,7 +201,7 @@ describe('ScrubberBar', function() {
         isMobile: false
       }
     };
-    var mockSkinConfig = Utils.clone(skinConfig);
+    var mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
     mockSkinConfig.general.accentColor = 'blue';
     mockSkinConfig.controlBar.scrubberBar.playedColor = 'green';
     var wrapper = Enzyme.mount(
@@ -213,9 +212,9 @@ describe('ScrubberBar', function() {
         skinConfig={mockSkinConfig}
         />
     );
-    var playheadBar = wrapper.find('.oo-playhead').getDOMNode();
-    expect(playheadBar.style.backgroundColor).toBe('green');
-    expect(wrapper.ref('playhead').style.backgroundColor).toBe('green');
+
+    var playheadBar = wrapper.find('[data-testid="playhead"]');
+    expect(playheadBar.prop('style').backgroundColor).toBe('green');
   });
 
   it('handles a mouseup', function() {

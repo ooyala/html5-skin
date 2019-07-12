@@ -120,7 +120,7 @@ describe('PlayingScreen', function() {
       addBlur: () => {},
       removeBlur: () => {}
     };
-    mockSkinConfig = Utils.clone(skinConfig);
+    mockSkinConfig = JSON.parse(JSON.stringify(skinConfig))
     closedCaptionOptions = {
       cueText: 'cue text'
     };
@@ -677,6 +677,7 @@ describe('PlayingScreen', function() {
             playheadTime={ "00:00" }
             contentTree={ mockController.state.contentTree }
             buffered={ buffered }
+            isLiveStream={ isLiveStream }
           />
         )
       );

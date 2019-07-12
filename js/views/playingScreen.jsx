@@ -14,8 +14,6 @@ import SkipControls from '../components/skipControls';
 import UnmuteIcon from '../components/unmuteIcon';
 import withAutoHide from './higher-order/withAutoHide';
 import CastPanel from '../components/castPanel';
-/* eslint-disable react/destructuring-assignment */
-/* global document */
 
 /**
  * Represents a screen when a video is playing
@@ -23,8 +21,7 @@ import CastPanel from '../components/castPanel';
 class PlayingScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.isMobile = this.props.controller.state.isMobile;
-    this.browserSupportsTouch = this.props.controller.state.browserSupportsTouch;
+    this.isMobile = props.controller.state.isMobile;
     this.skipControlsClientRect = null;
     this.hasCheckedMouseOverControls = false;
     this.mousePosition = { clientX: 0, clientY: 0 };
@@ -36,26 +33,29 @@ class PlayingScreen extends React.Component {
   }
 
   componentWillMount() {
-    this.props.handleVrPlayerMouseUp();
+    const { handleVrPlayerMouseUp } = this.props;
+    handleVrPlayerMouseUp();
   }
 
   componentDidMount() {
-    if (this.props.controller.videoVr) {
+    const { controller, handleTouchEndOnWindow } = this.props;
+    if (controller.videoVr) {
       document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
       document.addEventListener('mouseup', this.handlePlayerMouseUp, false);
       document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
-      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
+      document.addEventListener('touchend', handleTouchEndOnWindow, { passive: false });
       this.handleVrAnimationEnd(this.vrNotificatioContainer, 'isVrNotificationHidden');
       this.handleVrAnimationEnd(this.vrIconContainer, 'isVrIconHidden');
     }
   }
 
   componentWillUnmount() {
-    if (this.props.controller.videoVr) {
+    const { controller, handleTouchEndOnWindow } = this.props;
+    if (controller.videoVr) {
       document.removeEventListener('mousemove', this.handlePlayerMouseMove);
       document.removeEventListener('touchmove', this.handlePlayerMouseMove);
       document.removeEventListener('mouseup', this.handlePlayerMouseUp);
-      document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+      document.removeEventListener('touchend', handleTouchEndOnWindow);
     }
   }
 
@@ -90,21 +90,26 @@ class PlayingScreen extends React.Component {
    * @param {object} event Focus event object.
    */
   handleFocus = (event) => {
+    const {
+      controller,
+      showControlBar,
+      startHideControlBarTimer,
+    } = this.props;
     const isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     // Only do this if the control bar hasn't been shown by now and limit to focus
     // events that are triggered on known focusable elements (control bar items and
     // skip buttons). Note that controlBarVisible controls both the control bar and
     // the skip buttons
-    if (!this.props.controller.state.controlBarVisible && isFocusableElement) {
-      if (typeof this.props.showControlBar === 'function') {
-        this.props.showControlBar();
+    if (!controller.state.controlBarVisible && isFocusableElement) {
+      if (typeof showControlBar === 'function') {
+        showControlBar();
       }
 
-      if (typeof this.props.startHideControlBarTimer === 'function') {
-        this.props.startHideControlBarTimer();
+      if (typeof startHideControlBarTimer === 'function') {
+        startHideControlBarTimer();
       }
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
+      controller.state.accessibilityControlsEnabled = true;
+      controller.state.isClickedOutside = false;
     }
   }
 
@@ -113,11 +118,12 @@ class PlayingScreen extends React.Component {
    * @param {Event} event - mouse down event object
    */
   handlePlayerMouseDown = (event) => {
+    const { controller, handleVrPlayerMouseDown } = this.props;
     event.preventDefault();
-    if (this.props.controller.videoVr) {
+    if (controller.videoVr) {
       event.persist();
     }
-    this.props.handleVrPlayerMouseDown(event);
+    handleVrPlayerMouseDown(event);
   }
 
   /**
@@ -125,8 +131,9 @@ class PlayingScreen extends React.Component {
    * @param {Event} event - mouse move event object
    */
   handlePlayerMouseMove = (event) => {
+    const { handleVrPlayerMouseMove } = this.props;
     this.storeMousePosition(event);
-    this.props.handleVrPlayerMouseMove(event);
+    handleVrPlayerMouseMove(event);
   }
 
   /**
@@ -134,19 +141,19 @@ class PlayingScreen extends React.Component {
    * @param {Event} event - event object
    */
   handlePlayerMouseUp = (event) => {
+    const { controller, handleVrPlayerMouseUp } = this.props;
     // pause or play the video if the skin is clicked on desktop
     if (!this.isMobile) {
-      event.stopPropagation(); // W3C
-      event.cancelBubble = true; /* IE specific */ // eslint-disable-line
-      if (!this.props.controller.videoVr) {
-        this.props.controller.togglePlayPause(event); // if clicked on selectableSceen
+      event.stopPropagation();
+      if (!controller.videoVr) {
+        controller.togglePlayPause(event); // if clicked on selectableSceen
       }
-      // the order of the loop and this.props.controller.state is not important
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
+      // the order of the loop and controller.state is not important
+      controller.state.accessibilityControlsEnabled = true;
+      controller.state.isClickedOutside = false;
     }
 
-    this.props.handleVrPlayerMouseUp(event);
+    handleVrPlayerMouseUp(event);
   }
 
   /**
@@ -219,8 +226,9 @@ class PlayingScreen extends React.Component {
     if (
       Utils.isMouseInsideRect(this.mousePosition, this.skipControlsClientRect)
     ) {
-      if (typeof this.props.cancelHideControlBarTimer === 'function') {
-        this.props.cancelHideControlBarTimer();
+      const { cancelHideControlBarTimer } = this.props;
+      if (typeof cancelHideControlBarTimer === 'function') {
+        cancelHideControlBarTimer();
       }
     }
     this.hasCheckedMouseOverControls = true;
@@ -245,7 +253,8 @@ class PlayingScreen extends React.Component {
    * call handlePlayerFocus when the player is in focus
    */
   handlePlayerFocus = () => {
-    this.props.handleVrPlayerFocus();
+    const { handleVrPlayerFocus } = this.props;
+    handleVrPlayerFocus();
   }
 
   /**
@@ -255,10 +264,11 @@ class PlayingScreen extends React.Component {
    * @returns {object} empty object or object with animationDuration
    */
   setAnimationDuration = (vrDuration, userDefaultDuration) => {
+    const { controller } = this.props;
     let style = {};
     const functionDefaultfDuration = 3; // default value for Duration if userDefaultDuration is undefined
     const defaultDuration = Utils.ensureNumber(userDefaultDuration, functionDefaultfDuration);
-    const { animationDurations } = this.props.controller.state.config;
+    const { animationDurations } = controller.state.config;
     if (
       animationDurations !== null
       && typeof animationDurations === 'object'
@@ -277,42 +287,59 @@ class PlayingScreen extends React.Component {
   }
 
   render() {
-    const adOverlay = this.props.controller.state.adOverlayUrl
-      && this.props.controller.state.showAdOverlay
+    const {
+      controller,
+      currentPlayhead,
+      skinConfig,
+      contentTree,
+      buffered,
+      handleTouchEndOnPlayer,
+      language,
+      localizableStrings,
+      responsiveView,
+      closedCaptionOptions,
+      playerState,
+      isLiveStream,
+    } = this.props;
+
+    const { isVrNotificationHidden, isVrIconHidden } = this.state;
+
+    const adOverlay = controller.state.adOverlayUrl
+      && controller.state.showAdOverlay
       ? (
         <AdOverlay
           {...this.props}
-          overlay={this.props.controller.state.adOverlayUrl}
-          showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+          overlay={controller.state.adOverlayUrl}
+          showOverlay={controller.state.showAdOverlay}
+          showOverlayCloseButton={controller.state.showAdOverlayCloseButton}
         />
       ) : null;
 
-    const upNextPanel = this.props.controller.state.upNextInfo.showing
-      && this.props.controller.state.upNextInfo.upNextData
+    const upNextPanel = controller.state.upNextInfo.showing
+      && controller.state.upNextInfo.upNextData
       ? (
         <UpNextPanel
           {...this.props}
-          controlBarVisible={this.props.controller.state.controlBarVisible}
-          currentPlayhead={this.props.currentPlayhead}
+          controlBarVisible={controller.state.controlBarVisible}
+          currentPlayhead={currentPlayhead}
         />
       ) : null;
 
-    const viewControlsVr = this.props.controller.videoVr ? (
-      <ViewControlsVr {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
+    const viewControlsVr = controller.videoVr ? (
+      <ViewControlsVr {...this.props} controlBarVisible={controller.state.controlBarVisible} />
     ) : null;
 
-    const showUnmute = this.props.controller.state.volumeState.mutingForAutoplay
-      && this.props.controller.state.volumeState.muted;
+    const showUnmute = controller.state.volumeState.mutingForAutoplay
+      && controller.state.volumeState.muted;
 
     let vrNotification = null;
     if (
-      this.props.controller.state.config.isVrAnimationEnabled !== null
-      && typeof this.props.controller.state.config.isVrAnimationEnabled === 'object'
-      && this.props.controller.state.config.isVrAnimationEnabled.vrNotification
-      && this.props.controller.videoVr
-      && !this.state.isVrNotificationHidden
-      && this.props.controller.isNewVrVideo
+      controller.state.config.isVrAnimationEnabled !== null
+      && typeof controller.state.config.isVrAnimationEnabled === 'object'
+      && controller.state.config.isVrAnimationEnabled.vrNotification
+      && controller.videoVr
+      && !isVrNotificationHidden
+      && controller.isNewVrVideo
     ) {
       // @Todo: When we know about the rules for vrIcon, change checking "if isNewVrVideo"
       const defaultDuration = 5;
@@ -331,12 +358,12 @@ class PlayingScreen extends React.Component {
 
     let vrIcon = null;
     if (
-      this.props.controller.state.config.isVrAnimationEnabled !== null
-      && typeof this.props.controller.state.config.isVrAnimationEnabled === 'object'
-      && this.props.controller.state.config.isVrAnimationEnabled.vrIcon
-      && this.props.controller.videoVr
-      && !this.state.isVrIconHidden
-      && this.props.controller.isNewVrVideo
+      controller.state.config.isVrAnimationEnabled !== null
+      && typeof controller.state.config.isVrAnimationEnabled === 'object'
+      && controller.state.config.isVrAnimationEnabled.vrIcon
+      && controller.videoVr
+      && !isVrIconHidden
+      && controller.isNewVrVideo
     ) {
       const defaultDuration = 3;
       const style = this.setAnimationDuration('vrIcon', defaultDuration);
@@ -354,23 +381,23 @@ class PlayingScreen extends React.Component {
     }
 
     const skipControlsEnabled = Utils.getPropertyValue(
-      this.props.skinConfig,
+      skinConfig,
       'skipControls.enabled',
       false
     );
     const isTextTrackInBackground = (
-      this.props.controller.state.scrubberBar.isHovering
-      || (skipControlsEnabled && this.props.controller.state.controlBarVisible)
+      controller.state.scrubberBar.isHovering
+      || (skipControlsEnabled && controller.state.controlBarVisible)
     );
     const className = ClassNames('oo-state-screen oo-playing-screen', {
-      'oo-controls-active': skipControlsEnabled && this.props.controller.state.controlBarVisible,
-      'oo-hide-cursor': !this.props.controller.state.controlBarVisible
-        && this.props.controller.state.fullscreen,
+      'oo-controls-active': skipControlsEnabled && controller.state.controlBarVisible,
+      'oo-hide-cursor': !controller.state.controlBarVisible
+        && controller.state.fullscreen,
     });
 
     // Always show the poster image on cast session
-    const posterImageUrl = this.props.skinConfig.startScreen.showPromo
-      ? this.props.contentTree.promo_image
+    const posterImageUrl = skinConfig.startScreen.showPromo
+      ? contentTree.promo_image
       : '';
     const posterStyle = {};
     if (Utils.isValidString(posterImageUrl)) {
@@ -379,8 +406,8 @@ class PlayingScreen extends React.Component {
 
     const stateScreenPosterClass = ClassNames({
       'oo-blur': true,
-      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
-      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small',
+      'oo-state-screen-poster': skinConfig.startScreen.promoImageSize !== 'small',
+      'oo-state-screen-poster-small': skinConfig.startScreen.promoImageSize === 'small',
     });
 
     // Depends of there's another element/panel at the center of the player we will push down
@@ -390,20 +417,20 @@ class PlayingScreen extends React.Component {
     });
 
     // Add a blur only when the content it being casted on a chromecast device and a fading layer
-    if (this.props.controller.state.cast.connected) {
-      this.props.controller.addBlur();
+    if (controller.state.cast.connected) {
+      controller.addBlur();
     } else {
-      this.props.controller.removeBlur();
+      controller.removeBlur();
     }
 
     const fadeUnderlayClass = ClassNames({
       'oo-fading-underlay': true,
-      'oo-fading-underlay-active': this.props.controller.state.cast.connected,
+      'oo-fading-underlay-active': controller.state.cast.connected,
       'oo-animate-fade': true,
     });
 
-    const { buffering, isLiveStream } = this.props.controller.state;
-    const showSpinner = buffering || (this.props.buffered === 0 && !isLiveStream);
+    const { buffering } = controller.state;
+    const showSpinner = buffering || (buffered === 0 && !isLiveStream);
 
     const interactiveContainerClasses = ClassNames('oo-interactive-container');
 
@@ -413,16 +440,16 @@ class PlayingScreen extends React.Component {
         onTouchStart={this.handleTouchStart}
         onMouseOver={this.handleMouseOver}
       >
-        {this.props.controller.state.cast.connected
+        {controller.state.cast.connected
           && <div className={stateScreenPosterClass} style={posterStyle} />}
 
-        {this.props.controller.state.cast.connected && <div className={fadeUnderlayClass} />}
+        {controller.state.cast.connected && <div className={fadeUnderlayClass} />}
 
         <div // eslint-disable-line
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
-          onTouchEnd={this.props.handleTouchEndOnPlayer}
+          onTouchEnd={handleTouchEndOnPlayer}
           onClick={this.handlePlayerClicked}
           onFocus={this.handlePlayerFocus}
         />
@@ -430,22 +457,22 @@ class PlayingScreen extends React.Component {
         {vrNotification}
         {vrIcon}
 
-        <Watermark {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
+        <Watermark {...this.props} controlBarVisible={controller.state.controlBarVisible} />
 
         {
-          this.props.controller.state.cast.connected
+          controller.state.cast.connected
           && (
           <CastPanel
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            device={this.props.controller.state.cast.device}
+            language={language}
+            localizableStrings={localizableStrings}
+            device={controller.state.cast.device}
             className={castPanelClass}
           />
           )
         }
 
         {showSpinner && (
-          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+          <Spinner loadingImage={skinConfig.general.loadingImage.imageResource.url} />
         )}
 
         {viewControlsVr}
@@ -454,16 +481,16 @@ class PlayingScreen extends React.Component {
           && (
           <SkipControls
             className="oo-absolute-centered"
-            config={this.props.controller.state.skipControls}
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            responsiveView={this.props.responsiveView}
-            skinConfig={this.props.skinConfig}
-            controller={this.props.controller}
-            currentPlayhead={this.props.currentPlayhead}
-            a11yControls={this.props.controller.accessibilityControls}
-            isInactive={!this.props.controller.state.controlBarVisible}
-            isInBackground={this.props.controller.state.scrubberBar.isHovering}
+            config={controller.state.skipControls}
+            language={language}
+            localizableStrings={localizableStrings}
+            responsiveView={responsiveView}
+            skinConfig={skinConfig}
+            controller={controller}
+            currentPlayhead={currentPlayhead}
+            a11yControls={controller.accessibilityControls}
+            isInactive={!controller.state.controlBarVisible}
+            isInBackground={controller.state.scrubberBar.isHovering}
             onMount={this.onSkipControlsMount}
             onFocus={this.handleFocus}
           />
@@ -471,11 +498,11 @@ class PlayingScreen extends React.Component {
         }
 
         <div className={interactiveContainerClasses} onFocus={this.handleFocus}>
-          {this.props.closedCaptionOptions.enabled && (
+          {closedCaptionOptions.enabled && (
             <TextTrackPanel
-              closedCaptionOptions={this.props.closedCaptionOptions}
-              cueText={this.props.closedCaptionOptions.cueText}
-              responsiveView={this.props.responsiveView}
+              closedCaptionOptions={closedCaptionOptions}
+              cueText={closedCaptionOptions.cueText}
+              responsiveView={responsiveView}
               isInBackground={isTextTrackInBackground}
             />
           )}
@@ -486,11 +513,11 @@ class PlayingScreen extends React.Component {
 
           <ControlBar
             {...this.props}
-            height={this.props.skinConfig.controlBar.height}
+            height={skinConfig.controlBar.height}
             animatingControlBar
-            controlBarVisible={this.props.controller.state.controlBarVisible}
-            playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
+            controlBarVisible={controller.state.controlBarVisible}
+            playerState={playerState}
+            isLiveStream={isLiveStream}
           />
         </div>
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ClassNames from 'classnames';
 import ControlBar from '../components/controlBar';
 import AdOverlay from '../components/adOverlay';
@@ -14,8 +13,6 @@ import CONSTANTS from '../constants/constants';
 import ViewControlsVr from '../components/viewControlsVr';
 import withAutoHide from './higher-order/withAutoHide';
 import CastPanel from '../components/castPanel';
-/* eslint-disable react/destructuring-assignment */
-/* global document */
 
 /**
  * Represents a screen when a video is paused
@@ -27,47 +24,51 @@ class PauseScreen extends React.Component {
    * @param {Event} event - event object
    */
   static handlePlayerMouseUp(event) {
-    event.stopPropagation(); // W3C
-    event.cancelBubble = true; /* IE specific */ // eslint-disable-line
+    event.stopPropagation();
   }
+
+  description = null;
 
   constructor(props) {
     super(props);
     this.state = {
-      descriptionText: this.props.contentTree.description,
+      descriptionText: props.contentTree.description,
       containsText:
-        (this.props.skinConfig.pauseScreen.showTitle && !!this.props.contentTree.title)
-        || (this.props.skinConfig.pauseScreen.showDescription && !!this.props.contentTree.description),
+        (props.skinConfig.pauseScreen.showTitle && !!props.contentTree.title)
+        || (props.skinConfig.pauseScreen.showDescription && !!props.contentTree.description),
       animate: false,
     };
   }
 
   componentDidMount() {
+    const { controller, handleVrPlayerMouseUp, handleTouchEndOnWindow } = this.props;
     this.animateTimer = setTimeout(this.startAnimation, 1);
-    this.handleResize();
+    this.truncateText();
     this.hideVrPauseButton();
-    if (this.props.controller.videoVr) {
+    if (controller.videoVr) {
       document.addEventListener('mousemove', this.handlePlayerMouseMove, false);
       document.addEventListener('touchmove', this.handlePlayerMouseMove, { passive: false });
-      document.addEventListener('mouseup', this.props.handleVrPlayerMouseUp, false);
-      document.addEventListener('touchend', this.props.handleTouchEndOnWindow, { passive: false });
+      document.addEventListener('mouseup', handleVrPlayerMouseUp, false);
+      document.addEventListener('touchend', handleTouchEndOnWindow, { passive: false });
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.componentWidth !== this.props.componentWidth) {
-      this.handleResize();
+    const { componentWidth } = this.props;
+    if (nextProps.componentWidth !== componentWidth) {
+      this.truncateText();
     }
   }
 
   componentWillUnmount() {
+    const { controller, handleVrPlayerMouseUp, handleTouchEndOnWindow } = this.props;
     clearTimeout(this.animateTimer);
-    this.props.controller.enablePauseAnimation();
-    if (this.props.controller.videoVr) {
+    controller.enablePauseAnimation();
+    if (controller.videoVr) {
       document.removeEventListener('mousemove', this.handlePlayerMouseMove);
       document.removeEventListener('touchmove', this.handlePlayerMouseMove);
-      document.removeEventListener('mouseup', this.props.handleVrPlayerMouseUp);
-      document.removeEventListener('touchend', this.props.handleTouchEndOnWindow);
+      document.removeEventListener('mouseup', handleVrPlayerMouseUp);
+      document.removeEventListener('touchend', handleTouchEndOnWindow);
     }
   }
 
@@ -82,18 +83,19 @@ class PauseScreen extends React.Component {
   }
 
   /**
-   * Handles when the player changes size.
-   * @private
+   * Truncate description text
    */
-  handleResize = () => {
-    if (ReactDOM.findDOMNode(this.description)) { // eslint-disable-line
-      this.setState({
-        descriptionText: Utils.truncateTextToWidth(
-          ReactDOM.findDOMNode(this.description), // eslint-disable-line
-          this.props.contentTree.description
-        ),
-      });
+  truncateText = () => {
+    if (!this.description) {
+      return;
     }
+    const { contentTree } = this.props;
+    this.setState({
+      descriptionText: Utils.truncateTextToWidth(
+        this.description,
+        contentTree.description
+      ),
+    });
   }
 
   /**
@@ -120,7 +122,8 @@ class PauseScreen extends React.Component {
    * remove the button on pause screen for correct checking mouse movement
    */
   hideVrPauseButton = () => {
-    if (this.props.controller.videoVr) {
+    const { controller } = this.props;
+    if (controller.videoVr) {
       const second = 1000;
       setTimeout(() => {
         if (this.pauseButton) {
@@ -136,12 +139,13 @@ class PauseScreen extends React.Component {
    */
   handlePlayerMouseDown = (event) => {
     event.preventDefault();
-    if (this.props.controller.videoVr) {
+    const { controller, handleVrPlayerMouseDown } = this.props;
+    if (controller.videoVr) {
       event.persist();
     }
-    this.props.controller.state.accessibilityControlsEnabled = true;
-    this.props.controller.state.isClickedOutside = false;
-    this.props.handleVrPlayerMouseDown(event);
+    controller.state.accessibilityControlsEnabled = true;
+    controller.state.isClickedOutside = false;
+    handleVrPlayerMouseDown(event);
   }
 
   /**
@@ -149,7 +153,8 @@ class PauseScreen extends React.Component {
    * @param {Event} event - mouse move event object
    */
   handlePlayerMouseMove = (event) => {
-    this.props.handleVrPlayerMouseMove(event);
+    const { handleVrPlayerMouseMove } = this.props;
+    handleVrPlayerMouseMove(event);
   }
 
   /**
@@ -157,42 +162,65 @@ class PauseScreen extends React.Component {
    * @param {Event} event - Focus event object
    */
   handleFocus = (event) => {
+    const { controller } = this.props;
     const isFocusableElement = event.target || event.target.hasAttribute(CONSTANTS.KEYBD_FOCUS_ID_ATTR);
     if (isFocusableElement) {
-      this.props.controller.state.accessibilityControlsEnabled = true;
-      this.props.controller.state.isClickedOutside = false;
+      controller.state.accessibilityControlsEnabled = true;
+      controller.state.isClickedOutside = false;
     }
   }
 
   render() {
+    const {
+      skinConfig,
+      pauseAnimationDisabled,
+      controller,
+      contentTree,
+      currentPlayhead,
+      buffered,
+      handleTouchEndOnPlayer,
+      language,
+      localizableStrings,
+      responsiveView,
+      closedCaptionOptions,
+      playerState,
+      isLiveStream,
+    } = this.props;
+
+    const {
+      animate,
+      descriptionText,
+      containsText,
+    } = this.state;
+
     // inline style for config/skin.json elements only
     const titleStyle = {
-      color: this.props.skinConfig.startScreen.titleFont.color,
+      color: skinConfig.startScreen.titleFont.color,
     };
     const descriptionStyle = {
-      color: this.props.skinConfig.startScreen.descriptionFont.color,
+      color: skinConfig.startScreen.descriptionFont.color,
     };
     const actionIconStyle = {
-      color: this.props.skinConfig.pauseScreen.PauseIconStyle.color,
-      opacity: this.props.skinConfig.pauseScreen.PauseIconStyle.opacity,
+      color: skinConfig.pauseScreen.PauseIconStyle.color,
+      opacity: skinConfig.pauseScreen.PauseIconStyle.opacity,
     };
 
     // CSS class manipulation from config/skin.json
     const fadeUnderlayClass = ClassNames({
       'oo-fading-underlay': true,
       'oo-fading-underlay-active':
-        this.props.pauseAnimationDisabled
-        && this.props.controller.state.controlBarVisible,
+        pauseAnimationDisabled
+        && controller.state.controlBarVisible,
       'oo-animate-fade':
-        this.state.animate
-        && (!this.props.pauseAnimationDisabled
-          || this.props.controller.state.cast.connected)
-        && this.props.controller.state.controlBarVisible,
+        animate
+        && (!pauseAnimationDisabled
+          || controller.state.cast.connected)
+        && controller.state.controlBarVisible,
     });
-    const infoPanelPosition = this.props.skinConfig.pauseScreen.infoPanelPosition.toLowerCase();
+    const infoPanelPosition = skinConfig.pauseScreen.infoPanelPosition.toLowerCase();
     const infoPanelClass = ClassNames({
       'oo-state-screen-info': true,
-      'oo-inactive': !this.props.controller.state.controlBarVisible,
+      'oo-inactive': !controller.state.controlBarVisible,
       'oo-info-panel-top': infoPanelPosition.indexOf('top') > -1,
       'oo-info-panel-bottom': infoPanelPosition.indexOf('bottom') > -1,
       'oo-info-panel-left': infoPanelPosition.indexOf('left') > -1,
@@ -208,21 +236,21 @@ class PauseScreen extends React.Component {
       'oo-pull-right': infoPanelPosition.indexOf('right') > -1,
     });
 
-    const pauseIconPosition = this.props.skinConfig.pauseScreen.pauseIconPosition.toLowerCase();
+    const pauseIconPosition = skinConfig.pauseScreen.pauseIconPosition.toLowerCase();
     const actionIconClass = ClassNames({
-      'oo-action-icon-pause': !this.props.pauseAnimationDisabled,
-      'oo-action-icon': this.props.pauseAnimationDisabled,
-      'oo-animate-pause': this.state.animate && !this.props.pauseAnimationDisabled,
+      'oo-action-icon-pause': !pauseAnimationDisabled,
+      'oo-action-icon': pauseAnimationDisabled,
+      'oo-animate-pause': animate && !pauseAnimationDisabled,
       'oo-action-icon-top': pauseIconPosition.indexOf('top') > -1,
       'oo-action-icon-bottom': pauseIconPosition.indexOf('bottom') > -1,
       'oo-action-icon-left': pauseIconPosition.indexOf('left') > -1,
       'oo-action-icon-right': pauseIconPosition.indexOf('right') > -1,
-      'oo-hidden': !this.props.skinConfig.pauseScreen.showPauseIcon || this.props.pauseAnimationDisabled,
+      'oo-hidden': !skinConfig.pauseScreen.showPauseIcon || pauseAnimationDisabled,
     });
 
     const titleMetadata = (
       <div className={titleClass} style={titleStyle}>
-        {this.props.contentTree.title}
+        {contentTree.title}
       </div>
     );
     const descriptionMetadata = (
@@ -231,55 +259,55 @@ class PauseScreen extends React.Component {
         ref={(text) => { this.description = text; }}
         style={descriptionStyle}
       >
-        {this.state.descriptionText}
+        {descriptionText}
       </div>
     );
 
-    const adOverlay = this.props.controller.state.adOverlayUrl && this.props.controller.state.showAdOverlay
+    const adOverlay = controller.state.adOverlayUrl && controller.state.showAdOverlay
       ? (
         <AdOverlay
           {...this.props}
-          overlay={this.props.controller.state.adOverlayUrl}
-          showOverlay={this.props.controller.state.showAdOverlay}
-          showOverlayCloseButton={this.props.controller.state.showAdOverlayCloseButton}
+          overlay={controller.state.adOverlayUrl}
+          showOverlay={controller.state.showAdOverlay}
+          showOverlayCloseButton={controller.state.showAdOverlayCloseButton}
         />
       )
       : null;
 
-    const upNextPanel = this.props.controller.state.upNextInfo.showing
-      && this.props.controller.state.upNextInfo.upNextData
+    const upNextPanel = controller.state.upNextInfo.showing
+      && controller.state.upNextInfo.upNextData
       ? (
         <UpNextPanel
           {...this.props}
-          controlBarVisible={this.props.controller.state.controlBarVisible}
-          currentPlayhead={this.props.currentPlayhead}
+          controlBarVisible={controller.state.controlBarVisible}
+          currentPlayhead={currentPlayhead}
         />
       )
       : null;
 
-    const viewControlsVr = this.props.controller.videoVr ? (
-      <ViewControlsVr {...this.props} controlBarVisible={this.props.controller.state.controlBarVisible} />
+    const viewControlsVr = controller.videoVr ? (
+      <ViewControlsVr {...this.props} controlBarVisible={controller.state.controlBarVisible} />
     ) : null;
 
     const skipControlsEnabled = Utils.getPropertyValue(
-      this.props.skinConfig,
+      skinConfig,
       'skipControls.enabled',
       false
     );
     const isTextTrackInBackground = (
       skipControlsEnabled
-      || this.props.controller.state.scrubberBar.isHovering
+      || controller.state.scrubberBar.isHovering
     );
 
-    if (this.state.containsText && this.props.controller.state.controlBarVisible) {
-      this.props.controller.addBlur();
+    if (containsText && controller.state.controlBarVisible) {
+      controller.addBlur();
     } else {
-      this.props.controller.removeBlur();
+      controller.removeBlur();
     }
 
     // Always show the poster image on cast session
-    const posterImageUrl = this.props.skinConfig.startScreen.showPromo
-      ? this.props.contentTree.promo_image
+    const posterImageUrl = skinConfig.startScreen.showPromo
+      ? contentTree.promo_image
       : '';
     const posterStyle = {};
     if (Utils.isValidString(posterImageUrl)) {
@@ -288,8 +316,8 @@ class PauseScreen extends React.Component {
 
     const stateScreenPosterClass = ClassNames({
       'oo-blur': true,
-      'oo-state-screen-poster': this.props.skinConfig.startScreen.promoImageSize !== 'small',
-      'oo-state-screen-poster-small': this.props.skinConfig.startScreen.promoImageSize === 'small',
+      'oo-state-screen-poster': skinConfig.startScreen.promoImageSize !== 'small',
+      'oo-state-screen-poster-small': skinConfig.startScreen.promoImageSize === 'small',
     });
 
     // Depends of there's another element/panel at the center of the player we will push down
@@ -301,38 +329,37 @@ class PauseScreen extends React.Component {
     const {
       buffering,
       cast,
-      isLiveStream,
-    } = this.props.controller.state;
+    } = controller.state;
 
-    const showSpinner = buffering || (!cast.connected && this.props.buffered === 0 && !isLiveStream);
+    const showSpinner = buffering || (!cast.connected && buffered === 0 && !isLiveStream);
     const interactiveContainerClasses = ClassNames('oo-interactive-container');
 
     return (
       <div className="oo-state-screen oo-pause-screen">
         {
-          this.props.controller.state.cast.connected
+          controller.state.cast.connected
           && <div className={stateScreenPosterClass} style={posterStyle} />
         }
 
-        {!this.props.controller.videoVr && this.state.containsText && <div className={fadeUnderlayClass} />}
+        {!controller.videoVr && containsText && <div className={fadeUnderlayClass} />}
 
         <div // eslint-disable-line
           className={CONSTANTS.CLASS_NAMES.SELECTABLE_SCREEN}
           onClick={this.handleClick}
           onMouseDown={this.handlePlayerMouseDown}
           onTouchStart={this.handlePlayerMouseDown}
-          onTouchEnd={this.props.handleTouchEndOnPlayer}
+          onTouchEnd={handleTouchEndOnPlayer}
           onMouseUp={this.handlePlayerMouseUp}
         />
 
         <Watermark
           {...this.props}
-          controlBarVisible={this.props.controller.state.controlBarVisible}
+          controlBarVisible={controller.state.controlBarVisible}
         />
 
         <div className={infoPanelClass}>
-          {this.props.skinConfig.pauseScreen.showTitle ? titleMetadata : null}
-          {this.props.skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
+          {skinConfig.pauseScreen.showTitle ? titleMetadata : null}
+          {skinConfig.pauseScreen.showDescription ? descriptionMetadata : null}
         </div>
 
         <button
@@ -347,19 +374,19 @@ class PauseScreen extends React.Component {
         </button>
 
         {
-          this.props.controller.state.cast.connected
+          controller.state.cast.connected
           && (
           <CastPanel
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            device={this.props.controller.state.cast.device}
+            language={language}
+            localizableStrings={localizableStrings}
+            device={controller.state.cast.device}
             className={castPanelClass}
           />
           )
         }
 
         {showSpinner && (
-          <Spinner loadingImage={this.props.skinConfig.general.loadingImage.imageResource.url} />
+          <Spinner loadingImage={skinConfig.general.loadingImage.imageResource.url} />
         )}
 
         {viewControlsVr}
@@ -368,27 +395,27 @@ class PauseScreen extends React.Component {
           && (
           <SkipControls
             className="oo-absolute-centered"
-            config={this.props.controller.state.skipControls}
-            language={this.props.language}
-            localizableStrings={this.props.localizableStrings}
-            responsiveView={this.props.responsiveView}
-            skinConfig={this.props.skinConfig}
-            controller={this.props.controller}
-            currentPlayhead={this.props.currentPlayhead}
-            a11yControls={this.props.controller.accessibilityControls}
-            isInactive={!this.props.controller.state.controlBarVisible}
-            isInBackground={this.props.controller.state.scrubberBar.isHovering}
+            config={controller.state.skipControls}
+            language={language}
+            localizableStrings={localizableStrings}
+            responsiveView={responsiveView}
+            skinConfig={skinConfig}
+            controller={controller}
+            currentPlayhead={currentPlayhead}
+            a11yControls={controller.accessibilityControls}
+            isInactive={!controller.state.controlBarVisible}
+            isInBackground={controller.state.scrubberBar.isHovering}
             onFocus={this.handleFocus}
           />
           )
         }
 
         <div className={interactiveContainerClasses} onFocus={this.handleFocus}>
-          {this.props.closedCaptionOptions.enabled && (
+          {closedCaptionOptions.enabled && (
             <TextTrackPanel
-              closedCaptionOptions={this.props.closedCaptionOptions}
-              cueText={this.props.closedCaptionOptions.cueText}
-              responsiveView={this.props.responsiveView}
+              closedCaptionOptions={closedCaptionOptions}
+              cueText={closedCaptionOptions.cueText}
+              responsiveView={responsiveView}
               isInBackground={isTextTrackInBackground}
             />
           )}
@@ -399,11 +426,11 @@ class PauseScreen extends React.Component {
 
           <ControlBar
             {...this.props}
-            height={this.props.skinConfig.controlBar.height}
+            height={skinConfig.controlBar.height}
             animatingControlBar
-            controlBarVisible={this.props.controller.state.controlBarVisible}
-            playerState={this.props.playerState}
-            isLiveStream={this.props.isLiveStream}
+            controlBarVisible={controller.state.controlBarVisible}
+            playerState={playerState}
+            isLiveStream={isLiveStream}
           />
         </div>
 

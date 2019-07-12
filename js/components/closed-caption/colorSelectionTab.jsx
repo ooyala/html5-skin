@@ -4,33 +4,26 @@ import CONSTANTS from '../../constants/constants';
 import SelectionContainer from './selectionContainer';
 import ColorSelector from '../colorSelector';
 
+const COLORS = {
+  TEXT: ['White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
+  WINDOW: ['Transparent', 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
+  BACKGROUND: [
+    'Transparent',
+    'White',
+    'Blue',
+    'Magenta',
+    'Green',
+    'Yellow',
+    'Red',
+    'Cyan',
+    'Black',
+  ],
+};
+
 /**
  * Manage closed captions text color
  */
 class ColorSelectionTab extends React.Component {
-  constructor(props) {
-    super(props);
-    const { closedCaptionOptions } = props;
-    this.state = {
-      selectedTextColor: closedCaptionOptions.textColor, // eslint-disable-line
-      selectedWindowColor: closedCaptionOptions.windowColor, // eslint-disable-line
-      selectedBackgroundColor: closedCaptionOptions.backgroundColor, // eslint-disable-line
-      textColors: ['White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
-      windowColors: ['Transparent', 'White', 'Blue', 'Magenta', 'Green', 'Yellow', 'Red', 'Cyan', 'Black'],
-      backgroundColors: [
-        'Transparent',
-        'White',
-        'Blue',
-        'Magenta',
-        'Green',
-        'Yellow',
-        'Red',
-        'Cyan',
-        'Black',
-      ],
-    };
-  }
-
   /**
    * Handle changing text color by user
    * @param {string} color - the color code
@@ -41,9 +34,6 @@ class ColorSelectionTab extends React.Component {
       controller.toggleClosedCaptionEnabled();
     }
     controller.onClosedCaptionChange('textColor', color);
-    this.setState({
-      selectedTextColor: color, // eslint-disable-line
-    });
   }
 
   /**
@@ -56,9 +46,6 @@ class ColorSelectionTab extends React.Component {
       controller.toggleClosedCaptionEnabled();
     }
     controller.onClosedCaptionChange('windowColor', color);
-    this.setState({
-      selectedWindowColor: color, // eslint-disable-line
-    });
   }
 
   /**
@@ -71,14 +58,10 @@ class ColorSelectionTab extends React.Component {
       controller.toggleClosedCaptionEnabled();
     }
     controller.onClosedCaptionChange('backgroundColor', color);
-    this.setState({
-      selectedBackgroundColor: color, // eslint-disable-line
-    });
   }
 
   render() {
     const { closedCaptionOptions, language, localizableStrings } = this.props;
-    const { textColors, backgroundColors, windowColors } = this.state;
     const textColorTitle = Utils.getLocalizedString(
       language,
       CONSTANTS.SKIN_TEXT.TEXT_COLOR,
@@ -124,7 +107,7 @@ class ColorSelectionTab extends React.Component {
               <ColorSelector
                 {...this.props}
                 ariaLabel={CONSTANTS.ARIA_LABELS.TEXT_COLOR_MENU}
-                colors={textColors}
+                colors={COLORS.TEXT}
                 onColorChange={this.changeTextColor}
                 selectedColor={closedCaptionOptions.textColor}
                 enabled={closedCaptionOptions.enabled}
@@ -136,7 +119,7 @@ class ColorSelectionTab extends React.Component {
             <ColorSelector
               {...this.props}
               ariaLabel={CONSTANTS.ARIA_LABELS.BACKGROUND_COLOR_MENU}
-              colors={backgroundColors}
+              colors={COLORS.BACKGROUND}
               onColorChange={this.changeBackgroundColor}
               selectedColor={closedCaptionOptions.backgroundColor}
               enabled={closedCaptionOptions.enabled}
@@ -147,7 +130,7 @@ class ColorSelectionTab extends React.Component {
             <ColorSelector
               {...this.props}
               ariaLabel={CONSTANTS.ARIA_LABELS.WINDOW_COLOR_MENU}
-              colors={windowColors}
+              colors={COLORS.WINDOW}
               onColorChange={this.changeWindowColor}
               selectedColor={closedCaptionOptions.windowColor}
               enabled={closedCaptionOptions.enabled}

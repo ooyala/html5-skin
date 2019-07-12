@@ -32,7 +32,8 @@ const preserveKeyboardFocus = (ComposedComponent) => {
      * @private
      */
     componentDidMount() {
-      const domElement = ReactDOM.findDOMNode(this.composedComponentRef.current); //eslint-disable-line
+      // eslint-disable-next-line react/no-find-dom-node
+      const domElement = ReactDOM.findDOMNode(this.composedComponentRef.current);
       this.tryRestoreFocusedControl(domElement);
     }
 

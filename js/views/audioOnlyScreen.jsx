@@ -11,40 +11,12 @@ import ScrubberBar from '../components/scrubberBar';
  * Will display a title with description, a control bar, and a scrubber bar.
  */
 class AudioOnlyScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      forceResize: false,
-    };
-    this.handleLiveClick = this.handleLiveClick.bind(this);
-  }
-
-  /**
-   * Catch update component evet to proceed resize if necessary
-   * @param {Object} prevProps - props object
-   * @param {Object} prevState - state object
-   */
-  componentDidUpdate(prevProps, prevState) {
-    // [PLAYER-4848] If we find out that this is a live stream, we need to force a resize of the scrubber bar.
-    // This ensures the playhead offset is correctly calculated for the UI differences when the stream is LIVE.
-    if (this.state.forceResize !== prevState.forceResize) {
-      this.setState({ forceResize: false }); // eslint-disable-line
-    } else if (
-      !prevState.forceResize
-        && this.props.isLiveStream !== prevProps.isLiveStream
-        && this.props.isLiveStream
-    ) {
-      this.setState({ forceResize: true }); // eslint-disable-line
-    }
-  }
-
   /**
    * Stop click propagation if clicked on 'live' button
    * @param {Object} event - event object
    */
   handleLiveClick = (event) => {
     event.stopPropagation();
-    event.cancelBubble = true; /* IE specific */ // eslint-disable-line
     event.preventDefault();
     this.props.controller.onLiveClick();
     this.props.controller.seek(this.props.duration);
@@ -104,7 +76,6 @@ class AudioOnlyScreen extends React.Component {
         <a // eslint-disable-line
           key={CONSTANTS.CONTROL_BAR_KEYS.LIVE}
           className={liveClass}
-          ref="LiveButton" // eslint-disable-line
           onClick={liveClick}
         >
           <div className="oo-live-circle" />
@@ -156,7 +127,7 @@ class AudioOnlyScreen extends React.Component {
               <ScrubberBar
                 {...this.props}
                 audioOnly
-                forceResize={this.state.forceResize}
+                forceResize={this.props.isLiveStream}
               />
               {scrubberRight}
             </div>

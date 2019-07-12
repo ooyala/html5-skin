@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ClassNames from 'classnames';
 import PropTypes from 'prop-types';
 import Utils from './utils';
@@ -55,7 +54,6 @@ class CountDownClock extends React.Component {
   }
 
   setupCanvas = () => {
-    this.canvas = ReactDOM.findDOMNode(this); // eslint-disable-line
     this.context = this.canvas.getContext('2d');
     this.context.textAlign = 'center';
     this.context.textBaseline = 'middle';
@@ -100,11 +98,13 @@ class CountDownClock extends React.Component {
       Math.PI * 2,
       false,
     );
+
     arc.call(
       this.context,
       clockContainerWidth / 2,
       clockRadius,
-      clockRadius / 1.2, // eslint-disable-line
+      // eslint-disable-next-line no-magic-numbers
+      clockRadius / 1.2,
       Math.PI * 2,
       0,
       true
@@ -113,12 +113,17 @@ class CountDownClock extends React.Component {
   }
 
   updateClockSize = () => {
+    const CLOCK_WIDTH_DISCOVERY_SCREEN = 75;
+    const CLOCK_WIDTH_XS = 25;
+    const CLOCK_WIDTH_DEFAULT = 36;
     let clockWidth;
     const { controller, responsiveView, skinConfig } = this.props;
     if (controller.state.screenToShow === CONSTANTS.SCREEN.DISCOVERY_SCREEN) {
-      clockWidth = 75; // eslint-disable-line
+      clockWidth = CLOCK_WIDTH_DISCOVERY_SCREEN;
     } else {
-      clockWidth = responsiveView === skinConfig.responsive.breakpoints.xs.id ? 25 : 36; // eslint-disable-line
+      clockWidth = responsiveView === skinConfig.responsive.breakpoints.xs.id
+        ? CLOCK_WIDTH_XS
+        : CLOCK_WIDTH_DEFAULT;
     }
     this.setState({
       clockRadius: parseInt(clockWidth, 10) / 2,
@@ -141,7 +146,8 @@ class CountDownClock extends React.Component {
       arc,
       fill,
     } = this.context;
-    const percent = fraction * remainSeconds + 1.5; // eslint-disable-line
+    // eslint-disable-next-line no-magic-numbers
+    const percent = fraction * remainSeconds + 1.5;
     this.context.fillStyle = 'white';
     if (
       controller.state.screenToShow === CONSTANTS.SCREEN.PLAYING_SCREEN
@@ -161,7 +167,8 @@ class CountDownClock extends React.Component {
       clockContainerWidth / 2,
       clockRadius,
       clockRadius,
-      Math.PI * 1.5, // eslint-disable-line
+      // eslint-disable-next-line no-magic-numbers
+      Math.PI * 1.5,
       Math.PI * percent,
       false,
     );
@@ -169,9 +176,11 @@ class CountDownClock extends React.Component {
       this.context,
       clockContainerWidth / 2,
       clockRadius,
-      clockRadius / 1.2, // eslint-disable-line
+      // eslint-disable-next-line no-magic-numbers
+      clockRadius / 1.2,
       Math.PI * percent,
-      Math.PI * 1.5, // eslint-disable-line
+      // eslint-disable-next-line no-magic-numbers
+      Math.PI * 1.5,
       true,
     );
     fill.call(this.context);
@@ -270,6 +279,7 @@ class CountDownClock extends React.Component {
         height={clockContainerWidth}
         onClick={this.handleClick}
         onTouchEnd={this.handleClick}
+        ref={(node) => { this.canvas = node; }}
       />
     );
   }

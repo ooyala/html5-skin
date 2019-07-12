@@ -37,7 +37,7 @@ class Popover extends React.Component {
       // Ask parent to restore the focus of the toggle button that triggers this
       // popover if the ESC key was pressed while the focus was inside this element.
       // If the focus was outside the popover we shouldn't re-focus the toggle button.
-      const targetIsChildElement = this.domElement ? this.domElement.contains(event.target) : false; // eslint-disable-line
+      const targetIsChildElement = this.domElement ? this.domElement.contains(event.target) : false;
       closeAction({
         restoreToggleButtonFocus: targetIsChildElement,
       });
