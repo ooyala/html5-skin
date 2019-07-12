@@ -498,7 +498,7 @@ class ControlBar extends React.Component {
           icon={playIcon}
           tooltip={playButtonTooltip}
           onClick={this.handlePlayClick}
-          role="radio"
+          role="switch"
         />
       ),
 
@@ -526,7 +526,7 @@ class ControlBar extends React.Component {
             icon={volumeIcon}
             tooltip={mutedInUi ? CONSTANTS.SKIN_TEXT.UNMUTE : CONSTANTS.SKIN_TEXT.MUTE}
             onClick={this.handleVolumeIconClick}
-            role="radio"
+            role="switch"
           />
           {!hideVolumeControls && <VolumeControls {...this.props} />}
         </div>
