@@ -236,7 +236,44 @@ Object {
         "name": "moreOptions",
         "whenDoesNotFit": "keep",
       },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "pipButton",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
     ],
+  },
+  "castControls": Object {
+    "buttons": Object {
+      "nextVideo": Object {
+        "enabled": true,
+        "index": 4,
+      },
+      "previousVideo": Object {
+        "enabled": true,
+        "index": 1,
+      },
+      "skipBackward": Object {
+        "enabled": true,
+        "index": 2,
+      },
+      "skipForward": Object {
+        "enabled": true,
+        "index": 3,
+      },
+    },
+    "enabled": false,
+    "iconStyle": Object {
+      "active": Object {
+        "color": "#3eb5f7",
+      },
+      "inactive": Object {
+        "color": "#FFFFFF",
+      },
+    },
+    "skipBackwardTime": 10,
+    "skipForwardTime": 10,
   },
   "closedCaptionOptions": Object {
     "backgroundColor": "Green",
@@ -457,9 +494,19 @@ Object {
       "fontString": "g",
       "fontStyleClass": "oo-icon oo-icon-pause-slick",
     },
+    "pipInButton": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "+",
+      "fontStyleClass": "oo-icon",
+    },
+    "pipOutButton": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ",",
+      "fontStyleClass": "oo-icon",
+    },
     "play": Object {
       "fontFamilyName": "ooyala-slick-type",
-      "fontString": ">",
+      "fontString": "v",
       "fontStyleClass": "oo-icon oo-icon-play-slick",
     },
     "previous": Object {
@@ -1111,7 +1158,44 @@ Object {
         "name": "moreOptions",
         "whenDoesNotFit": "keep",
       },
+      Object {
+        "location": "controlBar",
+        "minWidth": 28,
+        "name": "pipButton",
+        "whenDoesNotFit": "moveToMoreOptions",
+      },
     ],
+  },
+  "castControls": Object {
+    "buttons": Object {
+      "nextVideo": Object {
+        "enabled": true,
+        "index": 4,
+      },
+      "previousVideo": Object {
+        "enabled": true,
+        "index": 1,
+      },
+      "skipBackward": Object {
+        "enabled": true,
+        "index": 2,
+      },
+      "skipForward": Object {
+        "enabled": true,
+        "index": 3,
+      },
+    },
+    "enabled": false,
+    "iconStyle": Object {
+      "active": Object {
+        "color": "#3eb5f7",
+      },
+      "inactive": Object {
+        "color": "#FFFFFF",
+      },
+    },
+    "skipBackwardTime": 10,
+    "skipForwardTime": 10,
   },
   "closedCaptionOptions": Object {
     "backgroundColor": "Green",
@@ -1332,9 +1416,19 @@ Object {
       "fontString": "g",
       "fontStyleClass": "oo-icon oo-icon-pause-slick",
     },
+    "pipInButton": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": "+",
+      "fontStyleClass": "oo-icon",
+    },
+    "pipOutButton": Object {
+      "fontFamilyName": "ooyala-slick-type",
+      "fontString": ",",
+      "fontStyleClass": "oo-icon",
+    },
     "play": Object {
       "fontFamilyName": "ooyala-slick-type",
-      "fontString": ">",
+      "fontString": "v",
       "fontStyleClass": "oo-icon oo-icon-play-slick",
     },
     "previous": Object {
