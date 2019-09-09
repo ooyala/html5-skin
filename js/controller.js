@@ -38,7 +38,7 @@ function controller(OO, _, $) {
 
   if (OO.publicApi && OO.publicApi.VERSION) {
     // This variable gets filled in by the build script
-    OO.publicApi.VERSION.skin = { releaseVersion: '<SKIN_VERSION>', rev: '<SKIN_REV>' };
+    OO.publicApi.VERSION.skin = {"releaseVersion": "4.35.5", "rev": "<SKIN_REV>"};
   }
 
   /**
