@@ -371,7 +371,7 @@ Object {
     "bufferingSpinnerDelay": 750,
     "loadingImage": Object {
       "imageResource": Object {
-        "url": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/loader_svg.svg",
+        "url": "//player.ooyala.com/static/v4/stable/4.36.2/skin-plugin/assets/images/loader_svg.svg",
       },
     },
     "watermark": Object {
@@ -728,7 +728,7 @@ Object {
   },
   "shareScreen": Object {
     "embed": Object {
-      "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>",
+      "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/stable/4.36.2/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>",
     },
     "shareContent": Array [
       "social",
@@ -1293,7 +1293,7 @@ Object {
     "bufferingSpinnerDelay": 750,
     "loadingImage": Object {
       "imageResource": Object {
-        "url": "//player.ooyala.com/static/v4/candidate/latest/skin-plugin/assets/images/loader_svg.svg",
+        "url": "//player.ooyala.com/static/v4/stable/4.36.2/skin-plugin/assets/images/loader_svg.svg",
       },
     },
     "watermark": Object {
@@ -1650,7 +1650,7 @@ Object {
   },
   "shareScreen": Object {
     "embed": Object {
-      "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/candidate/latest/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>",
+      "source": "<iframe width='640' height='480' frameborder='0' allowfullscreen src='//player.ooyala.com/static/v4/stable/4.36.2/skin-plugin/iframe.html?ec=<ASSET_ID>&pbid=<PLAYER_ID>&pcode=<PUBLISHER_ID>'></iframe>",
     },
     "shareContent": Array [
       "social",
